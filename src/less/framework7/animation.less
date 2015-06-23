@@ -1,0 +1,443 @@
+// Animation
+// ------------------------------
+
+// React's CSSTransitionGroup requires an animation so we transition from .99 opacity to 1 with "artificial"
+@view-transition-stack-stable:  5;
+@view-transition-stack-top:    20;
+@view-transition-stack-bottom: 10;
+
+
+// still
+
+@-webkit-keyframes artificial {
+	from { opacity: .99; }
+	to { opacity: 1; }
+}
+@keyframes artificial {
+	from { opacity: .99; }
+	to { opacity: 1; }
+}
+
+// SHOW
+// ====
+
+// From Left
+
+@-webkit-keyframes viewShowFromLeftEnter {
+	from { -webkit-transform: translate3d(-100%, 0, 0); }
+	to   { -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes viewShowFromLeftEnter {
+	from { transform: translate3d(-100%, 0, 0); }
+	to   { transform: translate3d(0, 0, 0); }
+}
+@-webkit-keyframes viewShowFromLeftLeave {
+	to   { opacity: .75; -webkit-transform: translate3d(25%, 0, 0); }
+}
+@keyframes viewShowFromLeftLeave {
+	to   { opacity: .75; transform: translate3d(25%, 0, 0); }
+}
+
+// From right
+
+@-webkit-keyframes viewShowFromRightEnter {
+	from { -webkit-transform: translate3d(100%, 0, 0); }
+	to   { -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes viewShowFromRightEnter          {
+	from { transform: translate3d(100%, 0, 0); }
+	to   { transform: translate3d(0, 0, 0); }
+}
+@-webkit-keyframes viewShowFromRightLeave {
+	to   { opacity: .75; -webkit-transform: translate3d(-25%, 0, 0); }
+}
+@keyframes viewShowFromRightLeave {
+	to   { opacity: .75; transform: translate3d(-25%, 0, 0); }
+}
+
+// From top
+
+@-webkit-keyframes viewShowFromTopEnter {
+	from { -webkit-transform: translate3d(0, -100%, 0); }
+	to   { -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes viewShowFromTopEnter {
+	from { transform: translate3d(0, -100%, 0); }
+	to   { transform: translate3d(0, 0, 0); }
+}
+// From bottom
+
+@-webkit-keyframes viewShowFromBottomEnter {
+	from { -webkit-transform: translate3d(0, 100%, 0); }
+	to   { -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes viewShowFromBottomEnter {
+	from { transform: translate3d(0, 100%, 0); }
+	to   { transform: translate3d(0, 0, 0); }
+}
+
+// REVEAL
+// ======
+
+// From left
+
+@-webkit-keyframes viewRevealFromLeftLeave   {
+	from   { -webkit-transform: translate3d(0, 0, 0); }
+	to { -webkit-transform: translate3d(-100%, 0, 0); }
+}
+@keyframes viewRevealFromLeftLeave           {
+	from   { transform: translate3d(0, 0, 0); }
+	to { transform: translate3d(-100%, 0, 0); }
+}
+@-webkit-keyframes viewRevealFromLeftEnter {
+	from   { opacity: .75; -webkit-transform: translate3d(25%, 0, 0); }
+	to   { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes viewRevealFromLeftEnter {
+	from   { opacity: .75; transform: translate3d(25%, 0, 0); }
+	to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+// From right
+
+@-webkit-keyframes viewRevealFromRightLeave  {
+	from   { -webkit-transform: translate3d(0, 0, 0); }
+	to { -webkit-transform: translate3d(100%, 0, 0); }
+}
+@keyframes viewRevealFromRightLeave          {
+	from   { transform: translate3d(0, 0, 0); }
+	to { transform: translate3d(100%, 0, 0); }
+}
+@-webkit-keyframes viewRevealFromRightEnter {
+	from   { opacity: .75; -webkit-transform: translate3d(-25%, 0, 0); }
+	to   { opacity: 1; -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes viewRevealFromRightEnter {
+	from   { opacity: .75; transform: translate3d(-25%, 0, 0); }
+	to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+// From top
+
+@-webkit-keyframes viewRevealFromTopLeave    {
+	from   { -webkit-transform: translate3d(0, 0, 0); }
+	to { -webkit-transform: translate3d(0, -100%, 0); }
+}
+@keyframes viewRevealFromTopLeave            {
+	from   { transform: translate3d(0, 0, 0); }
+	to { transform: translate3d(0, -100%, 0); }
+}
+
+// From bottom
+
+@-webkit-keyframes viewRevealFromBottomLeave {
+	from   { -webkit-transform: translate3d(0, 0, 0); }
+	to { -webkit-transform: translate3d(0, 100%, 0); }
+}
+@keyframes viewRevealFromBottomLeave         {
+	from   { transform: translate3d(0, 0, 0); }
+	to { transform: translate3d(0, 100%, 0); }
+}
+
+// Common
+// ------------------------------
+
+// fade in
+
+@-webkit-keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+// fade out
+
+@-webkit-keyframes fadeOut {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+@keyframes fadeOut {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+
+// fade out-expand
+
+@-webkit-keyframes fadeExpand {
+	to { opacity: 0; -webkit-transform: scale(1.5); }
+}
+@keyframes fadeExpand {
+	to { opacity: 0; transform: scale(1.5); }
+}
+
+// fade out-contract
+
+@-webkit-keyframes fadeContract {
+	to { opacity: 0; -webkit-transform: scale(.35); }
+}
+@keyframes fadeContract {
+	to { opacity: 0; transform: scale(.35); }
+}
+
+// slide up
+
+@-webkit-keyframes slideUp {
+	from {-webkit-transform: translate3d(0, 100%, 0); }
+	to { -webkit-transform: none; }
+}
+@keyframes slideUp {
+	from {transform: translate3d(0, 100%, 0); }
+	to { transform: none; }
+}
+
+// slide down
+
+@-webkit-keyframes slideDown {
+	from { -webkit-transform: translate3d(0, -100%, 0); }
+	to { -webkit-transform: none; }
+}
+@keyframes slideUp {
+	from {transform: translate3d(0, -100%, 0); }
+	to { transform: none; }
+}
+
+// spin
+
+@-webkit-keyframes spin {
+	to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
+
+// pulse
+
+@-webkit-keyframes pulse {
+	50% { opacity: .25; }
+}
+@keyframes pulse {
+	50% { opacity: .25; }
+}
+
+
+// transition: none (default)
+.view-transition-none-enter { .animation( artificial 10ms ); }
+.view-transition-none-leave { .animation( fadeOut 10ms ); }
+
+// transition: fade
+.view-transition-fade-enter { .animation( artificial 10ms ); }
+.view-transition-fade-leave { .animation( fadeOut 380ms ); }
+
+// transition: fade expand 
+
+.view-transition-fade-expand-enter { .animation( artificial 10ms ); }
+.view-transition-fade-expand-leave { .animation( fadeExpand 320ms ); }
+
+// transition: fade contract 
+
+.view-transition-fade-contract-enter { .animation( artificial 10ms ); }
+.view-transition-fade-contract-leave { .animation( fadeContract 320ms ); }
+
+// SHOW
+// ====
+
+// common stacking context
+
+.view-transition-show-from-top-enter,
+.view-transition-show-from-right-enter,
+.view-transition-show-from-bottom-enter,
+.view-transition-show-from-left-enter {
+	pointer-events: none; // disable user interaction whilst views are transitioning
+	z-index: @view-transition-stack-top;
+}
+
+.view-transition-reveal-from-top-leave,
+.view-transition-reveal-from-right-leave,
+.view-transition-reveal-from-bottom-leave,
+.view-transition-reveal-from-left-leave {
+	pointer-events: none; // disable user interaction whilst views are transitioning
+	z-index: @view-transition-stack-bottom;
+}
+
+// common animation components
+
+.view-transition-show-from-top-enter,
+.view-transition-show-from-top-leave,
+.view-transition-show-from-bottom-enter,
+.view-transition-show-from-bottom-leave {
+	.animation-duration( 380ms );
+	.animation-timing-function( cubic-bezier(0.77, 0, 0.175, 1) );
+}
+.view-transition-show-from-left-enter,
+.view-transition-show-from-left-leave,
+.view-transition-show-from-right-enter,
+.view-transition-show-from-right-leave {
+	.animation-duration( 320ms );
+	.animation-timing-function( cubic-bezier(0.645, 0.045, 0.355, 1) );
+}
+
+// blank state
+
+.view-transition-show-from-top-leave,
+.view-transition-show-from-bottom-leave   { .animation-name( artificial ); }
+
+// variants
+
+.view-transition-show-from-top-enter      { .animation-name( viewShowFromTopEnter ); }
+.view-transition-show-from-right-enter    { .animation-name( viewShowFromRightEnter ); }
+.view-transition-show-from-bottom-enter   { .animation-name( viewShowFromBottomEnter ); }
+.view-transition-show-from-left-enter     { .animation-name( viewShowFromLeftEnter ); }
+
+.view-transition-show-from-left-leave     { .animation-name( viewShowFromLeftLeave ); }
+.view-transition-show-from-right-leave    { .animation-name( viewShowFromRightLeave ); }
+
+// REVEAL
+// ======
+
+// common stacking context
+
+.view-transition-reveal-from-top-enter,
+.view-transition-reveal-from-right-enter,
+.view-transition-reveal-from-bottom-enter,
+.view-transition-reveal-from-left-enter {
+	pointer-events: none; // disable user interaction whilst views are transitioning
+	z-index: @view-transition-stack-bottom;
+}
+
+.view-transition-reveal-from-top-leave,
+.view-transition-reveal-from-right-leave,
+.view-transition-reveal-from-bottom-leave,
+.view-transition-reveal-from-left-leave {
+	pointer-events: none; // disable user interaction whilst views are transitioning
+	z-index: @view-transition-stack-top;
+}
+
+// common animation components
+
+.view-transition-reveal-from-top-enter,
+.view-transition-reveal-from-top-leave,
+.view-transition-reveal-from-bottom-enter,
+.view-transition-reveal-from-bottom-leave {
+	.animation-duration( 380ms );
+	.animation-timing-function( cubic-bezier(0.77, 0, 0.175, 1) );
+}
+.view-transition-reveal-from-left-enter,
+.view-transition-reveal-from-left-leave,
+.view-transition-reveal-from-right-enter,
+.view-transition-reveal-from-right-leave {
+	.animation-duration( 320ms );
+	.animation-timing-function( cubic-bezier(0.645, 0.045, 0.355, 1) );
+}
+
+// blank state
+
+.view-transition-reveal-from-top-enter,
+.view-transition-reveal-from-bottom-enter   { .animation-name( artificial ); }
+
+// variants
+
+.view-transition-reveal-from-top-leave      { .animation-name( viewRevealFromTopLeave ); }
+.view-transition-reveal-from-right-leave    { .animation-name( viewRevealFromRightLeave ); }
+.view-transition-reveal-from-bottom-leave   { .animation-name( viewRevealFromBottomLeave ); }
+.view-transition-reveal-from-left-leave     { .animation-name( viewRevealFromLeftLeave ); }
+
+.view-transition-reveal-from-left-enter     { .animation-name( viewRevealFromLeftEnter ); }
+.view-transition-reveal-from-right-enter    { .animation-name( viewRevealFromRightEnter ); }
+
+
+//Modal
+
+/* =modalOverlay= */
+.modalOverlay-enter {
+    .modal-overlay.modal-overlay-invisible
+}
+.modalOverlay-enter.modalOverlay-enter-active {
+    .modal-overlay
+}
+.modalOverlay-leave {
+    .modal-overlay
+}
+.modalOverlay-leave.modalOverlay-leave-active {
+    .modal-overlay.modal-overlay-invisible
+}
+/* =actionsModal= */
+.actionsModal-enter {
+    .actions-modal.modal-out
+}
+.actionsModal-enter.actionsModal-enter-active {
+    .actions-modal.modal-in
+}
+.actionsModal-leave {
+    .actions-modal.modal-in
+}
+.actionsModal-leave.actionsModal-leave-active {
+    .actions-modal.modal-out
+}
+/* =modal= */
+.modal-enter {
+    .modal.modal-out
+}
+.modal-enter.modal-enter-active {
+    .modal.modal-in
+}
+.modal-leave {
+    .modal.modal-in
+}
+.modal-leave.modal-leave-active {
+    .modal.modal-out
+}
+
+/* =popoverModal= */
+.popoverModal-enter {
+    .popover.modal-out
+}
+.popoverModal-enter.popoverModal-enter-active {
+    .popover.modal-in
+}
+.popoverModal-leave {
+    .popover.modal-in
+}
+.popoverModal-leave.popoverModal-leave-active {
+    .popover.modal-out
+}
+/* =pickerModal= */
+.pickerModal-leave {
+    .picker-modal.modal-in   
+}
+.pickerModal-leave.pickerModal-leave-active {
+		.picker-modal.modal-out
+}
+
+/* =panelLeft= */
+.panelLeft-enter {
+    .panel.panel-left.modal-out
+}
+.panelLeft-enter.panelLeft-enter-active {
+     .panel.panel-left.modal-in
+}
+.panelLeft-leave {
+    .panel.panel-left.modal-in
+}
+.panelLeft-leave.panelLeft-leave-active {
+     .panel.panel-left.modal-out
+}
+
+/* =panelRight= */
+.panelRight-enter {
+    .panel.panel-right.modal-out
+}
+.panelRight-enter.panelRight-enter-active {
+     .panel.panel-right.modal-in
+}
+.panelRight-leave {
+    .panel.panel-right.modal-in
+}
+.panelRight-leave.panelRight-leave-active {
+     .panel.panel-right.modal-out
+}
+
+
+

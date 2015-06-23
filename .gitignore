@@ -1,0 +1,8 @@
+*.[aod]
+*.DS_Store
+.DS_Store
+*Thumbs.db
+/www
+/dist
+/tools
+/node_modules
