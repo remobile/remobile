@@ -12,7 +12,7 @@ module.exports = React.createClass({
         }
     },
     render: function() {
-    		var obj = {
+        var obj = {
             'list-block': true,
             'inset': this.props.inset,
             'list-block-label': this.props.tabletInset,
@@ -22,7 +22,7 @@ module.exports = React.createClass({
         	obj[this.props.class] = true;
         }
         var className = cn(obj);
-        
+
         var style= this.props.block?{}:{marginTop:'0px'};
         if (this.props.group) {
          return (

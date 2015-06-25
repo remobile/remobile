@@ -21,6 +21,7 @@ module.exports = {
 	'panels': require('./common/panels'),
 	'search': require('./common/search'),
 	'cards': require('./common/cards'),
+	'pullToRefresh': require('./common/pullToRefresh'),
 	//swiper
 	'swiper': require('./swiper/swiper'),
 	'swiperHorizontal': require('./swiper/swiperHorizontal'),
@@ -37,7 +38,7 @@ module.exports = {
 	'swiperCustom': require('./swiper/swiperCustom'),
 	'swiperParallax': require('./swiper/swiperParallax'),
 	'swiperLazy': require('./swiper/swiperLazy'),
-	
+
    //icons
 	'icons': require('./common/icons')
 };

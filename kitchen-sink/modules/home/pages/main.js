@@ -72,6 +72,7 @@ var MenuList = React.createClass({
         return (
             <List.List block>
                 <ListItem page="button">Button</ListItem>
+                <ListItem page="pullToRefresh">Pull To Refresh</ListItem>
                 <ListItem page="search">Search Bar</ListItem>
                 <ListItem page="cards">Cards</ListItem>
                 <ListItem page="panels">Slide Panels</ListItem>

@@ -18,9 +18,8 @@ module.exports = React.createClass({
             'navbar-through': navbar,
             'toolbar-through': this.props.toolbar
         });
-
-         return (
-             <div className={className}>
+        return (
+             <div className={className} style={this.props.style}>
              		{!!title&&<Navbar><NavbarTitle>{title}</NavbarTitle>{this.props.right}</Navbar>}
                 {this.props.children}
              </div>

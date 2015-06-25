@@ -224,9 +224,9 @@ var Calendar = function (params) {
         p.container.find('.picker-calendar-next-year').on('click', p.nextYear);
         p.wrapper.on('click', handleDayClick);
         if (p.params.touchMove) {
-            p.wrapper.on('mousedown', handleTouchStart);
-            p.wrapper.on('mousemove', handleTouchMove);
-            p.wrapper.on('mouseup', handleTouchEnd);
+            p.wrapper.on(app.touchEvents.start, handleTouchStart);
+            p.wrapper.on(app.touchEvents.move, handleTouchMove);
+            p.wrapper.on(app.touchEvents.end, handleTouchEnd);
         }
         
         p.container[0].f7DestroyCalendarEvents = function () {
@@ -236,9 +236,9 @@ var Calendar = function (params) {
             p.container.find('.picker-calendar-next-year').off('click', p.nextYear);
             p.wrapper.off('click', handleDayClick);
             if (p.params.touchMove) {
-                p.wrapper.off('mousedown', handleTouchStart);
-                p.wrapper.off('mousemove', handleTouchMove);
-                p.wrapper.off('mouseup', handleTouchEnd);
+                p.wrapper.off(app.touchEvents.start, handleTouchStart);
+                p.wrapper.off(app.touchEvents.move, handleTouchMove);
+                p.wrapper.off(app.touchEvents.end, handleTouchEnd);
             }
         };
     };
@@ -654,7 +654,7 @@ module.exports = React.createClass({
 				 setTimeout(function() {
 						$el.css({'-webkit-transform':'translate3d(0,0,0)'});
 				 }, 0);
-			}				
+			}
     },
     componentWillUnmount: function() {
 			this.state.calendar.destroy();

@@ -1,5 +1,6 @@
 var xtend = require('xtend/mutable');
 var React = require('react/addons');
+var system = require('../system');
 
 var TRANSITIONS_INOUT = {
 	'none': { in: false, out: false },
@@ -29,15 +30,15 @@ var VIEW_TRANSITIONS = {
 
 
 function App (views) {
+    console.log(system);
 	return {
-		touchEvents: {
-			start: 'mousedown',
-			move: 'mousemove',
-			end: 'mouseup'
-		},
-		device: {
-			os: 'windows'
-		},
+        device: system.Device,
+        support: system.Support,
+        touchEvents: {
+            start: system.Support.touch ? 'touchstart' : 'mousedown',
+            move: system.Support.touch ? 'touchmove' : 'mousemove',
+            end: system.Support.touch ? 'touchend' : 'mouseup'
+        },
 		componentWillMount: function () {
 			window.app = this;
 			this.history = [];

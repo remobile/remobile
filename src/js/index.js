@@ -14,7 +14,9 @@ module.exports = {
 	Notifications: require('./notifications'),
 	Photo: require('./photo'),
 	Picker: require('./picker'),
+	Refresh: require('./refresh'),
 	Search: require('./search'),
 	Select: require('./select'),
+	System: require('./system'),
 	View: require('./view')
 };
