@@ -1,6 +1,6 @@
 module.exports = {
 	MessageDate: require('./MessageDate'),
-	MessageText: require('./MessageText'),
 	Messages: require('./Messages'),
+	MessageText: require('./MessageText'),
 	MessageToolbar: require('./MessageToolbar')
 };

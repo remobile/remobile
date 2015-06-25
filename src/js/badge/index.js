@@ -1,3 +1,3 @@
-var Badge = {};
-Badge.Badge = require('./Badge');
-module.exports = Badge;
+module.exports = {
+	Badge: require('./Badge')
+};

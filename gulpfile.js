@@ -75,7 +75,7 @@ gulp.task('serve', function() {
 
     app.use(express.static('./www'));
     try {
-        require('./src/js/route/proxy')(app);
+        require('./tools/proxy')(app);
     } catch(e) {}
 
     var server = app.listen(process.env.PORT || 8000, function() {

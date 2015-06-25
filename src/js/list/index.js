@@ -1,18 +1,18 @@
-var List = {};
-List.GroupTitle = require('./GroupTitle');
-List.ItemAfter = require('./ItemAfter');
-List.ItemContent = require('./ItemContent');
-List.ItemDivider = require('./ItemDivider');
-List.ItemInner = require('./ItemInner');
-List.ItemInput = require('./ItemInput');
-List.ItemMedia = require('./ItemMedia');
-List.ItemSubTitle = require('./ItemSubTitle');
-List.ItemText = require('./ItemText');
-List.ItemTitle = require('./ItemTitle');
-List.ItemTitleRow = require('./ItemTitleRow');
-List.List = require('./List');
-List.ListBlockLabel = require('./ListBlockLabel');
-List.ListGroup = require('./ListGroup');
-List.ListGroupTitle = require('./ListGroupTitle');
-List.SubList = require('./SubList');
-module.exports = List;
+module.exports = {
+	GroupTitle: require('./GroupTitle'),
+	ItemAfter: require('./ItemAfter'),
+	ItemContent: require('./ItemContent'),
+	ItemDivider: require('./ItemDivider'),
+	ItemInner: require('./ItemInner'),
+	ItemInput: require('./ItemInput'),
+	ItemMedia: require('./ItemMedia'),
+	ItemSubTitle: require('./ItemSubTitle'),
+	ItemText: require('./ItemText'),
+	ItemTitle: require('./ItemTitle'),
+	ItemTitleRow: require('./ItemTitleRow'),
+	List: require('./List'),
+	ListBlockLabel: require('./ListBlockLabel'),
+	ListGroup: require('./ListGroup'),
+	ListGroupTitle: require('./ListGroupTitle'),
+	SubList: require('./SubList')
+};

@@ -1,5 +1,5 @@
-var Content = {};
-Content.ContentBlock = require('./ContentBlock');
-Content.ContentBlockInner = require('./ContentBlockInner');
-Content.ContentBlockTitle = require('./ContentBlockTitle');
-module.exports = Content;
+module.exports = {
+	ContentBlock: require('./ContentBlock'),
+	ContentBlockInner: require('./ContentBlockInner'),
+	ContentBlockTitle: require('./ContentBlockTitle')
+};

@@ -1,9 +1,9 @@
-var Picker = {};
-Picker.PickerEx = require('./PickerEx');
-Picker.Picker = require('./Picker');
-Picker.PickerItem = require('./PickerItem');
-Picker.PickerItems = require('./PickerItems');
-Picker.PickerItemsCol = require('./PickerItemsCol');
-Picker.PickerItemsColDivider = require('./PickerItemsColDivider');
-Picker.ToolBar = require('./ToolBar');
-module.exports = Picker;
+module.exports = {
+	Picker: require('./Picker'),
+	PickerEx: require('./PickerEx'),
+	PickerItem: require('./PickerItem'),
+	PickerItems: require('./PickerItems'),
+	PickerItemsCol: require('./PickerItemsCol'),
+	PickerItemsColDivider: require('./PickerItemsColDivider'),
+	ToolBar: require('./ToolBar')
+};

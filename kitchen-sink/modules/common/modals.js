@@ -152,17 +152,17 @@ module.exports = React.createClass({
 	        <Content.ContentBlockInner>
 		          <p>There are 1:1 replacements of native Alert, Prompt and Confirm modals. They support callbacks, have very easy api and can be combined with each other. Check these examples:</p>
 		          <Grid.Row>
-			          <Grid.Colp per={33}><Button onTap={showAlertModal}>Alert</Button></Grid.Colp>
-			          <Grid.Colp per={33}><Button onTap={showConfirmModal}>Confirm</Button></Grid.Colp>
-			          <Grid.Colp per={33}><Button onTap={showPromptModal}>Prompt</Button></Grid.Colp>
+			          <Grid.Col p per={33}><Button onTap={showAlertModal}>Alert</Button></Grid.Col>
+			          <Grid.Col p per={33}><Button onTap={showConfirmModal}>Confirm</Button></Grid.Col>
+			          <Grid.Col p per={33}><Button onTap={showPromptModal}>Prompt</Button></Grid.Col>
 		          </Grid.Row>
 		          <Grid.Row>
-			          <Grid.Colp per={50}><Button onTap={showLoginModal}>Login Modal</Button></Grid.Colp>
-			          <Grid.Colp per={50}><Button onTap={showPasswordModal}>Password Modal</Button></Grid.Colp>
+			          <Grid.Col p per={50}><Button onTap={showLoginModal}>Login Modal</Button></Grid.Col>
+			          <Grid.Col p per={50}><Button onTap={showPasswordModal}>Password Modal</Button></Grid.Col>
 		          </Grid.Row>
 		          <Grid.Row>
-			          <Grid.Colp per={50}><Button onTap={showActionsModal}>Action Sheet</Button></Grid.Colp>
-			          <Grid.Colp per={50}><Button>Popup</Button></Grid.Colp>
+			          <Grid.Col p per={50}><Button onTap={showActionsModal}>Action Sheet</Button></Grid.Col>
+			          <Grid.Col p per={50}><Button>Popup</Button></Grid.Col>
 		          </Grid.Row>
 	      		</Content.ContentBlockInner>
 	        </Content.ContentBlock>

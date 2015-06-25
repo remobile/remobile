@@ -20,6 +20,7 @@ module.exports = {
 	'notifications': require('./common/notifications'),
 	'panels': require('./common/panels'),
 	'search': require('./common/search'),
+	'cards': require('./common/cards'),
 	//swiper
 	'swiper': require('./swiper/swiper'),
 	'swiperHorizontal': require('./swiper/swiperHorizontal'),

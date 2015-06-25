@@ -11,10 +11,18 @@ module.exports = React.createClass({
         var obj = {};
         obj['col-'+this.props.per] = true;
         var className = cn(obj);
-        return (
-            <div className={className}>
-                {this.props.children}
-            </div>
-        );
+        if (this.props.p) {
+            return (
+                <p className={className}>
+                    {this.props.children}
+                </p>
+            );
+        } else {
+            return (
+                <div className={className}>
+                    {this.props.children}
+                </div>
+            );
+        }
     }
 });

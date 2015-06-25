@@ -1,4 +1,4 @@
-var obj = {};
-obj.CheckboxSelect = require('./CheckboxSelect');
-obj.RadioSelect = require('./RadioSelect');
-module.exports = obj;
+module.exports = {
+	CheckboxSelect: require('./CheckboxSelect'),
+	RadioSelect: require('./RadioSelect')
+};

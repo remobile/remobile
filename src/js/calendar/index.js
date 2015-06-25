@@ -1,3 +1,3 @@
-var Calendar = {};
-Calendar.Calendar = require('./Calendar');
-module.exports = Calendar;
+module.exports = {
+	Calendar: require('./Calendar')
+};
