@@ -149,10 +149,7 @@ var PullToRefresh = function(params)  {
         eventsTarget[0].f7DestroyPullToRefresh = destroyPullToRefresh;
         function detachEvents() {
             destroyPullToRefresh();
-            page.off('pageBeforeRemove', detachEvents);
         }
-        page.on('pageBeforeRemove', detachEvents);
-
     };
 
     p.pullToRefreshDone = function (container) {
@@ -174,7 +171,6 @@ var PullToRefresh = function(params)  {
             }
         });
     };
-
     p.destroyPullToRefresh = function (pageContainer) {
         pageContainer = $(pageContainer);
         var pullToRefreshContent = pageContainer.hasClass('pull-to-refresh-content') ? pageContainer : pageContainer.find('.pull-to-refresh-content');
@@ -196,7 +192,7 @@ module.exports = React.createClass({
         });
     },
     componentWillUnmount: function() {
-        this.pullToRefresh.destroyPullToRefresh();
+        this.pullToRefresh.destroyPullToRefresh(this.container);
     },
     render: function() {
          return (

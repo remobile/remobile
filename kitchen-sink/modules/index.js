@@ -22,6 +22,7 @@ module.exports = {
 	'search': require('./common/search'),
 	'cards': require('./common/cards'),
 	'pullToRefresh': require('./common/pullToRefresh'),
+	'infiniteScroll': require('./common/infiniteScroll'),
 	//swiper
 	'swiper': require('./swiper/swiper'),
 	'swiperHorizontal': require('./swiper/swiperHorizontal'),
