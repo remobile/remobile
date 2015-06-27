@@ -9,6 +9,9 @@ var Button = UI.Button.Button;
 var ButtonsRow = UI.Button.ButtonsRow;
 
 module.exports = React.createClass({
+    showList: function() {
+        app.showView('list', 'left');
+    },
 	render: function() {
 		return (
             <View.Page>
@@ -16,7 +19,7 @@ module.exports = React.createClass({
                     <Content.ContentBlockTitle>Usual Buttons</Content.ContentBlockTitle>
                     <Content.ContentBlock>
                         <Grid.Row>
-                            <Grid.Col per={33}><Button active onTap={alert}>Active</Button></Grid.Col>
+                            <Grid.Col per={33}><Button active onTap={this.showList}>Active</Button></Grid.Col>
                             <Grid.Col per={33}><Button>Button</Button></Grid.Col>
                             <Grid.Col per={33}><Button round>Round</Button></Grid.Col>
                         </Grid.Row>

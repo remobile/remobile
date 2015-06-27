@@ -12,13 +12,14 @@ var pages = require('./pages');
 module.exports = React.createClass({
     getInitialState: function() {
         return {
-            page: 0
+            page: app.data.homePageIndex||0
         }
     },
     getDefaultProps: function() {
         return {pages:[pages.Main, pages.Contacts, pages.Messages, pages.More]}
     },
     switchPage: function(page) {
+        app.data.homePageIndex = page;
         this.setState({page: page})
     },
     render: function() {

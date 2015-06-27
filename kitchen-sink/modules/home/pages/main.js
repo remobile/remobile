@@ -7,24 +7,6 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 var View = UI.View;
 
-
-var photoBrowserPhotos = [
-	{
-		url: 'img/beach.jpg',
-		caption: 'Amazing beach in Goa, India'
-	},
-  'img/lock.jpg',
-  {
-      url: 'img/monkey.jpg',
-      caption: 'I met this monkey in Chinese mountains'
-  },
-  {
-      url: 'img/mountains.jpg',
-      caption: 'Beautiful mountains in Zhangjiajie, China'
-  }
-    
-];
-
 function getImages() {
     var arr = [];
     for (var i=1; i<10; i++) {

@@ -79,7 +79,7 @@ function App (views) {
 			this.history.push({id:this.state.currentView, transition:transition});
 			this.displayView(viewId, trans? trans.go: 'none', param);
 		},
-		goBack: function(step) {
+		goBack: function(step, param) {
 			if (step === undefined) {
 				step = 1;
 			}
@@ -90,7 +90,7 @@ function App (views) {
 			}
 			if (obj) {
 				var trans = VIEW_TRANSITIONS[obj.transition];
-				this.displayView(obj.id, trans? trans.back: 'none');
+				this.displayView(obj.id, trans? trans.back: 'none', param);
 			}
 		}
 	};
