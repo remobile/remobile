@@ -6,9 +6,7 @@ module.exports = React.createClass({
     	var obj = {
     		"card-header": true
     	};
-    	if (this.props.class) {
-    		obj[this.props.class] = true;
-    	}
+    	this.props.class&&(obj[this.props.class]=true);
     	var className = cn(obj);
        return (
            <div className={className} style={this.props.style}>

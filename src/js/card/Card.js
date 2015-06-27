@@ -10,9 +10,7 @@ module.exports = React.createClass({
     	var obj = {
     		"card": true
     	};
-    	if (this.props.class) {
-    		obj[this.props.class] = true;
-    	}
+    	this.props.class&&(obj[this.props.class]=true);
     	var className = cn(obj);
     	if (this.props.inner) {
 		     return (

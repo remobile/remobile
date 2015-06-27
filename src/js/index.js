@@ -1,4 +1,5 @@
 module.exports = {
+	Accordion: require('./accordion'),
 	Badge: require('./badge'),
 	Button: require('./button'),
 	Calendar: require('./calendar'),

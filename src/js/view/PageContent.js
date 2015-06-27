@@ -6,9 +6,7 @@ module.exports = React.createClass({
         var obj = {
             "messages-content": this.props.message
         };
-        if (this.props.class) {
-            obj[this.props.class] = true;
-        }
+        this.props.class&&(obj[this.props.class]=true);
         var className = cn("page-content", obj);
         return (
             <div className={className}>

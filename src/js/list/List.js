@@ -18,9 +18,7 @@ module.exports = React.createClass({
             'list-block-label': this.props.tabletInset,
             'media-list': this.props.media
         };
-        if (this.props.class) {
-        	obj[this.props.class] = true;
-        }
+        this.props.class&&(obj[this.props.class]=true);
         var className = cn(obj);
 
         var style= this.props.block?{}:{marginTop:'0px'};
@@ -32,9 +30,11 @@ module.exports = React.createClass({
          )
         } else {
          return (
-             <div className={className} style={style}><ul>
-                {this.props.children}
-             </ul></div>
+             <div className={className} style={style}>
+                <ul>
+                    {this.props.children}
+                </ul>
+             </div>
          )
         }
     }

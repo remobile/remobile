@@ -5,6 +5,7 @@ module.exports = {
 	ItemDivider: require('./ItemDivider'),
 	ItemInner: require('./ItemInner'),
 	ItemInput: require('./ItemInput'),
+	ItemLink: require('./ItemLink'),
 	ItemMedia: require('./ItemMedia'),
 	ItemSubTitle: require('./ItemSubTitle'),
 	ItemText: require('./ItemText'),

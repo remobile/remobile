@@ -1,4 +1,4 @@
 module.exports = {
-	PullToRefresh: require('./PullToRefresh'),
-	InfiniteScroll: require('./InfiniteScroll')
+	InfiniteScroll: require('./InfiniteScroll'),
+	PullToRefresh: require('./PullToRefresh')
 };
