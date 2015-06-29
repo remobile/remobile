@@ -41,7 +41,6 @@ function App (views) {
             end: system.Support.touch ? 'touchend' : 'mouseup'
         },
         toast: function (text, icon) {
-            console.log(text);
             Toast({text: text, icon:icon});
         },
         componentWillMount: function () {

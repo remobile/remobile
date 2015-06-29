@@ -9,8 +9,12 @@ var Icon = UI.Icon.Icon;
 var Badge = UI.Badge.Badge;
 var Button = UI.Button.Button;
 
-function showCenterToastWithIcon() {
+function showCenterToastWithIconText() {
 	app.toast("fangyunjiang", "icon-f7");
+}
+
+function showCenterToastWithOnlyText() {
+    app.toast("fangyunjiang");
 }
 
 module.exports = React.createClass({
@@ -18,11 +22,11 @@ module.exports = React.createClass({
         return (
             <View.Page title="Toast">
             <View.PageContent>
-            		<p><Button onTap={showCenterToastWithIcon}>Center Toast With Icon</Button></p>
-            		<p><Button>Center Toast Only Icon</Button></p>
-            		<p><Button>Center Toast Only Text</Button></p>
-            		<p><Button>Bottom Toast Only Text</Button></p>
-            		<p><Button>Bottom Toast With Icon</Button></p>
+                <Content.ContentBlock>
+                    <p>Toast is a component for show a toast msg, you also can use phonegap's native toast</p>
+                </Content.ContentBlock>
+                <p><Button onTap={showCenterToastWithIconText}>Center Toast With Icon And Text</Button></p>
+                <p><Button onTap={showCenterToastWithOnlyIcon}>Center Toast Only Text</Button></p>
             </View.PageContent>
             </View.Page>
         );

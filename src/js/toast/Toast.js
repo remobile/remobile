@@ -2,7 +2,7 @@ var Toast = function (params) {
 	console.log(params);
   var text = params.text,
   	icon = params.icon,
-  	$box;
+  	container;
 
   function hideBox($curbox) {
     if ($curbox) {
@@ -15,23 +15,28 @@ var Toast = function (params) {
   this.show = function (show) {
     if (show) {
       $('.toast-container').off('click').off('transitionEnd').remove();
-      $box = $('<div class="toast-container show">');
-      var html = '<div class="toast-msg">';
-      icon && (html += '<i class="icon icon-f7"></i>');
+      container = $('<div class="toast-container show">');
+      var html = '<span class="toast-msg">';
+      icon && (html += '<i class="icon '+icon+'"></i>');
       text && (html += text);
-      html += '</div>';
-      $box.html(html);
-      $('body').append($box);
-      
-      $box.click(function () {
-        hideBox($box);
+      html += '</span>';
+      container.html(html);
+      $('body').append(container);
+
+      var offsetWidth = container.find('.toast-msg')[0].offsetWidth;
+      container.css({
+        'margin-left': (-offsetWidth/2)+'px'
       });
-      $box.addClass('fadein');
+      
+      container.click(function () {
+        hideBox(container);
+      });
+      container.addClass('fadein');
       setTimeout(function () {
-        hideBox($box);
+        hideBox(container);
       }, 1500);
     } else {
-      hideBox($('.toast-container'));
+      hideBox(container);
     }
   };
   
