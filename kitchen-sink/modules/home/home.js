@@ -1,5 +1,6 @@
 var React = require('react');
 var UI = require('UI');
+var _ = require('underscore');
 
 var Content = UI.Content;
 var Grid = UI.Grid;
@@ -25,32 +26,33 @@ module.exports = React.createClass({
     render: function() {
         var CurrentPage = this.props.pages[this.state.page];
 		return (
-            <View.Page toolbar>
+            <View.Page toolbar title="fang">
 			    <View.PageContent>
                     <CurrentPage />
 			    </View.PageContent>
-                <View.Toolbar tabbar labels>
-                    <View.ToolbarButton active={this.state.page===0}
-                        icon={["icon-camera", "icon-back"]}
-                        onTap={this.switchPage.bind(this, 0)}>
-                            Home
-                    </View.ToolbarButton>
-                    <View.ToolbarButton active={this.state.page===1}
-                        icon={["icon-camera", "icon-back"]}
-                        onTap={this.switchPage.bind(this, 1)}>
-                            Contacts
-                    </View.ToolbarButton>
-                    <View.ToolbarButton active={this.state.page===2}
-                        icon={["icon-camera", "icon-back"]}
-                        onTap={this.switchPage.bind(this, 2)}>
-                            Messages
-                    </View.ToolbarButton>
-                    <View.ToolbarButton active={this.state.page===3}
-                        icon={["icon-camera", "icon-back"]}
-                        onTap={this.switchPage.bind(this, 3)}>
-                            More
-                    </View.ToolbarButton>
-                 </View.Toolbar>
+			  	{this.state.page===1&&<List.IndexedList letters={_.keys(app.data.userMgr.users)}/>}
+	            <View.Toolbar tabbar labels>
+	                <View.ToolbarButton active={this.state.page===0}
+	                    icon={["icon-camera", "icon-back"]}
+	                    onTap={this.switchPage.bind(this, 0)}>
+	                        Home
+	                </View.ToolbarButton>
+	                <View.ToolbarButton active={this.state.page===1}
+	                    icon={["icon-camera", "icon-back"]}
+	                    onTap={this.switchPage.bind(this, 1)}>
+	                        Contacts
+	                </View.ToolbarButton>
+	                <View.ToolbarButton active={this.state.page===2}
+	                    icon={["icon-camera", "icon-back"]}
+	                    onTap={this.switchPage.bind(this, 2)}>
+	                        Messages
+	                </View.ToolbarButton>
+	                <View.ToolbarButton active={this.state.page===3}
+	                    icon={["icon-camera", "icon-back"]}
+	                    onTap={this.switchPage.bind(this, 3)}>
+	                        More
+	                </View.ToolbarButton>
+	             </View.Toolbar>
             </View.Page>
 		);
 	}

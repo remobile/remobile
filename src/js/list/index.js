@@ -15,5 +15,6 @@ module.exports = {
 	ListBlockLabel: require('./ListBlockLabel'),
 	ListGroup: require('./ListGroup'),
 	ListGroupTitle: require('./ListGroupTitle'),
+	IndexedList: require('./IndexedList'),
 	SubList: require('./SubList')
 };

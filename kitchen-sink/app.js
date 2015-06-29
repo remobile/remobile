@@ -4,9 +4,13 @@ var classnames = require('classnames');
 var UI =require('UI');
 var ModalPanel = UI.Modal.ModalPanel;
 var views = require('./modules');
+var userMgr = require('./modules/chat/userMgr/userMgr');
 
 var App = React.createClass({
 	mixins: [UI.Mixins.App(views)],
+  componentWillMount: function () {
+      this.data.userMgr = userMgr;
+  },
   showModal: function(modalType, modalChildren) {
       this.setState({modalVisible:true, modalChildren:modalChildren, modalType:modalType});
   },

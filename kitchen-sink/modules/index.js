@@ -24,6 +24,7 @@ module.exports = {
 	'pullToRefresh': require('./common/pullToRefresh'),
 	'infiniteScroll': require('./common/infiniteScroll'),
 	'accordion': require('./common/accordion'),
+	'toast': require('./common/toast'),
 	//swiper
 	'swiper': require('./swiper/swiper'),
 	'swiperHorizontal': require('./swiper/swiperHorizontal'),

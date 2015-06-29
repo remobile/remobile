@@ -54,6 +54,7 @@ var MenuList = React.createClass({
         return (
             <List.List block>
                 <ListItem page="button">Button</ListItem>
+                <ListItem page="toast">Toast</ListItem>
                 <ListItem page="pullToRefresh">Pull To Refresh</ListItem>
                 <ListItem page="infiniteScroll">Infinite Scroll</ListItem>
                 <ListItem page="accordion">Accordion</ListItem>
