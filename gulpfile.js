@@ -89,8 +89,16 @@ gulp.task('html', function() {
     return gulp.src(appPath+'index.html')
     .pipe(gulp.dest(destPath));
 });
-gulp.task('desktopTouch', function() {
-    return gulp.src(appPath+'thirdparty/desktopTouch/desktopTouch.js')
+gulp.task('thirdparty', function() {
+    var path = appPath+'thirdparty/';
+    return gulp.src([
+        path+'desktopTouch/desktopTouch.js',
+        path+'async/async.js',
+        path+'indexed/indexedDBShim.js',
+        path+'indexed/indexed.js',
+        path+'socket.io/socket.io.js'
+    ])
+    .pipe(concat('thirdparty.js'))
     .pipe(gulp.dest(destPath+'js'));
 });
 gulp.task('less', function() {
@@ -127,16 +135,16 @@ gulp.task('watch-app', function() {
 });
 gulp.task('concat', function() {
 });
-gulp.task('watch', ['framework7', 'html', 'images', 'fonts', 'less', 'desktopTouch', 'democss', 'watch-app'], function() {
+gulp.task('watch', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'watch-app'], function() {
     gulp.watch([appPath+'index.html'], ['html']);
     gulp.watch([libPath+'less/**/*.less'], ['less']);
     gulp.watch([appPath+'css/**/*.css'], ['democss']);
 });
-gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'desktopTouch', 'democss', 'app'], function() {
+gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app'], function() {
     var path = destPath+'js/';
     gulp.src([
         path+'framework7.js',
-        path+'desktopTouch.js',
+        path+'thirdparty.js',
         path+'react.js',
         path+'app.js'
     ])

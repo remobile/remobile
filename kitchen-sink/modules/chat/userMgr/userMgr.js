@@ -1,86 +1,67 @@
-function random() {
-	return Math.floor(Math.random()*50);
-}
+module.exports = (function() {
+    "use strict";
+    var _self;
+    function UserMgr() {
+        _self = this;
+        _self.reset();
+    }
 
-module.exports = {users: {
-    A: {persons:[
-        {name: 'Aaron', userid: random()},
-        {name: 'Abbie', userid: random()},
-        {name: 'Adam', userid: random()},
-        {name: 'Adele', userid: random()},
-        {name: 'Agatha', userid: random()},
-        {name: 'Agnes', userid: random()},
-        {name: 'Albert', userid: random()},
-        {name: 'Alexander', userid: random()}]},
-    B: {persons:[
-        {name: 'Bailey', userid: random()},
-        {name: 'Barclay', userid: random()},
-        {name: 'Bartolo', userid: random()},
-        {name: 'Bellamy', userid: random()},
-        {name: 'Belle', userid: random()},
-        {name: 'Benjamin', userid: random()}]},
-    C: {persons:[
-        {name: 'Caiden', userid: random()},
-        {name: 'Calvin', userid: random()},
-        {name: 'Candy', userid: random()},
-        {name: 'Carl', userid: random()},
-        {name: 'Cherilyn', userid: random()},
-        {name: 'Chester', userid: random()},
-        {name: 'Chloe', userid: random()}]},
-    D: {persons:[
-        {name: 'Dailey', userid: random()},
-        {name: 'Darclay', userid: random()},
-        {name: 'Dartolo', userid: random()},
-        {name: 'Dellamy', userid: random()},
-        {name: 'Delle', userid: random()},
-        {name: 'Denjamin', userid: random()}]},
-    E: {persons:[
-        {name: 'Eailey', userid: random()},
-        {name: 'Earclay', userid: random()},
-        {name: 'Eartolo', userid: random()},
-        {name: 'Eellamy', userid: random()},
-        {name: 'Eelle', userid: random()},
-        {name: 'Eenjamin', userid: random()}]},
-    F: {persons:[
-        {name: 'Failey', userid: random()},
-        {name: 'Farclay', userid: random()},
-        {name: 'Fartolo', userid: random()},
-        {name: 'Fellamy', userid: random()},
-        {name: 'Felle', userid: random()},
-        {name: 'Fenjamin', userid: random()}]},
-    G: {persons:[
-        {name: 'Gailey', userid: random()},
-        {name: 'Garclay', userid: random()},
-        {name: 'Gartolo', userid: random()},
-        {name: 'Gellamy', userid: random()},
-        {name: 'Gelle', userid: random()},
-        {name: 'Genjamin', userid: random()}]},
-    H: {persons:[
-        {name: 'Hailey', userid: random()},
-        {name: 'Harclay', userid: random()},
-        {name: 'Hartolo', userid: random()},
-        {name: 'Hellamy', userid: random()},
-        {name: 'Helle', userid: random()},
-        {name: 'Henjamin', userid: random()}]},
-    I: {persons:[
-        {name: 'Iailey', userid: random()},
-        {name: 'Iarclay', userid: random()},
-        {name: 'Iartolo', userid: random()},
-        {name: 'Iellamy', userid: random()},
-        {name: 'Ielle', userid: random()},
-        {name: 'Ienjamin', userid: random()}]},
-    J: {persons:[
-        {name: 'Jailey', userid: random()},
-        {name: 'Jarclay', userid: random()},
-        {name: 'Jartolo', userid: random()},
-        {name: 'Jellamy', userid: random()},
-        {name: 'Jelle', userid: random()},
-        {name: 'Jenjamin', userid: random()}]},
-    K: {persons:[
-        {name: 'Kailey', userid: random()},
-        {name: 'Karclay', userid: random()},
-        {name: 'Kartolo', userid: random()},
-        {name: 'Kellamy', userid: random()},
-        {name: 'Kelle', userid: random()},
-        {name: 'Kenjamin', userid: random()}]}
-}};
+    UserMgr.prototype.reset = function() {
+        _self.users = {};
+        _self.init = false;
+    };
+    UserMgr.prototype.add = function(obj) {
+        var users = _self.users;
+        var userid = obj.userid;
+        if(!users.hasOwnProperty(userid)) {
+            users[userid] = obj;
+            if (app.uiContact) {
+                app.uiContact.showUserList();
+            }
+        }
+    };
+    UserMgr.prototype.addList = function(list) {
+        var users = _self.users;
+        for (var i in list) {
+            var userid =list[i].userid;
+            if(!users.hasOwnProperty(userid)) {
+                users[userid] = list[i];
+            }
+        }
+        if (app.uiContact) {
+            app.uiContact.showUserList();
+        }
+        _self.init = true;
+    };
+    UserMgr.prototype.getUseridByUsername = function(username) {
+        var users = _self.users;
+        for (var id in users) {
+            var user = users[id];
+            if (username == user.username) {
+                return id;
+            }
+        }
+        return null;
+    };
+    UserMgr.prototype.updateHead = function(head) {
+        app.emit('USERS_UPDATE_HEAD_RQ', {head:head});
+    };
+    UserMgr.prototype.updateUserInfo = function(username, phone, sign) {
+        app.emit('USERS_UPDATE_USERINFO_RQ', {username:username, phone:phone, sign:sign});
+    };
+    UserMgr.prototype.onUpdateUserInfoNotify = function(obj) {
+        console.log(obj);
+        var users = _self.users;
+        var userid = obj.userid;
+        if(users.hasOwnProperty(userid)) {
+            users[userid].username = obj.username;
+            users[userid].phone = obj.phone;
+            users[userid].sign = obj.sign;
+            app.color.updateUserName(userid, obj.username);
+        }
+    };
+
+    return new UserMgr();
+})();
+
+
