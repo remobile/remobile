@@ -8,8 +8,13 @@ module.exports = React.createClass({
         };
         this.props.name&&(obj[this.props.name] = true);
         var className = cn(obj);
+        
+        var style= {};
+        if (this.props.round) {
+        	style.borderRadius = '50%';
+        }
          return (
-             <i className={className}></i>
+             <i className={className} style={style}></i>
          );
     }
 });

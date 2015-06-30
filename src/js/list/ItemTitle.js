@@ -8,7 +8,7 @@ module.exports = React.createClass({
     		 		"label": this.props.label
     		 })
          return (
-             <div className={className}>
+             <div className={className} style={this.props.style}>
                 {this.props.children}
              </div>
          );

@@ -1,15 +1,21 @@
-var React = require('react/addons');
+﻿var React = require('react/addons');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var classnames = require('classnames');
 var UI =require('UI');
 var ModalPanel = UI.Modal.ModalPanel;
 var views = require('./modules');
 var userMgr = require('./modules/chat/userMgr/userMgr');
+var welcome = require('./modules/home/welcome');
 
 var App = React.createClass({
 	mixins: [UI.Mixins.App(views)],
   componentWillMount: function () {
-      this.data.userMgr = userMgr;
+      this.userMgr = userMgr;
+      this.userHeadCss = $.createStyleSheet();
+      for (var i=0; i<33; i++) {
+      	$.insertStyleSheet(this.userHeadCss, '.user_head_' + i, 'background-image:url(img/head/'+i+'.jpg)');
+      }
+      welcome.showWelcome();
   },
   showModal: function(modalType, modalChildren) {
       this.setState({modalVisible:true, modalChildren:modalChildren, modalType:modalType});
@@ -25,7 +31,7 @@ var App = React.createClass({
   },
   getInitialState: function() {
 		return {
-			currentView: 'home'
+			currentView: 'login'
 		};
 	},
 	render: function() {

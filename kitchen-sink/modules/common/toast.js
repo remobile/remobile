@@ -26,7 +26,7 @@ module.exports = React.createClass({
                     <p>Toast is a component for show a toast msg, you also can use phonegap's native toast</p>
                 </Content.ContentBlock>
                 <p><Button onTap={showCenterToastWithIconText}>Center Toast With Icon And Text</Button></p>
-                <p><Button onTap={showCenterToastWithOnlyIcon}>Center Toast Only Text</Button></p>
+                <p><Button onTap={showCenterToastWithOnlyText}>Center Toast Only Text</Button></p>
             </View.PageContent>
             </View.Page>
         );

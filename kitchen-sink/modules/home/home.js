@@ -26,11 +26,11 @@ module.exports = React.createClass({
     render: function() {
         var CurrentPage = this.props.pages[this.state.page];
 		return (
-            <View.Page toolbar title="fang">
+            <View.Page toolbar>
 			    <View.PageContent>
                     <CurrentPage />
 			    </View.PageContent>
-			  	{this.state.page===1&&<List.IndexedList letters={_.keys(app.data.userMgr.users)}/>}
+			  	{this.state.page===1&&<List.IndexedList letters={_.keys(app.userMgr.users)}/>}
 	            <View.Toolbar tabbar labels>
 	                <View.ToolbarButton active={this.state.page===0}
 	                    icon={["icon-camera", "icon-back"]}

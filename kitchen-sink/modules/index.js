@@ -42,6 +42,8 @@ module.exports = {
 	'swiperParallax': require('./swiper/swiperParallax'),
 	'swiperLazy': require('./swiper/swiperLazy'),
 
+	//chat
+	'login': require('./login/login'),
    //icons
 	'icons': require('./common/icons')
 };

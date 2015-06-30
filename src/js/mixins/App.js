@@ -79,9 +79,11 @@ function App (views) {
                 viewTransition: this.getViewTransition(transition)	
             });
         },
-        showView: function (viewId, transition, param) {
+        showView: function (viewId, transition, param, norecord) {
             var trans = VIEW_TRANSITIONS[transition];
-            this.history.push({id:this.state.currentView, transition:transition});
+            if (!norecord) {
+                this.history.push({id:this.state.currentView, transition:transition});
+            }
             this.displayView(viewId, trans? trans.go: 'none', param);
         },
         goBack: function(step, param) {

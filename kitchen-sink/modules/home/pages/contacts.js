@@ -13,6 +13,7 @@ var ContactItem = React.createClass({
    render: function() {
        return (
            <List.ItemContent>
+             <List.ItemMedia><Icon name={"icon-default-head user_head_"+this.props.person.userid} round/></List.ItemMedia>
                <List.ItemInner>
                     <List.ItemTitle>{this.props.person.name}</List.ItemTitle>
                </List.ItemInner>
@@ -37,7 +38,7 @@ var ContactList = React.createClass({
     render: function() {
         return (
             <List.List block group class="contacts-block">
-                {_.mapObject(app.data.userMgr.users, (value, key)=>{return <ContactGroup letter={key} persons={value.persons}/>})}
+                {_.mapObject(app.userMgr.users, (value, key)=>{return <ContactGroup letter={key} persons={value.persons}/>})}
             </List.List>
         );
     }

@@ -89,6 +89,7 @@ gulp.task('framework7', function() {
         path+'dom7-methods.js',
         path+'dom7-ajax.js',
         path+'dom7-utils.js',
+        path+'dom7-plugins.js',
         path+'dom7-outro.js'
     ])
     .pipe(concat('framework7.js'))
