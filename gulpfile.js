@@ -16,7 +16,7 @@ var replace = require('gulp-replace');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var libPath = 'src/';
-var destPath = './www/';
+var destPath = './server/server/www/';
 var releasePath = './dist/';
 var appPath = './kitchen-sink/';
 var appFile = 'app.js';
@@ -70,17 +70,7 @@ function buildApp(watch, debug) {
     );
 }
 gulp.task('serve', function() {
-    var express = require('express');
-    var app = express();
-
-    app.use(express.static('./www'));
-    try {
-        require('./tools/proxy')(app);
-    } catch(e) {}
-
-    var server = app.listen(process.env.PORT || 8000, function() {
-        console.log('Local Server ready on port %d', server.address().port);
-    });
+    require('./server/server/app');
 });
 gulp.task('framework7', function() {
     var path = libPath+'thirdparty/framework7/';
