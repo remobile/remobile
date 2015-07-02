@@ -10,34 +10,6 @@ var Slider = UI.Form.Slider;
 var Grid = UI.Grid;
 var Button = UI.Button.Button;
 
-
-var FormItem = React.createClass({
-	 render: function() {
-        return (
-             <List.ItemContent>
-             		{this.props.icon&&<List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>}
-                <List.ItemInner>
-                    {this.props.label&&<List.ItemTitle label>{this.props.label}</List.ItemTitle>}
-                    <List.ItemInput>
-                    	{this.props.children}
-                    </List.ItemInput>
-                </List.ItemInner>
-            </List.ItemContent>
-        );
-    }
-});
-
-var FormInputItem = React.createClass({
-	 render: function() {
-        return (
-             <FormItem icon={this.props.icon} label={this.props.label}>
-                 <input type={this.props.input_type} placeholder={this.props.placeholder} />
-            </FormItem>
-        );
-    }
-});
-
-
 module.exports = React.createClass({
     doLogin: function() {
         app.showView('home', 'fade', null, true);

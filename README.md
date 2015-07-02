@@ -1,11 +1,11 @@
-## The Reapp User Interface
+## The Remobile User Interface
 
-reapp-mobile is a set of React components base on Framework7
-for all platforms. It has a few goals:
+remobile(React for Mobile) is a set of React components base on Framework7
+for all platforms. 
 
 ### Usage
 #### watch and run
-- cd react-mobile
+- cd remobile
 - npm install
 - gulp run
 - http://localhost:8000
