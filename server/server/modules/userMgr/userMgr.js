@@ -16,7 +16,7 @@ module.exports = (function() {
             socket.emit('USER_LOGIN_RS', { error:app.error.USER_ID_NOT_EXIST});
             return;
         }
-        app.db.User.findOne({userid:obj.userid}, function (err, doc) {
+        app.db.User.findOne({userid:obj.userid}, '-_id -__v', function (err, doc) {
             var error;
             if (!doc) {
                 error = app.error.USER_ID_NOT_EXIST;
@@ -30,7 +30,7 @@ module.exports = (function() {
         });
     };
     UserMgr.prototype.sendUserList = function(socket) {
-        app.db.User.find({}, '-_id -__v -groups', function (err, docs) {
+        app.db.User.find({}, '-_id -__v -groups -password', function (err, docs) {
             console.log(docs);
             socket.emit('USERS_LIST_NF', docs);
         });

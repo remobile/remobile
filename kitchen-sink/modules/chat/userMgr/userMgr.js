@@ -8,7 +8,56 @@ module.exports = (function() {
 
     UserMgr.prototype.reset = function() {
         _self.users = {};
+        _self.me = {};
         _self.init = false;
+    };
+    UserMgr.prototype.login = function(userid, password, autoLogin, remeberPassword) {
+        if (!app.chatconnect) {
+            app.toast('chat server not connected');
+            return;
+        }
+        var reconnect = !userid;
+        if (!reconnect) {
+            _self.me.userid = userid;
+            _self.me.password = password;
+            _self.me.autoLogin = autoLogin;
+            _self.me.remeberPassword = remeberPassword;
+        } else {
+            userid = _self.me.userid;
+            password = _self.me.password;
+        }
+        if (!userid || !password) {
+            console.log("reconnect without user");
+            return;
+        }
+        var param = {
+            userid: userid,
+            password: password,
+            reconnect: reconnect
+        };
+        _self.me.reconnect = reconnect;
+        app.showWait("login...");
+        app.socket.emit('USER_LOGIN_RQ', param);
+    };
+    UserMgr.prototype.onLogin = function(obj) {
+        app.hideWait();
+        if (obj.error) {
+              app.showChatError(obj.error);
+              return;
+        }
+        if (!_self.me.reconnect) {
+            var us = app.us;
+            var constants = app.constants;
+            us.string(constants.LOGIN_USER_ID, obj.userid);
+            if (_self.me.remeberPassword) {
+                us.string(constants.LOGIN_PASSWORD, obj.password);
+            } else {
+                us.string(constants.LOGIN_PASSWORD, '');
+            }
+            us.bool(constants.LOGIN_AUTO_LOGIN, _self.me.autoLogin);
+        }
+        _self.me.online = true;
+        app.showView('home', 'fade', null, true);
     };
     UserMgr.prototype.add = function(obj) {
         var users = _self.users;

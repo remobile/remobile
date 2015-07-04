@@ -5,7 +5,7 @@ var UI =require('UI');
 var ModalPanel = UI.Modal.ModalPanel;
 var views = require('./modules');
 var welcome = require('./modules/home/welcome');
-var us = require('./modules/utils');
+var utils = require('./modules/utils');
 var chat = require('./modules/chat');
 
 var App = React.createClass({
@@ -27,8 +27,8 @@ var App = React.createClass({
         for (var i=0; i<33; i++) {
             $.insertStyleSheet(this.userHeadCss, '.user_head_' + i, 'background-image:url(img/head/'+i+'.jpg)');
         }
-        welcome.showWelcome();
-        app.chat.socketMgr.start("http://localhost:8000");
+        //welcome.showWelcome();
+        app.socketMgr.start("http://localhost:8000");
     },
     showError: function(error) {
         this.toast(error);
@@ -41,6 +41,31 @@ var App = React.createClass({
     },
     hideModal: function() {
         this.setState({modalVisible:false});
+    },
+    emit: function() {
+        console.log(arguments[0], JSON.stringify(arguments[1]));
+        if (!this.userMgr.me.online) {
+            console.log('you are offline');
+            return;
+        }
+        this.socket.emit.apply(this.socket, arguments);
+    },
+    showWait: function(text) {
+        var Modal = UI.Modal;
+        var preLoaderModal = (
+            <Modal.ModalNoButttons>
+                <Modal.ModalInner>
+                    {text&&<Modal.ModalTitle>{text}</Modal.ModalTitle>}
+                    <Modal.ModalText>
+                        <Modal.BlackPreloader />
+                    </Modal.ModalText>
+                </Modal.ModalInner>
+            </Modal.ModalNoButttons>
+        );
+       this.showModal('modal', preLoaderModal);
+    },
+    hideWait: function() {
+        this.hideModal();
     },
     showPanel: function(panelType, panelChildren) {
         this.setState({panelVisible:true, panelChildren:panelChildren, panelType:panelType});

@@ -1,9 +1,15 @@
 var React = require('react');
 
 module.exports = React.createClass({
+    getInitialState: function() {
+        return {
+            checked: this.props.checked
+        };
+    },
     onChange: function(e) {
-        this.setState({checked: (e.target.checked)});
-        this.props.onChange&&this.props.onChange(this.state.checked);
+        var checked = e.target.checked;
+        this.setState({checked: (checked)});
+        this.props.onChange&&this.props.onChange(checked);
     },
     render: function() {
          return (

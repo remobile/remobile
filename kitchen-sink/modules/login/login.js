@@ -12,19 +12,33 @@ var Button = UI.Button.Button;
 
 module.exports = React.createClass({
     doLogin: function() {
-        app.showView('home', 'fade', null, true);
+        var userid = this.state.userid;
+        if (!userid) {
+            app.showError("Userid Needed!");
+            return;
+        }
+        var password = this.state.password;
+        if (!password) {
+            app.showError("PassWord Needed!");
+            return;
+        }
+        app.userMgr.login(userid, password, this.state.autoLogin, this.state.remeberPassword);
     },
     doRegister: function() {
+        app.showView('home', 'fade', null, true);
         app.toast("Will be complete soon");
     },
     handleUserIdInputChange: function(e) {
-        this.setState({userid: event.target.value});
+        this.setState({userid: e.target.value});
     },
-    handlePassWordInputChange: function() {
-        this.setState({password: event.target.value});
+    handlePassWordInputChange: function(e) {
+        this.setState({password: e.target.value});
     },
-    handleAutoLoginSwitchChange: function() {
-        this.setState({autoLogin: event.target.value});
+    handleRememberPasswordSwitchChange: function(checked) {
+        this.state.remeberPassword = checked;
+    },
+    handleAutoLoginSwitchChange: function(checked) {
+        this.state.autoLogin = checked;
     },
     getInitialState: function() {
         var us = app.us;
@@ -73,7 +87,7 @@ module.exports = React.createClass({
                             <List.ItemInner>
                                 <List.ItemTitle label style={{width:'80%'}}>Remeber Password:</List.ItemTitle>
                                 <List.ItemInput>
-                                    <Switch />
+                                    <Switch checked={this.state.remeberPassword} onChange={this.handleRememberPasswordSwitchChange}/>
                                 </List.ItemInput>
                             </List.ItemInner>
                         </List.ItemContent>
@@ -81,7 +95,7 @@ module.exports = React.createClass({
                             <List.ItemInner>
                                 <List.ItemTitle label style={{width:'80%'}}>Auto Login:</List.ItemTitle>
                                 <List.ItemInput>
-                                    <Switch />
+                                    <Switch checked={this.state.autoLogin} onChange={this.handleAutoLoginSwitchChange}/>
                                 </List.ItemInput>
                             </List.ItemInner>
                         </List.ItemContent>

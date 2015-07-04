@@ -11,19 +11,19 @@ module.exports = (function() {
     };
     ChatRouter.prototype.ON_RECONNECT = function(obj) {
         app.chatconnect = true;
-        app.login.doLoginChatServer();
-        app.utils.toast('服务器重新连接连接成功');
+        app.userMgr.login();
+        app.toast('服务器重新连接连接成功');
     };
     ChatRouter.prototype.ON_DISCONNECT = function(obj) {
         app.chatconnect = false;
-        app.chatLogin = false;
+        app.userMgr.me.online = false;
         app.onlineUserMgr.reset();
         app.groupMgr.reset();
         app.groupMgr.reset();
-        app.utils.toast('服务器断开了连接');
+        app.toast('服务器断开了连接');
     };
     ChatRouter.prototype.ON_USER_LOGIN_RS = function(obj) {
-        app.login.onLoginChatServer(obj);
+        app.userMgr.onLogin(obj);
     };
     ChatRouter.prototype.ON_USER_LOGIN_NF = function(obj) {
         app.onlineUserMgr.add(obj);
@@ -37,7 +37,7 @@ module.exports = (function() {
     };
     ChatRouter.prototype.ON_USERS_NOTIFY_NF = function(obj) {
         app.notifyMgr.onNotify(obj);
-    };    
+    };
     ChatRouter.prototype.ON_USER_SEND_MESSAGE_RS = function(obj) {
         app.messageMgr.onSendUserMessage(obj);
     };

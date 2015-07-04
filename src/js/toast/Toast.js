@@ -1,5 +1,4 @@
 var Toast = function (params) {
-	console.log(params);
   var text = params.text,
   	icon = params.icon,
   	container;
@@ -11,7 +10,7 @@ var Toast = function (params) {
       });
     }
   }
-  
+
   this.show = function (show) {
     if (show) {
       $('.toast-container').off('click').off('transitionEnd').remove();
@@ -27,7 +26,7 @@ var Toast = function (params) {
       container.css({
         'margin-left': (-offsetWidth/2)+'px'
       });
-      
+
       container.click(function () {
         hideBox(container);
       });
@@ -39,7 +38,7 @@ var Toast = function (params) {
       hideBox(container);
     }
   };
-  
+
   return this;
 };
 
