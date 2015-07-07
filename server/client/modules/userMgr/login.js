@@ -55,8 +55,8 @@ module.exports = define(function(require) {
             app.console.success("login success");
             app.console.log(obj);
             _self.loginSuccess = true;
-            _self.info = obj.info;
-            app.onlineUserMgr.updateOnlineUsers(obj);
+            _self.info = obj;
+            app.socket.emit('USER_LOGIN_SUCCESS_NFS');
         } else {
             app.console.error(obj.error);
         }

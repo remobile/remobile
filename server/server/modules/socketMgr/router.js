@@ -8,6 +8,9 @@ module.exports = (function() {
     Router.prototype.ON_USER_LOGIN_RQ = function(socket, obj) {
 		app.userMgr.login(socket, obj);
 	};
+    Router.prototype.ON_USER_LOGIN_SUCCESS_NFS = function(socket, obj) {
+		app.userMgr.onLoginSuccess(socket, obj);
+	};
     Router.prototype.ON_USER_REGISTER_RQ = function(socket, obj) {
 		app.userMgr.register(socket, obj);
 	};

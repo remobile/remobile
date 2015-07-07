@@ -198,7 +198,7 @@ module.exports = define(function(require) {
             break;
             case 'ou':
                 case 'onlineusers':
-                app.onlineUserMgr.showOnlineUserList();
+                app.userMgr.showOnlineUserList();
             break;
             case 'u':
                 case 'users':

@@ -34,6 +34,8 @@ module.exports = (function() {
                 app.router.ON_DISCONNECT(socket);
             }).on('USER_LOGIN_RQ', function(obj){
                 app.router.ON_USER_LOGIN_RQ(socket, obj);
+            }).on('USER_LOGIN_SUCCESS_NFS', function(obj){
+                app.router.ON_USER_LOGIN_SUCCESS_NFS(socket, obj);
             }).on('USER_REGISTER_RQ', function(obj){
                 app.router.ON_USER_REGISTER_RQ(socket, obj);
             }).on('USER_SEND_MESSAGE_RQ', function(obj){

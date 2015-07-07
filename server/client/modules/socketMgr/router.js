@@ -14,14 +14,14 @@ module.exports = define(function(require) {
     Router.prototype.ON_USER_LOGIN_RS = function(obj) {
         app.login.onLogin(obj);
         if (!obj.error) {
-            app.groupMgr.addList(obj.info.groups);
+            app.groupMgr.addList(obj.groups);
         }
     };
     Router.prototype.ON_USER_LOGIN_NF = function(obj) {
-        app.onlineUserMgr.add(obj);
+        app.userMgr.online(obj);
     };
     Router.prototype.ON_USER_LOGOUT_NF = function(obj) {
-        app.onlineUserMgr.remove(obj);
+        app.userMgr.offline(obj);
     };
     Router.prototype.ON_USERS_LIST_NF = function(obj) {
         app.userMgr.addList(obj);

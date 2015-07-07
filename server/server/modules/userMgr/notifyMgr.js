@@ -7,10 +7,10 @@ module.exports = (function() {
         app.db.UserNotify._get(socket.userid, function (doc) {
             if (doc) {
                 app.db.UserInfo._get(doc.head, function(docs) {
-                    socket.emit('USERS_NOTIFY_NF', {head:docs, reply_ticket:doc.reply_ticket, new_ticket:doc.new_ticket, work_notice:doc.work_notice});
+                    socket.emit('USERS_NOTIFY_NF', {head:docs});
                 });
             } else {
-                socket.emit('USERS_NOTIFY_NF', {head:[], reply_ticket:[], new_ticket:[], work_notice:[]});
+                socket.emit('USERS_NOTIFY_NF', {head:[]});
             }
         });
     };

@@ -1,7 +1,5 @@
 module.exports = (function() {
-    var _self;
     function UserMgr() {
-        _self = this;
     }
     UserMgr.prototype.register = function(socket, obj) {
         app.db.User._add(obj, function(err) {
@@ -29,9 +27,16 @@ module.exports = (function() {
             }
         });
     };
+    UserMgr.prototype.onLoginSuccess = function(socket, obj) {
+         app.userMgr.sendUserList(socket);
+         app.notifyMgr.sendUserNotify(socket);
+         app.messageMgr.sendOfflineMessage(socket);
+    };
     UserMgr.prototype.sendUserList = function(socket) {
-        app.db.User.find({}, '-_id -__v -groups -password', function (err, docs) {
-            console.log(docs);
+        app.db.User.find({}, '-_id -__v -groups -password').lean().exec(function (err, docs) {
+            var userid = socket.userid;
+            var online = app.onlineUserMgr.getOnlineUserList();
+            _.each(docs, function(doc){doc.online = _.indexOf(online, doc.userid)!==-1;});
             socket.emit('USERS_LIST_NF', docs);
         });
     };

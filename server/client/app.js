@@ -10,7 +10,7 @@ define(function(require) {
     function App() {
         this.ip = "192.168.211.108";
         //this.ip = "192.168.211.7";
-        this.port = 3000;
+        this.port = 8000;
         var modulePath = __dirname + '/modules/';
         this.socket = io.connect('ws://'+this.ip+':'+this.port);
         this.rl = readline.createInterface(process.stdin, process.stdout);
@@ -23,7 +23,6 @@ define(function(require) {
         this.register = require(modulePath+'userMgr/register');
         this.login = require(modulePath+'userMgr/login');
         this.userInfo = require(modulePath+'userMgr/userInfo');
-        this.onlineUserMgr = require(modulePath+'userMgr/onlineUserMgr');
         this.userMgr = require(modulePath+'userMgr/userMgr');
         this.notifyMgr = require(modulePath+'userMgr/notifyMgr');
         this.messageMgr = require(modulePath+'messageMgr/messageMgr');
