@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactMaskMixin = require('react-mask-mixin');
 var UI = require('UI');
 
 var View = UI.View;
@@ -10,11 +11,44 @@ var Slider = UI.Form.Slider;
 var Grid = UI.Grid;
 var Button = UI.Button.Button;
 
+var MaskInput = React.createClass({
+    mixins: [ReactMaskMixin],
+    render: function() {
+        return <input {...this.props} {...this.mask.props} />
+    }
+})
+
+var FormItem = React.createClass({
+     render: function() {
+        return (
+             <List.ItemContent>
+                    {this.props.icon&&<List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>}
+                <List.ItemInner>
+                    {this.props.label&&<List.ItemTitle label>{this.props.label}</List.ItemTitle>}
+                    <List.ItemInput>
+                        {this.props.children}
+                    </List.ItemInput>
+                </List.ItemInner>
+            </List.ItemContent>
+        );
+    }
+});
+
+var FormInputItem = React.createClass({
+     render: function() {
+        return (
+             <FormItem icon={this.props.icon} label={this.props.label}>
+                 <input type={this.props.input_type} placeholder={this.props.placeholder} value={this.props.value} onChange={this.props.onChange}/>
+            </FormItem>
+        );
+    }
+});
+
 module.exports = React.createClass({
     doLogin: function() {
-        var userid = this.state.userid;
-        if (!userid) {
-            app.showError("Userid Needed!");
+        var userid = this.state.userid.replace(/-/g, "");
+        if (!(/\d{11}/.test(userid))) {
+            app.showError("Invalid Phone!");
             return;
         }
         var password = this.state.password;
@@ -25,25 +59,22 @@ module.exports = React.createClass({
         app.loginMgr.login(userid, password, this.state.autoLogin, this.state.remeberPassword);
     },
     doRegister: function() {
-        app.showView('home', 'fade', null, true);
-        app.toast("Will be complete soon");
+        app.showView('register', 'left');
     },
-    handleUserIdInputChange: function(e) {
-        this.setState({userid: e.target.value});
+    handleInputChange: function(type, e) {
+        var state = {};
+        state[type] = e.target.value;
+        this.setState(state);
     },
-    handlePassWordInputChange: function(e) {
-        this.setState({password: e.target.value});
-    },
-    handleRememberPasswordSwitchChange: function(checked) {
-        this.state.remeberPassword = checked;
-    },
-    handleAutoLoginSwitchChange: function(checked) {
-        this.state.autoLogin = checked;
+    handleSwitchChange: function(type, checked) {
+        var state = {};
+        state[type] =  checked;
+        this.setState(state);
     },
     getInitialState: function() {
         var us = app.us;
         var constants = app.constants;
-        var userid =  us.string(constants.LOGIN_USER_ID);
+        var userid =  us.string(constants.LOGIN_USER_ID)||'';
         var password = us.string(constants.LOGIN_PASSWORD);
         var autoLogin = us.bool(constants.LOGIN_AUTO_LOGIN);
         var remeberPassword = !!password;
@@ -60,24 +91,10 @@ module.exports = React.createClass({
                 <View.PageContent>
                     <Content.ContentBlock>
                     <List.List block>
-                        <List.ItemContent>
-                            <List.ItemMedia><Icon name="icon-form-name"/></List.ItemMedia>
-                            <List.ItemInner>
-                                <List.ItemTitle label>Userid:</List.ItemTitle>
-                                <List.ItemInput>
-                                    <input type="text" placeholder="Please Input Userid" value={this.state.userid} onChange={this.handleUserIdInputChange}/>
-                                </List.ItemInput>
-                            </List.ItemInner>
-                        </List.ItemContent>
-                        <List.ItemContent>
-                            <List.ItemMedia><Icon name="icon-form-password"/></List.ItemMedia>
-                            <List.ItemInner>
-                            <List.ItemTitle label>PassWord:</List.ItemTitle>
-                                <List.ItemInput>
-                                <input type="password" placeholder="Please Input PassWord" value={this.state.password} onChange={this.handlePassWordInputChange}/>
-                                </List.ItemInput>
-                            </List.ItemInner>
-                        </List.ItemContent>
+                        <FormItem icon="icon-form-tel" label="Phone:">
+                            <MaskInput mask="999-9999-9999" placeholder="Input Phone" type="tel" value={this.state.userid} onChange={this.handleInputChange.bind(this, "userid")}/>
+                        </FormItem>
+                        <FormInputItem icon="icon-form-password" label="PassWord:" input_type="password" placeholder="Input PassWord" value={this.state.password} onChange={this.handleInputChange.bind(this, "password")}/>
                         </List.List>
                     </Content.ContentBlock>
 
@@ -87,7 +104,7 @@ module.exports = React.createClass({
                             <List.ItemInner>
                                 <List.ItemTitle label style={{width:'80%'}}>Remeber Password:</List.ItemTitle>
                                 <List.ItemInput>
-                                    <Switch checked={this.state.remeberPassword} onChange={this.handleRememberPasswordSwitchChange}/>
+                                    <Switch checked={this.state.remeberPassword} onChange={this.handleSwitchChange.bind(this, "remeberPassword")}/>
                                 </List.ItemInput>
                             </List.ItemInner>
                         </List.ItemContent>
@@ -95,7 +112,7 @@ module.exports = React.createClass({
                             <List.ItemInner>
                                 <List.ItemTitle label style={{width:'80%'}}>Auto Login:</List.ItemTitle>
                                 <List.ItemInput>
-                                    <Switch checked={this.state.autoLogin} onChange={this.handleAutoLoginSwitchChange}/>
+                                    <Switch checked={this.state.autoLogin} onChange={this.handleSwitchChange.bind(this, "autoLogin")}/>
                                 </List.ItemInput>
                             </List.ItemInner>
                         </List.ItemContent>

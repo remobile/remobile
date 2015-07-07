@@ -19,7 +19,7 @@ module.exports = (function() {
             router.ON_DISCONNECT();
         }).on('connect_error', function(obj) {
             console.error("connect to server error");
-            //app.utils.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
+            app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
         }).on('connect_timeout', function(obj) {
             console.error("connect to server timeout");
         }).on('reconnect', function(obj) {
@@ -27,10 +27,12 @@ module.exports = (function() {
             router.ON_RECONNECT();
         }).on('reconnect_error', function(obj) {
             console.error("reconnect to server error");
-            //app.utils.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
+            app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
         }).on('reconnect_failed', function(obj) {
             console.error("reconnect to server failed");
-            //app.utils.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
+            app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
+        }).on('USER_REGISTER_RS', function(obj) {
+            app.router.ON_USER_REGISTER_RS(obj);
         }).on('USER_LOGIN_RS', function(obj) {
             router.ON_USER_LOGIN_RS(obj);
         }).on('USER_LOGOUT_NF', function(obj) {
@@ -39,7 +41,7 @@ module.exports = (function() {
             router.ON_USER_LOGIN_NF(obj);
         }).on('USERS_LIST_NF', function(obj) {
             router.ON_USERS_LIST_NF(obj);
-	    }).on('USERS_NOTIFY_NF', function(obj) {
+        }).on('USERS_NOTIFY_NF', function(obj) {
             router.ON_USERS_NOTIFY_NF(obj);
         }).on('USER_SEND_MESSAGE_RS', function(obj) {
             router.ON_USER_SEND_MESSAGE_RS(obj);
@@ -51,7 +53,7 @@ module.exports = (function() {
             router.ON_USER_OFFONLINE_MESSAGE_NF(obj);
         }).on('USER_GET_MESSAGE_RS', function(obj) {
             router.ON_USER_GET_MESSAGE_RS(obj);
-	    }).on('USERS_UPDATE_HEAD_RS', function(obj) {
+        }).on('USERS_UPDATE_HEAD_RS', function(obj) {
             router.ON_USERS_UPDATE_HEAD_RS(obj);
         }).on('USERS_UPDATE_HEAD_NF', function(obj) {
             router.ON_USERS_UPDATE_HEAD_NF(obj);

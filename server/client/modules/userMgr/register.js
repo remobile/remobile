@@ -55,12 +55,11 @@ module.exports = define(function(require) {
     };
     Register.prototype.doRegister = function() {
         var param = {
-            username: _self.username,
             userid: _self.phone,
             password: _self.password,
-            photo: '',
-            mrp_id: '1',
-            mrp_pwd: 'time'
+            username: _self.username,
+            sign: "this is a test sign",
+            head: app.images.getUserHead(parseInt(Math.random()*100))
         };
         app.socket.emit('USER_REGISTER_RQ', param);
     };

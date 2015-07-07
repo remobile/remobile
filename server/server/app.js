@@ -8,7 +8,6 @@
         var modulePath = __dirname+'/modules/';
         _self.server = require('http').Server(express);
         _self.io = require('socket.io')(_self.server);
-        _self.config = require(__dirname+'/config.js');
         _self.error = require(modulePath+'utils/error');
         _self.console = require(modulePath+'utils/console');
         _self.socketMgr = require(modulePath+'socketMgr/socketMgr');

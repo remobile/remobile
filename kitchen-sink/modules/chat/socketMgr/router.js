@@ -21,6 +21,9 @@ module.exports = (function() {
         app.groupMgr.reset();
         app.toast('服务器断开了连接');
     };
+    Router.prototype.ON_USER_REGISTER_RS = function(obj) {
+        app.loginMgr.onRegister(obj);
+    };
     Router.prototype.ON_USER_LOGIN_RS = function(obj) {
         app.loginMgr.onLogin(obj);
     };

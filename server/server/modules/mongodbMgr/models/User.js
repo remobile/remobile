@@ -7,7 +7,6 @@ module.exports = (function() {
         password: {type:String, required: true},
         username: {type:String},
         sign: {type:String},
-        head: {type:Boolean, default:false},
         groups: {type:Array, default:[]}
     }, {
         collection: 'users'

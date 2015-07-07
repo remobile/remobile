@@ -67,6 +67,15 @@ module.exports = (function() {
         this.online = true;
         app.showView('home', 'fade', null, true);
     };
+    LoginMgr.prototype.onRegister = function(obj) {
+        console.log(obj);
+        if (obj.error) {
+          app.showChatError(obj.error);
+          return;
+        }
+        app.toast("Register Success");
+        app.goBack();
+    };
 
     return new LoginMgr();
 })();

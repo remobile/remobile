@@ -4,6 +4,9 @@ module.exports = (function() {
     UserMgr.prototype.register = function(socket, obj) {
         app.db.User._add(obj, function(err) {
             socket.emit('USER_REGISTER_RS', {error:err});
+            if (obj.head) {
+                app.db.UserInfo._update(obj.userid, obj.head, function() {})
+            }
             if (!err) {
                 app.notifyMgr.add(obj.userid);
             }
