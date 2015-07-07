@@ -22,7 +22,7 @@ module.exports = React.createClass({
             app.showError("PassWord Needed!");
             return;
         }
-        app.userMgr.login(userid, password, this.state.autoLogin, this.state.remeberPassword);
+        app.loginMgr.login(userid, password, this.state.autoLogin, this.state.remeberPassword);
     },
     doRegister: function() {
         app.showView('home', 'fade', null, true);

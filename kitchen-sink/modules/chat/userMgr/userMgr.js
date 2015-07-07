@@ -1,89 +1,79 @@
+var _  = require('underscore');
 module.exports = (function() {
     "use strict";
-    var _self;
     function UserMgr() {
-        _self = this;
-        _self.reset();
+        this.reset();
     }
 
     UserMgr.prototype.reset = function() {
-        _self.users = {};
-        _self.me = {};
-        _self.init = false;
-    };
-    UserMgr.prototype.login = function(userid, password, autoLogin, remeberPassword) {
-        if (!app.chatconnect) {
-            app.toast('chat server not connected');
-            return;
-        }
-        var reconnect = !userid;
-        if (!reconnect) {
-            _self.me.userid = userid;
-            _self.me.password = password;
-            _self.me.autoLogin = autoLogin;
-            _self.me.remeberPassword = remeberPassword;
-        } else {
-            userid = _self.me.userid;
-            password = _self.me.password;
-        }
-        if (!userid || !password) {
-            console.log("reconnect without user");
-            return;
-        }
-        var param = {
-            userid: userid,
-            password: password,
-            reconnect: reconnect
-        };
-        _self.me.reconnect = reconnect;
-        app.showWait("login...");
-        app.socket.emit('USER_LOGIN_RQ', param);
-    };
-    UserMgr.prototype.onLogin = function(obj) {
-        app.hideWait();
-        if (obj.error) {
-              app.showChatError(obj.error);
-              return;
-        }
-        if (!_self.me.reconnect) {
-            var us = app.us;
-            var constants = app.constants;
-            us.string(constants.LOGIN_USER_ID, obj.userid);
-            if (_self.me.remeberPassword) {
-                us.string(constants.LOGIN_PASSWORD, obj.password);
-            } else {
-                us.string(constants.LOGIN_PASSWORD, '');
-            }
-            us.bool(constants.LOGIN_AUTO_LOGIN, _self.me.autoLogin);
-        }
-        _self.me.online = true;
-        app.showView('home', 'fade', null, true);
+        this.users = {};
+        this.groupedUsers = {}; //use alpha grouped
+        this.init = false;
     };
     UserMgr.prototype.add = function(obj) {
-        var users = _self.users;
+        var users = this.users;
         var userid = obj.userid;
         if(!users.hasOwnProperty(userid)) {
             users[userid] = obj;
-            if (app.uiContact) {
-                app.uiContact.showUserList();
-            }
+            this.addGroupedUser(userid);
         }
     };
+    UserMgr.prototype.remove = function(obj) {
+        var users = this.users;
+        var userid = obj.userid;
+        if(users.hasOwnProperty(userid)) {
+            delete users[userid];
+            this.removeGroupedUser(userid);
+        }
+    };
+    UserMgr.prototype.online = function(obj) {
+        var userid = obj.userid;
+        this.users[userid].online = true;
+        app.console.log("red@"+userid, "login");
+    };
+    UserMgr.prototype.offline = function(obj) {
+        var userid = obj.userid;
+        this.users[userid].online = false;
+        app.console.log("red@"+userid, "logout");
+    };
     UserMgr.prototype.addList = function(list) {
-        var users = _self.users;
+        var users = this.users;
         for (var i in list) {
             var userid =list[i].userid;
             if(!users.hasOwnProperty(userid)) {
                 users[userid] = list[i];
+                this.addGroupedUser(userid);
             }
         }
-        if (app.uiContact) {
-            app.uiContact.showUserList();
+        this.init = true;
+    };
+    UserMgr.prototype.addGroupedUser = function(userid) {
+        if (app.loginMgr.userid === userid) {
+            return;
         }
-        _self.init = true;
+        var user = this.users[userid];
+        var username = user.username||userid;
+        var alpha = $.fisrtPinyin(username);
+        var list = this.groupedUsers;
+        if (!list[alpha]) {
+            list[alpha] = [];
+        }
+        list[alpha].push(userid);
+    };
+    UserMgr.prototype.removeGroupedUser = function(userid) {
+        if (app.loginMgr.userid === userid) {
+            return;
+        }
+        var user = this.users[userid];
+        var username = user.username||userid;
+        var alpha = $.fisrtPinyin(username);
+        var list = this.groupedUsers;
+        if (list[alpha]) {
+            list[alpha] = _.without(list[alpha], userid);
+        }
     };
     UserMgr.prototype.getUseridByUsername = function(username) {
-        var users = _self.users;
+        var users = this.users;
         for (var id in users) {
             var user = users[id];
             if (username == user.username) {
@@ -100,7 +90,7 @@ module.exports = (function() {
     };
     UserMgr.prototype.onUpdateUserInfoNotify = function(obj) {
         console.log(obj);
-        var users = _self.users;
+        var users = this.users;
         var userid = obj.userid;
         if(users.hasOwnProperty(userid)) {
             users[userid].username = obj.username;

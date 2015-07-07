@@ -28,7 +28,7 @@ module.exports = (function() {
         localStorage.msgid = _self.msgid;
     };
     MessageMgr.prototype.getNewestMessage = function(callback) {
-        app.login.newest_message_db.find(function (err, docs) {
+        app.db_newest_message.find(function (err, docs) {
             callback(_.sortBy(docs, function(obj) {
                 return obj.time;
             }));
@@ -46,7 +46,7 @@ module.exports = (function() {
         if (time) {
             query.time = {$lt: time};
         }
-        app.login.history_message_db.find(query,
+        app.db_history_message.find(query,
             function (err, docs) {
                 callback(_.sortBy(docs, function (obj) {
                     return -obj.time;
@@ -65,7 +65,7 @@ module.exports = (function() {
         if (time) {
             query.time = {$lt: time};
         }
-        app.login.history_message_db.find(query,
+        app.db_history_message.find(query,
             function (err, docs) {
                 callback(_.sortBy(docs, function (obj) {
                     return -obj.time;
@@ -86,7 +86,7 @@ module.exports = (function() {
                 app.messageInfo.showGroupNewestMessage(userid, username, time, msg, msgtype, send, touserid);
             }
         }
-        app.login.newest_message_db.upsert({type: type, userid: userid}, {username: username,time: time,
+        app.db_newest_message.upsert({type: type, userid: userid}, {username: username,time: time,
             msg: msg, msgtype:msgtype, touserid:touserid});
         console.log("update newest_message_db", {type: type, userid: userid}, {username: username,time: time,
             msg: msg, msgtype:msgtype});
@@ -98,7 +98,7 @@ module.exports = (function() {
             doc.touserid = touserid;
         }
         console.log("update history_message_db", doc);
-        app.login.history_message_db.insert(doc);
+        app.db_history_message.insert(doc);
     };
     MessageMgr.prototype.sendUserMessage = function(users, msg, msgtype) {
         _self.increaseMsgId();
@@ -125,7 +125,7 @@ module.exports = (function() {
         }
     };
     MessageMgr.prototype.showUserMessage = function(obj) {
-        app.utils.playSound(app.resource.aud_message_tip);
+        app.playSound(app.resource.aud_message_tip);
         app.updateChatPageBadge(true);
         if (obj.type == _self.USER_TYPE) {
             var allUsers = app.userMgr.users;

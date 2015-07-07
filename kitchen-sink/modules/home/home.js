@@ -30,7 +30,7 @@ module.exports = React.createClass({
 			    <View.PageContent>
                     <CurrentPage />
 			    </View.PageContent>
-			  	{this.state.page===1&&<List.IndexedList letters={_.keys(app.userMgr.users)}/>}
+			  	{this.state.page===1&&<List.IndexedList letters={_.keys(app.userMgr.groupedUsers)}/>}
 	            <View.Toolbar tabbar labels>
 	                <View.ToolbarButton active={this.state.page===0}
 	                    icon={["icon-camera", "icon-back"]}

@@ -1,3 +1,4 @@
+var _ = require("underscore");
 module.exports = (function() {
     "use strict";
     var _self;
@@ -10,7 +11,7 @@ module.exports = (function() {
         app.emit('USERS_NOTIFY_NFS');
         console.log(obj);
         var have_head_users = [];
-        app.login.user_head_db.find(function(err, docs) {
+        app.db_user_head.find(function(err, docs) {
             _.each(docs, function(doc) {
                 have_head_users.push(doc.userid);
             });
@@ -27,17 +28,11 @@ module.exports = (function() {
             var need_update_users = _.difference(all_users, have_notify_users, have_head_users);
             app.emit('USERS_GET_HEAD_RQ', need_update_users);
         });
-        app.uiMessage.increaseNewTicketNotify(obj.new_ticket);
-        app.uiMessage.increaseReplyTicketNotify(obj.reply_ticket);
-        if ((obj.new_ticket&&obj.new_ticket.length) || (obj.reply_ticket&&obj.reply_ticket.length)) {
-            app.utils.noticeNewMessage();
-        }
-        app.workNotify.addWorkNotify(obj.work_notice);
     };
     NotifyMgr.prototype.updateUserHead = function(obj) {
         var userid = obj.userid;
         var head = obj.head;
-        app.login.user_head_db.upsert({userid: userid}, {head: head});
+        app.db_user_head.upsert({userid: userid}, {head: head});
         $.upsertStyleSheet(app.userHeadCss, '.user_head_'+userid, 'background-image:url('+head+')');
     };
     NotifyMgr.prototype.onGetUserHead = function(obj) {
@@ -45,27 +40,6 @@ module.exports = (function() {
             var item = obj[i];
             _self.updateUserHead(item);
         }
-    };
-    NotifyMgr.prototype.onTicketIssueNotify = function(obj) {
-        console.log('onTicketIssueNotify', obj);
-        app.utils.playSound(app.resource.aud_message_tip);
-        app.uiMessage.increaseNewTicketNotify(obj);
-        app.updateChatPageBadge(true);
-        var ticket = obj.ticket;
-        app.utils.addTicketNotification(ticket.subject, ticket.message);
-    };
-    NotifyMgr.prototype.onTicketReplyNotify = function(obj) {
-        console.log('onTicketReplyNotify', obj);
-        app.utils.playSound(app.resource.aud_message_tip);
-        app.uiMessage.increaseReplyTicketNotify(obj);
-        app.updateChatPageBadge(true);
-        var ticket = obj.ticket;
-        app.utils.addTicketNotification(ticket.subject, ticket.message, true);
-    };
-    NotifyMgr.prototype.onWorkNoticeNotify = function(obj) {
-        console.log('onWorkNoticeNotify', obj);
-        app.utils.playSound(app.resource.aud_message_tip);
-        app.workNotify.addWorkNotify(obj);
     };
 
     return new NotifyMgr();

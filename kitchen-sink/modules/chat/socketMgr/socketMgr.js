@@ -89,12 +89,6 @@ module.exports = (function() {
             router.ON_GROUP_FIRE_OUT_RS(obj);
         }).on('GROUP_FIRE_OUT_NF', function(obj) {
             router.ON_GROUP_FIRE_OUT_NF(obj);
-        }).on('TICKET_ISSUE_NF', function(obj) {
-            router.ON_TICKET_ISSUE_NF(obj);
-        }).on('TICKET_REPLY_NF', function(obj) {
-            router.ON_TICKET_REPLY_NF(obj);
-        }).on('WORK_NOTICE_NF', function(obj) {
-            router.ON_WORK_NOTICE_NF(obj);
         }).on('CALL_WEBRTC_SIGNAL_NF', function(obj) {
             router.ON_CALL_WEBRTC_SIGNAL_NF(obj);
         }).on('CALL_OUT_RS', function(obj) {

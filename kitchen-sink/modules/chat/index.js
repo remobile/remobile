@@ -5,6 +5,6 @@ module.exports = {
 	router: require('./socketMgr/router'),
 	socketMgr: require('./socketMgr/socketMgr'),
 	notifyMgr: require('./userMgr/notifyMgr'),
-	onlineUserMgr: require('./userMgr/onlineUserMgr'),
+	loginMgr: require('./userMgr/loginMgr'),
 	userMgr: require('./userMgr/userMgr')
 };

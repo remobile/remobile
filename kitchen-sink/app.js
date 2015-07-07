@@ -7,10 +7,12 @@ var views = require('./modules');
 var welcome = require('./modules/home/welcome');
 var utils = require('./modules/utils');
 var chat = require('./modules/chat');
+var resource = require('./modules/resource/resource');
 
 var App = React.createClass({
     mixins: [UI.Mixins.App(views)],
     componentWillMount: function () {
+        this.resource = resource;
         this.us = utils.userSetting;
         this.error = utils.error;
         this.constants = utils.constants;
@@ -20,7 +22,7 @@ var App = React.createClass({
         this.router = chat.router;
         this.socketMgr = chat.socketMgr;
         this.notifyMgr = chat.notifyMgr;
-        this.onlineUserMgr = chat.onlineUserMgr;
+        this.loginMgr = chat.loginMgr;
         this.userMgr = chat.userMgr;
         this.userHeadCss = $.createStyleSheet();
         this.login = {};
@@ -29,6 +31,8 @@ var App = React.createClass({
         }
         //welcome.showWelcome();
         app.socketMgr.start("http://localhost:8000");
+    },
+    playSound: function(src) {
     },
     showError: function(error) {
         this.toast(error);
@@ -44,7 +48,7 @@ var App = React.createClass({
     },
     emit: function() {
         console.log(arguments[0], JSON.stringify(arguments[1]));
-        if (!this.userMgr.me.online) {
+        if (!this.loginMgr.online) {
             console.log('you are offline');
             return;
         }
