@@ -46,9 +46,9 @@ function getMessageList(messages) {
         var userid = msg.userid;
         var next = messages[i+1];
         var pre = messages[i-1];
-        props.tail = (!next || (userid!==next.userid));
+        props.tail = (!next || (userid!==next.userid) || !((!!msg.send)===(!!next.send)));
         props.sent = !!msg.send;
-        props.avatar = userid;
+        props.avatar = msg.send?app.loginMgr.userid:userid;
         props.nameStyle = users[userid].online?{color:"#00FF7F"}:{color:"gray"};
         props.name = msg.send?false:(pre&&pre.userid===userid&&!timeStr?false:msg.username);
 
@@ -76,16 +76,46 @@ module.exports = React.createClass({
         };
     },
     componentWillMount: function() {
-        this.param = this.props.data.param;
+        var param = this.props.data.param;
+        if (param.type === app.messageMgr.USER_TYPE) {
+            this.isGroup = false;
+            this.userid = param.target;
+        } else {
+            this.isGroup = true;
+            this.groupname = param.target;
+        }
     },
     componentDidMount: function() {
         app.userMgr.addChangeListener(this._onChange);
-        app.messageMgr.addDisplayMessageChangeListener(this._onChange);
-        app.messageMgr.getUserMessage(this.param.userid);
+        app.messageMgr.addDisplayMessageChangeListener(this._onMessageChange);
+        if (this.isGroup) {
+            app.messageMgr.getGroupMessage(this.groupname);
+        } else {
+            app.messageMgr.getUserMessage(this.userid);
+        }
     },
     componentWillUnmount: function() {
         app.userMgr.removeChangeListener(this._onChange);
-        app.messageMgr.removeDisplayMessageChangeListener(this._onChange);
+        app.messageMgr.removeDisplayMessageChangeListener(this._onMessageChange);
+    },
+    _onMessageChange: function() {
+        if (this.refreshing) {
+            var msg =app.messageMgr.displayMessage[0];
+            var time = msg&&msg.time;
+            if (this.oldestMessageTime === time && !this.localStorageEnd) {
+                this.localStorageEnd = true;
+                app.messageMgr.getUserMessageFromServer(this.userid, this.oldestMessageTime||Date.now());
+            } else {
+                var self = this;
+                setTimeout(function () {
+                    self.refs.refresh.refreshDone();
+                    self._onChange();
+                    self.refreshing = false;
+                }, 1000);
+            }
+        } else {
+            this._onChange();
+        }
     },
     _onChange: function() {
         this.setState({
@@ -95,16 +125,29 @@ module.exports = React.createClass({
     handleSend: function() {
         var text = this.refs.toolbar.getValue();
         var mgr = app.messageMgr;
-        if (this.param.type === mgr.USER_TYPE) {
-            mgr.sendUserMessage(this.param.userid, text, mgr.TEXT_TYPE);
+        if (this.isGroup) {
+            mgr.sendGroupMessage(this.groupname, text, mgr.TEXT_TYPE, this.sendGroupUserId);
         } else {
-            mgr.sendGroupMessage(this.param.username, text, mgr.TEXT_TYPE, this.sendGroupUserId);
+            mgr.sendUserMessage(this.userid, text, mgr.TEXT_TYPE);
+        }
+    },
+    handleRefresh: function(e) {
+        var msg = this.state.messages[0];
+        if (!this.refreshing) {
+            this.refreshing = true;
+            this.oldestMessageTime = msg&&msg.time;
+            if (this.localStorageEnd || !msg) {
+                app.messageMgr.getUserMessageFromServer(this.userid, this.oldestMessageTime||Date.now());
+            } else {
+                app.messageMgr.getUserMessage(this.userid, this.oldestMessageTime);
+            }
         }
     },
     render: function() {
         return (
             <View.Page title="Messages" toolbar>
-                <View.PageContent message>
+                <View.PageContent message class="pull-to-refresh-content">
+                    <UI.Refresh.PullToRefresh onRefresh={this.handleRefresh} ref="refresh"/>
                     <MessageList messages={this.state.messages}/>
                 </View.PageContent>
                 <Message.MessageToolbar onSend={this.handleSend} ref="toolbar"/>

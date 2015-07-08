@@ -71,11 +71,11 @@ module.exports = (function() {
     MessageMgr.prototype.getHistoryMessage = function(socket, obj) {
         if (obj.type == _self.USER_TYPE) {
             app.db.Message._getByUser(socket.userid, obj.counter, obj.time, obj.cnt, function(docs) {
-                socket.emit('USER_GET_MESSAGE_RS', {type:obj.type, msg:docs, _id:obj._id});
+                socket.emit('USER_GET_MESSAGE_RS', {type:obj.type, msg:docs});
             });
         } else {
             app.db.Message._getByGroup(socket.userid, obj.counter, obj.time, obj.cnt, function(docs) {
-                socket.emit('USER_GET_MESSAGE_RS', {type:obj.type, msg:docs, _id:obj._id});
+                socket.emit('USER_GET_MESSAGE_RS', {type:obj.type, msg:docs});
             });
         }
     };

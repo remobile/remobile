@@ -194,6 +194,9 @@ module.exports = React.createClass({
     componentWillUnmount: function() {
         this.pullToRefresh.destroyPullToRefresh(this.container);
     },
+    refreshDone: function() {
+        this.pullToRefresh.pullToRefreshDone();
+    },
     render: function() {
          return (
             <div className="pull-to-refresh-layer">

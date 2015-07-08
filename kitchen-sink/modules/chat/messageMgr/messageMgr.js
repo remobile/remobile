@@ -54,7 +54,7 @@ module.exports = (function() {
         var self = this;
         app.db_newest_message.find(function (err, docs) {
             self.newestMessage = _.sortBy(docs, function(obj) {
-                return obj.time;
+                return -obj.time;
             });
             self.emitNewestMessageChange();
         });
@@ -74,9 +74,9 @@ module.exports = (function() {
             }).slice(0, self.PER_COUNT);
 
             if (time) {
-                self.displayMessage = message.concat(self.displayMessage);
+                self.displayMessage = message.reverse().concat(self.displayMessage);
             } else {
-                self.displayMessage = message;
+                self.displayMessage = message.reverse();
             }
             self.emitDisplayMessageChange();
         });
@@ -89,6 +89,7 @@ module.exports = (function() {
         if (time) {
             query.time = {$lt: time};
         }
+            console.log(name);
         var self = this;
         app.db_history_message.find(query, function (err, docs) {
             var message = _.sortBy(docs, function (obj) {
@@ -96,9 +97,9 @@ module.exports = (function() {
             }).slice(0, self.PER_COUNT);
 
             if (time) {
-                self.displayMessage = message.concat(self.displayMessage);
+                self.displayMessage = message.reverse().concat(self.displayMessage);
             } else {
-                self.displayMessage = message;
+                self.displayMessage = message.reverse();
             }
             self.emitDisplayMessageChange();
         });
@@ -174,7 +175,7 @@ module.exports = (function() {
         this.increaseMsgId();
         app.emit('USER_SEND_MESSAGE_RQ', {type:this.GROUP_TYPE, to:group, msg:msg, msgtype:msgtype, msgid:this.msgid, touserid:touserid});
         var time = Date.now();
-        this.showNewestMessage(this.GROUP_TYPE, app.login.userid, group, time, msg, msgtype, this.msgid, touserid);
+        this.showNewestMessage(this.GROUP_TYPE, app.loginMgr.userid, group, time, msg, msgtype, this.msgid, touserid);
     };
     MessageMgr.prototype.onSendUserMessage = function(obj) {
         if (obj.error) {
@@ -235,14 +236,29 @@ module.exports = (function() {
             }
         }
     };
-    MessageMgr.prototype.getUserMessageFromServer = function(counter, time, _id) {
-        app.emit('USER_GET_MESSAGE_RQ', {type:this.USER_TYPE, counter:counter, time:time, cnt:this.PER_COUNT, _id:_id});
+    MessageMgr.prototype.getUserMessageFromServer = function(counter, time) {
+        app.emit('USER_GET_MESSAGE_RQ', {type:this.USER_TYPE, counter:counter, time:time, cnt:this.PER_COUNT});
     };
-    MessageMgr.prototype.getGroupMessageFromServer = function(counter, time, _id) {
-        app.emit('USER_GET_MESSAGE_RQ', {type:this.GROUP_TYPE, counter:counter, time:time, cnt:this.PER_COUNT, _id:_id});
+    MessageMgr.prototype.getGroupMessageFromServer = function(counter, time) {
+        app.emit('USER_GET_MESSAGE_RQ', {type:this.GROUP_TYPE, counter:counter, time:time, cnt:this.PER_COUNT});
     };
     MessageMgr.prototype.onGetMessage = function(obj) {
-        app.messageInfo.showServerMessage(obj.type, obj.msg, obj._id);
+        var type = obj.type;
+        var msg = obj.msg;
+        var _id = obj._id;
+        var selfid = app.loginMgr.userid;
+        var arr = _.map(msg, function(item) {
+            var from = item.from;
+            var to = item.to;
+            var obj;
+            if (from == selfid) {
+                return {userid:to, msg:item.msg, msgtype:item.msgtype, time:new Date(item.time).getTime(), send:item.msgid};
+            } else {
+                return {userid:from, msg:item.msg, msgtype:item.msgtype, time:new Date(item.time).getTime()};
+            }
+        });
+        this.displayMessage = arr.reverse().concat(this.displayMessage);
+        this.emitDisplayMessageChange();
     };
 
     return new MessageMgr();

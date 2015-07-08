@@ -246,7 +246,7 @@ module.exports = define(function(require) {
         app.console.print('    <g|groups i|info group>: show group info');
         app.console.print('    <g|groups c|create|m|modify name[users type]|d|delete name>: create, modify or delete group');
         app.console.print('    <g|groups j|join|q|leave group>: join or leave group or show group');
-        app.console.print('    <g|groups p|pull|f|fire group userd,userid>: pull or fire users to a group, only creator');
+        app.console.print('    <g|groups p|pull|f|fire group userid,userid>: pull or fire users to a group, only creator');
         app.console.print('    <hi|history [type counter time cnt]>: show history messages');
         app.console.print('    <i|whoami>: show self info');
         app.console.print('you can send message to user<s> like:');

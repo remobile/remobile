@@ -1,19 +1,17 @@
 module.exports = (function() {
     "use strict";
-    var _self;
 
     function GroupMgr() {
-        _self = this;
-        _self.reset();
+        this.reset();
     }
 
     GroupMgr.prototype.reset = function() {
-        _self.list = {};
-        _self.init = false;
+        this.list = {};
+        this.init = false;
     };
     GroupMgr.prototype.add = function(obj, noupdate) {
         var name = obj.name,
-            list = _self.list;
+            list = this.list;
         if(!list.hasOwnProperty(name)) {
             list[name] = obj;
             if (!noupdate && app.groupList) {
@@ -24,35 +22,35 @@ module.exports = (function() {
         }
     };
     GroupMgr.prototype.remove = function(obj, noupdate) {
-        if(_self.list.hasOwnProperty(obj.name)) {
-            delete _self.list[obj.name];
+        if(this.list.hasOwnProperty(obj.name)) {
+            delete this.list[obj.name];
             if (!noupdate && app.groupList) {
                 app.groupList.showGroupList();
             }
         }
     };
     GroupMgr.prototype.updateUsers = function(obj) {
-        _self.list[obj.name].users = obj.users;
+        this.list[obj.name].users = obj.users;
         if (obj.type != null) {
-            _self.list[obj.name].type = obj.type;
+            this.list[obj.name].type = obj.type;
         }
     };
     GroupMgr.prototype.addUsers = function(obj) {
-        var list = _self.list[obj.name].users;
+        var list = this.list[obj.name].users;
         list.push(obj.userid);
     };
     GroupMgr.prototype.removeUsers = function(obj) {
-        var list = _self.list[obj.name].users;
-        _self.list[obj.name].users = _.without(list, obj.userid);
+        var list = this.list[obj.name].users;
+        this.list[obj.name].users = _.without(list, obj.userid);
     };
     GroupMgr.prototype.addList = function(list) {
         for (var i in list) {
-            _self.add(list[i], true);
+            this.add(list[i], true);
         }
         if (app.groupList) {
             app.groupList.showGroupList();
         }
-        _self.init = true;
+        this.init = true;
     };
     GroupMgr.prototype.showGroupMessage = function(obj) {
         console.log('[',  obj.group,  obj.from, ']'+obj.msg);
@@ -92,7 +90,7 @@ module.exports = (function() {
             console.error("create "+obj.name+" failed: for "+obj.error);
             app.utils.error(app.error[obj.error]);
         } else {
-            _self.add({name:obj.name, creator:app.login.userid, type:obj.type, users:obj.users});
+            this.add({name:obj.name, creator:app.login.userid, type:obj.type, users:obj.users});
             console.log("create "+obj.name+" success");
         }
     };
@@ -105,8 +103,8 @@ module.exports = (function() {
             console.error("modify "+obj.name+" failed: for "+obj.error);
             app.utils.error(app.error[obj.error]);
         } else {
-            _self.list[obj.name].users = obj.users;
-            _self.list[obj.name].type = obj.type;
+            this.list[obj.name].users = obj.users;
+            this.list[obj.name].type = obj.type;
             if (app.groupDetail) {
                 app.groupDetail.showGroupDetail();
             }
@@ -122,12 +120,12 @@ module.exports = (function() {
             console.error("remove "+obj.name+" failed: for "+obj.error);
             app.utils.error(app.error[obj.error]);
         } else {
-            _self.remove(obj);
+            this.remove(obj);
             console.log("remove "+obj.name+" success");
         }
     };
     GroupMgr.prototype.onRemoveGroupNotify = function(obj) {
-        _self.remove(obj);
+        this.remove(obj);
         console.log( obj.name, 'is been delete');
     };
     GroupMgr.prototype.joinGroup = function(name) {
@@ -138,23 +136,23 @@ module.exports = (function() {
             console.error("join "+obj.name+" failed: for "+obj.error);
             app.utils.error(app.error[obj.error]);
         } else {
-            _self.add({name:obj.name, creator:obj.creator, type:obj.type, users:obj.users});
+            this.add({name:obj.name, creator:obj.creator, type:obj.type, users:obj.users});
             console.log("join "+obj.name+" success");
         }
     };
     GroupMgr.prototype.onJoinGroupNotify = function(obj) {
-        _self.addUsers({name:obj.name, userid:obj.userid});
+        this.addUsers({name:obj.name, userid:obj.userid});
         console.log( obj.userid, 'join group',  obj.name);
     };
     GroupMgr.prototype.leaveGroup = function(name) {
         app.emit('GROUP_LEAVE_RQ', {name:name});
     };
     GroupMgr.prototype.onLeaveGroup = function(obj) {
-        _self.remove(obj);
+        this.remove(obj);
         console.log("leave "+obj.name+" success");
     };
     GroupMgr.prototype.onLeaveGroupNotify = function(obj) {
-        _self.removeUsers({name:obj.name, userid:obj.userid});
+        this.removeUsers({name:obj.name, userid:obj.userid});
         console.log( obj.userid, 'lest group',  obj.name);
     };
     GroupMgr.prototype.pullInGroup = function(name, users) {
@@ -165,16 +163,16 @@ module.exports = (function() {
             console.error("pull "+obj.name+" failed: for "+obj.error);
             app.utils.error(app.error[obj.error]);
         } else {
-            _self.updateUsers({name:obj.name, users:obj.users});
+            this.updateUsers({name:obj.name, users:obj.users});
             console.log("pull "+obj.name+" success");
         }
     };
     GroupMgr.prototype.onPullInGroupNotify = function(obj) {
         if (_.contains(obj.users, app.login.userid)) {
-            _self.add({name:obj.name, creator:obj.creator, type:obj.type, users:obj.users});
+            this.add({name:obj.name, creator:obj.creator, type:obj.type, users:obj.users});
             console.log('you have been pull',  obj.name);
         } else {
-            _self.updateUsers({name:obj.name, users:obj.users, type:obj.type});
+            this.updateUsers({name:obj.name, users:obj.users, type:obj.type});
             if (obj.pulledusers.length) {
                 console.log(JSON.stringify(obj.pulledusers), 'been pull', obj.name, obj.users);
             } else {
@@ -190,16 +188,16 @@ module.exports = (function() {
             console.error("fireOut "+obj.name+" failed: for "+obj.error);
             app.utils.error(app.error[obj.error]);
         } else {
-            _self.updateUsers({name:obj.name, users:obj.users});
+            this.updateUsers({name:obj.name, users:obj.users});
             console.log("fireOut "+obj.name+" success");
         }
     };
     GroupMgr.prototype.onFireOutGroupNotify = function(obj) {
         if (_.contains(obj.users, app.login.userid)) {
-            _self.remove(obj);
+            this.remove(obj);
             console.log('you have been fire',  obj.name);
         } else {
-            _self.updateUsers({name:obj.name, users:obj.users});
+            this.updateUsers({name:obj.name, users:obj.users});
             console.log(JSON.stringify(obj.users), 'been fire', obj.name);
         }
     };
