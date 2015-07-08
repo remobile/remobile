@@ -1,4 +1,5 @@
 var _  = require('underscore');
+
 module.exports = (function() {
     "use strict";
     function LoginMgr() {
@@ -65,6 +66,7 @@ module.exports = (function() {
         }
         app.socket.emit('USER_LOGIN_SUCCESS_NFS');
         this.online = true;
+        app.messageMgr.getNewestMessage();
         app.showView('home', 'fade', null, true);
     };
     LoginMgr.prototype.onRegister = function(obj) {

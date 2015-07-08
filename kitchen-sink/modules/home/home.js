@@ -10,6 +10,27 @@ var ButtonsRow = UI.Button.ButtonsRow;
 var View = UI.View;
 var pages = require('./pages');
 
+
+var IndexedList =  React.createClass({
+	getInitialState: function() {
+    return {letters:_.keys(app.userMgr.groupedUsers).sort(function(a, b) {return a.localeCompare(b)})};
+  },
+	componentDidMount: function() {
+    app.userMgr.addChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    app.userMgr.removeChangeListener(this._onChange);
+  },
+  _onChange: function() {
+    this.setState({letters:_.keys(app.userMgr.groupedUsers)});
+  },
+	render: function() {
+		return (
+			<List.IndexedList letters={this.state.letters}/>
+		);
+	}
+});
+
 module.exports = React.createClass({
     getInitialState: function() {
         return {
@@ -30,7 +51,7 @@ module.exports = React.createClass({
 			    <View.PageContent>
                     <CurrentPage />
 			    </View.PageContent>
-			  	{this.state.page===1&&<List.IndexedList letters={_.keys(app.userMgr.groupedUsers)}/>}
+			  	{this.state.page===1&&<IndexedList />}
 	            <View.Toolbar tabbar labels>
 	                <View.ToolbarButton active={this.state.page===0}
 	                    icon={["icon-camera", "icon-back"]}

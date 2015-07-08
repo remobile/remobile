@@ -13,7 +13,7 @@ module.exports = React.createClass({
     		});
     		var children = {};
     		if (this.props.name) {
-    			children.name =(<div className="message-name">{this.props.name}</div>);
+    			children.name =(<div className="message-name" style={this.props.nameStyle}>{this.props.name}</div>);
     		}
     		if (this.props.pic) {
     			children.text = (<div className="message-text"><img src={this.props.pic} /></div>);
@@ -24,7 +24,7 @@ module.exports = React.createClass({
     			children.label = (<div className="message-label">{this.props.label}</div>);
     		}
     		if (this.props.avatar) {
-    			children.avatar = (<div className="message-avatar" style={{backgroundImage:this.props.avatar}}></div>);
+    			children.avatar = (<div className={"message-avatar icon-default-head user_head_"+this.props.avatar}></div>);
     		}
          return (
          	<div className = {className}>

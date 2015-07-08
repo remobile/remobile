@@ -393,3 +393,4 @@
 
     $.ImgTouchCanvas = ImgTouchCanvas;
 }($));
+

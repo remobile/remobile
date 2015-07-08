@@ -16,6 +16,7 @@ var App = React.createClass({
         this.us = utils.userSetting;
         this.error = utils.error;
         this.constants = utils.constants;
+        this.date = utils.date;
         this.callMgr = chat.callMgr;
         this.groupMgr = chat.groupMgr;
         this.messageMgr = chat.messageMgr;

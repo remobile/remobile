@@ -12,13 +12,14 @@ var View = UI.View;
 var ContactItem = React.createClass({
    render: function() {
        var userid = this.props.userid;
-       var user = app.userMgr.users[userid];
+       var user = this.props.users[userid];
        var username = user.username||userid;
+       var style =user.online?{color:"#00FF7F"}:{color:"gray"};
        return (
            <List.ItemContent>
              <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
                <List.ItemInner>
-                    <List.ItemTitle>{username}</List.ItemTitle>
+                    <List.ItemTitle style={style}>{username}</List.ItemTitle>
                </List.ItemInner>
            </List.ItemContent>
         )
@@ -27,10 +28,12 @@ var ContactItem = React.createClass({
 
 var ContactGroup = React.createClass({
     render: function() {
+    		var users = this.props.users;
+    		var userids = this.props.userids;
         return (
             <List.ListGroup>
                 <List.ListGroupTitle data={{'data-index-letter':this.props.letter}}>{this.props.letter}</List.ListGroupTitle>
-                {this.props.userids.map((userid)=>{return <ContactItem userid={userid}/>})}
+                {userids.map((userid)=>{return <ContactItem userid={userid} users={users}/>})}
             </List.ListGroup>
         )
     }
@@ -39,18 +42,39 @@ var ContactGroup = React.createClass({
 
 var ContactList = React.createClass({
     render: function() {
+        var users = this.props.users;
+        var groupedUsers = this.props.groupedUsers;
+        var letters = _.keys(groupedUsers).sort(function(a, b) {return a.localeCompare(b)});
         return (
             <List.List block group class="contacts-block">
-                {_.mapObject(app.userMgr.groupedUsers, (userids, key)=>{return <ContactGroup letter={key} userids={userids}/>})}
+                {_.map(letters, (letter)=>{return <ContactGroup letter={letter} userids={groupedUsers[letter]} users={users}/>})}
             </List.List>
         );
     }
 });
 
 module.exports = React.createClass({
+    getInitialState: function() {
+        return {
+            groupedUsers: app.userMgr.groupedUsers,
+            users: app.userMgr.users
+        };
+    },
+    componentDidMount: function() {
+        app.userMgr.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        app.userMgr.removeChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState({
+            groupedUsers: app.userMgr.groupedUsers,
+            users: app.userMgr.users
+        });
+    },
     render: function() {
         return (
-            <ContactList />
+            <ContactList users={this.state.users} groupedUsers={this.state.groupedUsers}/>
         );
     }
 });

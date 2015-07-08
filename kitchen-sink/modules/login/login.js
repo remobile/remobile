@@ -47,15 +47,16 @@ var FormInputItem = React.createClass({
 module.exports = React.createClass({
     doLogin: function() {
         var userid = this.state.userid.replace(/-/g, "");
-        if (!(/\d{11}/.test(userid))) {
+        /*if (!(/\d{11}/.test(userid))) {
             app.showError("Invalid Phone!");
             return;
-        }
+        }*/
         var password = this.state.password;
         if (!password) {
             app.showError("PassWord Needed!");
             return;
         }
+        console.log(userid);
         app.loginMgr.login(userid, password, this.state.autoLogin, this.state.remeberPassword);
     },
     doRegister: function() {
@@ -92,7 +93,7 @@ module.exports = React.createClass({
                     <Content.ContentBlock>
                     <List.List block>
                         <FormItem icon="icon-form-tel" label="Phone:">
-                            <MaskInput mask="999-9999-9999" placeholder="Input Phone" type="tel" value={this.state.userid} onChange={this.handleInputChange.bind(this, "userid")}/>
+                            <MaskInput mask="9" placeholder="Input Phone" type="tel" value={this.state.userid} onChange={this.handleInputChange.bind(this, "userid")}/>
                         </FormItem>
                         <FormInputItem icon="icon-form-password" label="PassWord:" input_type="password" placeholder="Input PassWord" value={this.state.password} onChange={this.handleInputChange.bind(this, "password")}/>
                         </List.List>

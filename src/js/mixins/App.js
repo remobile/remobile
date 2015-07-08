@@ -45,6 +45,7 @@ function App (views) {
         },
         componentWillMount: function () {
             window.app = this;
+            window._ = require('underscore');
             this.history = [];
             this.data = {};
             this.methods = {};
@@ -76,7 +77,7 @@ function App (views) {
 
             this.setState({
                 currentView: viewId,
-                viewTransition: this.getViewTransition(transition)	
+                viewTransition: this.getViewTransition(transition)
             });
         },
         showView: function (viewId, transition, param, norecord) {

@@ -1,85 +1,79 @@
 var React = require('react');
 var UI = require('UI');
+var _ = require('underscore');
 
-var View = UI.View;
-var Content = UI.Content;
-var Grid = UI.Grid;
 var List = UI.List;
-var Button = UI.Button.Button;
-var ButtonsRow = UI.Button.ButtonsRow;
+var Content = UI.Content;
+var Icon = UI.Icon.Icon;
+var Badge = UI.Badge.Badge;
+var Form = UI.Form;
+var View = UI.View;
+
+var MessageItem = React.createClass({
+    showMessageInfo: function(userid, type) {
+        var param = {
+            userid: userid,
+            type: type
+        };
+        app.showView('messageInfo', 'fade', param);
+    },
+    render: function() {
+        var msg = this.props.msg;
+        var groupname = this.props.username;
+        var userid = msg.userid;
+        var user = app.userMgr.users[userid];
+        var username = user.username||userid;
+        var time = app.date.getShowDate(msg.time);
+        var message = msg.msg;
+        var style =user.online?{color:"#00FF7F"}:{color:"gray"};
+        return (
+            <List.ItemContent>
+                <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
+                <List.ItemInner onTap={this.showMessageInfo.bind(this, userid, msg.type)}>
+                    <List.ItemTitleRow>
+                        <List.ItemTitle style={style}>{username}</List.ItemTitle>
+                        <List.ItemAfter>{time}</List.ItemAfter>
+                    </List.ItemTitleRow>
+                    <List.ItemSubTitle>{message}</List.ItemSubTitle>
+                </List.ItemInner>
+            </List.ItemContent>
+        )
+    }
+});
+
+var NewestMessage = React.createClass({
+    render: function() {
+        var messages = this.props.messages;
+        return (
+            <List.List block media>
+                {messages.map((msg)=>{return <MessageItem msg={msg}/>})}
+            </List.List>
+        );
+    }
+});
 
 module.exports = React.createClass({
-    showList: function() {
-        app.showView('list', 'left');
+    getInitialState: function() {
+        return {
+            messages: app.messageMgr.newestMessage
+        };
     },
-	render: function() {
-		return (
-            <View.Page>
-                <View.PageContent>
-                    <Content.ContentBlockTitle>Usual Buttons</Content.ContentBlockTitle>
-                    <Content.ContentBlock>
-                        <Grid.Row>
-                            <Grid.Col per={33}><Button active onTap={this.showList}>Active</Button></Grid.Col>
-                            <Grid.Col per={33}><Button>Button</Button></Grid.Col>
-                            <Grid.Col per={33}><Button round>Round</Button></Grid.Col>
-                        </Grid.Row>
-                    </Content.ContentBlock>
-                    <Content.ContentBlock>
-                        <Grid.Row>
-                            <Grid.Col per={50}><Button active>Active</Button></Grid.Col>
-                            <Grid.Col per={50}><Button round>Round</Button></Grid.Col>
-                        </Grid.Row>
-                    </Content.ContentBlock>
-                    <Content.ContentBlock>
-                        <ButtonsRow>
-                            <Button active>Active</Button>
-                            <Button round>Round</Button>
-                        </ButtonsRow>
-                    </Content.ContentBlock>
-                    <Content.ContentBlock>
-                        <ButtonsRow>
-                            <Button round>Round</Button>
-                            <Button round>Round</Button>
-                            <Button round>Round</Button>
-                        </ButtonsRow>
-                    </Content.ContentBlock>
-                    <Content.ContentBlock>
-                        <ButtonsRow>
-                            <Button round>Round</Button>
-                            <Button active>Active</Button>
-                            <Button round>Round</Button>
-                            <Button round>Round</Button>
-                        </ButtonsRow>
-                    </Content.ContentBlock>
-                    <Content.ContentBlockTitle>Big Buttons</Content.ContentBlockTitle>
-                    <Content.ContentBlock>
-                        <Grid.Row>
-                            <Grid.Col per={50}><Button big active>Active</Button></Grid.Col>
-                            <Grid.Col per={50}><Button big round>Round</Button></Grid.Col>
-                        </Grid.Row>
-                    </Content.ContentBlock>
-                    <Content.ContentBlockTitle>Themed Fill Buttons</Content.ContentBlockTitle>
-                    <Content.ContentBlock>
-                        <Grid.Row>
-                            <Grid.Col per={50}><Button big fill color="green">Submit</Button></Grid.Col>
-                            <Grid.Col per={50}><Button big fill color="red">Cancel</Button></Grid.Col>
-                        </Grid.Row>
-                    </Content.ContentBlock>
-                    <Content.ContentBlockTitle>List-Block Buttons</Content.ContentBlockTitle>
-                    <List.List block inset>
-                        <li><Button list>List Button 1</Button></li>
-                        <li><Button list>List Button 2</Button></li>
-                        <li><Button list>List Button 3</Button></li>
-                    </List.List>
-                    <List.List block inset>
-                        <li><Button list color="red">List Button 1</Button></li>
-                    </List.List>
-                    <Content.ContentBlock>
-                        <p>this is inline round <Button inline round>Round</Button> or inline <Button inline>Button</Button></p>
-		          					<p>this is inline fill <Button inline fill>Round</Button> or color <Button inline fill color="red">Button</Button></p>
-                    </Content.ContentBlock>
-                </View.PageContent>
-            </View.Page>
-		);
-	}
+    componentDidMount: function() {
+        app.userMgr.addChangeListener(this._onChange);
+        app.messageMgr.addNewestMessageChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        app.userMgr.removeChangeListener(this._onChange);
+        app.messageMgr.removeNewestMessageChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState({
+            messages: app.messageMgr.newestMessage
+        });
+    },
+    render: function() {
+        return (
+            <NewestMessage messages={this.state.messages}/>
+        );
+    }
 });

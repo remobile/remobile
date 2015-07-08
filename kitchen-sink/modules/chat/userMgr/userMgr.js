@@ -1,10 +1,23 @@
 var _  = require('underscore');
+var EventEmitter = require('events').EventEmitter;
+var assign = require('object-assign');
+
 module.exports = (function() {
     "use strict";
     function UserMgr() {
+        assign(this, EventEmitter.prototype);
         this.reset();
     }
 
+    UserMgr.prototype.emitChange = function() {
+        this.emit("change");
+    };
+    UserMgr.prototype.addChangeListener = function(callback) {
+        this.on("change", callback);
+    };
+    UserMgr.prototype.removeChangeListener = function(callback) {
+        this.removeListener("change", callback);
+    };
     UserMgr.prototype.reset = function() {
         this.users = {};
         this.groupedUsers = {}; //use alpha grouped
@@ -17,6 +30,7 @@ module.exports = (function() {
             users[userid] = obj;
             this.addGroupedUser(userid);
         }
+        this.emitChange();
     };
     UserMgr.prototype.remove = function(obj) {
         var users = this.users;
@@ -25,16 +39,19 @@ module.exports = (function() {
             delete users[userid];
             this.removeGroupedUser(userid);
         }
+        this.emitChange();
     };
     UserMgr.prototype.online = function(obj) {
         var userid = obj.userid;
         this.users[userid].online = true;
-        app.console.log("red@"+userid, "login");
+        this.emitChange();
+        console.log("red@"+userid, "login");
     };
     UserMgr.prototype.offline = function(obj) {
         var userid = obj.userid;
         this.users[userid].online = false;
-        app.console.log("red@"+userid, "logout");
+        this.emitChange();
+        console.log("red@"+userid, "logout");
     };
     UserMgr.prototype.addList = function(list) {
         var users = this.users;
@@ -45,6 +62,7 @@ module.exports = (function() {
                 this.addGroupedUser(userid);
             }
         }
+        this.emitChange();
         this.init = true;
     };
     UserMgr.prototype.addGroupedUser = function(userid) {

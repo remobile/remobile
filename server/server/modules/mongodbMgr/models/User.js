@@ -5,7 +5,7 @@ module.exports = (function() {
     var UserSchema = Schema({
         userid: {type:String, unique:true, required: true},//phone
         password: {type:String, required: true},
-        username: {type:String},
+        username: {type:String, unique:true},
         sign: {type:String},
         groups: {type:Array, default:[]}
     }, {
@@ -17,7 +17,8 @@ module.exports = (function() {
         user.save(function(err) {
             var error;
             if (err && err.code == 11000) {
-                var name = err.err.replace(/.*users.\$([a-z]+).*/, '$1');
+                var errmsg = err.err||err.errmsg||err.message;
+                var name = errmsg.replace(/.*users.\$([a-z]+).*/, '$1');
                 if (name == 'username') {
                     error = app.error.USER_NAME_DUPLICATE;
                 } else if (name == 'userid') {

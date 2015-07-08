@@ -15,12 +15,12 @@ var Messagebar = function (container, maxRows) {
     m.pageContentPadding = parseInt(m.pageContent.css('padding-bottom'));
     m.initialBarHeight = m.container[0].offsetHeight;
     m.initialAreaHeight = m.textarea[0].offsetHeight;
-    
+
     // Resize textarea
     m.sizeTextarea = function () {
         // Reset
         m.textarea.css({'height': ''});
-        
+
         var height = m.textarea[0].offsetHeight;
         var diff = height - m.textarea[0].clientHeight;
         var scrollHeight = m.textarea[0].scrollHeight;
@@ -52,16 +52,16 @@ var Messagebar = function (container, maxRows) {
             }
         }
     };
-    
+
     // Clear
     m.clear = function () {
         m.textarea.val('').trigger('change');
     };
     m.value = function (value) {
         if (typeof value === 'undefined') return m.textarea.val();
-        else m.textarea.val(value).trigger('change');  
+        else m.textarea.val(value).trigger('change');
     };
-    
+
     // Handle textarea
     m.textareaTimeout = undefined;
     m.handleTextarea = function (e) {
@@ -84,7 +84,7 @@ var Messagebar = function (container, maxRows) {
     m.detachEvents = function () {
         m.attachEvents(true);
     };
-    
+
     // Init Destroy
     m.init = function () {
         m.attachEvents();
@@ -94,31 +94,47 @@ var Messagebar = function (container, maxRows) {
         m = null;
     };
     m.init();
-    
+
     return m;
 };
 
 module.exports = React.createClass({
-		getDefaultProps: function() {
-			return {
-				maxRows: 5
-			}
-		},
-		componentDidMount: function() {
-				this.props.messagebar = new Messagebar($(this.refs.messagebar.getDOMNode()), this.props.maxRows);
-		},
-		componentWillUnmount: function() {
-			this.props.messagebar.destroy();
-		},
+    getDefaultProps: function() {
+        return {
+            maxRows: 5
+        }
+    },
+    getInitialState: function() {
+        return {
+            value: "",
+            sendButtonStyle: {color:"gray"}
+        }
+    },
+    componentDidMount: function() {
+        this.messagebar = new Messagebar($(this.refs.messagebar.getDOMNode()), this.props.maxRows);
+    },
+    componentWillUnmount: function() {
+        this.messagebar.destroy();
+    },
+    handleChange: function(e) {
+        var value = e.target.value;
+        this.setState({
+            value: value,
+            sendButtonStyle: value.length?{color:"#007aff"}:{color:"gray"}
+        });
+    },
+    getValue: function() {
+        return this.state.value;
+    },
     render: function() {
-         return (
-         	<div className="toolbar messagebar" ref="messagebar">
-			      <div className="toolbar-inner">
-			      	<a href="#" className="link icon-only"><i className="icon icon-camera"></i></a>
-			        <textarea placeholder="Message"></textarea>
-			        <a href="#" className="link send-message">Send</a>
-			      </div>
-					</div>
-         );
+        return (
+            <div className="toolbar messagebar" ref="messagebar">
+                <div className="toolbar-inner">
+                    <a className="link icon-only"><i className="icon icon-camera"></i></a>
+                    <textarea placeholder="Message" value={this.state.value} onChange={this.handleChange}></textarea>
+                    <a className="link" style={this.state.sendButtonStyle} onClick={this.props.onSend}>Send</a>
+                </div>
+            </div>
+        );
     }
 });
