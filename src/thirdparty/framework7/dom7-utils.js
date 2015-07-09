@@ -228,6 +228,14 @@ $.fn.scrollTop = function (top, duration, easing, callback) {
     }
     return dom.scrollTo(undefined, top, duration, easing, callback);
 };
+$.fn.scrollBottom = function (duration, easing, callback) {
+    if (arguments.length === 2 && typeof easing === 'function') {
+        callback = easing;
+        easing = undefined;
+    }
+    var dom = this;
+    return dom.scrollTo(undefined, dom.height(), duration, easing, callback);
+};
 $.fn.scrollLeft = function (left, duration, easing, callback) {
     if (arguments.length === 3 && typeof easing === 'function') {
         callback = easing;

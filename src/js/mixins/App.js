@@ -82,13 +82,14 @@ function App (views) {
         },
         showView: function (viewId, transition, param, norecord) {
             var trans = VIEW_TRANSITIONS[transition];
+            var scrollTop = $('.page-content').scrollTop();
             if (!norecord) {
-                this.history.push({id:this.state.currentView, transition:transition});
+                this.history.push({id:this.state.currentView, transition:transition, scrollTop:scrollTop});
             }
             this.displayView(viewId, trans? trans.go: 'none', param);
         },
         goBack: function(step, param) {
-            if (step === undefined) {
+            if (!step) {
                 step = 1;
             }
             var obj;
@@ -98,6 +99,8 @@ function App (views) {
             }
             if (obj) {
                 var trans = VIEW_TRANSITIONS[obj.transition];
+                param = param||{};
+                param.scrollTop = obj.scrollTop;
                 this.displayView(obj.id, trans? trans.back: 'none', param);
             }
         }

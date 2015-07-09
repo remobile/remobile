@@ -32,6 +32,7 @@ var IndexedList =  React.createClass({
 });
 
 module.exports = React.createClass({
+    mixins: [UI.Mixins.RestoreScrollPosition],
     getInitialState: function() {
         return {
             page: app.data.homePageIndex||0

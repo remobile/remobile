@@ -20,7 +20,7 @@ function getShowTime(time, lastTime) {
     return app.date.getShowDateTime(time);
 };
 
-function getMessageList(messages) {
+function getMessageList(messages, isGroup) {
     var lastTime, timeStr;
     var list = [];
     var len = messages.length;
@@ -46,11 +46,13 @@ function getMessageList(messages) {
         var userid = msg.userid;
         var next = messages[i+1];
         var pre = messages[i-1];
+        var user = users[userid];
+        var username = user.username||userid;
         props.tail = (!next || (userid!==next.userid) || !((!!msg.send)===(!!next.send)));
         props.sent = !!msg.send;
         props.avatar = msg.send?app.loginMgr.userid:userid;
-        props.nameStyle = users[userid].online?{color:"#00FF7F"}:{color:"gray"};
-        props.name = msg.send?false:(pre&&pre.userid===userid&&!timeStr?false:msg.username);
+        props.nameStyle = user.online?{color:"#00FF7F"}:{color:"gray"};
+        props.name = msg.send?false:(pre&&pre.userid===userid&&!timeStr?false:username);
 
         list.push(<MessageText {...props}>{msg.msg}</MessageText>);
     }
@@ -60,7 +62,7 @@ function getMessageList(messages) {
 
 var MessageList = React.createClass({
     render: function() {
-        var list = getMessageList(this.props.messages);
+        var list = getMessageList(this.props.messages, this.props.isGroup);
         return (
             <Message.Messages>
                 {list}
@@ -76,6 +78,7 @@ module.exports = React.createClass({
         };
     },
     componentWillMount: function() {
+        this.localStorageEnd = false;
         var param = this.props.data.param;
         if (param.type === app.messageMgr.USER_TYPE) {
             this.isGroup = false;
@@ -109,7 +112,7 @@ module.exports = React.createClass({
                 var self = this;
                 setTimeout(function () {
                     self.refs.refresh.refreshDone();
-                    self._onChange();
+                    self._onChange(true);
                     self.refreshing = false;
                 }, 1000);
             }
@@ -117,9 +120,11 @@ module.exports = React.createClass({
             this._onChange();
         }
     },
-    _onChange: function() {
+    _onChange: function(noScroll) {
         this.setState({
             messages: app.messageMgr.displayMessage
+        }, function() {
+            noScroll||$('.page-content').scrollBottom(500);
         });
     },
     handleSend: function() {
@@ -136,10 +141,18 @@ module.exports = React.createClass({
         if (!this.refreshing) {
             this.refreshing = true;
             this.oldestMessageTime = msg&&msg.time;
-            if (this.localStorageEnd || !msg) {
-                app.messageMgr.getUserMessageFromServer(this.userid, this.oldestMessageTime||Date.now());
+            if (this.isGroup) {
+                if (this.localStorageEnd || !msg) {
+                    app.messageMgr.getGroupMessageFromServer(this.groupname, this.oldestMessageTime||Date.now());
+                } else {
+                    app.messageMgr.getGroupMessage(this.groupname, this.oldestMessageTime);
+                }
             } else {
-                app.messageMgr.getUserMessage(this.userid, this.oldestMessageTime);
+                if (this.localStorageEnd || !msg) {
+                    app.messageMgr.getUserMessageFromServer(this.userid, this.oldestMessageTime||Date.now());
+                } else {
+                    app.messageMgr.getUserMessage(this.userid, this.oldestMessageTime);
+                }
             }
         }
     },
@@ -148,7 +161,7 @@ module.exports = React.createClass({
             <View.Page title="Messages" toolbar>
                 <View.PageContent message class="pull-to-refresh-content">
                     <UI.Refresh.PullToRefresh onRefresh={this.handleRefresh} ref="refresh"/>
-                    <MessageList messages={this.state.messages}/>
+                    <MessageList messages={this.state.messages} isGroup={this.isGroup}/>
                 </View.PageContent>
                 <Message.MessageToolbar onSend={this.handleSend} ref="toolbar"/>
             </View.Page>

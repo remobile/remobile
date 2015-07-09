@@ -21,7 +21,7 @@ var MessageItem = React.createClass({
         var msg = this.props.msg;
         var userid = msg.userid;
         var user = app.userMgr.users[userid];
-        var username = user.username||userid;
+        var username = (userid===app.loginMgr.userid)?"我":(user.username||userid);
         var time = app.date.getShowDate(msg.time);
         var group = (msg.type===app.messageMgr.GROUP_TYPE);
         var groupname = msg.username;

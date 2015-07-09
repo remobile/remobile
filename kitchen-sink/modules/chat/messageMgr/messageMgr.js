@@ -89,7 +89,6 @@ module.exports = (function() {
         if (time) {
             query.time = {$lt: time};
         }
-            console.log(name);
         var self = this;
         app.db_history_message.find(query, function (err, docs) {
             var message = _.sortBy(docs, function (obj) {
@@ -135,17 +134,25 @@ module.exports = (function() {
         }
     };
     MessageMgr.prototype.showNewestMessage = function(type, userid, username, time, msg, msgtype, send, touserid) {
-        if (type == this.USER_TYPE) {
+        var isGroup = (type===this.GROUP_TYPE);
+        if (isGroup) {
             this.increaseUserUnreadNotify(userid);
         } else {
             this.increaseGroupUnreadNotify(username, touserid);
         }
-        var newest_message = {username: username, time: time, msg: msg, msgtype:msgtype, touserid:touserid};
-        this.newestMessage = _.reject(this.newestMessage, function(item){return item.userid==userid&&item.type==type});
-        this.newestMessage.unshift(assign({type:type, userid:userid}, newest_message));
+        var newest_message = {userid:userid, username: username, time: time, msg: msg, msgtype:msgtype, touserid:touserid};
+        if (isGroup) {
+            this.newestMessage = _.reject(this.newestMessage, function(item){return item.username==username&&item.type==type});
+            this.newestMessage.unshift(assign({type:type, username:username}, newest_message));
+            app.db_newest_message.upsert({type: type, username: username}, newest_message);
+            console.log("update newest_message_db", {type: type, username: username}, {username: username,time: time, msg: msg, msgtype:msgtype});
+        } else {
+            this.newestMessage = _.reject(this.newestMessage, function(item){return item.userid==userid&&item.type==type});
+            this.newestMessage.unshift(assign({type:type, userid:userid}, newest_message));
+            app.db_newest_message.upsert({type: type, userid: userid}, newest_message);
+            console.log("update newest_message_db", {type: type, userid: userid}, {username: username,time: time, msg: msg, msgtype:msgtype});
+        }
         this.emitNewestMessageChange();
-        app.db_newest_message.upsert({type: type, userid: userid}, newest_message);
-        console.log("update newest_message_db", {type: type, userid: userid}, {username: username,time: time, msg: msg, msgtype:msgtype});
 
         var display_message = {type:type, userid:userid, username:username, time:time, msg:msg, msgtype:msgtype};
         if (send != null ) {
