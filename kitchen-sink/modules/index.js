@@ -25,6 +25,10 @@ module.exports = {
 	'infiniteScroll': require('./common/infiniteScroll'),
 	'accordion': require('./common/accordion'),
 	'toast': require('./common/toast'),
+	'sortableList': require('./common/sortableList'),
+	'swipeDelete': require('./common/swipeDelete'),
+	'barsHideOnScroll': require('./common/barsHideOnScroll'),
+	'subbarsHideOnScroll': require('./common/subbarsHideOnScroll'),
 	//swiper
 	'swiper': require('./swiper/swiper'),
 	'swiperHorizontal': require('./swiper/swiperHorizontal'),

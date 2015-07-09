@@ -12,23 +12,23 @@ var pages = require('./pages');
 
 
 var IndexedList =  React.createClass({
-	getInitialState: function() {
-    return {letters:_.keys(app.userMgr.groupedUsers).sort(function(a, b) {return a.localeCompare(b)})};
-  },
-	componentDidMount: function() {
-    app.userMgr.addChangeListener(this._onChange);
-  },
-  componentWillUnmount: function() {
-    app.userMgr.removeChangeListener(this._onChange);
-  },
-  _onChange: function() {
-    this.setState({letters:_.keys(app.userMgr.groupedUsers)});
-  },
-	render: function() {
-		return (
-			<List.IndexedList letters={this.state.letters}/>
-		);
-	}
+    getInitialState: function() {
+        return {letters:_.keys(app.userMgr.groupedUsers).sort(function(a, b) {return a.localeCompare(b)})};
+    },
+    componentDidMount: function() {
+        app.userMgr.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        app.userMgr.removeChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState({letters:_.keys(app.userMgr.groupedUsers)});
+    },
+    render: function() {
+        return (
+            <List.IndexedList letters={this.state.letters}/>
+        );
+    }
 });
 
 module.exports = React.createClass({

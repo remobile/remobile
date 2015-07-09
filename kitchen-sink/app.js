@@ -80,7 +80,7 @@ var App = React.createClass({
     },
     getInitialState: function() {
         return {
-            currentView: 'login'
+            currentView: 'home'
         };
     },
     render: function() {

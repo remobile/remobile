@@ -24,18 +24,15 @@ module.exports = React.createClass({
         console.log(data[i]);
     },
 
-	render: function() {
+    render: function() {
         var list = data.map((item)=>{return item.name});
-		return (
-			<View.Page title="RadioSelect">
-				<View.Navbar>
-        		<View.NavbarTitle>List</View.NavbarTitle>
-        </View.Navbar>
-				<View.PageContent>
+        return (
+            <View.Page title="RadioSelect">
+                <View.PageContent>
                     <Select.RadioSelect list={list} select={4} name="fang" onChange={this.onChange}/>
                     <Select.RadioSelect list={list} onChange={this.onChange}/>
-				</View.PageContent>
-       </View.Page>
-		);
-	}
+                </View.PageContent>
+            </View.Page>
+        );
+    }
 });

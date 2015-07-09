@@ -55,6 +55,10 @@ var MenuList = React.createClass({
             <List.List block>
                 <ListItem page="button">Button</ListItem>
                 <ListItem page="toast">Toast</ListItem>
+                <ListItem page="sortableList">Sortable List</ListItem>
+                <ListItem page="barsHideOnScroll">Bars Hide On Scroll</ListItem>
+                <ListItem page="subbarsHideOnScroll">SubNavbar Hide On Scroll</ListItem>
+                <ListItem page="swipeDelete">Swipe Delete</ListItem>
                 <ListItem page="pullToRefresh">Pull To Refresh</ListItem>
                 <ListItem page="infiniteScroll">Infinite Scroll</ListItem>
                 <ListItem page="accordion">Accordion</ListItem>

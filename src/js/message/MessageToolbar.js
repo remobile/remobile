@@ -29,7 +29,7 @@ var Messagebar = function (container, maxRows) {
         if (scrollHeight + diff > height) {
             var newAreaHeight = scrollHeight + diff;
             var newBarHeight = m.initialBarHeight + (newAreaHeight - m.initialAreaHeight);
-            var maxBarHeight = maxHeight || m.container.parents('.view')[0].offsetHeight - 88;
+            var maxBarHeight = maxHeight;
             if (newBarHeight > maxBarHeight) {
                 newBarHeight = parseInt(maxBarHeight, 10);
                 newAreaHeight = newBarHeight - m.initialBarHeight + m.initialAreaHeight;
