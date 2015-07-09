@@ -8,6 +8,7 @@ var List = UI.List;
 var Button = UI.Button.Button;
 var ButtonsRow = UI.Button.ButtonsRow;
 var View = UI.View;
+var Badge = UI.Badge.Badge;
 var pages = require('./pages');
 
 
@@ -35,7 +36,8 @@ module.exports = React.createClass({
     mixins: [UI.Mixins.RestoreScrollPosition],
     getInitialState: function() {
         return {
-            page: app.data.homePageIndex||0
+            page: app.data.homePageIndex||0,
+            messageBadge: app.messageMgr.unreadMessage.total
         }
     },
     getDefaultProps: function() {
@@ -44,6 +46,15 @@ module.exports = React.createClass({
     switchPage: function(page) {
         app.data.homePageIndex = page;
         this.setState({page: page})
+    },
+    componentDidMount: function() {
+        app.messageMgr.addNewestMessageChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        app.messageMgr.removeNewestMessageChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState({messageBadge: app.messageMgr.unreadMessage.total});
     },
     render: function() {
         var CurrentPage = this.props.pages[this.state.page];
@@ -66,6 +77,7 @@ module.exports = React.createClass({
 	                </View.ToolbarButton>
 	                <View.ToolbarButton active={this.state.page===2}
 	                    icon={["icon-camera", "icon-back"]}
+                        badge={(this.state.messageBadge>0)&&<Badge color="red">{this.state.messageBadge}</Badge>}
 	                    onTap={this.switchPage.bind(this, 2)}>
 	                        Messages
 	                </View.ToolbarButton>

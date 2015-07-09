@@ -9,7 +9,7 @@ module.exports = React.createClass({
         var icon = (this.props.active?this.props.icon[1]:this.props.icon[0])||this.props.icon[0];
         return (
             <a className={className} onClick={this.props.onTap}>
-                <i className={"icon "+icon}></i>
+                <i className={"icon "+icon}>{this.props.badge}</i>
                 <span className ="tabbar-label">{this.props.children}</span>
             </a>
         );

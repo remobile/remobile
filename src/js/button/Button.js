@@ -2,17 +2,6 @@ var React = require('react');
 var cn = require('classnames');
 
 module.exports = React.createClass({
-    getDefaultProps: function() {
-        return {
-            active: false,
-            round: false,
-            big: false,
-            fill: false,
-            list: false,
-            inline: false,
-            color: false,
-        }
-    },
     render: function() {
         var obj = {
             'button': !this.props.list,

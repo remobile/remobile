@@ -28,6 +28,7 @@ var MessageItem = React.createClass({
         var message = msg.msg;
         var style =user.online?{color:"#00FF7F"}:{color:"gray"};
         if (group) {
+            var badge = app.messageMgr.unreadMessage.group[groupname];
             return (
                 <List.ItemContent>
                     <List.ItemMedia><Icon name={"icon-default-head user_head_"+groupname} round/></List.ItemMedia>
@@ -36,7 +37,10 @@ var MessageItem = React.createClass({
                             <List.ItemTitle>
                                 <span style={{color:"red"}}>{groupname}</span>
                             </List.ItemTitle>
-                            <List.ItemAfter>{time}</List.ItemAfter>
+                            <List.ItemAfter>
+                                {time}
+                                {(badge>0)&&<Badge color="red">{badge}</Badge>}
+                            </List.ItemAfter>
                         </List.ItemTitleRow>
                         <List.ItemSubTitle>
                             <span style={style}>{username}</span>
@@ -47,13 +51,17 @@ var MessageItem = React.createClass({
                 </List.ItemContent>
             )
         } else {
+            var badge = app.messageMgr.unreadMessage.users[userid];
             return (
                 <List.ItemContent>
                     <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
                     <List.ItemInner onTap={this.showMessageInfo.bind(this, msg.type, userid)}>
                         <List.ItemTitleRow>
                             <List.ItemTitle style={style}>{username}</List.ItemTitle>
-                            <List.ItemAfter>{time}</List.ItemAfter>
+                            <List.ItemAfter>
+                                {time}
+                                {(badge>0)&&<Badge color="red">{badge}</Badge>}
+                            </List.ItemAfter>
                         </List.ItemTitleRow>
                         <List.ItemSubTitle>{message}</List.ItemSubTitle>
                     </List.ItemInner>

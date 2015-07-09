@@ -1,5 +1,7 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require("object-assign");
+var us = require('../../utils/userSetting');
+var constants = require('../../utils/constants');
 
 module.exports = (function() {
     "use strict";
@@ -23,8 +25,26 @@ module.exports = (function() {
 
         this.newestMessage = [];
         this.displayMessage = [];
+        this.getUnreadMessage();
     }
 
+    MessageMgr.prototype.getUnreadMessage = function() {
+        this.unreadMessage = {
+            group: us.object(constants.GROUP_MESSAGE_BADGES)||{},
+            users: us.object(constants.MESSAGE_BADGES)||{},
+            at: us.object(constants.GROUP_CHAT_AT_NUMBERS)||{}
+        };
+        var obj = this.unreadMessage.group;
+        var total = 0;
+        for (var key in obj) {
+           total += obj[key];
+        }
+        var obj = this.unreadMessage.users;
+        for (var key in obj) {
+           total += obj[key];
+        }
+        this.unreadMessage.total = total;
+    };
     MessageMgr.prototype.emitNewestMessageChange = function() {
         this.emit("newest_message_change");
     };
@@ -104,49 +124,47 @@ module.exports = (function() {
         });
     };
     MessageMgr.prototype.increaseUserUnreadNotify = function(userid) {
-        var us = app.us;
-        var obj = us.object("message_badges")||{};
+        var obj = this.unreadMessage.users;
         if (!obj[userid]) {
             obj[userid] = 1;
         } else {
             obj[userid]++;
         }
-        us.object("message_badges", obj);
+        this.unreadMessage.total++;
+        us.object(constants.MESSAGE_BADGES, obj);
     };
     MessageMgr.prototype.increaseGroupUnreadNotify = function(name, touserid) {
-        var us = app.us;
-        var obj = us.object("group_message_badges")||{};
+        var obj = this.unreadMessage.group;
         if (!obj[name]) {
             obj[name] = 1;
         } else {
             obj[name]++;
         }
-        us.object("group_message_badges", obj);
+        us.object(constants.GROUP_MESSAGE_BADGES, obj);
 
-        obj = us.object("GROUP_CHAT_AT_NUMBERS")||{};
+        obj = this.unreadMessage.at;
         if (touserid == app.loginMgr.userid) {
             if (!obj[name]) {
                 obj[name] = 1;
             } else {
                 obj[name]++;
             }
-            us.object("GROUP_CHAT_AT_NUMBERS", obj);
+            us.object(constants.GROUP_CHAT_AT_NUMBERS, obj);
         }
+        this.unreadMessage.total++;
     };
     MessageMgr.prototype.showNewestMessage = function(type, userid, username, time, msg, msgtype, send, touserid) {
         var isGroup = (type===this.GROUP_TYPE);
-        if (isGroup) {
-            this.increaseUserUnreadNotify(userid);
-        } else {
-            this.increaseGroupUnreadNotify(username, touserid);
-        }
         var newest_message = {userid:userid, username: username, time: time, msg: msg, msgtype:msgtype, touserid:touserid};
+
         if (isGroup) {
+            this.increaseGroupUnreadNotify(username, touserid);
             this.newestMessage = _.reject(this.newestMessage, function(item){return item.username==username&&item.type==type});
             this.newestMessage.unshift(assign({type:type, username:username}, newest_message));
             app.db_newest_message.upsert({type: type, username: username}, newest_message);
             console.log("update newest_message_db", {type: type, username: username}, {username: username,time: time, msg: msg, msgtype:msgtype});
         } else {
+            this.increaseUserUnreadNotify(userid);
             this.newestMessage = _.reject(this.newestMessage, function(item){return item.userid==userid&&item.type==type});
             this.newestMessage.unshift(assign({type:type, userid:userid}, newest_message));
             app.db_newest_message.upsert({type: type, userid: userid}, newest_message);
