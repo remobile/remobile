@@ -16,7 +16,6 @@ module.exports = {
 	'preloader': require('./common/preloader'),
 	'calendar': require('./common/calendar'),
 	'tabs': require('./common/tabs'),
-	'messages': require('./common/messages'),
 	'notifications': require('./common/notifications'),
 	'panels': require('./common/panels'),
 	'search': require('./common/search'),

@@ -9,6 +9,9 @@ var Icon = UI.Icon.Icon;
 var Badge = UI.Badge.Badge;
 var Button = UI.Button.Button;
 
+function getImage(i) {
+    return 'img/'+i+'.jpg';
+}
 
 var List1 = React.createClass({
     render: function() {
@@ -45,7 +48,7 @@ var List2 = React.createClass({
         return (
             <List.List block media>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/160/160/people/1" width="80"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(1)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Yellow Submarine</List.ItemTitle>
@@ -58,7 +61,7 @@ var List2 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                  <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/160/160/people/2" width="80"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(2)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Don't Stop Me Now</List.ItemTitle>
@@ -71,7 +74,7 @@ var List2 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                  <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/160/160/people/3" width="80"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(3)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Billie Jean</List.ItemTitle>
@@ -114,7 +117,7 @@ module.exports = React.createClass({
 
         	<Content.ContentBlockTitle>Styled Cards</Content.ContentBlockTitle>
         	<Card.Card inner
-        		customHeader=<Card.CardHeader class="color-white no-border" style={{backgroundImage:"url(http://lorempixel.com/1000/600/nature/3/)"}}>Journey To Mountains</Card.CardHeader>
+        		customHeader=<Card.CardHeader class="color-white no-border" style={{backgroundImage:"url("+getImage(3)+")"}}>Journey To Mountains</Card.CardHeader>
         		customFooter=<Card.CardFooter><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></Card.CardFooter>
         	>
       			  <p class="color-gray">Posted on January 21, 2015</p>
@@ -125,24 +128,24 @@ module.exports = React.createClass({
         	<Card.Card inner
         		class="ks-facebook-card"
         		customHeader=<Card.CardHeader class="no-border">
-        					<div class="ks-facebook-avatar"><img src="http://lorempixel.com/68/68/people/1/" width="34" height="34"/></div>
+        					<div class="ks-facebook-avatar"><img src={getImage(1)} width="34" height="34"/></div>
 				          <div class="ks-facebook-name">John Doe</div>
 				          <div class="ks-facebook-date">Monday at 3:47 PM</div>
         			</Card.CardHeader>
         		customFooter=<Card.CardFooter class="no-border"><a href="#" class="link">Like</a><a href="#" class="link">Comment</a><a href="#" class="link">Share</a></Card.CardFooter>
         	>
-      			  <img src="http://lorempixel.com/1000/700/nature/8/" width="100%"/>
+      			  <img src={getImage(8)} width="100%"/>
         	</Card.Card>
         	<Card.Card inner
         		class="ks-facebook-card"
         		customHeader=<Card.CardHeader>
-        					<div class="ks-facebook-avatar"><img src="http://lorempixel.com/68/68/people/1/" width="34" height="34"/></div>
+        					<div class="ks-facebook-avatar"><img src={getImage(1)} width="34" height="34"/></div>
 				          <div class="ks-facebook-name">John Doe</div>
 				          <div class="ks-facebook-date">Monday at 2:15 PM</div>
         			</Card.CardHeader>
         		customFooter=<Card.CardFooter class="no-border"><a href="#" class="link">Like</a><a href="#" class="link">Comment</a><a href="#" class="link">Share</a></Card.CardFooter>
         	>
-      			  <p>What a nice photo i took yesterday!</p><img src="http://lorempixel.com/1000/700/nature/8/" width="100%"/>
+      			  <p>What a nice photo i took yesterday!</p><img src={getImage(8)} width="100%"/>
             	<p class="color-gray">Likes: 112 &nbsp;&nbsp; Comments: 43</p>
         	</Card.Card>
 

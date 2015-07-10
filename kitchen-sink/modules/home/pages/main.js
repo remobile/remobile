@@ -67,7 +67,6 @@ var MenuList = React.createClass({
                 <ListItem page="panels">Slide Panels</ListItem>
                 <ListItem page="swiper">Swiper Slider</ListItem>
                 <ListItem page="notifications">Notifications</ListItem>
-                <ListItem page="messages">Messages</ListItem>
                 <ListItem page="list">List</ListItem>
                 <ListItem page="medialist">Media List</ListItem>
                 <ListItem page="photo">Photo Browser</ListItem>

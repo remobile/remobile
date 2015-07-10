@@ -8,12 +8,16 @@ var Icon = UI.Icon.Icon;
 var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 
+function getImage(i) {
+    return 'img/'+i+'.jpg';
+}
+
 var List1 = React.createClass({
     render: function() {
         return (
             <List.List block media>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/160/160/people/1" width="80"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(1)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Yellow Submarine</List.ItemTitle>
@@ -26,7 +30,7 @@ var List1 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                  <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/160/160/people/2" width="80"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(2)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Don't Stop Me Now</List.ItemTitle>
@@ -39,7 +43,7 @@ var List1 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                  <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/160/160/people/3" width="80"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(3)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Billie Jean</List.ItemTitle>
@@ -106,7 +110,7 @@ var List3 = React.createClass({
         return (
             <List.List block media>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/88/88/fashion/1" width="44"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(1)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Yellow Submarine</List.ItemTitle>
@@ -115,7 +119,7 @@ var List3 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/88/88/fashion/2" width="44"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(2)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Don't Stop Me Now</List.ItemTitle>
@@ -124,7 +128,7 @@ var List3 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/88/88/fashion/3" width="44"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(3)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Billie Jean</List.ItemTitle>
@@ -142,7 +146,7 @@ var List4 = React.createClass({
         return (
             <List.List block media inset>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/88/88/fashion/4" width="44"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(4)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Yellow Submarine</List.ItemTitle>
@@ -151,7 +155,7 @@ var List4 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/88/88/fashion/5" width="44"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(5)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Don't Stop Me Now</List.ItemTitle>
@@ -160,7 +164,7 @@ var List4 = React.createClass({
                     </List.ItemInner>
                  </List.ItemContent>
                 <List.ItemContent link>
-                    <List.ItemMedia><img src="http://lorempixel.com/88/88/fashion/6" width="44"/></List.ItemMedia>
+                    <List.ItemMedia><img src={getImage(6)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
                             <List.ItemTitle>Billie Jean</List.ItemTitle>
