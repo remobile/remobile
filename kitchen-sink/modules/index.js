@@ -49,6 +49,7 @@ module.exports = {
 	'login': require('./login/login'),
 	'register': require('./login/register'),
 	'messageInfo': require('./message/messageInfo'),
+	'contactInfo': require('./contact/contactInfo'),
    //icons
 	'icons': require('./common/icons')
 };

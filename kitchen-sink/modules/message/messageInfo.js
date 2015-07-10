@@ -51,7 +51,7 @@ function getMessageList(messages, isGroup) {
         props.tail = (!next || (userid!==next.userid) || !((!!msg.send)===(!!next.send)));
         props.sent = !!msg.send;
         props.avatar = msg.send?app.loginMgr.userid:userid;
-        props.nameStyle = user.online?{color:"#00FF7F"}:{color:"gray"};
+        props.nameStyle = app.color.usernameColor(user.online);
         props.name = msg.send?false:(pre&&pre.userid===userid&&!timeStr?false:username);
 
         list.push(<MessageText {...props}>{msg.msg}</MessageText>);

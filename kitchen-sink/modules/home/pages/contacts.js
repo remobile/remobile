@@ -10,16 +10,19 @@ var Form = UI.Form;
 var View = UI.View;
 
 var ContactItem = React.createClass({
-   render: function() {
+    showContactInfo: function(userid) {
+        var param = {target: userid};
+        app.showView("contactInfo", "up", param);
+    },
+    render: function() {
        var userid = this.props.userid;
        var user = this.props.users[userid];
        var username = user.username||userid;
-       var style =user.online?{color:"#00FF7F"}:{color:"gray"};
        return (
-           <List.ItemContent>
+           <List.ItemContent onTap={this.showContactInfo.bind(this, userid)}>
              <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
                <List.ItemInner>
-                    <List.ItemTitle style={style}>{username}</List.ItemTitle>
+                    <List.ItemTitle style={app.color.usernameColor(user.online)}>{username}</List.ItemTitle>
                </List.ItemInner>
            </List.ItemContent>
         )

@@ -109,7 +109,16 @@ gulp.task('less', function() {
 });
 gulp.task('democss', function() {
     var path = appPath+'css/';
-    return gulp.src(path+'demo.css')
+    return gulp.src([
+        path+'demo.css',
+        path+'chat.css'
+    ])
+    .pipe(concat('demo.css'))
+    .pipe(gulp.dest(destPath+'css'));
+});
+gulp.task('chatcss', function() {
+    var path = appPath+'css/';
+    return gulp.src(path+'chat.css')
     .pipe(gulp.dest(destPath+'css'));
 });
 gulp.task('img', function() {

@@ -17,6 +17,7 @@ var App = React.createClass({
         this.error = utils.error;
         this.constants = utils.constants;
         this.date = utils.date;
+        this.color = utils.color;
         this.callMgr = chat.callMgr;
         this.groupMgr = chat.groupMgr;
         this.messageMgr = chat.messageMgr;
@@ -26,7 +27,6 @@ var App = React.createClass({
         this.loginMgr = chat.loginMgr;
         this.userMgr = chat.userMgr;
         this.userHeadCss = $.createStyleSheet();
-        this.login = {};
         for (var i=0; i<33; i++) {
             $.insertStyleSheet(this.userHeadCss, '.user_head_' + i, 'background-image:url(img/head/'+i+'.jpg)');
         }

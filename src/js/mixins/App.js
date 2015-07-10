@@ -1,4 +1,4 @@
-var xtend = require('xtend/mutable');
+var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
 var Toast = require('../Toast').Toast;
@@ -64,7 +64,7 @@ function App (views) {
             };
         },
         getViewTransition: function (key) {
-            return xtend({
+            return assign({
                 key: key,
                 name: 'view-transition-' + key
             }, TRANSITIONS_INOUT[key]);
@@ -82,9 +82,9 @@ function App (views) {
         },
         showView: function (viewId, transition, param, norecord) {
             var trans = VIEW_TRANSITIONS[transition];
-            var scrollTop = $('.page-content').scrollTop();
+            var p = assign({}, param, {scrollTop: $('.page-content').scrollTop()});
             if (!norecord) {
-                this.history.push({id:this.state.currentView, transition:transition, scrollTop:scrollTop});
+                this.history.push({id:this.state.currentView, transition:transition, param:p});
             }
             this.displayView(viewId, trans? trans.go: 'none', param);
         },
@@ -99,8 +99,7 @@ function App (views) {
             }
             if (obj) {
                 var trans = VIEW_TRANSITIONS[obj.transition];
-                param = param||{};
-                param.scrollTop = obj.scrollTop;
+                param = assign({}, obj.param, param);
                 this.displayView(obj.id, trans? trans.back: 'none', param);
             }
         }

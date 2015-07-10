@@ -15,7 +15,7 @@ module.exports = React.createClass({
 			content = <div className={dcn} onClick={this.props.onTap}>{this.props.children}</div>;
 		}
 		var className = cn({"swipeout": this.props.swipeout});
-		
+
 		return (
 			<li className={className}>
 				{content}
