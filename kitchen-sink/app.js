@@ -94,17 +94,9 @@ var App = React.createClass({
     }
 });
 
-function startApp() {
+function onDeviceReady() {
     React.render(<App />, document.getElementById('app'));
 }
 
-function onDeviceReady() {
-    StatusBar.styleDefault();
-    startApp();
-}
+document.addEventListener('deviceready', onDeviceReady, false);
 
-if (typeof cordova === 'undefined') {
-    startApp();
-} else {
-    document.addEventListener('deviceready', onDeviceReady, false);
-}

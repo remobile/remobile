@@ -923,6 +923,12 @@
             return newNavigator;
         }
         if (window.navigator) {
+            var nav = {};
+            for (var key in window.navigator) {
+                nav[key] = window.navigator[key];
+            }
+            delete window.navigator;
+            window.navigator = nav;
             window.navigator = replaceNavigator(window.navigator);
         }
 
@@ -1566,6 +1572,9 @@ var Media;
     Connection.CELL_4G = "4g";
     Connection.NONE = "none";
 
+    if (navigator.connection) {
+        delete navigator.connection;
+    }
     navigator.connection = {type:Connection.ETHERNET};
     navigator.network = {connection:navigator.connection};
 
@@ -1582,14 +1591,18 @@ var Media;
         } else  if (type == 2) {
             this.el = $('#audio_music')[0];
         }
+        this.support = !!this.el.canPlayType;
         this.el.src = src;
-        this.type = type;
     };
     Media.prototype.play = function () {
-        this.el.play();
+        if (this.support) {
+            this.el.play();
+        }
     };
     Media.prototype.stop = function () {
-        this.el.pause();
+        if (this.support) {
+            this.el.pause();
+        }
     };
     Media.prototype.release = function () {
         this.el = null;
@@ -1608,13 +1621,6 @@ var Media;
                         var customEvent = document.createEvent('HTMLEvents');
                         customEvent.initEvent("backbutton", true, true);
                         document.dispatchEvent(customEvent);
-                        break;
-                    case 77:
-                        var gui = window.require('nw.gui');
-                        var win = gui.Window.get();
-                        if (!win.isDevToolsOpen()) {
-                            win.showDevTools();
-                        }
                         break;
                     default:;
                 }
@@ -1642,9 +1648,7 @@ var Media;
         },
 
         exitApp : function() {
-            var gui = window.require('nw.gui');
-            var win = gui.Window.get();
-            win.close(true);
+            window.close();
         }
     };
     /**********************************************************
@@ -1653,83 +1657,9 @@ var Media;
      */
     navigator.splashscreen = {
         hide: function() {
-            var win = window.require('nw.gui').Window.get();
-            var DEFAULT_SPLASH_TIME = 2000;
-            var delay = DEFAULT_SPLASH_TIME-(new Date().getTime() - win.splashStartTime);
-            if (delay > DEFAULT_SPLASH_TIME) {
-                delay = DEFAULT_SPLASH_TIME;
-            } else if (!delay) {
-                delay = 0;
-            }
-            setTimeout(function() {
-                if (win.splashwin) {
-                    win.splashwin.close(true);
-                }
-                win.show();
-            }, delay);
+            $.query("#afui #splashscreen").remove();
         }
     };
+    navigator._from = "web";
 
-    navigator.camera = {
-        getPicture: function() {
-            app.utils.toast("桌面系统暂时不支持");
-        }
-    };
-    window.Camera = {
-        PictureSourceType: {},
-        DestinationType: {},
-        Direction: {}
-    };
-
-    /**********************************************************
-     *
-     * @FileTransfer define
-     */
-    window.FileTransfer = (function () {
-        var http = window.require('http');
-        var fs = window.require('fs');
-        function FileTransfer(){
-            this.progressEvent = {lengthComputable:true, loaded:0, total:1};
-        }
-        FileTransfer.prototype.download = function(uri, filePath, success, fail){
-            var that = this;
-            var entry = {fullPath:filePath};
-            http.get(uri, function(res) {
-                console.log('download file size:' + res.headers['content-length']);
-                that.progressEvent.total = res.headers['content-length']/2;
-                var chunks = [];
-                var size = 0;
-                res.on('data', function(chunk) {
-                    size += chunk.length;
-                    chunks.push(chunk);
-                    that.progressEvent.loaded += chunk.length;
-                    that.onprogress(that.progressEvent);
-                });
-                res.on('end', function() {
-                    var data = Buffer.concat(chunks, size);
-                    fs.writeFile(filePath, data, function(err) {
-                        if (err) {
-                            console.log('write file error:' + err);
-                            fail({error:'write file error:' + err});
-                        } else {
-                            console.log('download file done ' + entry.fullPath);
-                            success(entry);
-                        }
-                    });
-                });
-                res.on('error', function(err) {
-                    console.log('download file error:' + err);
-                    fail({error:'download file error:' + err});
-                });
-            }).on('error', function(e) {
-                console.log(e.message);
-                fail({error:e.message});
-            });
-        };
-        FileTransfer.prototype.onprogress = function(progressEvent){
-//            console.log(progressEvent);
-        };
-
-        return FileTransfer;
-    })();
 })();
