@@ -24,8 +24,10 @@ module.exports = React.createClass({
         this.forceUpdate();
     },
     systemCall: function() {
+        navigator.utils.callNumber(this.userid);
     },
     systemMessage: function() {
+        navigator.utils.sendSms(this.userid);
     },
     sendMessage: function() {
         var param = {

@@ -93,9 +93,30 @@ var App = React.createClass({
         );
     }
 });
+function adjustWebDisplayRagion() {
+    var el = $('#iphone_device');
+    el.addClass('iphone_device');
+    var width = $(window).width();
+    var height = $(window).height();
+    var ew, eh, eleft, etop;
+    if (width/height > 5/9) {
+        eh = height;
+        ew = eh*5/9;
+    } else {
+        ew = width;
+        eh = ew*9/5;
+    }
+    eleft = width/2 - ew/2;
+    etop = height/2 - eh/2;
+    el.css({'left':eleft+"px", 'top':etop+"px", 'width':ew+"px", 'height':eh+"px"});
 
+    var screen = $('#iphone_screen');
+    screen.addClass('iphone_screen');
+    screen.css({top:100/720*eh+'px', left:32/480*ew+'px', right:32/480*ew+'px', bottom:100/720*eh+'px'});
+}
 function onDeviceReady() {
-    React.render(<App />, document.getElementById('app'));
+    adjustWebDisplayRagion();
+    React.render(<App />, document.getElementById('iphone_screen'));
 }
 
 document.addEventListener('deviceready', onDeviceReady, false);

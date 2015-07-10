@@ -1,7 +1,7 @@
 "use strict";
 var img = 'resource/image/';
 var aud = 'resource/audio/';
-var aud_file_type = (app.target == "web")?"mp3":"wav";
+var aud_file_type = "wav";
 module.exports = {
     //image
     img_transparent: img+'transparent.png',
