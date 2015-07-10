@@ -25,6 +25,7 @@ module.exports = (function() {
 
         this.newestMessage = [];
         this.displayMessage = [];
+        this.displayMessageInfo = {};
         this.getUnreadMessage();
     }
 
@@ -133,6 +134,13 @@ module.exports = (function() {
         this.unreadMessage.total++;
         us.object(constants.MESSAGE_BADGES, obj);
     };
+    MessageMgr.prototype.clearUserUnreadNotify = function(userid) {
+        var obj = this.unreadMessage.users;
+        var cnt = obj[userid]||0;
+        delete obj[userid];
+        this.unreadMessage.total -= cnt;
+        us.object(constants.MESSAGE_BADGES, obj);
+    };
     MessageMgr.prototype.increaseGroupUnreadNotify = function(name, touserid) {
         var obj = this.unreadMessage.group;
         if (!obj[name]) {
@@ -153,18 +161,32 @@ module.exports = (function() {
         }
         this.unreadMessage.total++;
     };
+    MessageMgr.prototype.clearGroupUnreadNotify = function(name) {
+        var obj = this.unreadMessage.group;
+        var cnt = obj[name]||0;
+        delete obj[name];
+        this.unreadMessage.total -= cnt;
+        us.object(constants.GROUP_MESSAGE_BADGES, obj);
+    };
     MessageMgr.prototype.showNewestMessage = function(type, userid, username, time, msg, msgtype, send, touserid) {
+        var display;
         var isGroup = (type===this.GROUP_TYPE);
         var newest_message = {userid:userid, username: username, time: time, msg: msg, msgtype:msgtype, touserid:touserid};
 
         if (isGroup) {
-            this.increaseGroupUnreadNotify(username, touserid);
+            display = this.displayMessageInfo.target===username;
+            if (!(app.state.currentView==="messageInfo" && display)) {
+                this.increaseGroupUnreadNotify(username, touserid);
+            }
             this.newestMessage = _.reject(this.newestMessage, function(item){return item.username==username&&item.type==type});
             this.newestMessage.unshift(assign({type:type, username:username}, newest_message));
             app.db_newest_message.upsert({type: type, username: username}, newest_message);
             console.log("update newest_message_db", {type: type, username: username}, {username: username,time: time, msg: msg, msgtype:msgtype});
         } else {
-            this.increaseUserUnreadNotify(userid);
+            display = this.displayMessageInfo.target===userid;
+            if (!(app.state.currentView==="messageInfo" && display)) {
+                this.increaseUserUnreadNotify(userid);
+            }
             this.newestMessage = _.reject(this.newestMessage, function(item){return item.userid==userid&&item.type==type});
             this.newestMessage.unshift(assign({type:type, userid:userid}, newest_message));
             app.db_newest_message.upsert({type: type, userid: userid}, newest_message);
@@ -179,8 +201,10 @@ module.exports = (function() {
         if (touserid) {
             display_message.touserid = touserid;
         }
-        this.displayMessage.push(display_message);
-        this.emitDisplayMessageChange();
+        if (display) {
+            this.displayMessage.push(display_message);
+            this.emitDisplayMessageChange();
+        }
 
         app.db_history_message.insert(display_message);
         console.log("update history_message_db", display_message);

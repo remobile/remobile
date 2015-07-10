@@ -79,27 +79,35 @@ module.exports = React.createClass({
     },
     componentWillMount: function() {
         this.localStorageEnd = false;
+        var mgr = app.messageMgr;
         var param = this.props.data.param;
-        if (param.type === app.messageMgr.USER_TYPE) {
+        if (param.type === mgr.USER_TYPE) {
             this.isGroup = false;
             this.userid = param.target;
+            mgr.clearUserUnreadNotify(this.userid);
         } else {
             this.isGroup = true;
             this.groupname = param.target;
+            mgr.clearGroupUnreadNotify(this.groupname);
         }
     },
     componentDidMount: function() {
+        var mgr = app.messageMgr;
         app.userMgr.addChangeListener(this._onChange);
-        app.messageMgr.addDisplayMessageChangeListener(this._onMessageChange);
+        mgr.addDisplayMessageChangeListener(this._onMessageChange);
         if (this.isGroup) {
-            app.messageMgr.getGroupMessage(this.groupname);
+            mgr.displayMessageInfo.target = this.groupname;
+            mgr.getGroupMessage(this.groupname);
         } else {
-            app.messageMgr.getUserMessage(this.userid);
+            mgr.displayMessageInfo.target = this.userid;
+            mgr.getUserMessage(this.userid);
         }
     },
     componentWillUnmount: function() {
         app.userMgr.removeChangeListener(this._onChange);
-        app.messageMgr.removeDisplayMessageChangeListener(this._onMessageChange);
+        var mgr = app.messageMgr;
+        mgr.removeDisplayMessageChangeListener(this._onMessageChange);
+        mgr.displayMessageInfo = {};
     },
     _onMessageChange: function() {
         if (this.refreshing) {
