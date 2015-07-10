@@ -69,27 +69,27 @@ var ListItem = React.createClass({
 
 
 module.exports = React.createClass({
-	componentDidMount: function() {
-  	var container = $(this.refs.searchbar.getDOMNode());
-  	var params = {
-  		searchList: $(this.refs.searchlist.getDOMNode()).find('.searchbar-found')
-  	};
-  	this.props.searchbar = UI.Search.Search.Searchbar(container, params);		
-  },
-  componentWillUnmount: function() {
-		this.props.searchbar.destroy();
-	},
-	render: function() {
-		return (
-			<View.Page title="Search">
-				<UI.Search.Search ref="searchbar"/>
-				<UI.Search.SearchOverlay />
-				<View.PageContent>
-			   	<UI.Search.SearchList ref="searchlist">
-			   		{persons.map((person, i)=>{return <ListItem key={i}>{person}</ListItem>})}
-          </UI.Search.SearchList>
-				</View.PageContent>
-       </View.Page>
-		);
-	}
+    componentDidMount: function() {
+        var container = $(this.refs.searchbar.getDOMNode());
+        var params = {
+            searchList: $(this.refs.searchlist.getDOMNode()).find('.searchbar-found')
+        };
+        this.searchbar = UI.Search.Search.Searchbar(container, params);
+    },
+    componentWillUnmount: function() {
+        this.searchbar.destroy();
+    },
+    render: function() {
+        return (
+            <View.Page title="Search">
+                <UI.Search.Search ref="searchbar"/>
+                <UI.Search.SearchOverlay />
+                <View.PageContent>
+                    <UI.Search.SearchList ref="searchlist">
+                        {persons.map((person, i)=>{return <ListItem key={i}>{person}</ListItem>})}
+                    </UI.Search.SearchList>
+                </View.PageContent>
+            </View.Page>
+        );
+    }
 });

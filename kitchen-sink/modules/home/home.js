@@ -66,23 +66,23 @@ module.exports = React.createClass({
 			  	{this.state.page===1&&<IndexedList />}
 	            <View.Toolbar tabbar labels>
 	                <View.ToolbarButton active={this.state.page===0}
-	                    icon={["icon-camera", "icon-back"]}
+	                    icon="ion-social-windows-outline"
 	                    onTap={this.switchPage.bind(this, 0)}>
 	                        Home
 	                </View.ToolbarButton>
 	                <View.ToolbarButton active={this.state.page===1}
-	                    icon={["icon-camera", "icon-back"]}
+	                    icon="ion-android-contacts"
 	                    onTap={this.switchPage.bind(this, 1)}>
 	                        Contacts
 	                </View.ToolbarButton>
 	                <View.ToolbarButton active={this.state.page===2}
-	                    icon={["icon-camera", "icon-back"]}
+	                    icon="ion-chatbubble-working"
                         badge={(this.state.messageBadge>0)&&<Badge color="red">{this.state.messageBadge}</Badge>}
 	                    onTap={this.switchPage.bind(this, 2)}>
 	                        Messages
 	                </View.ToolbarButton>
 	                <View.ToolbarButton active={this.state.page===3}
-	                    icon={["icon-camera", "icon-back"]}
+	                    icon="ion-settings"
 	                    onTap={this.switchPage.bind(this, 3)}>
 	                        More
 	                </View.ToolbarButton>

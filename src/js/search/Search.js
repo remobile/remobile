@@ -23,7 +23,7 @@ var Searchbar = function (container, params) {
             params[def] = defaults[def];
         }
     }
-    
+
     // Instance
     var s = this;
 
@@ -182,7 +182,7 @@ var Searchbar = function (container, params) {
 
     function removeDiacritics (str) {
         return str.replace(/[^\u0000-\u007E]/g, function(a){ 
-           return diacriticsMap[a] || a; 
+            return diacriticsMap[a] || a; 
         });
     }
 
@@ -215,7 +215,7 @@ var Searchbar = function (container, params) {
         s.input.val('').trigger('change');
         s.container.removeClass('searchbar-active searchbar-not-empty');
         if (s.cancelButton.length > 0) s.cancelButton.css(cancelMarginProp, -s.cancelButton[0].offsetWidth + 'px');
-        
+
         if (s.searchList.length || s.params.customSearch) s.overlay.removeClass('searchbar-overlay-active');
         function _disable() {
             s.input.blur();
@@ -274,7 +274,7 @@ var Searchbar = function (container, params) {
             s.triggerEvent('search', {query: query});
             return;
         }
-        
+
         var foundItems = [];
         if (s.isVirtualList) {
             virtualList = s.searchList[0].f7VirtualList;
@@ -395,26 +395,22 @@ var Searchbar = function (container, params) {
         s = null;
     };
 
-    // Init
     s.init();
-
-    s.container[0].f7Searchbar = s;
     return s;
-
 };
 
 module.exports =  React.createClass({
-	render: function() {
-		return (
-			<form className="searchbar">
-	      <div className="searchbar-input">
-	        <input type="search" placeholder="Search"/>
-	        <a href="#" className="searchbar-clear"></a>
-	      </div>
-	      <a href="#" className="searchbar-cancel">Cancel</a>
-	    </form>
-		);
-	}
+    render: function() {
+        return (
+            <form className="searchbar">
+                <div className="searchbar-input">
+                    <input type="search" placeholder="Search"/>
+                    <a href="#" className="searchbar-clear"></a>
+                </div>
+                <a href="#" className="searchbar-cancel">Cancel</a>
+            </form>
+        );
+    }
 });
 module.exports.Searchbar =  function (container, params) {
     return new Searchbar(container, params);
