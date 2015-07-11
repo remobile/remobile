@@ -50,6 +50,8 @@ module.exports = {
 	'register': require('./login/register'),
 	'messageInfo': require('./message/messageInfo'),
 	'contactInfo': require('./contact/contactInfo'),
+	'audioCall': require('./call/audioCall'),
+	'videoCall': require('./call/videoCall'),
    //icons
 	'icons': require('./common/icons')
 };

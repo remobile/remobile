@@ -37,8 +37,16 @@ module.exports = React.createClass({
         app.showView('messageInfo', 'fade', param);
     },
     audioCall: function() {
+        var param = {
+            target: this.userid
+        };
+        app.showView('audioCall', 'fade', param);
     },
     videoCall: function() {
+        var param = {
+            target: this.userid
+        };
+        app.showView('videoCall', 'fade', param);
     },
 	render: function() {
         var userid = this.userid;
