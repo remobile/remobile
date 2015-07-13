@@ -28,10 +28,14 @@ module.exports = (function() {
         app.loginMgr.onLogin(obj);
     };
     Router.prototype.ON_USER_LOGIN_NF = function(obj) {
-        app.userMgr.online(obj);
+        if (app.loginMgr.online) {
+            app.userMgr.online(obj);
+        }
     };
     Router.prototype.ON_USER_LOGOUT_NF = function(obj) {
-        app.userMgr.offline(obj);
+        if (app.loginMgr.online) {
+            app.userMgr.offline(obj);
+        }
     };
     Router.prototype.ON_USERS_LIST_NF = function(obj) {
         app.userMgr.addList(obj);

@@ -10,36 +10,40 @@ var Icon = UI.Icon.Icon;
 var Badge = UI.Badge.Badge;
 var Button = UI.Button.Button;
 
-var SHOW_CALLIN_BUTTON = 0;
-var SHOW_CALLOUT_BUTTON = 1;
+var SHOW_NONE_BUTTON = 0;
+var SHOW_CALLIN_BUTTON = 1;
+var SHOW_CALLOUT_BUTTON = 2;
 
 module.exports = React.createClass({
     componentWillMount: function() {
         var param = this.props.data.param;
-        this.userid = param.target;
+        this.userid = param.userid;
         this.localLarge = true;
         var callid = param.callid;
         if (callid != null) {
             this.answer = true;
             this.callid = callid;
+            this.state.showButton = SHOW_CALLIN_BUTTON;
         } else {
             this.answer = false;
+            this.state.showButton = SHOW_CALLOUT_BUTTON;
         }
     },
     componentDidMount: function() {
         var mgr = app.callMgr;
+        var self = this;
 
         this.smallView = this.refs.smallView.getDOMNode();
         this.largeView = this.refs.largeView.getDOMNode();
 
         mgr.addCallChangeListener(this._onChange);
         this.updateVideoView();
-        mgr.updateTime(function(time, status) {
-            this.setState({time:time, status:status});
-        });
         if (!this.answer) {
             this.callid = mgr.callOut(this.userid, mgr.VIDEO_TYPE);
         }
+        mgr.updateTime(function(time, status) {
+            self.setState({time:time, status:status});
+        });
     },
     componentWillUnmount: function() {
         this.hangupVideoCall();
@@ -71,12 +75,22 @@ module.exports = React.createClass({
     },
     getInitialState: function() {
         return {
-            status: '空闲中...',
-            time: '00:00:00',
-            showButton: this.answer?SHOW_CALLIN_BUTTON:SHOW_CALLOUT_BUTTON
+            status: '',
+            time: '',
+            showButton:SHOW_NONE_BUTTON
         }
     },
     toggleVideoView: function() {
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
+        console.log("==================toggleVideoView");
         this.localLarge = !this.localLarge;
         this.updateVideoView();
     },
@@ -155,27 +169,27 @@ module.exports = React.createClass({
             <View.Page title="Video Call">
                 <View.PageContent>
                     <div className="video_call_status_container">
-                        <div className="chat_head video_call_head default_head"></div>
+                        <div className={"chat_head video_call_head default_head user_head_"+userid}></div>
                         <div className="video_call_status">
                             <div>fang</div>
-                            <div className="call_state" style={{color:"red"}}>呼叫中</div>
-                            <div className="call_time">00:00:00</div>
+                            <div className="call_state" style={{color:"red"}}>{this.state.status}</div>
+                            <div className="call_time">{this.state.time}</div>
                         </div>
                     </div>
                     <div className="video_small_screen" ref="smallView" onclick={this.toggleVideoView}></div>
                     <div className="video_large_screen" ref="largeView" onclick={this.toggleVideoView}></div>
                     <div className="vidc_panel">
-                        this.state.showButton===SHOW_CALLOUT_BUTTON?<Content.ContentBlock>
+                        {this.state.showButton===SHOW_CALLOUT_BUTTON&&<Content.ContentBlock>
                             <Grid.Row>
                                 <Grid.Col><Button big fill color="red" onTap={this.hangupVideoCall}>挂断</Button></Grid.Col>
                             </Grid.Row>
-                        </Content.ContentBlock>
-                        this.state.showButton===SHOW_CALLIN_BUTTON?<Content.ContentBlock>
+                        </Content.ContentBlock>}
+                        {this.state.showButton===SHOW_CALLIN_BUTTON&&<Content.ContentBlock>
                             <Grid.Row>
                                 <Grid.Col per={50}><Button big fill color="green" onTap={this.answerVideoCall}>接听</Button></Grid.Col>
                                 <Grid.Col per={50}><Button big fill color="red" onTap={this.refuseVideoCall}>挂断</Button></Grid.Col>
                             </Grid.Row>
-                        </Content.ContentBlock>
+                        </Content.ContentBlock>}
                     </div>
                 </View.PageContent>
             </View.Page>

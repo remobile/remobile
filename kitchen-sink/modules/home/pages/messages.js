@@ -12,9 +12,13 @@ var View = UI.View;
 var MessageItem = React.createClass({
     showMessageInfo: function(type, target) {
         var param = {
-            type: type,
-            target: target
+            type: type
         };
+        if (type===app.messageMgr.GROUP_TYPE) {
+            param["groupname"] = target;
+        } else {
+            param["userid"] = target;
+        }
         app.showView('messageInfo', 'fade', param);
     },
     render: function() {
@@ -31,7 +35,7 @@ var MessageItem = React.createClass({
             var badge = app.messageMgr.unreadMessage.group[groupname];
             return (
                 <List.ItemContent>
-                    <List.ItemMedia><Icon name={"icon-default-head user_head_"+groupname} round/></List.ItemMedia>
+                    <List.ItemMedia><Icon name={"default_head user_head_"+groupname} round/></List.ItemMedia>
                     <List.ItemInner onTap={this.showMessageInfo.bind(this, msg.type, groupname)}>
                         <List.ItemTitleRow>
                             <List.ItemTitle>
@@ -54,7 +58,7 @@ var MessageItem = React.createClass({
             var badge = app.messageMgr.unreadMessage.users[userid];
             return (
                 <List.ItemContent>
-                    <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
+                    <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
                     <List.ItemInner onTap={this.showMessageInfo.bind(this, msg.type, userid)}>
                         <List.ItemTitleRow>
                             <List.ItemTitle style={style}>{username}</List.ItemTitle>

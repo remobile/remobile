@@ -11,7 +11,7 @@ var View = UI.View;
 
 var ContactItem = React.createClass({
     showContactInfo: function(userid) {
-        var param = {target: userid};
+        var param = {userid: userid};
         app.showView("contactInfo", "up", param);
     },
     render: function() {
@@ -20,7 +20,7 @@ var ContactItem = React.createClass({
        var username = user.username||userid;
        return (
            <List.ItemContent onTap={this.showContactInfo.bind(this, userid)}>
-             <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
+             <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
                <List.ItemInner>
                     <List.ItemTitle style={app.color.usernameColor(user.online)}>{username}</List.ItemTitle>
                </List.ItemInner>

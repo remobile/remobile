@@ -18,6 +18,7 @@ var App = React.createClass({
         this.constants = utils.constants;
         this.date = utils.date;
         this.color = utils.color;
+        this.sound = utils.sound;
         this.callMgr = chat.callMgr;
         this.groupMgr = chat.groupMgr;
         this.messageMgr = chat.messageMgr;
@@ -27,13 +28,9 @@ var App = React.createClass({
         this.loginMgr = chat.loginMgr;
         this.userMgr = chat.userMgr;
         this.userHeadCss = $.createStyleSheet();
-        for (var i=0; i<33; i++) {
-            $.insertStyleSheet(this.userHeadCss, '.user_head_' + i, 'background-image:url(img/head/'+i+'.jpg)');
-        }
+
         //welcome.showWelcome();
         app.socketMgr.start("http://localhost:8000");
-    },
-    playSound: function(src) {
     },
     showError: function(error) {
         this.toast(error);
@@ -110,13 +107,16 @@ function adjustWebDisplayRagion() {
     etop = height/2 - eh/2;
     el.css({'left':eleft+"px", 'top':etop+"px", 'width':ew+"px", 'height':eh+"px"});
 
-    var screen = $('#iphone_screen');
-    screen.addClass('iphone_screen');
-    screen.css({top:100/720*eh+'px', left:32/480*ew+'px', right:32/480*ew+'px', bottom:100/720*eh+'px'});
+    el = $('#iphone_screen');
+    el.addClass('iphone_screen');
+    el.css({'top':100/720*eh+'px', 'left':32/480*ew+'px', 'right':32/480*ew+'px', 'bottom':100/720*eh+'px'});
+
+    el = $('#app');
+    el.css({'position':'relative', 'width':416/480*ew+"px", 'height':520/720*eh+"px"});
 }
 function onDeviceReady() {
-    adjustWebDisplayRagion();
-    React.render(<App />, document.getElementById('iphone_screen'));
+    //adjustWebDisplayRagion();
+    React.render(<App />, document.getElementById('app'));
 }
 
 document.addEventListener('deviceready', onDeviceReady, false);

@@ -10,30 +10,34 @@ var Icon = UI.Icon.Icon;
 var Badge = UI.Badge.Badge;
 var Button = UI.Button.Button;
 
-var SHOW_CALLIN_BUTTON = 0;
-var SHOW_CALLOUT_BUTTON = 1;
+var SHOW_NONE_BUTTON = 0;
+var SHOW_CALLIN_BUTTON = 1;
+var SHOW_CALLOUT_BUTTON = 2;
 
 module.exports = React.createClass({
     componentWillMount: function() {
         var param = this.props.data.param;
-        this.userid = param.target;
+        this.userid = param.userid;
         var callid = param.callid;
         if (callid != null) {
             this.answer = true;
             this.callid = callid;
+            this.state.showButton = SHOW_CALLIN_BUTTON;
         } else {
             this.answer = false;
+            this.state.showButton = SHOW_CALLOUT_BUTTON;
         }
     },
     componentDidMount: function() {
         var mgr = app.callMgr;
+        var self = this;
         mgr.addCallChangeListener(this._onChange);
-        mgr.updateTime(function(time, status) {
-            this.setState({time:time, status:status});
-        });
         if (!this.answer) {
             this.callid = mgr.callOut(this.userid, mgr.AUDIO_TYPE);
         }
+        mgr.updateTime(function(time, status) {
+            self.setState({time:time, status:status});
+        });
     },
     componentWillUnmount: function() {
         this.hangupAudioCall();
@@ -65,9 +69,9 @@ module.exports = React.createClass({
     },
     getInitialState: function() {
         return {
-            status: '空闲中...',
-            time: '00:00:00',
-            showButton: this.answer?SHOW_CALLIN_BUTTON:SHOW_CALLOUT_BUTTON
+            status: '',
+            time: '',
+            showButton:SHOW_NONE_BUTTON
         }
     },
     onSessionAnswer: function(userid, callid) {
@@ -137,17 +141,17 @@ module.exports = React.createClass({
                     <div style={{color:"red"}}>{this.state.status}</div>
                     <div style={{color:"dimgray"}}>{this.state.time}</div>
                 </div>
-                this.state.showButton===SHOW_CALLOUT_BUTTON?<Content.ContentBlock>
+                {this.state.showButton===SHOW_CALLOUT_BUTTON&&<Content.ContentBlock>
                     <Grid.Row>
                         <Grid.Col><Button big fill color="red" onTap={this.hangupAudioCall}>挂断</Button></Grid.Col>
                     </Grid.Row>
-                </Content.ContentBlock>
-                this.state.showButton===SHOW_CALLIN_BUTTON?<Content.ContentBlock>
+                </Content.ContentBlock>}
+                {this.state.showButton===SHOW_CALLIN_BUTTON&&<Content.ContentBlock>
                     <Grid.Row>
                         <Grid.Col per={50}><Button big fill color="green" onTap={this.answerAudioCall}>接听</Button></Grid.Col>
                         <Grid.Col per={50}><Button big fill color="red" onTap={this.refuseAudioCall}>挂断</Button></Grid.Col>
                     </Grid.Row>
-                </Content.ContentBlock>
+                </Content.ContentBlock>}
             </View.PageContent>
             </View.Page>
         );

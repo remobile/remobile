@@ -29,31 +29,6 @@
         restart: function() {
             window.location.reload();
         },
-        toast: function(message, timeout) {
-            var context = $('#afui').parent();
-            var id = "jfbToastMessage";
-            timeout = timeout||1000;
-
-            $("#"+id).remove();
-            var msgDIV = new Array();
-            msgDIV.push('<div id="'+id+'">');
-            msgDIV.push('<span>'+message+'</span>');
-            msgDIV.push('</div>');
-            var msgEntity = $(msgDIV.join('')).appendTo(context);
-            var span = msgEntity.find('span')[0];
-
-            var left = context.width()*0.5-span.offsetWidth*0.55+"px";
-            var bottom = span.offsetHeight+"px";
-            msgEntity.css({position:'absolute','z-index':'2000000',bottom:bottom,left:left,'background-color':'black',color:'white','font-size':'18px',padding:'10px',margin:'10px', 'border-radius':'5px'});
-
-            var actions = new $.css3AnimateQueue();
-            actions.push({ id: id,opacity: 0, time: "0ms",previous: true});
-            actions.push({ id: id,opacity: 1, time: "200ms",previous: true});
-            actions.push({ id: id,opacity: 1, time: timeout+"ms",previous: true});
-            actions.push({ id: id,opacity: 0, time: "600ms",previous: true});
-            actions.push(function(){msgEntity.remove()});
-            actions.run();
-        },
         setupAudio: function() {
             $('body').append('<audio id="audio_sound" style="display:none"></audio>');
             $('body').append('<audio id="audio_ring" style="display:none" loop></audio>');

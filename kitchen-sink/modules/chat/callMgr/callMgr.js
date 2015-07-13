@@ -33,37 +33,39 @@ module.exports = (function() {
     }
 
     CallMgr.prototype.emitCallChange = function(data) {
-        this.emit("call_state_change", data);
+        this.emit("call_change", data);
     };
     CallMgr.prototype.addCallChangeListener = function(callback) {
-        this.on("call_state_change", callback);
+        this.on("call_change", callback);
     };
     CallMgr.prototype.removeCallChangeListener = function(callback) {
-        this.removeListener("call_state_change", callback);
+        this.removeListener("call_change", callback);
     };
     CallMgr.prototype.updateTime = function(callback) {
-        var time = this.time;
+        var self = app.callMgr;
+        var time = self.time;
         var STATUS = ['空闲中...', '拨号中...','电话呼入...', '通话中...', '对方正在通话中', '对方拒绝接听', '对方终止了电话',  '对方不在线', '断开了连接'];
 
-        if (this.state === this.STATE_FREE) {
+        if (self.state===self.STATE_FREE) {
             return;
         }
-
-        time.second++;
-        if (time.second === 60) {
-            time.second = 0;
-            time.minute++;
-            if (time.minute === 60) {
-                time.minute = 0;
-                time.hour++;
+        if (self.state!==self.STATE_HANGUP&&self.state!==self.STATE_REFUSE) {
+            time.second++;
+            if (time.second === 60) {
+                time.second = 0;
+                time.minute++;
+                if (time.minute === 60) {
+                    time.minute = 0;
+                    time.hour++;
+                }
             }
         }
         var hour = time.hour;
         var minute = time.minute;
         var second = time.second;
         time = (hour<10?'0':'')+hour+':'+(minute<10?'0':'')+minute+':'+(second<10?'0':'')+second;
-        callback(time, STATUS[this.state]);
-        setTimeout(this.updateTime, 1000, callback);
+        callback(time, STATUS[self.state]);
+        setTimeout(self.updateTime, 1000, callback);
     };
     CallMgr.prototype.increaseCallId = function() {
         this.callid++;
@@ -98,7 +100,7 @@ module.exports = (function() {
         });
         session.on('answer', function () {
             console.log('he/she is answered');
-            this.emitCallChange({type:"ON_SESSION_ANSWER", userid:userid, callid:callid});
+            self.emitCallChange({type:"ON_SESSION_ANSWER", userid:userid, callid:callid});
         });
         session.on('disconnect', function () {
             if (self.state === self.STATE_CALLOUT || self.state === self.STATE_CALLIN || self.state === self.STATE_CALLING ) {
@@ -144,7 +146,7 @@ module.exports = (function() {
                 if (self.state === self.STATE_ERROR) {
                     app.sound.stopRing();
                     self.state = self.STATE_FREE;
-                    self.emitCallChange({type:"ON_CALLOUT_ERROR", callid:callid});
+                    self.emitCallChange({type:"ON_CALLOUT_ERROR", callid:obj.callid});
                 }
             }, this.delay);
         }
@@ -181,7 +183,7 @@ module.exports = (function() {
         console.log('onCallInReplyNotify', obj);
         if (obj.answer === 0) {
             console.log("he/she answer call");
-            this.emitCallChange({type:"ON_CALLOUT_ANSWERED", callid:callid});
+            this.emitCallChange({type:"ON_CALLOUT_ANSWERED", callid:obj.callid});
             this.call(true, obj.userid, obj.type, obj.callid);
             this.time = {hour:0, minute:0, second:0};
             app.sound.stopRing();
@@ -195,7 +197,7 @@ module.exports = (function() {
                 if (self.state === self.STATE_REFUSE) {
                     app.sound.stopRing();
                     self.state = self.STATE_FREE;
-                    self.emitCallChange({type:"ON_CALLOUT_REFUSED", callid:callid});
+                    self.emitCallChange({type:"ON_CALLOUT_REFUSED", callid:obj.callid});
                 }
             }, this.delay);
         } else {
@@ -207,7 +209,7 @@ module.exports = (function() {
                 if (self.state === self.STATE_BUSY) {
                     app.sound.stopRing();
                     self.state = self.STATE_FREE;
-                    self.emitCallChange({type:"ON_CALLOUT_REFUSED", callid:callid});
+                    self.emitCallChange({type:"ON_CALLOUT_REFUSED", callid:obj.callid});
                 }
             }, this.longdelay);
         }
@@ -229,18 +231,19 @@ module.exports = (function() {
         console.log("i hang up call");
     };
     CallMgr.prototype.onCallHangupNotify = function(obj) {
-        this.emitCallChange({type:"ON_PRE_CALL_HANGUP_NOTIFY", callid:callid});
+        this.emitCallChange({type:"ON_PRE_CALL_HANGUP_NOTIFY", callid:obj.callid});
         if (this.state === this.STATE_FREE) {
             return;
         }
         console.log('onCallHangupNotify', obj);
         app.sound.playRing(app.resource.aud_hangup);
         this.state = this.STATE_HANGUP;
+        var self = this;
         setTimeout(function() {
-            if (this.state === this.STATE_HANGUP) {
-                this.emitCallChange({type:"ON_CALL_HANGUP_NOTIFY", callid:callid});
+            if (self.state === self.STATE_HANGUP) {
+                self.emitCallChange({type:"ON_CALL_HANGUP_NOTIFY", callid:obj.callid});
                 app.sound.stopRing();
-                this.state = this.STATE_FREE;
+                self.state = self.STATE_FREE;
             }
         }, this.delay);
         var session = this.session;

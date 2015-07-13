@@ -12,7 +12,7 @@ var Button = UI.Button.Button;
 
 module.exports = React.createClass({
     componentWillMount: function() {
-        this.userid = this.props.data.param.target;
+        this.userid = this.props.data.param.userid;
     },
     componentDidMount: function() {
         app.userMgr.addChangeListener(this._onChange);
@@ -32,19 +32,27 @@ module.exports = React.createClass({
     sendMessage: function() {
         var param = {
             type: app.messageMgr.USER_TYPE,
-            target: this.userid
+            userid: this.userid
         };
         app.showView('messageInfo', 'fade', param);
     },
-    audioCall: function() {
+    audioCall: function(online) {
+        if (!online) {
+            app.toast("对方不在线");
+            return;
+        }
         var param = {
-            target: this.userid
+            userid: this.userid
         };
         app.showView('audioCall', 'fade', param);
     },
-    videoCall: function() {
+    videoCall: function(online) {
+        if (!online) {
+            app.toast("对方不在线");
+            return;
+        }
         var param = {
-            target: this.userid
+            userid: this.userid
         };
         app.showView('videoCall', 'fade', param);
     },
@@ -53,6 +61,7 @@ module.exports = React.createClass({
         var user = app.userMgr.users[userid];
         var username = user.username||userid;
         var sign = user.sign||"这个家伙很懒，什么都没有留下";
+        var callButtonColor = user.online?"green":"gray";
         return (
             <View.Page title="Contact Info">
             <View.PageContent>
@@ -83,8 +92,8 @@ module.exports = React.createClass({
                 </Content.ContentBlock>
                 <Content.ContentBlock>
                     <Grid.Row>
-                        <Grid.Col per={50}><Button big fill color="blue" onTap={this.audioCall}>Audio Call</Button></Grid.Col>
-                        <Grid.Col per={50}><Button big fill color="blue" onTap={this.videoCall}>Video Call</Button></Grid.Col>
+                        <Grid.Col per={50}><Button big fill color={callButtonColor} onTap={this.audioCall.bind(null, user.online)}>Audio Call</Button></Grid.Col>
+                        <Grid.Col per={50}><Button big fill color={callButtonColor} onTap={this.videoCall.bind(null, user.online)}>Video Call</Button></Grid.Col>
                     </Grid.Row>
                 </Content.ContentBlock>
             </View.PageContent>

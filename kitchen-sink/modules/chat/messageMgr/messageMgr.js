@@ -242,7 +242,7 @@ module.exports = (function() {
         navigator.utils.addNotification(MESSAGE_NOTIFY_ID, username, message);
     };
     MessageMgr.prototype.showUserMessage = function(obj) {
-        app.playSound(app.resource.aud_message_tip);
+        app.sound.playSound(app.resource.aud_message_tip);
         if (obj.type == this.USER_TYPE) {
             var allUsers = app.userMgr.users;
             var username = allUsers[obj.from].username;
@@ -260,7 +260,7 @@ module.exports = (function() {
     };
     MessageMgr.prototype.noticeNewMessage = function(obj) {
         return;
-        app.playSound(app.resource.aud_new_message);
+        app.sound.playSound(app.resource.aud_new_message);
     };
     MessageMgr.prototype.showOfflineMessage = function(obj) {
         if (!app.uiMessage.hasUpdateLogMessage) {

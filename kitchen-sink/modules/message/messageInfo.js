@@ -83,11 +83,11 @@ module.exports = React.createClass({
         var param = this.props.data.param;
         if (param.type === mgr.USER_TYPE) {
             this.isGroup = false;
-            this.userid = param.target;
+            this.userid = param.userid;
             mgr.clearUserUnreadNotify(this.userid);
         } else {
             this.isGroup = true;
-            this.groupname = param.target;
+            this.groupname = param.groupname;
             mgr.clearGroupUnreadNotify(this.groupname);
         }
     },

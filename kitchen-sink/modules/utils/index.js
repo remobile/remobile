@@ -3,5 +3,6 @@ module.exports = {
 	error: require('./error'),
 	userSetting: require('./userSetting'),
 	date: require('./date'),
-	color: require('./color')
+	color: require('./color'),
+	sound: require('./sound')
 };
