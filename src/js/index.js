@@ -17,7 +17,6 @@ module.exports = {
 	Picker: require('./picker'),
 	Refresh: require('./refresh'),
 	Search: require('./search'),
-	Select: require('./select'),
 	Welcome: require('./welcome'),
 	System: require('./system'),
 	View: require('./view')

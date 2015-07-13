@@ -1,51 +1,59 @@
+var EventEmitter = require('events').EventEmitter;
+var assign = require("object-assign");
+var us = require('../../utils/userSetting');
+var constants = require('../../utils/constants');
+
 module.exports = (function() {
     "use strict";
-    var _self;
 
     function CallMgr() {
-        _self = this;
-        _self.callid = localStorage.callid||1;
+        assign(this, EventEmitter.prototype);
+
+        this.callid = localStorage.callid||1;
         //call type
-        _self.AUDIO_TYPE = 0;
-        _self.VIDEO_TYPE = 1;
+        this.AUDIO_TYPE = 0;
+        this.VIDEO_TYPE = 1;
 
         //call state
-        _self.STATE_FREE = 0;    //next: STATE_CALLOUT STATE_CALLIN
-        _self.STATE_CALLOUT = 1; //next: STATE_ERROR STATE_BUSY STATE_REFUSE STATE_CALLING STATE_DISCONNECT
-        _self.STATE_CALLIN = 2;  //next: STATE_FREE STATE_CALLING STATE_DISCONNECT
-        _self.STATE_CALLING = 3; //next: STATE_HANGUP STATE_DISCONNECT
-        _self.STATE_BUSY = 4;    //next: STATE_FREE
-        _self.STATE_REFUSE = 5;  //next: STATE_FREE
-        _self.STATE_HANGUP = 6;  //next: STATE_FREE
-        _self.STATE_ERROR = 7;  //next: STATE_FREE
-        _self.STATE_DISCONNECT = 8;  //next: STATE_FREE
+        this.STATE_FREE = 0;    //next: STATE_CALLOUT STATE_CALLIN
+        this.STATE_CALLOUT = 1; //next: STATE_ERROR STATE_BUSY STATE_REFUSE STATE_CALLING STATE_DISCONNECT
+        this.STATE_CALLIN = 2;  //next: STATE_FREE STATE_CALLING STATE_DISCONNECT
+        this.STATE_CALLING = 3; //next: STATE_HANGUP STATE_DISCONNECT
+        this.STATE_BUSY = 4;    //next: STATE_FREE
+        this.STATE_REFUSE = 5;  //next: STATE_FREE
+        this.STATE_HANGUP = 6;  //next: STATE_FREE
+        this.STATE_ERROR = 7;  //next: STATE_FREE
+        this.STATE_DISCONNECT = 8;  //next: STATE_FREE
 
-        _self.state = _self.STATE_FREE;
-        _self.delay = 3000;
-        _self.longdelay = 10000;
-        _self.session = null;
-        _self.time = {hour:0, minute:0, second:0};
+        this.state = this.STATE_FREE;
+        this.delay = 3000;
+        this.longdelay = 10000;
+        this.session = null;
+        this.time = {hour:0, minute:0, second:0};
     }
 
-    CallMgr.prototype.parent = function(type) {
-        if (type == _self.VIDEO_TYPE) {
-            return app.videoCall;
-        }
-        return app.audioCall;
+    CallMgr.prototype.emitCallChange = function(data) {
+        this.emit("call_state_change", data);
+    };
+    CallMgr.prototype.addCallChangeListener = function(callback) {
+        this.on("call_state_change", callback);
+    };
+    CallMgr.prototype.removeCallChangeListener = function(callback) {
+        this.removeListener("call_state_change", callback);
     };
     CallMgr.prototype.updateTime = function(callback) {
-        var time = _self.time;
-        var STATES = ['空闲中...', '拨号中...','电话呼入...', '通话中...', '对方正在通话中', '对方拒绝接听', '对方终止了电话',  '对方不在线', '断开了连接'];
+        var time = this.time;
+        var STATUS = ['空闲中...', '拨号中...','电话呼入...', '通话中...', '对方正在通话中', '对方拒绝接听', '对方终止了电话',  '对方不在线', '断开了连接'];
 
-        if (_self.state == _self.STATE_FREE) {
+        if (this.state === this.STATE_FREE) {
             return;
         }
 
         time.second++;
-        if (time.second == 60) {
+        if (time.second === 60) {
             time.second = 0;
             time.minute++;
-            if (time.minute == 60) {
+            if (time.minute === 60) {
                 time.minute = 0;
                 time.hour++;
             }
@@ -54,18 +62,19 @@ module.exports = (function() {
         var minute = time.minute;
         var second = time.second;
         time = (hour<10?'0':'')+hour+':'+(minute<10?'0':'')+minute+':'+(second<10?'0':'')+second;
-        callback(time, STATES[_self.state]);
-        setTimeout(_self.updateTime, 1000, callback);
+        callback(time, STATUS[this.state]);
+        setTimeout(this.updateTime, 1000, callback);
     };
     CallMgr.prototype.increaseCallId = function() {
-        _self.callid++;
-        if (!_self.callid) {
-            _self.callid = 1;
+        this.callid++;
+        if (!this.callid) {
+            this.callid = 1;
         }
-        localStorage.callid = _self.callid;
+        localStorage.callid = this.callid;
     };
     CallMgr.prototype.call = function(isInitiator, userid, type, callid) {
         console.log('calling to ' + userid + ', isInitiator: ' + isInitiator + ', type:' + type);
+        var self = this;
         var config = {
             isInitiator: isInitiator,
             turn: {
@@ -75,7 +84,7 @@ module.exports = (function() {
             },
             streams: {
                 audio: true,
-                video: type==_self.VIDEO_TYPE
+                video: type===this.VIDEO_TYPE
             }
         };
         var session = new navigator.phonertc.Session(config);
@@ -89,151 +98,154 @@ module.exports = (function() {
         });
         session.on('answer', function () {
             console.log('he/she is answered');
-            _self.parent(type).onSessionAnswer(userid, callid);
+            this.emitCallChange({type:"ON_SESSION_ANSWER", userid:userid, callid:callid});
         });
         session.on('disconnect', function () {
-            if (_self.state == _self.STATE_CALLOUT || _self.state == _self.STATE_CALLIN || _self.state == _self.STATE_CALLING ) {
+            if (self.state === self.STATE_CALLOUT || self.state === self.STATE_CALLIN || self.state === self.STATE_CALLING ) {
                 console.log('session disconnected');
-                _self.parent(type).onPreCallHangupNotify(callid);
-                app.utils.playRing(app.resource.aud_hangup);
-                _self.state = _self.STATE_DISCONNECT;
+                self.state = self.STATE_DISCONNECT;
+                self.emitCallChange({type:"ON_PRE_CALL_HANGUP_NOTIFY", callid:callid});
+                app.sound.playRing(app.resource.aud_hangup);
                 app.emit('CALL_HANGUP_RQ', {userid: userid, type: type, callid: callid});
                 setTimeout(function() {
-                    if (_self.state == _self.STATE_DISCONNECT) {
-                        _self.parent(type).onCallHangupNotify(callid);
-                        app.utils.stopRing();
-                        _self.state = _self.STATE_FREE;
+                    if (self.state === self.STATE_DISCONNECT) {
+                        app.sound.stopRing();
+                        self.emitCallChange({type:"ON_CALL_HANGUP_NOTIFY", callid:callid});
+                        self.state = self.STATE_FREE;
                     }
-                }, _self.delay);
+                }, self.delay);
             }
-            _self.session = null;
+            self.session = null;
         });
         session.call();
-        _self.session = session;
+        this.session = session;
     };
     CallMgr.prototype.onCallWebrtcSignalNotify = function(obj) {
         console.log('onCallWebrtcSignalNotify', obj);
-        var session = _self.session;
+        var session = this.session;
         session&&session.receiveMessage(JSON.parse(obj.data));
     };
     CallMgr.prototype.callOut = function(userid, type) {
-        _self.time = {hour:0, minute:0, second:0};
-        _self.increaseCallId();
-        app.emit('CALL_OUT_RQ', {userid:userid, type:type, callid:_self.callid});
-        app.utils.playRing(app.resource.aud_call_out);
-        _self.state = _self.STATE_CALLOUT;
-        return _self.callid;
+        this.time = {hour:0, minute:0, second:0};
+        this.increaseCallId();
+        app.emit('CALL_OUT_RQ', {userid:userid, type:type, callid:this.callid});
+        app.sound.playRing(app.resource.aud_call_out);
+        this.state = this.STATE_CALLOUT;
+        return this.callid;
     };
     CallMgr.prototype.onCallOut = function(obj) {
         console.log('onCallOut', obj);
         if (obj.error) {
-            app.utils.showChatError(obj.error);
-            _self.state = _self.STATE_ERROR;
-            app.utils.playRing(app.resource.aud_call_error);
+            app.showChatError(obj.error);
+            this.state = this.STATE_ERROR;
+            app.sound.playRing(app.resource.aud_call_error);
+            var self = this;
             setTimeout(function() {
-                if (_self.state == _self.STATE_ERROR) {
-                    app.utils.stopRing();
-                    _self.state = _self.STATE_FREE;
-                    _self.parent(obj.type).onCallOutError(obj.callid);
+                if (self.state === self.STATE_ERROR) {
+                    app.sound.stopRing();
+                    self.state = self.STATE_FREE;
+                    self.emitCallChange({type:"ON_CALLOUT_ERROR", callid:callid});
                 }
-            }, _self.delay);
+            }, this.delay);
         }
     };
     CallMgr.prototype.onCallInNotify = function(obj) {
         console.log('onCallInNotify', obj);
-        if (_self.state != _self.STATE_FREE) {
+        if (this.state != this.STATE_FREE) {
             app.emit('CALL_IN_NFS', {userid:obj.userid, type:obj.type, callid:obj.callid, answer:2});
             return;
         }
-        _self.time = {hour:0, minute:0, second:0};
-        _self.state = _self.STATE_CALLIN;
-        app.utils.playRing(app.resource.aud_call_in);
-        if (obj.type == _self.VIDEO_TYPE) {
-            //require('videoCall').show(obj.userid, obj.callid);
+        this.time = {hour:0, minute:0, second:0};
+        this.state = this.STATE_CALLIN;
+        app.sound.playRing(app.resource.aud_call_in);
+        if (obj.type === this.VIDEO_TYPE) {
+            app.showView('videoCall', 'fade', {userid:obj.userid, callid:obj.callid});
         } else {
-            //require('audioCall').show(obj.userid, obj.callid);
+            app.showView('audioCall', 'fade', {userid:obj.userid, callid:obj.callid});
         }
     };
     CallMgr.prototype.answerCallIn = function(userid, type, callid) {
         console.log('answerCallIn', userid, type, callid);
-        _self.time = {hour:0, minute:0, second:0};
-        _self.call(false, userid, type, callid);
+        this.time = {hour:0, minute:0, second:0};
+        this.call(false, userid, type, callid);
         app.emit('CALL_IN_NFS', {userid:userid, type:type, callid:callid, answer:0});
-        app.utils.stopRing();
-        _self.state = _self.STATE_CALLING;
+        app.sound.stopRing();
+        this.state = this.STATE_CALLING;
     };
     CallMgr.prototype.refuseCallIn = function(userid, type, callid) {
         app.emit('CALL_IN_NFS', {userid:userid, type:type, callid:callid, answer:1});
-        app.utils.stopRing();
-        _self.state = _self.STATE_FREE;
+        app.sound.stopRing();
+        this.state = this.STATE_FREE;
     };
     CallMgr.prototype.onCallInReplyNotify = function(obj) {
         console.log('onCallInReplyNotify', obj);
-        if (obj.answer == 0) {
+        if (obj.answer === 0) {
             console.log("he/she answer call");
-            _self.parent(obj.type).onCallOutAnswered(obj.callid);
-            _self.call(true, obj.userid, obj.type, obj.callid);
-            _self.time = {hour:0, minute:0, second:0};
-            app.utils.stopRing();
-            _self.state = _self.STATE_CALLING;
-        } else if (obj.answer == 1) {
+            this.emitCallChange({type:"ON_CALLOUT_ANSWERED", callid:callid});
+            this.call(true, obj.userid, obj.type, obj.callid);
+            this.time = {hour:0, minute:0, second:0};
+            app.sound.stopRing();
+            this.state = this.STATE_CALLING;
+        } else if (obj.answer === 1) {
             console.log("he/she refuse call");
-            app.utils.playRing(app.resource.aud_refuse);
-            _self.state = _self.STATE_REFUSE;
+            app.sound.playRing(app.resource.aud_refuse);
+            this.state = this.STATE_REFUSE;
+            var self = this;
             setTimeout(function() {
-                if (_self.state == _self.STATE_REFUSE) {
-                    app.utils.stopRing();
-                    _self.state = _self.STATE_FREE;
-                    _self.parent(obj.type).onCallOutRefused(obj.callid);
+                if (self.state === self.STATE_REFUSE) {
+                    app.sound.stopRing();
+                    self.state = self.STATE_FREE;
+                    self.emitCallChange({type:"ON_CALLOUT_REFUSED", callid:callid});
                 }
-            }, _self.delay);
+            }, this.delay);
         } else {
             console.log("he/she is busy");
-            app.utils.playRing(app.resource.aud_busy);
-            _self.state = _self.STATE_BUSY;
+            app.sound.playRing(app.resource.aud_busy);
+            this.state = this.STATE_BUSY;
+            var self = this;
             setTimeout(function() {
-                if (_self.state == _self.STATE_BUSY) {
-                    app.utils.stopRing();
-                    _self.state = _self.STATE_FREE;
-                    _self.parent(obj.type).onCallOutRefused(obj.callid);
+                if (self.state === self.STATE_BUSY) {
+                    app.sound.stopRing();
+                    self.state = self.STATE_FREE;
+                    self.emitCallChange({type:"ON_CALLOUT_REFUSED", callid:callid});
                 }
-            }, _self.longdelay);
+            }, this.longdelay);
         }
     };
     CallMgr.prototype.callHangup = function(userid, type, callid) {
         console.log('callHangup', userid, type, callid);
-        console.log(_self.state);
-        app.utils.stopRing();
-        if (_self.state == _self.STATE_CALLOUT || _self.state == _self.STATE_CALLIN || _self.state == _self.STATE_CALLING ) {
-            _self.state = _self.STATE_FREE;
-            var session = _self.session;
+        console.log(this.state);
+        app.sound.stopRing();
+        if (this.state === this.STATE_CALLOUT || this.state === this.STATE_CALLIN || this.state === this.STATE_CALLING ) {
+            this.state = this.STATE_FREE;
+            var session = this.session;
             app.emit('CALL_HANGUP_RQ', {userid: userid, type: type, callid: callid});
             session && session.close();
-            _self.session = null;
+            this.session = null;
         }
-        _self.state = _self.STATE_FREE;
+        this.state = this.STATE_FREE;
     };
     CallMgr.prototype.onCallHangup = function(obj) {
         console.log("i hang up call");
     };
     CallMgr.prototype.onCallHangupNotify = function(obj) {
-        _self.parent(obj.type).onPreCallHangupNotify(obj.callid);
-        if (_self.state == _self.STATE_FREE) {
+        this.emitCallChange({type:"ON_PRE_CALL_HANGUP_NOTIFY", callid:callid});
+        if (this.state === this.STATE_FREE) {
             return;
         }
         console.log('onCallHangupNotify', obj);
-        app.utils.playRing(app.resource.aud_hangup);
-        _self.state = _self.STATE_HANGUP;
+        app.sound.playRing(app.resource.aud_hangup);
+        this.state = this.STATE_HANGUP;
         setTimeout(function() {
-            if (_self.state == _self.STATE_HANGUP) {
-                _self.parent(obj.type).onCallHangupNotify(obj.callid);
-                app.utils.stopRing();
-                _self.state = _self.STATE_FREE;
+            if (this.state === this.STATE_HANGUP) {
+                this.emitCallChange({type:"ON_CALL_HANGUP_NOTIFY", callid:callid});
+                app.sound.stopRing();
+                this.state = this.STATE_FREE;
             }
-        }, _self.delay);
-        var session = _self.session;
+        }, this.delay);
+        var session = this.session;
         session&&session.close();
-        _self.session = null;
+        this.session = null;
     };
 
     return new CallMgr();

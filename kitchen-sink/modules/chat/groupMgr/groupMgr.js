@@ -1,32 +1,58 @@
+var _  = require('underscore');
+var EventEmitter = require('events').EventEmitter;
+var assign = require('object-assign');
+
 module.exports = (function() {
     "use strict";
 
     function GroupMgr() {
+        assign(this, EventEmitter.prototype);
         this.reset();
     }
 
+    GroupMgr.prototype.emitChange = function() {
+        this.emit("change");
+    };
+    GroupMgr.prototype.addChangeListener = function(callback) {
+        this.on("change", callback);
+    };
+    GroupMgr.prototype.removeChangeListener = function(callback) {
+        this.removeListener("change", callback);
+    };
     GroupMgr.prototype.reset = function() {
         this.list = {};
+        this.alphaList = {};
         this.init = false;
     };
     GroupMgr.prototype.add = function(obj, noupdate) {
         var name = obj.name,
-            list = this.list;
+        list = this.list;
         if(!list.hasOwnProperty(name)) {
             list[name] = obj;
-            if (!noupdate && app.groupList) {
-                app.groupList.showGroupList();
-            }
-        } else {
-            console.error(userid+" has multi");
+            this.addAlphaList(name);
+            this.emitChange();
         }
     };
-    GroupMgr.prototype.remove = function(obj, noupdate) {
+    GroupMgr.prototype.addAlphaList = function(name) {
+        var alpha = $.fisrtPinyin(name);
+        var alphaList = this.alphaList;
+        if (!alphaList[alpha]) {
+            alphaList[alpha] = [];
+        }
+        alphaList[alpha].push(name);
+    };
+    GroupMgr.prototype.remove = function(obj) {
         if(this.list.hasOwnProperty(obj.name)) {
             delete this.list[obj.name];
-            if (!noupdate && app.groupList) {
-                app.groupList.showGroupList();
-            }
+            this.removeAlphaList(name);
+            this.emitChange();
+        }
+    };
+    GroupMgr.prototype.removeAlphaList = function(name) {
+        var alpha = $.fisrtPinyin(name);
+        var alphaList = this.alphaList;
+        if (alphaList[alpha]) {
+            alphaList[alpha] = _.without(alphaList[alpha], name);
         }
     };
     GroupMgr.prototype.updateUsers = function(obj) {
@@ -45,10 +71,7 @@ module.exports = (function() {
     };
     GroupMgr.prototype.addList = function(list) {
         for (var i in list) {
-            this.add(list[i], true);
-        }
-        if (app.groupList) {
-            app.groupList.showGroupList();
+            this.add(list[i]);
         }
         this.init = true;
     };
@@ -88,7 +111,7 @@ module.exports = (function() {
     GroupMgr.prototype.onCreateGroup = function(obj) {
         if (obj.error) {
             console.error("create "+obj.name+" failed: for "+obj.error);
-            app.utils.error(app.error[obj.error]);
+            app.error(app.error[obj.error]);
         } else {
             this.add({name:obj.name, creator:app.login.userid, type:obj.type, users:obj.users});
             console.log("create "+obj.name+" success");
@@ -101,14 +124,14 @@ module.exports = (function() {
     GroupMgr.prototype.onModifyGroup = function(obj) {
         if (obj.error) {
             console.error("modify "+obj.name+" failed: for "+obj.error);
-            app.utils.error(app.error[obj.error]);
+            app.error(app.error[obj.error]);
         } else {
             this.list[obj.name].users = obj.users;
             this.list[obj.name].type = obj.type;
             if (app.groupDetail) {
                 app.groupDetail.showGroupDetail();
             }
-            app.utils.toast("修改群组"+obj.name+"成功");
+            app.toast("修改群组"+obj.name+"成功");
             console.log("modify "+obj.name+" success");
         }
     };
@@ -118,7 +141,7 @@ module.exports = (function() {
     GroupMgr.prototype.onRemoveGroup = function(obj) {
         if (obj.error) {
             console.error("remove "+obj.name+" failed: for "+obj.error);
-            app.utils.error(app.error[obj.error]);
+            app.error(app.error[obj.error]);
         } else {
             this.remove(obj);
             console.log("remove "+obj.name+" success");
@@ -134,7 +157,7 @@ module.exports = (function() {
     GroupMgr.prototype.onJoinGroup = function(obj) {
         if (obj.error) {
             console.error("join "+obj.name+" failed: for "+obj.error);
-            app.utils.error(app.error[obj.error]);
+            app.error(app.error[obj.error]);
         } else {
             this.add({name:obj.name, creator:obj.creator, type:obj.type, users:obj.users});
             console.log("join "+obj.name+" success");
@@ -161,7 +184,7 @@ module.exports = (function() {
     GroupMgr.prototype.onPullInGroup = function(obj) {
         if (obj.error) {
             console.error("pull "+obj.name+" failed: for "+obj.error);
-            app.utils.error(app.error[obj.error]);
+            app.error(app.error[obj.error]);
         } else {
             this.updateUsers({name:obj.name, users:obj.users});
             console.log("pull "+obj.name+" success");
@@ -186,7 +209,7 @@ module.exports = (function() {
     GroupMgr.prototype.onFireOutGroup = function(obj) {
         if (obj.error) {
             console.error("fireOut "+obj.name+" failed: for "+obj.error);
-            app.utils.error(app.error[obj.error]);
+            app.error(app.error[obj.error]);
         } else {
             this.updateUsers({name:obj.name, users:obj.users});
             console.log("fireOut "+obj.name+" success");

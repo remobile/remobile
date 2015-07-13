@@ -10,35 +10,142 @@ var Icon = UI.Icon.Icon;
 var Badge = UI.Badge.Badge;
 var Button = UI.Button.Button;
 
+var SHOW_CALLIN_BUTTON = 0;
+var SHOW_CALLOUT_BUTTON = 1;
+
 module.exports = React.createClass({
     componentWillMount: function() {
-        this.userid = this.props.data.param.target;
+        var param = this.props.data.param;
+        this.userid = param.target;
+        this.localLarge = true;
+        var callid = param.callid;
+        if (callid != null) {
+            this.answer = true;
+            this.callid = callid;
+        } else {
+            this.answer = false;
+        }
     },
     componentDidMount: function() {
-        app.userMgr.addChangeListener(this._onChange);
+        var mgr = app.callMgr;
+
+        this.smallView = this.refs.smallView.getDOMNode();
+        this.largeView = this.refs.largeView.getDOMNode();
+
+        mgr.addCallChangeListener(this._onChange);
+        this.updateVideoView();
+        mgr.updateTime(function(time, status) {
+            this.setState({time:time, status:status});
+        });
+        if (!this.answer) {
+            this.callid = mgr.callOut(this.userid, mgr.VIDEO_TYPE);
+        }
     },
     componentWillUnmount: function() {
-        app.userMgr.removeChangeListener(this._onChange);
+        this.hangupVideoCall();
+        app.callMgr.removeCallChangeListener(this._onChange);
     },
-    _onChange: function() {
-        this.forceUpdate();
+    _onChange: function(obj) {
+        var type = obj.type;
+        switch(type) {
+            case "ON_SESSION_ANSWER":
+                this.onSessionAnswer(obj.userid, obj.callid);
+            break;
+            case "ON_CALLOUT_ERROR":
+                this.onCallOutError(obj.callid);
+            break;
+            case "ON_CALLOUT_ANSWERED":
+                this.onCallOutAnswered(obj.callid);
+            break;
+            case "ON_CALLOUT_REFUSED":
+                this.onCallOutRefused(obj.callid);
+            break;
+            case "ON_PRE_CALL_HANGUP_NOTIFY":
+                this.onPreCallHangupNotify(obj.callid);
+            break;
+            case "ON_CALL_HANGUP_NOTIFY":
+                this.onCallHangupNotify(obj.callid);
+            break;
+            default:;
+        }
     },
-    systemCall: function() {
-        navigator.utils.callNumber(this.userid);
+    getInitialState: function() {
+        return {
+            status: '空闲中...',
+            time: '00:00:00',
+            showButton: this.answer?SHOW_CALLIN_BUTTON:SHOW_CALLOUT_BUTTON
+        }
     },
-    systemMessage: function() {
-        navigator.utils.sendSms(this.userid);
+    toggleVideoView: function() {
+        this.localLarge = !this.localLarge;
+        this.updateVideoView();
     },
-    sendMessage: function() {
-        var param = {
-            type: app.messageMgr.USER_TYPE,
-            target: this.userid
-        };
-        app.showView('messageInfo', 'fade', param);
+    updateVideoView: function() {
+        var local = this.localLarge;
+        navigator.phonertc.setVideoView({
+            localView: local?this.largeView:this.smallView,
+            remoteView: !local?this.largeView:this.smallView
+        });
     },
-    audioCall: function() {
+    onSessionAnswer: function(userid, callid) {
+        console.log('onSessionAnswer', userid, callid);
+        this.toggleVideoView();
     },
-    videoCall: function() {
+    onCallOutError: function(callid) {
+        console.log('onCallOutError', callid, this.callid);
+        if (this.callid != null) {
+            this.callid = null;
+            navigator.phonertc.removeLocalVideoView();
+            app.goBack();
+        }
+    },
+    answerVideoCall: function() {
+        var mgr = app.callMgr;
+        console.log('answerVideoCall', this.callid);
+        mgr.answerCallIn(this.userid, mgr.VIDEO_TYPE, this.callid);
+        this.setState({showButton: SHOW_CALLOUT_BUTTON});
+    },
+    onCallOutAnswered: function(callid) {
+        console.log('onCallOutAnswered', callid, this.callid);
+    },
+    refuseVideoCall: function() {
+        if (this.callid != null) {
+            navigator.phonertc.removeLocalVideoView();
+            console.log('refuseVideoCall', this.callid);
+            var mgr = app.callMgr;
+            mgr.refuseCallIn(this.userid, mgr.VIDEO_TYPE, this.callid);
+            this.callid = null;
+            app.goBack();
+        }
+    },
+    onCallOutRefused: function(callid) {
+        if (this.callid != null) {
+            navigator.phonertc.removeLocalVideoView();
+            console.log('onCallOutRefused', callid, this.callid);
+            this.callid = null;
+            app.goBack();
+        }
+    },
+    hangupVideoCall: function() {
+        if (this.callid != null) {
+            navigator.phonertc.removeLocalVideoView();
+            console.log('hangupVideoCall', this.callid);
+            var mgr = app.callMgr;
+            mgr.callHangup(this.userid, mgr.VIDEO_TYPE, this.callid);
+            this.callid = null;
+            app.goBack();
+        }
+    },
+    onPreCallHangupNotify: function(callid) {
+        this.setState({showButton: SHOW_CALLOUT_BUTTON});
+    },
+    onCallHangupNotify: function(callid) {
+        if (this.callid != null) {
+            navigator.phonertc.removeLocalVideoView();
+            console.log('onCallHangupNotify', callid, this.callid);
+            this.callid = null;
+            app.goBack();
+        }
     },
     render: function() {
         var userid = this.userid;
@@ -55,18 +162,18 @@ module.exports = React.createClass({
                             <div className="call_time">00:00:00</div>
                         </div>
                     </div>
-                    <div className="video_small_screen" onclick={this.toggleVideoView}></div>
-                    <div className="video_large_screen" onclick={this.toggleVideoView}></div>
+                    <div className="video_small_screen" ref="smallView" onclick={this.toggleVideoView}></div>
+                    <div className="video_large_screen" ref="largeView" onclick={this.toggleVideoView}></div>
                     <div className="vidc_panel">
-                        <Content.ContentBlock>
-                        <Grid.Row>
-                            <Grid.Col><Button big fill color="red" onTap={this.hangupAudioCall}>挂断</Button></Grid.Col>
-                        </Grid.Row>
-                        </Content.ContentBlock>
-                        <Content.ContentBlock>
+                        this.state.showButton===SHOW_CALLOUT_BUTTON?<Content.ContentBlock>
                             <Grid.Row>
-                                <Grid.Col per={50}><Button big fill color="green" onTap={this.answerAudioCall}>接听</Button></Grid.Col>
-                                <Grid.Col per={50}><Button big fill color="red" onTap={this.refuseAudioCall}>挂断</Button></Grid.Col>
+                                <Grid.Col><Button big fill color="red" onTap={this.hangupVideoCall}>挂断</Button></Grid.Col>
+                            </Grid.Row>
+                        </Content.ContentBlock>
+                        this.state.showButton===SHOW_CALLIN_BUTTON?<Content.ContentBlock>
+                            <Grid.Row>
+                                <Grid.Col per={50}><Button big fill color="green" onTap={this.answerVideoCall}>接听</Button></Grid.Col>
+                                <Grid.Col per={50}><Button big fill color="red" onTap={this.refuseVideoCall}>挂断</Button></Grid.Col>
                             </Grid.Row>
                         </Content.ContentBlock>
                     </div>

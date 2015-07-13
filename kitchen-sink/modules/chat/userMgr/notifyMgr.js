@@ -1,10 +1,7 @@
 var _ = require("underscore");
 module.exports = (function() {
     "use strict";
-    var _self;
     function NotifyMgr() {
-        _self = this;
-        _self.ticktInfo = {ticket:0};
     }
 
     NotifyMgr.prototype.onNotify = function(obj) {
@@ -19,7 +16,7 @@ module.exports = (function() {
             var head = obj.head;
             for (var i= 0,len=head.length; i<len; i++) {
                 var item = head[i];
-                _self.updateUserHead(item);
+                this.updateUserHead(item);
                 have_notify_users.push(item.userid);
             }
 
@@ -38,7 +35,7 @@ module.exports = (function() {
     NotifyMgr.prototype.onGetUserHead = function(obj) {
         for (var i= 0,len=obj.length; i<len; i++) {
             var item = obj[i];
-            _self.updateUserHead(item);
+            this.updateUserHead(item);
         }
     };
 

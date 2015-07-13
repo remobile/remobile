@@ -16,45 +16,23 @@ var List1 = React.createClass({
     render: function() {
         return (
             <List.List block media>
-                <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(1)} width="80"/></List.ItemMedia>
+            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+            		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
+            		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
+            		<List.ItemContent link>
+                    <List.ItemMedia><img src={getImage(i+1)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
-                            <List.ItemTitle>Yellow Submarine</List.ItemTitle>
-                            <List.ItemAfter>$15</List.ItemAfter>
+                            <List.ItemTitle>{item.name}</List.ItemTitle>
+                            <List.ItemAfter>{item.price}</List.ItemAfter>
                         </List.ItemTitleRow>
-                        <List.ItemSubTitle>Beatles</List.ItemSubTitle>
+                        <List.ItemSubTitle>{item.title}</List.ItemSubTitle>
                         <List.ItemText>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.
                         </List.ItemText>
                     </List.ItemInner>
                  </List.ItemContent>
-                 <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(2)} width="80"/></List.ItemMedia>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>Don't Stop Me Now</List.ItemTitle>
-                            <List.ItemAfter>$22</List.ItemAfter>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>Queen</List.ItemSubTitle>
-                        <List.ItemText>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.
-                        </List.ItemText>
-                    </List.ItemInner>
-                 </List.ItemContent>
-                 <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(3)} width="80"/></List.ItemMedia>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>Billie Jean</List.ItemTitle>
-                            <List.ItemAfter>$16</List.ItemAfter>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>Michael Jackson</List.ItemSubTitle>
-                        <List.ItemText>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.
-                        </List.ItemText>
-                    </List.ItemInner>
-                 </List.ItemContent>
+             	)})}
             </List.List>
         );
     }
@@ -64,42 +42,23 @@ var List2 = React.createClass({
     render: function() {
         return (
             <List.List block media>
-                <List.ItemContent link>
+            	{[{name:"Facebook", time:"17:14", title:"New messages from John Doe"}, 
+            		{name:"John Doe (via Twitter)", time:"18:50", title:"John Doe (@_johndoe) mentioned you on Twitter!"},
+            		{name:"Facebook", time:"20:20", title:"New messages from John Do"}].map((item, i)=>{return (
+            		<List.ItemContent link>
+                    <List.ItemMedia><img src={getImage(i+1)} width="80"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
-                            <List.ItemTitle>Facebook</List.ItemTitle>
-                            <List.ItemAfter>17:14</List.ItemAfter>
+                            <List.ItemTitle>{item.name}</List.ItemTitle>
+                            <List.ItemAfter>{item.time}</List.ItemAfter>
                         </List.ItemTitleRow>
-                        <List.ItemSubTitle>New messages from John Doe</List.ItemSubTitle>
+                        <List.ItemSubTitle>{item.title}</List.ItemSubTitle>
                         <List.ItemText>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.
                         </List.ItemText>
                     </List.ItemInner>
                  </List.ItemContent>
-                 <List.ItemContent link>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>John Doe (via Twitter)</List.ItemTitle>
-                            <List.ItemAfter>18:50</List.ItemAfter>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>John Doe (@_johndoe) mentioned you on Twitter!</List.ItemSubTitle>
-                        <List.ItemText>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.
-                        </List.ItemText>
-                    </List.ItemInner>
-                 </List.ItemContent>
-                 <List.ItemContent link>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>Facebook</List.ItemTitle>
-                            <List.ItemAfter>20:20</List.ItemAfter>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>New messages from John Do</List.ItemSubTitle>
-                        <List.ItemText>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus.
-                        </List.ItemText>
-                    </List.ItemInner>
-                 </List.ItemContent>
+             	)})}
             </List.List>
         );
     }
@@ -109,33 +68,19 @@ var List3 = React.createClass({
     render: function() {
         return (
             <List.List block media>
-                <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(1)} width="44"/></List.ItemMedia>
+            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+            		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
+            		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
+            		<List.ItemContent link>
+                    <List.ItemMedia><img src={getImage(i+1)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
-                            <List.ItemTitle>Yellow Submarine</List.ItemTitle>
+                            <List.ItemTitle>{item.name}</List.ItemTitle>
                         </List.ItemTitleRow>
-                        <List.ItemSubTitle>Beatles</List.ItemSubTitle>
+                        <List.ItemSubTitle>{item.title}</List.ItemSubTitle>
                     </List.ItemInner>
                  </List.ItemContent>
-                <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(2)} width="44"/></List.ItemMedia>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>Don't Stop Me Now</List.ItemTitle>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>Queen</List.ItemSubTitle>
-                    </List.ItemInner>
-                 </List.ItemContent>
-                <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(3)} width="44"/></List.ItemMedia>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>Billie Jean</List.ItemTitle>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>Michael Jackson</List.ItemSubTitle>
-                    </List.ItemInner>
-                 </List.ItemContent>
+             	)})}
             </List.List>
         );
     }
@@ -145,33 +90,19 @@ var List4 = React.createClass({
     render: function() {
         return (
             <List.List block media inset>
-                <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(4)} width="44"/></List.ItemMedia>
+              {[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+            		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
+            		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
+            		<List.ItemContent link>
+                    <List.ItemMedia><img src={getImage(i+1)} width="44"/></List.ItemMedia>
                     <List.ItemInner>
                         <List.ItemTitleRow>
-                            <List.ItemTitle>Yellow Submarine</List.ItemTitle>
+                            <List.ItemTitle>{item.name}</List.ItemTitle>
                         </List.ItemTitleRow>
-                        <List.ItemSubTitle>Beatles</List.ItemSubTitle>
+                        <List.ItemSubTitle>{item.title}</List.ItemSubTitle>
                     </List.ItemInner>
                  </List.ItemContent>
-                <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(5)} width="44"/></List.ItemMedia>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>Don't Stop Me Now</List.ItemTitle>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>Queen</List.ItemSubTitle>
-                    </List.ItemInner>
-                 </List.ItemContent>
-                <List.ItemContent link>
-                    <List.ItemMedia><img src={getImage(6)} width="44"/></List.ItemMedia>
-                    <List.ItemInner>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>Billie Jean</List.ItemTitle>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>Michael Jackson</List.ItemSubTitle>
-                    </List.ItemInner>
-                 </List.ItemContent>
+             	)})}
             </List.List>
         );
     }

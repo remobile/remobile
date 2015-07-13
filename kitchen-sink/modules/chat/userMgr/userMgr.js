@@ -29,8 +29,8 @@ module.exports = (function() {
         if(!users.hasOwnProperty(userid)) {
             users[userid] = obj;
             this.addGroupedUser(userid);
+        		this.emitChange();
         }
-        this.emitChange();
     };
     UserMgr.prototype.remove = function(obj) {
         var users = this.users;
@@ -38,8 +38,8 @@ module.exports = (function() {
         if(users.hasOwnProperty(userid)) {
             delete users[userid];
             this.removeGroupedUser(userid);
+        		this.emitChange();
         }
-        this.emitChange();
     };
     UserMgr.prototype.online = function(obj) {
         var userid = obj.userid;

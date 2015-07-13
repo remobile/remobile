@@ -9,7 +9,7 @@
 }
 
 .iphone_screen {
-    position: absolute;
+    position:relative;
     -webkit-app-region: no-drag;
 }
 
