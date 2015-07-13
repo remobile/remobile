@@ -4,5 +4,6 @@ module.exports = {
 	userSetting: require('./userSetting'),
 	date: require('./date'),
 	color: require('./color'),
+	setting: require('./setting'),
 	sound: require('./sound')
 };

@@ -1,14 +1,14 @@
 ﻿cordova.define("plugins.utils", function(require, exports, module) {
     "use strict";
-	var exec = require('cordova/exec'); 
+	var exec = require('cordova/exec');
 	var CLASS = "UtilsPlugin";
-	module.exports = {  
-		/** 
-		 * exec一共5个参数 
-		   第一个 :成功会掉 
-		   第二个 :失败回调 
-		   第三个 :将要调用的类的配置名字(config.xml文件中指定的<feature name>) 
-		   第四个 :调用的方法名(android中对已的action) 
+	module.exports = {
+		/**
+		 * exec一共5个参数
+		   第一个 :成功会掉
+		   第二个 :失败回调
+		   第三个 :将要调用的类的配置名字(config.xml文件中指定的<feature name>)
+		   第四个 :调用的方法名(android中对已的action)
 		   第五个 :传递的参数  以json的格式 (android中对已的args)
 		 */
 		callNumber: function(number) {

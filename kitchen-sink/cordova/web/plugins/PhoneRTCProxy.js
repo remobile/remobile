@@ -405,7 +405,7 @@ cordova.define("com.dooble.phonertc.PhoneRTCProxy", function(require, exports, m
   }
 
   function removeRemoteStream(view, video) {
-    console.log(remoteViews);
+    //console.log(remoteViews);
     document.body.removeChild(view);
     remoteViews.splice(view, 1);
     console.log(remoteViews);

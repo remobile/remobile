@@ -241,9 +241,9 @@ module.exports = (function() {
         var self = this;
         setTimeout(function() {
             if (self.state === self.STATE_HANGUP) {
+                self.state = self.STATE_FREE;
                 self.emitCallChange({type:"ON_CALL_HANGUP_NOTIFY", callid:obj.callid});
                 app.sound.stopRing();
-                self.state = self.STATE_FREE;
             }
         }, this.delay);
         var session = this.session;

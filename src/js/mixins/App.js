@@ -49,6 +49,7 @@ function App (views) {
             this.history = [];
             this.data = {};
             this.methods = {};
+            this.resPath = window.location.pathname.replace(/index.html$/, '');
         },
         getCurrentView: function () {
             var currentView = this.state.currentView;

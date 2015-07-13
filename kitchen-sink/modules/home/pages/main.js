@@ -19,24 +19,24 @@ function getImages() {
 }
 
 function showPhoto() {
-	var photo = UI.Photo.Photo({
-    photos: getImages(),
-    lazyLoading: true,
-    theme: 'dark'
-	});
-	photo.open();
+    var photo = UI.Photo.Photo({
+        photos: getImages(),
+        lazyLoading: true,
+        theme: 'dark'
+    });
+    photo.open();
 }
 
 
 var ListItem = React.createClass({
-		showPage: function(page) {
-				app.state.panelVisible = false;
-				if (page === 'photo') {
-					showPhoto();
-				} else {
-					app.showView(page, 'left');
-				}
-		},
+    showPage: function(page) {
+        app.state.panelVisible = false;
+        if (page === 'photo') {
+            showPhoto();
+        } else {
+            app.showView(page, 'left');
+        }
+    },
     render: function() {
         return (
             <List.ItemContent link onTap={this.showPage.bind(this, this.props.page)}>

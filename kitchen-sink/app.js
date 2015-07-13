@@ -18,6 +18,7 @@ var App = React.createClass({
         this.constants = utils.constants;
         this.date = utils.date;
         this.color = utils.color;
+        this.setting = utils.setting;
         this.sound = utils.sound;
         this.callMgr = chat.callMgr;
         this.groupMgr = chat.groupMgr;
@@ -30,7 +31,12 @@ var App = React.createClass({
         this.userHeadCss = $.createStyleSheet();
 
         //welcome.showWelcome();
-        app.socketMgr.start("http://localhost:8000");
+        this.socketMgr.start("http://192.168.211.108:8000");
+    },
+    componentDidMount: function () {
+        navigator.utils.setupAudio();
+        navigator.utils.setupFileChooser();
+        this.device.pause = false;
     },
     showError: function(error) {
         this.toast(error);

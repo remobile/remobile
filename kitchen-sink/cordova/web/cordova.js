@@ -1635,31 +1635,17 @@ var Media;
     navigator.app = {
         loadUrl : function(url, props) {
         },
-
         cancelLoadUrl : function() {
         },
-
         clearHistory : function() {
             $.ui.clearHistory();
         },
-
         backHistory : function() {
             $.ui.goBack();
         },
-
         exitApp : function() {
             window.close();
-        }
+        },
+        target: 'web'
     };
-    /**********************************************************
-     *
-     * @splashscreen define
-     */
-    navigator.splashscreen = {
-        hide: function() {
-            $.query("#afui #splashscreen").remove();
-        }
-    };
-    navigator._from = "web";
-
 })();

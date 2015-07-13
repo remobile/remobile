@@ -1,12 +1,8 @@
 "use strict";
-var img = 'resource/image/';
-var aud = 'resource/audio/';
+var aud = '../audio/';
+//var aud_file_type = (navigator.app.target==="web")?"mp3":"wav";
 var aud_file_type = "wav";
 module.exports = {
-    //image
-    img_transparent: img+'transparent.png',
-    img_default_head: img+'default_head.png',
-    //audio
     aud_fail_tip: aud+'fail_tip.'+aud_file_type,
     aud_login_tip: aud+'login_tip.'+aud_file_type,
     aud_message_tip: aud+'message_tip.'+aud_file_type,
