@@ -9,6 +9,15 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 var View = UI.View;
 
+var ContactItemInner = function(userid, username, online) {
+    return [
+        <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>,
+        <List.ItemInner>
+            <List.ItemTitle style={app.color.usernameColor(online)}>{username}</List.ItemTitle>
+        </List.ItemInner>
+    ];
+};
+
 var ContactItem = React.createClass({
     showContactInfo: function(userid) {
         var param = {userid: userid};
@@ -18,25 +27,38 @@ var ContactItem = React.createClass({
        var userid = this.props.userid;
        var user = this.props.users[userid];
        var username = user.username||userid;
-       return (
-           <List.ItemContent onTap={this.showContactInfo.bind(this, userid)}>
-             <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
-               <List.ItemInner>
-                    <List.ItemTitle style={app.color.usernameColor(user.online)}>{username}</List.ItemTitle>
-               </List.ItemInner>
-           </List.ItemContent>
-        )
+       var select = this.props.select;
+       if (!select) {
+           return (
+               <List.ItemContent onTap={this.showContactInfo.bind(this, userid)}>
+                    {ContactItemInner(userid, username, user.online)}
+               </List.ItemContent>
+            )
+       } else if (select.type == "radio") {
+           return (
+               <List.ItemContent radio value={userid} name={select.name} checked={select.default===userid} onChange={select.onChange}>
+                    {ContactItemInner(userid, username, user.online)}
+               </List.ItemContent>
+            )
+       } else {
+           return (
+               <List.ItemContent checkbox value={userid} name={select.name} checked={select.default.indexOf(userid)!==-1} onChange={select.onChange}>
+                    {ContactItemInner(userid, username, user.online)}
+               </List.ItemContent>
+            )
+       }
    }
 });
 
 var ContactGroup = React.createClass({
     render: function() {
-    		var users = this.props.users;
-    		var userids = this.props.userids;
+        var users = this.props.users;
+        var userids = this.props.userids;
+        var select = this.props.select;
         return (
             <List.ListGroup>
                 <List.ListGroupTitle data={{'data-index-letter':this.props.letter}}>{this.props.letter}</List.ListGroupTitle>
-                {userids.map((userid)=>{return <ContactItem userid={userid} users={users}/>})}
+                {userids.map((userid)=>{return <ContactItem userid={userid} users={users} select={select}/>})}
             </List.ListGroup>
         )
     }
@@ -48,9 +70,10 @@ var ContactList = React.createClass({
         var users = this.props.users;
         var groupedUsers = this.props.groupedUsers;
         var letters = _.keys(groupedUsers).sort(function(a, b) {return a.localeCompare(b)});
+        var select = this.props.select;
         return (
             <List.List block group class="contacts-block">
-                {_.map(letters, (letter)=>{return <ContactGroup letter={letter} userids={groupedUsers[letter]} users={users}/>})}
+                {_.map(letters, (letter)=>{return <ContactGroup letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
             </List.List>
         );
     }
@@ -77,7 +100,7 @@ module.exports = React.createClass({
     },
     render: function() {
         return (
-            <ContactList users={this.state.users} groupedUsers={this.state.groupedUsers}/>
+            <ContactList users={this.state.users} groupedUsers={this.state.groupedUsers} select={this.props.select}/>
         );
     }
 });

@@ -16,21 +16,21 @@ function getImage(i) {
 }
 
 var List1 = React.createClass({
-		getInitialState: function() {
+    getInitialState: function() {
         return {
             checkedList: []
         }
     },
-		handleChange: function(i, checked) {
-				if (checked) {
+    handleChange: function(i, checked) {
+        if (checked) {
             this.state.checkedList.push(i);
         } else {
             this.state.checkedList = _.without(this.state.checkedList, i);
         }
         console.log(this.state.checkedList);
-		},
+    },
     render: function() {
-    		var checkedList = this.state.checkedList;
+        var checkedList = this.state.checkedList;
         return (
             <List.List block>
             	{["Books", "Movies", "Food", "Drinks"].map((label, i)=>{return (
@@ -48,9 +48,9 @@ var List1 = React.createClass({
 });
 
 var List2 = React.createClass({
-		handleChange: function(i, checked) {
+    handleChange: function(i, checked) {
         console.log(i, checked);
-		},
+    },
     render: function() {
         return (
             <List.List block>
@@ -69,19 +69,19 @@ var List2 = React.createClass({
 });
 
 var List3 = React.createClass({
-		getInitialState: function() {
+    getInitialState: function() {
         return {
             checkedList: []
         }
     },
-		handleChange: function(i, checked) {
-				if (checked) {
+    handleChange: function(i, checked) {
+        if (checked) {
             this.state.checkedList.push(i);
         } else {
             this.state.checkedList = _.without(this.state.checkedList, i);
         }
         console.log(this.state.checkedList);
-		},
+    },
     render: function() {
     		var checkedList = this.state.checkedList;
         return (
@@ -109,9 +109,9 @@ var List3 = React.createClass({
 });
 
 var List4 = React.createClass({
-		handleChange: function(i, checked) {
+    handleChange: function(i, checked) {
         console.log(i, checked);
-		},
+    },
     render: function() {
         return (
             <List.List block media>
@@ -138,20 +138,20 @@ var List4 = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
-		return (
-			<View.Page title="CheckBox">
-				<View.PageContent>
-						<Content.ContentBlockTitle>Checkbox group</Content.ContentBlockTitle>
-            <List1 />
-            <Content.ContentBlockTitle>Radio buttons group</Content.ContentBlockTitle>
-            <List2 />
-            <Content.ContentBlockTitle>With Media Lists</Content.ContentBlockTitle>
-            <List3 />
-            <Content.ContentBlockTitle>What is your favourite song?</Content.ContentBlockTitle>
-            <List4 />
-				</View.PageContent>
-       </View.Page>
-		);
-	}
+    render: function() {
+        return (
+            <View.Page title="CheckBox">
+                <View.PageContent>
+                    <Content.ContentBlockTitle>Checkbox group</Content.ContentBlockTitle>
+                    <List1 />
+                    <Content.ContentBlockTitle>Radio buttons group</Content.ContentBlockTitle>
+                    <List2 />
+                    <Content.ContentBlockTitle>With Media Lists</Content.ContentBlockTitle>
+                    <List3 />
+                    <Content.ContentBlockTitle>What is your favourite song?</Content.ContentBlockTitle>
+                    <List4 />
+                </View.PageContent>
+            </View.Page>
+        );
+    }
 });
