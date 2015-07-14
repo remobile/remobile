@@ -3,18 +3,18 @@ var cn = require('classnames');
 
 module.exports = React.createClass({
     render: function() {
-    		var obj = {
+        var obj = {
             'icon':true
         };
         this.props.name&&(obj[this.props.name] = true);
         var className = cn(obj);
-        
+
         var style= {};
         if (this.props.round) {
-        	style.borderRadius = '50%';
+            style.borderRadius = '50%';
         }
-         return (
-             <i className={className} style={style}></i>
-         );
+        return (
+            <i className={className} style={style}></i>
+        );
     }
 });

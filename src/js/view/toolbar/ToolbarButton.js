@@ -8,7 +8,7 @@ module.exports = React.createClass({
         });
         return (
             <a className={className} onClick={this.props.onTap}>
-                <i style={{marginTop:"-5px"}} className={"icon "+this.props.icon}>{this.props.badge}</i>
+                <i className={"icon "+this.props.icon}>{this.props.badge}</i>
                 <span className ="tabbar-label">{this.props.children}</span>
             </a>
         );
