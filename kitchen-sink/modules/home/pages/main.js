@@ -61,6 +61,7 @@ var MenuList = React.createClass({
                 <ListItem page="toast">Toast</ListItem>
                 <ListItem page="selectOneContacts">Select One Contacts</ListItem>
                 <ListItem page="selectMultiContacts">Select Multi Contacts</ListItem>
+                <ListItem page="sendMultiMessage">Send Multi Message</ListItem>
                 <ListItem page="sortableList">Sortable List</ListItem>
                 <ListItem page="barsHideOnScroll">Bars Hide On Scroll</ListItem>
                 <ListItem page="subbarsHideOnScroll">SubNavbar Hide On Scroll</ListItem>

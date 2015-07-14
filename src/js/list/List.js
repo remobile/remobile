@@ -3,7 +3,7 @@ var cn = require('classnames');
 
 var Sortable = function (container) {
 	var p = this;
-	
+
 	p.toggle = function() {
 	    container.toggleClass('sortable-opened');
 	    if (container.hasClass('sortable-opened')) {
@@ -26,7 +26,7 @@ var Sortable = function (container) {
 	};
 	p.init = function () {
 	    var isTouched, isMoved, touchStartY, touchesDiff, sortingEl, sortingElHeight, sortingItems, minTop, maxTop, insertAfter, insertBefore;
-	    
+
 	    function handleTouchStart(e) {
 	        isMoved = false;
 	        isTouched = true;
@@ -48,7 +48,7 @@ var Sortable = function (container) {
 	            sortingElHeight = sortingEl[0].offsetHeight;
 	        }
 	        isMoved = true;
-	
+
 	        e.preventDefault();
 	        e.f7PreventPanelSwipe = true;
 	        touchesDiff = pageY - touchStartY;
@@ -56,16 +56,16 @@ var Sortable = function (container) {
 	        if (translate < -minTop) translate = -minTop;
 	        if (translate > maxTop) translate = maxTop;
 	        sortingEl.transform('translate3d(0,' + translate + 'px,0)');
-	
+
 	        insertBefore = insertAfter = undefined;
-	
+
 	        sortingItems.each(function () {
 	            var currentEl = $(this);
 	            if (currentEl[0] === sortingEl[0]) return;
 	            var currentElOffset = currentEl[0].offsetTop;
 	            var currentElHeight = currentEl.height();
 	            var sortingElOffset = sortingEl[0].offsetTop + translate;
-	
+
 	            if ((sortingElOffset >= currentElOffset - currentElHeight / 2) && sortingEl.index() < currentEl.index()) {
 	                currentEl.transform('translate3d(0, '+(-sortingElHeight)+'px,0)');
 	                insertAfter = currentEl;
@@ -118,7 +118,7 @@ var Sortable = function (container) {
 	    else {
 	        $(document).on(app.touchEvents.move, handleTouchMove);
 	        $(document).on(app.touchEvents.end, handleTouchEnd);
-	    } 
+	    }
 	    p.destroySortableEvents = function() {
 		    $(document).off(app.touchEvents.start, '.list-block.sortable .sortable-handler', handleTouchStart);
 		    if (app.support.touch) {
@@ -128,24 +128,24 @@ var Sortable = function (container) {
 		    else {
 		        $(document).off(app.touchEvents.move, handleTouchMove);
 		        $(document).off(app.touchEvents.end, handleTouchEnd);
-		    } 
+		    }
 	    };
 	};
 	p.destory = function () {
 		p.destroySortableEvents&&p.destroySortableEvents();
 	};
-	
+
 	return p;
 };
 
 var Swipeout = function(container) {
 	var p = this;
-	
+
 	app.swipeoutOpenedEl = undefined;
 	app.allowSwipeout = true;
 	app.swipeoutActionsNoFold = false;
 	app.swipeoutNoFollow = false;
-	
+
 	p.init = function (swipeoutEl) {
 	    var isTouched, isMoved, isScrolling, touchesStart = {}, touchStartTime, touchesDiff, swipeOutEl, swipeOutContent, actionsRight, actionsLeft, actionsLeftWidth, actionsRightWidth, translate, opened, openedActions, buttonsLeft, buttonsRight, direction, overswipeLeftButton, overswipeRightButton, overswipeLeft, overswipeRight, noFoldLeft, noFoldRight;
 	    $(document).on(app.touchEvents.start, function (e) {
@@ -156,14 +156,14 @@ var Swipeout = function(container) {
 	                target.parents('.swipeout').is(app.swipeoutOpenedEl) ||
 	                target.hasClass('modal-in') ||
 	                target.hasClass('modal-overlay') ||
-	                target.hasClass('actions-modal') || 
+	                target.hasClass('actions-modal') ||
 	                target.parents('.actions-modal.modal-in, .modal.modal-in').length > 0
 	                )) {
 	                p.close(app.swipeoutOpenedEl);
 	            }
 	        }
 	    });
-	
+
 	    function handleTouchStart(e) {
 	        if (!app.allowSwipeout) return;
 	        isMoved = false;
@@ -184,7 +184,7 @@ var Swipeout = function(container) {
 	            isTouched = false;
 	            return;
 	        }
-	
+
 	        if (!isMoved) {
 	            if ($('.list-block.sortable-opened').length > 0) return;
 	            /*jshint validthis:true */
@@ -217,15 +217,15 @@ var Swipeout = function(container) {
 	        }
 	        isMoved = true;
 	        e.preventDefault();
-	        
+
 	        touchesDiff = pageX - touchesStart.x;
 	        translate = touchesDiff;
-	
+
 	        if (opened) {
 	            if (openedActions === 'right') translate = translate - actionsRightWidth;
 	            else translate = translate + actionsLeftWidth;
 	        }
-	
+
 	        if (translate > 0 && actionsLeft.length === 0 || translate < 0 && actionsRight.length === 0) {
 	            if (!opened) {
 	                isTouched = isMoved = false;
@@ -233,16 +233,16 @@ var Swipeout = function(container) {
 	            }
 	            translate = 0;
 	        }
-	
+
 	        if (translate < 0) direction = 'to-left';
 	        else if (translate > 0) direction = 'to-right';
 	        else {
 	            if (direction) direction = direction;
 	            else direction = 'to-left';
 	        }
-	        
+
 	        var i, buttonOffset, progress;
-	        
+
 	        e.f7PreventPanelSwipe = true;
 	        if (app.swipeoutNoFollow) {
 	            if (opened) {
@@ -308,7 +308,7 @@ var Swipeout = function(container) {
 	                    $button.css({left: (overswipeLeft ? buttonOffset : 0) + 'px'});
 	                }
 	                if (buttonsLeft.length > 1) {
-	                    $button.css('z-index', buttonsLeft.length - i); 
+	                    $button.css('z-index', buttonsLeft.length - i);
 	                }
 	                $button.transform('translate3d(' + (translate + buttonOffset * (1 - Math.min(progress, 1))) + 'px,0,0)');
 	            }
@@ -321,16 +321,16 @@ var Swipeout = function(container) {
 	            isMoved = false;
 	            return;
 	        }
-	
+
 	        isTouched = false;
 	        isMoved = false;
 	        var timeDiff = (new Date()).getTime() - touchStartTime;
 	        var action, actionsWidth, actions, buttons, i, noFold;
-	        
+
 	        noFold = direction === 'to-left' ? noFoldRight : noFoldLeft;
 	        actions = direction === 'to-left' ? actionsRight : actionsLeft;
 	        actionsWidth = direction === 'to-left' ? actionsRightWidth : actionsLeftWidth;
-	
+
 	        if (
 	            timeDiff < 300 && (touchesDiff < -10 && direction === 'to-left' || touchesDiff > 10 && direction === 'to-right') ||
 	            timeDiff >= 300 && Math.abs(translate) > actionsWidth / 2
@@ -344,7 +344,7 @@ var Swipeout = function(container) {
 	            if (Math.abs(translate) === 0) action = 'close';
 	            if (Math.abs(translate) === actionsWidth) action = 'open';
 	        }
-	        
+
 	        if (action === 'open') {
 	            app.swipeoutOpenedEl = swipeOutEl;
 	            swipeOutEl.trigger('open');
@@ -372,7 +372,7 @@ var Swipeout = function(container) {
 	            swipeOutContent.transform('');
 	            actions.removeClass('swipeout-actions-opened');
 	        }
-	        
+
 	        var buttonOffset;
 	        if (buttonsLeft && buttonsLeft.length > 0 && buttonsLeft !== buttons) {
 	            for (i = 0; i < buttonsLeft.length; i++) {
@@ -425,7 +425,7 @@ var Swipeout = function(container) {
 		        $(document).off(app.touchEvents.move, '.list-block li.swipeout', handleTouchMove);
 		        $(document).off(app.touchEvents.end, '.list-block li.swipeout', handleTouchEnd);
 		    }
-	    };    
+	    };
 	};
 	p.open = function (el, dir, callback) {
 	    el = $(el);
@@ -434,7 +434,7 @@ var Swipeout = function(container) {
 	            callback = dir;
 	        }
 	    }
-	
+
 	    if (el.length === 0) return;
 	    if (el.length > 1) el = $(el[0]);
 	    if (!el.hasClass('swipeout') || el.hasClass('swipeout-opened')) return;
@@ -484,7 +484,7 @@ var Swipeout = function(container) {
 	    app.allowSwipeout = false;
 	    el.trigger('close');
 	    el.removeClass('swipeout-opened').addClass('transitioning');
-	
+
 	    var closeTO;
 	    function onSwipeoutClose() {
 	        app.allowSwipeout = true;
@@ -495,7 +495,7 @@ var Swipeout = function(container) {
 	    }
 	    el.find('.swipeout-content').transform('translate3d(' + 0 + 'px,0,0)').transitionEnd(onSwipeoutClose);
 	    closeTO = setTimeout(onSwipeoutClose, 500);
-	    
+
 	    for (var i = 0; i < buttons.length; i++) {
 	        if (dir === 'right') {
 	            $(buttons[i]).transform('translate3d(' + (-buttons[i].offsetLeft) + 'px,0,0)');
@@ -533,9 +533,9 @@ var Swipeout = function(container) {
 	p.destory = function () {
 		p.destroySwipeoutEvents&&p.destroySwipeoutEvents();
 	};
-	
+
 	return p;
-} 
+}
 
 module.exports = React.createClass({
 		componentDidMount: function() {

@@ -48,6 +48,7 @@ module.exports = {
 	'login': require('./login/login'),
 	'register': require('./login/register'),
 	'messageInfo': require('./message/messageInfo'),
+	'sendMultiMessage': require('./message/sendMultiMessage'),
 	'contactInfo': require('./contact/contactInfo'),
 	'selectUsers': require('./contact/selectUsers'),
 	'audioCall': require('./call/audioCall'),

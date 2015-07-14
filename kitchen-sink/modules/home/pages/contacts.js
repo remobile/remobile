@@ -11,8 +11,8 @@ var View = UI.View;
 
 var ContactItemInner = function(userid, username, online) {
     return [
-        <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>,
-        <List.ItemInner>
+        <List.ItemMedia key="0"><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>,
+        <List.ItemInner key="1">
             <List.ItemTitle style={app.color.usernameColor(online)}>{username}</List.ItemTitle>
         </List.ItemInner>
     ];
@@ -58,7 +58,7 @@ var ContactGroup = React.createClass({
         return (
             <List.ListGroup>
                 <List.ListGroupTitle data={{'data-index-letter':this.props.letter}}>{this.props.letter}</List.ListGroupTitle>
-                {userids.map((userid)=>{return <ContactItem userid={userid} users={users} select={select}/>})}
+                {userids.map((userid)=>{return <ContactItem key={userid} userid={userid} users={users} select={select}/>})}
             </List.ListGroup>
         )
     }
@@ -73,7 +73,7 @@ var ContactList = React.createClass({
         var select = this.props.select;
         return (
             <List.List block group class="contacts-block">
-                {_.map(letters, (letter)=>{return <ContactGroup letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
+                {_.map(letters, (letter)=>{return <ContactGroup key={"letter_"+letter} letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
             </List.List>
         );
     }

@@ -101,13 +101,15 @@ var Messagebar = function (container, maxRows) {
 module.exports = React.createClass({
     getDefaultProps: function() {
         return {
-            maxRows: 5
+            maxRows: 5,
+            sendChecked: true
         }
     },
     getInitialState: function() {
+        var value = this.props.value||'';
         return {
-            value: "",
-            sendButtonStyle: {color:"gray"}
+            value: value,
+            sendChecked: this.props.sendChecked,
         }
     },
     componentDidMount: function() {
@@ -119,20 +121,22 @@ module.exports = React.createClass({
     handleChange: function(e) {
         var value = e.target.value;
         this.setState({
-            value: value,
-            sendButtonStyle: value.length?{color:"#007aff"}:{color:"gray"}
+            value: value
         });
     },
     getValue: function() {
         return this.state.value;
     },
     render: function() {
+        var canSend = (this.state.sendChecked && this.state.value.length);
+        var sendButtonStyle = canSend?{color:"#007aff"}:{color:"gray"}
+        var onSend = canSend&&this.props.onSend;
         return (
             <div className="toolbar messagebar" ref="messagebar">
                 <div className="toolbar-inner">
                     <a className="link icon-only"><i className="icon icon-camera"></i></a>
                     <textarea placeholder="Message" value={this.state.value} onChange={this.handleChange}></textarea>
-                    <a className="link" style={this.state.sendButtonStyle} onClick={this.props.onSend}>Send</a>
+                    <a className="link" style={sendButtonStyle} onClick={onSend}>Send</a>
                 </div>
             </div>
         );

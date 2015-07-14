@@ -12,37 +12,45 @@ var Icon = UI.Icon.Icon;
 var Button = UI.Button.Button;
 var ButtonsRow = UI.Button.ButtonsRow;
 
-var ContactsList = function(value, handleChange) {
-    var type, onChange;
-    if (_.isArray(value)) {
-        type = "checkbox";
-        var list = value.concat();
-        onChange = function(val, checked) {
-            if (checked) {
-                list.push(val);
-            } else {
-                list =  _.without(list, val);
-            }
-            handleChange(list);
-        }
-    } else {
-        type = "radio";
-        onChange = function(val) {
-            handleChange(val);
-        }
-    }
-    return <Contacts select={{type:type, name:"contacts-"+type, default:value, onChange:onChange}}/>
-}
-
 module.exports = React.createClass({
+    componentWillMount: function() {
+        var value = this.props.data.param.value;
+        this.users = value;
+        if (_.isArray(value)) {
+            this.type = "checkbox";
+            var list = value.concat();
+            var self = this;
+            this.onChange = function(val, checked) {
+                if (checked) {
+                    list.push(val);
+                } else {
+                    list =  _.without(list, val);
+                }
+                self.users = list;
+            }
+        } else {
+            this.type = "radio";
+            var self = this;
+            this.onChange = function(val) {
+                self.users = val;
+            }
+        }
+    },
+    doSetSelectUsers: function() {
+        app.goBack(1, {users: this.users});
+    },
     render: function() {
-        var param = this.props.data.param;
-        var value = param.value;
-        var onChange = param.onChange;
+        var value = this.props.data.param.value;
+        var type = this.type;
         return (
             <View.Page title="Select Users">
                 <View.PageContent>
-                    {ContactsList(value, onChange)}
+                    <Contacts select={{type:type, name:"contacts-"+type, default:value, onChange:this.onChange}}/>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col><Button big fill color="green" onTap={this.doSetSelectUsers}>确定</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
                 </View.PageContent>
             </View.Page>
         );
