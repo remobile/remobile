@@ -108,8 +108,7 @@ module.exports = React.createClass({
     getInitialState: function() {
         var value = this.props.value||'';
         return {
-            value: value,
-            sendChecked: this.props.sendChecked,
+            value: value
         }
     },
     componentDidMount: function() {
@@ -128,7 +127,7 @@ module.exports = React.createClass({
         return this.state.value;
     },
     render: function() {
-        var canSend = (this.state.sendChecked && this.state.value.length);
+        var canSend = (this.props.sendChecked && this.state.value.length);
         var sendButtonStyle = canSend?{color:"#007aff"}:{color:"gray"}
         var onSend = canSend&&this.props.onSend;
         return (

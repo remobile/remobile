@@ -53,6 +53,7 @@ module.exports = {
 	'selectUsers': require('./contact/selectUsers'),
 	'audioCall': require('./call/audioCall'),
 	'videoCall': require('./call/videoCall'),
+	'createGroup': require('./group/createGroup'),
    //icons
 	'icons': require('./common/icons')
 };

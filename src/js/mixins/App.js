@@ -101,7 +101,7 @@ function App (views) {
             if (obj) {
                 var trans = VIEW_TRANSITIONS[obj.transition];
                 param = assign({}, param);
-                param.old = obj.param;
+                param.saved = obj.param;
                 this.displayView(obj.id, trans? trans.back: 'none', param);
             }
         }
