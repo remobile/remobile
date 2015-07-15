@@ -26,9 +26,9 @@ module.exports = (function() {
         app.db.Logger._logMessage(socket.userid, obj.to, obj.msg, obj.time);
     };
     MessageMgr.prototype.sendMessageToGroup = function(socket, obj) {
-        var group = obj.to;
-        socket.emit('USER_SEND_MESSAGE_RS', {to:group, msgid:obj.msgid, time:obj.time});
-        app.groupMgr.getGroupUsers(group, function(users) {
+        var groupid = obj.to;
+        socket.emit('USER_SEND_MESSAGE_RS', {to:groupid, msgid:obj.msgid, time:obj.time});
+        app.groupMgr.getGroupUsers(groupid, function(users) {
             for (var i=0,len=users.length; i<len; i++) {
                 if (socket.userid != users[i]) {
                     _self.sendMessageToUser(socket, users[i], obj);
@@ -44,7 +44,7 @@ module.exports = (function() {
         if (client) {
             var rec = {from:socket.userid, msg:obj.msg, msgtype:obj.msgtype, msgid:obj.msgid, type:obj.type, time:obj.time, touserid:obj.touserid}
             if (obj.type == _self.GROUP_TYPE) {
-                rec.group = obj.to;
+                rec.groupid = obj.to;
             }
             app.io.to(client.socketid).emit('USER_MESSAGE_NF', rec);
         }

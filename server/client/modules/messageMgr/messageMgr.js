@@ -27,9 +27,9 @@ module.exports = define(function(require) {
         _self.increaseMsgId();
         app.socket.emit('USER_SEND_MESSAGE_RQ', {type:_self.USER_TYPE, to:users, msg:msg, msgtype:msgtype, msgid:_self.msgid});
     };
-    MessageMgr.prototype.sendGroupMessage = function(group, msg, msgtype) {
+    MessageMgr.prototype.sendGroupMessage = function(groupid, msg, msgtype) {
         _self.increaseMsgId();
-        app.socket.emit('USER_SEND_MESSAGE_RQ', {type:_self.GROUP_TYPE, to:group, msg:msg, msgtype:msgtype, msgid:_self.msgid});
+        app.socket.emit('USER_SEND_MESSAGE_RQ', {type:_self.GROUP_TYPE, to:groupid, msg:msg, msgtype:msgtype, msgid:_self.msgid});
     };
     MessageMgr.prototype.onSendUserMessage = function(obj) {
         if (obj.error) {
@@ -42,7 +42,7 @@ module.exports = define(function(require) {
         if (obj.type == _self.USER_TYPE) {
             app.console.log('red@['+obj.from+']','blue@['+obj.msgid+']:', obj.msg, obj.msgtype, "blue@"+obj.time);
         } else {
-            app.console.log('magenta@group:'+obj.group, 'red@['+obj.from+']','blue@['+obj.msgid+']:', obj.msg, obj.msgtype, "blue@"+obj.time);
+            app.console.log('magenta@group:'+obj.groupid, 'red@['+obj.from+']','blue@['+obj.msgid+']:', obj.msg, obj.msgtype, "blue@"+obj.time);
         }
     };
     MessageMgr.prototype.onUserMessageReceived = function(obj) {
@@ -53,7 +53,7 @@ module.exports = define(function(require) {
         for (var i=0; i<len; i++) {
             var item = obj[i];
             if (item.type == _self.GROUP_TYPE) {
-                app.console.log('magenta@['+item.group+']', 'red@['+item.from+']['+item.time+']:', item.msg, item.msgtype);
+                app.console.log('magenta@['+item.groupid+']', 'red@['+item.from+']['+item.time+']:', item.msg, item.msgtype);
             } else {
                 app.console.log('red@['+item.from+']['+item.time+']:', item.msg, item.msgtype);
             }
@@ -85,7 +85,7 @@ module.exports = define(function(require) {
         if (obj.type == _self.GROUP_TYPE) {
             for (var i=0; i<len; i++) {
                 var item = msg[i];
-                app.console.log('magenta@['+item.group+']', 'red@['+item.from+']['+item.time+']:', item.msg, item.msgtype);
+                app.console.log('magenta@['+item.groupid+']', 'red@['+item.from+']['+item.time+']:', item.msg, item.msgtype);
             }
         } else {
             for (var i=0; i<len; i++) {

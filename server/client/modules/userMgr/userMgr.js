@@ -1,8 +1,12 @@
 module.exports = define(function(require) {
     function UserMgr() {
-        this.users = {};
+        this.reset();
     }
 
+    UserMgr.prototype.reset = function() {
+        this.users = {};
+        this.init = false;
+    };
     UserMgr.prototype.add = function(obj) {
         var users = this.users;
         var userid = obj.userid;

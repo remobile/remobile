@@ -87,8 +87,8 @@ module.exports = React.createClass({
             mgr.clearUserUnreadNotify(this.userid);
         } else {
             this.isGroup = true;
-            this.groupname = param.groupname;
-            mgr.clearGroupUnreadNotify(this.groupname);
+            this.groupid = param.groupid;
+            mgr.clearGroupUnreadNotify(this.groupid);
         }
     },
     componentDidMount: function() {
@@ -96,8 +96,8 @@ module.exports = React.createClass({
         app.userMgr.addChangeListener(this._onChange);
         mgr.addDisplayMessageChangeListener(this._onMessageChange);
         if (this.isGroup) {
-            mgr.displayMessageInfo.target = this.groupname;
-            mgr.getGroupMessage(this.groupname);
+            mgr.displayMessageInfo.target = this.groupid;
+            mgr.getGroupMessage(this.groupid);
         } else {
             mgr.displayMessageInfo.target = this.userid;
             mgr.getUserMessage(this.userid);
@@ -139,7 +139,7 @@ module.exports = React.createClass({
         var text = this.refs.toolbar.getValue();
         var mgr = app.messageMgr;
         if (this.isGroup) {
-            mgr.sendGroupMessage(this.groupname, text, mgr.TEXT_TYPE, this.sendGroupUserId);
+            mgr.sendGroupMessage(this.groupid, text, mgr.TEXT_TYPE, this.sendGroupUserId);
         } else {
             mgr.sendUserMessage(this.userid, text, mgr.TEXT_TYPE);
         }
@@ -151,9 +151,9 @@ module.exports = React.createClass({
             this.oldestMessageTime = msg&&msg.time;
             if (this.isGroup) {
                 if (this.localStorageEnd || !msg) {
-                    app.messageMgr.getGroupMessageFromServer(this.groupname, this.oldestMessageTime||Date.now());
+                    app.messageMgr.getGroupMessageFromServer(this.groupid, this.oldestMessageTime||Date.now());
                 } else {
-                    app.messageMgr.getGroupMessage(this.groupname, this.oldestMessageTime);
+                    app.messageMgr.getGroupMessage(this.groupid, this.oldestMessageTime);
                 }
             } else {
                 if (this.localStorageEnd || !msg) {

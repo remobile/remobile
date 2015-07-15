@@ -69,6 +69,9 @@
                 maxVersion: app.info.maxVersion,
                 minVersion: app.info.minVersion
             });
+        },
+        addNotification: function(id, title, msg) {
+            console.log('addNotification', [id, title, msg]);
         }
     };
 });

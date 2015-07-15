@@ -40,6 +40,9 @@ module.exports = (function() {
     Router.prototype.ON_USERS_LIST_NF = function(obj) {
         app.userMgr.addList(obj);
     };
+    Router.prototype.ON_GROUP_LIST_NF = function(obj) {
+        app.groupMgr.addList(obj);
+    };
     Router.prototype.ON_USERS_NOTIFY_NF = function(obj) {
         app.notifyMgr.onNotify(obj);
     };

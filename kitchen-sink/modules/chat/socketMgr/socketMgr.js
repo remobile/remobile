@@ -41,6 +41,8 @@ module.exports = (function() {
             router.ON_USER_LOGIN_NF(obj);
         }).on('USERS_LIST_NF', function(obj) {
             router.ON_USERS_LIST_NF(obj);
+        }).on('GROUP_LIST_NF', function(obj) {
+            router.ON_GROUP_LIST_NF(obj);
         }).on('USERS_NOTIFY_NF', function(obj) {
             router.ON_USERS_NOTIFY_NF(obj);
         }).on('USER_SEND_MESSAGE_RS', function(obj) {

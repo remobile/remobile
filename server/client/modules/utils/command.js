@@ -103,7 +103,7 @@ module.exports = define(function(require) {
         } else if (/^:\S+/.test(line)) {
             var group = line.match(/[\S|,]+/)[0];
             var args = line.substr(group.length+1, line.length);
-            ret.group = group.substr(1);
+            ret.group = group.substr(1)*1;
             ret.args = args;
         } else if (/\w+/.test(line)){
             var cmd = line.match(/\w+/)[0];
@@ -132,44 +132,44 @@ module.exports = define(function(require) {
             }
         } else if (args[0]=='m' || args[0]=='modify') {
             if (/^\S+$/.test(args[1])) {
-                var users = args[2]&&args[2].split(',')||[];
-                app.groupMgr.modifyGroup(args[1], users, args[3]);
+                var users = args[3]&&args[3].split(',')||[];
+                app.groupMgr.modifyGroup(args[1]*1, args[2], users, args[4]);
             } else {
                 _self.invalidCommand();
             }
         } else if (args[0]=='d' || args[0]=='delete') {
             if (/^\S+$/.test(args[1])) {
-                app.groupMgr.removeGroup(args[1]);
+                app.groupMgr.removeGroup(args[1]*1);
             } else {
                 _self.invalidCommand();
             }
         } else if (args[0]=='j' || args[0]=='join') {
             if (/^\S+$/.test(args[1])) {
-                app.groupMgr.joinGroup(args[1]);
+                app.groupMgr.joinGroup(args[1]*1);
             } else {
                 _self.invalidCommand();
             }
         } else if (args[0]=='q' || args[0]=='leave') {
             if (/^\w+$/.test(args[1])) {
-                app.groupMgr.leaveGroup(args[1]);
+                app.groupMgr.leaveGroup(args[1]*1);
             } else {
                 _self.invalidCommand();
             }
         } else if (args[0]=='i' || args[0]=='info') {
             if (/^\S+$/.test(args[1])) {
-                app.groupMgr.getGroupInfo(args[1]);
+                app.groupMgr.getGroupInfo(args[1]*1);
             } else {
                 _self.invalidCommand();
             }
         } else if (args[0]=='p' || args[0]=='pull') {
             if (/^\S+$/.test(args[1]) && /^[\w|,]+$/.test(args[2])) {
-                app.groupMgr.pullInGroup(args[1], args[2]);
+                app.groupMgr.pullInGroup(args[1]*1, args[2]);
             } else {
                 _self.invalidCommand();
             }
         } else if (args[0]=='f' || args[0]=='fire') {
             if (/^\S+$/.test(args[1]) && /^[\w|,]+$/.test(args[2])) {
-                app.groupMgr.fireOutGroup(args[1], args[2]);
+                app.groupMgr.fireOutGroup(args[1]*1, args[2]);
             } else {
                 _self.invalidCommand();
             }
@@ -244,7 +244,7 @@ module.exports = define(function(require) {
         app.console.print('    <ui|update> [username sign]: update user\'s info');
         app.console.print('    <g|groups l|list {name:xx,users:xx,creators:xx}>: show group list, userid and creators is option');
         app.console.print('    <g|groups i|info group>: show group info');
-        app.console.print('    <g|groups c|create|m|modify name[users type]|d|delete name>: create, modify or delete group');
+        app.console.print('    <g|groups c|create|m|modify group [name users[1,2,3] type[0|1]]|d|delete group>: create, modify or delete group');
         app.console.print('    <g|groups j|join|q|leave group>: join or leave group or show group');
         app.console.print('    <g|groups p|pull|f|fire group userid,userid>: pull or fire users to a group, only creator');
         app.console.print('    <hi|history [type counter time cnt]>: show history messages');

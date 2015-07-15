@@ -4,18 +4,23 @@ module.exports = define(function(require) {
     function Router() {
         _self = this;
     }
-
+    Router.prototype.ON_CONNECT = function(obj) {
+        app.chatconnect = true;
+    };
     Router.prototype.ON_RECONNECT = function(obj) {
+        app.chatconnect = true;
         app.login.loginAgain();
+    };
+    Router.prototype.ON_DISCONNECT = function(obj) {
+        app.chatconnect = false;
+        app.userMgr.reset();
+        app.groupMgr.reset();
     };
     Router.prototype.ON_USER_REGISTER_RS = function(obj) {
         app.register.onRegister(obj);
     };
     Router.prototype.ON_USER_LOGIN_RS = function(obj) {
         app.login.onLogin(obj);
-        if (!obj.error) {
-            app.groupMgr.addList(obj.groups);
-        }
     };
     Router.prototype.ON_USER_LOGIN_NF = function(obj) {
         app.userMgr.online(obj);
@@ -25,6 +30,9 @@ module.exports = define(function(require) {
     };
     Router.prototype.ON_USERS_LIST_NF = function(obj) {
         app.userMgr.addList(obj);
+    };
+    Router.prototype.ON_GROUP_LIST_NF = function(obj) {
+        app.groupMgr.addList(obj);
     };
     Router.prototype.ON_USERS_NOTIFY_NF = function(obj) {
         app.notifyMgr.onNotify(obj);

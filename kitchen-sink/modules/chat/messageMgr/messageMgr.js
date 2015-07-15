@@ -102,10 +102,10 @@ module.exports = (function() {
             self.emitDisplayMessageChange();
         });
     };
-    MessageMgr.prototype.getGroupMessage = function(name, time) {
+    MessageMgr.prototype.getGroupMessage = function(groupid, time) {
         var query = {
             type: this.GROUP_TYPE,
-            username: name
+            groupid: groupid
         };
         if (time) {
             query.time = {$lt: time};
@@ -141,47 +141,47 @@ module.exports = (function() {
         this.unreadMessage.total -= cnt;
         us.object(constants.MESSAGE_BADGES, obj);
     };
-    MessageMgr.prototype.increaseGroupUnreadNotify = function(name, touserid) {
+    MessageMgr.prototype.increaseGroupUnreadNotify = function(groupid, touserid) {
         var obj = this.unreadMessage.group;
-        if (!obj[name]) {
-            obj[name] = 1;
+        if (!obj[groupid]) {
+            obj[groupid] = 1;
         } else {
-            obj[name]++;
+            obj[groupid]++;
         }
         us.object(constants.GROUP_MESSAGE_BADGES, obj);
 
         obj = this.unreadMessage.at;
         if (touserid == app.loginMgr.userid) {
-            if (!obj[name]) {
-                obj[name] = 1;
+            if (!obj[groupid]) {
+                obj[groupid] = 1;
             } else {
-                obj[name]++;
+                obj[groupid]++;
             }
             us.object(constants.GROUP_CHAT_AT_NUMBERS, obj);
         }
         this.unreadMessage.total++;
     };
-    MessageMgr.prototype.clearGroupUnreadNotify = function(name) {
+    MessageMgr.prototype.clearGroupUnreadNotify = function(groupid) {
         var obj = this.unreadMessage.group;
-        var cnt = obj[name]||0;
-        delete obj[name];
+        var cnt = obj[groupid]||0;
+        delete obj[groupid];
         this.unreadMessage.total -= cnt;
         us.object(constants.GROUP_MESSAGE_BADGES, obj);
     };
-    MessageMgr.prototype.showNewestMessage = function(type, userid, username, time, msg, msgtype, send, touserid) {
+    MessageMgr.prototype.showNewestMessage = function(type, userid, groupid, time, msg, msgtype, send, touserid) {
         var display;
         var isGroup = (type===this.GROUP_TYPE);
-        var newest_message = {userid:userid, username: username, time: time, msg: msg, msgtype:msgtype, touserid:touserid};
+        var newest_message = {userid:userid, groupid:groupid, time: time, msg: msg, msgtype:msgtype, touserid:touserid};
 
         if (isGroup) {
-            display = this.displayMessageInfo.target===username;
+            display = this.displayMessageInfo.target===groupid;
             if (!(app.state.currentView==="messageInfo" && display)) {
-                this.increaseGroupUnreadNotify(username, touserid);
+                this.increaseGroupUnreadNotify(groupid, touserid);
             }
-            this.newestMessage = _.reject(this.newestMessage, function(item){return item.username==username&&item.type==type});
-            this.newestMessage.unshift(assign({type:type, username:username}, newest_message));
-            app.db_newest_message.upsert({type: type, username: username}, newest_message);
-            console.log("update newest_message_db", {type: type, username: username}, {username: username,time: time, msg: msg, msgtype:msgtype});
+            this.newestMessage = _.reject(this.newestMessage, function(item){return item.groupid==groupid&&item.type==type});
+            this.newestMessage.unshift(assign({type:type, groupid:groupid}, newest_message));
+            app.db_newest_message.upsert({type: type, groupid: groupid}, newest_message);
+            console.log("update newest_message_db", {type: type, groupid: groupid}, {groupid: groupid,time: time, msg: msg, msgtype:msgtype});
         } else {
             display = this.displayMessageInfo.target===userid;
             if (!(app.state.currentView==="messageInfo" && display)) {
@@ -190,11 +190,11 @@ module.exports = (function() {
             this.newestMessage = _.reject(this.newestMessage, function(item){return item.userid==userid&&item.type==type});
             this.newestMessage.unshift(assign({type:type, userid:userid}, newest_message));
             app.db_newest_message.upsert({type: type, userid: userid}, newest_message);
-            console.log("update newest_message_db", {type: type, userid: userid}, {username: username,time: time, msg: msg, msgtype:msgtype});
+            console.log("update newest_message_db", {type: type, userid: userid}, {time: time, msg: msg, msgtype:msgtype});
         }
         this.emitNewestMessageChange();
 
-        var display_message = {type:type, userid:userid, username:username, time:time, msg:msg, msgtype:msgtype};
+        var display_message = {type:type, userid:userid, groupid:groupid, time:time, msg:msg, msgtype:msgtype};
         if (send != null ) {
             display_message.send = send;
         }
@@ -214,17 +214,16 @@ module.exports = (function() {
         app.emit('USER_SEND_MESSAGE_RQ', {type:this.USER_TYPE, to:users, msg:msg, msgtype:msgtype, msgid:this.msgid});
         var list = users.split(',');
         var time = Date.now();
-        var allUsers = app.userMgr.users;
         for (var i= 0,len=list.length; i<len; i++) {
             var userid = list[i];
-            this.showNewestMessage(this.USER_TYPE, userid, allUsers[userid].username, time, msg, msgtype, this.msgid);
+            this.showNewestMessage(this.USER_TYPE, userid, null,  time, msg, msgtype, this.msgid);
         }
     };
-    MessageMgr.prototype.sendGroupMessage = function(group, msg, msgtype, touserid) {
+    MessageMgr.prototype.sendGroupMessage = function(groupid, msg, msgtype, touserid) {
         this.increaseMsgId();
-        app.emit('USER_SEND_MESSAGE_RQ', {type:this.GROUP_TYPE, to:group, msg:msg, msgtype:msgtype, msgid:this.msgid, touserid:touserid});
+        app.emit('USER_SEND_MESSAGE_RQ', {type:this.GROUP_TYPE, to:groupid, msg:msg, msgtype:msgtype, msgid:this.msgid, touserid:touserid});
         var time = Date.now();
-        this.showNewestMessage(this.GROUP_TYPE, app.loginMgr.userid, group, time, msg, msgtype, this.msgid, touserid);
+        this.showNewestMessage(this.GROUP_TYPE, app.loginMgr.userid, groupid, time, msg, msgtype, this.msgid, touserid);
     };
     MessageMgr.prototype.onSendUserMessage = function(obj) {
         if (obj.error) {
@@ -233,26 +232,26 @@ module.exports = (function() {
             console.log("send to "+obj.to+" ["+obj.msgid+"]", obj.time, "server success");
         }
     };
-    MessageMgr.prototype.addMessageNotification = function(username, message, isGroup) {
-        return;
-        if (isGroup) {
-            username = "【群】:"+username;
+    MessageMgr.prototype.addMessageNotification = function(userid, groupid, message) {
+        var username;
+        if (userid !== null) {
+            username = app.userMgr.users[userid].username;
+        } else {
+            username = "【群】:"+app.groupMgr.list[groupid].name;
         }
         username = "来自 "+username+" 的消息"
-        navigator.utils.addNotification(MESSAGE_NOTIFY_ID, username, message);
+        navigator.utils.addNotification(app.constants.MESSAGE_NOTIFY_ID, username, message);
     };
     MessageMgr.prototype.showUserMessage = function(obj) {
         app.sound.playSound(app.resource.aud_message_tip);
         if (obj.type == this.USER_TYPE) {
-            var allUsers = app.userMgr.users;
-            var username = allUsers[obj.from].username;
-            this.addMessageNotification(username||obj.from, obj.msg);
-            this.showNewestMessage(this.USER_TYPE, obj.from, username, obj.time, obj.msg, obj.msgtype);
+            this.addMessageNotification(obj.from, null, obj.msg);
+            this.showNewestMessage(this.USER_TYPE, obj.from, null, obj.time, obj.msg, obj.msgtype);
             console.log('['+obj.from+']','['+obj.msgid+']:', obj.msg, obj.msgtype, obj.time);
         } else {
-            this.addMessageNotification(obj.group, obj.msg, true);
-            this.showNewestMessage(this.GROUP_TYPE, obj.from, obj.group, obj.time, obj.msg, obj.msgtype, null, obj.touserid);
-            console.log(' group:'+obj.group, ' ['+obj.from+']',' ['+obj.msgid+']:', obj.msg, obj.msgtype, obj.time, obj.touserid);
+            this.addMessageNotification(null, obj.groupid, obj.msg);
+            this.showNewestMessage(this.GROUP_TYPE, obj.from, obj.groupid, obj.time, obj.msg, obj.msgtype, null, obj.touserid);
+            console.log(' group:'+obj.groupid, ' ['+obj.from+']',' ['+obj.msgid+']:', obj.msg, obj.msgtype, obj.time, obj.touserid);
         }
     };
     MessageMgr.prototype.onUserMessageReceived = function(obj) {
@@ -276,8 +275,8 @@ module.exports = (function() {
             for (var i = 0; i < len; i++) {
                 var item = obj[i];
                 if (item.type == this.GROUP_TYPE) {
-                    console.log(' [' + item.group + ']', ' [' + item.from + '][' + item.time + ']:', item.msg);
-                    this.showNewestMessage(this.GROUP_TYPE, item.from, item.group, new Date(item.time).getTime(), item.msg, item.msgtype, null, item.touserid);
+                    console.log(' [' + item.groupid + ']', ' [' + item.from + '][' + item.time + ']:', item.msg);
+                    this.showNewestMessage(this.GROUP_TYPE, item.from, item.groupid, new Date(item.time).getTime(), item.msg, item.msgtype, null, item.touserid);
                 } else {
                     console.log(' [' + item.from + '][' + new Date(item.time).getTime() + ']:', item.msg);
                     this.showNewestMessage(this.USER_TYPE, item.from, allUsers[item.from].username, new Date(item.time).getTime(), item.msg, item.msgtype);

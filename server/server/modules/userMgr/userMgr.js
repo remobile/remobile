@@ -32,6 +32,7 @@ module.exports = (function() {
     };
     UserMgr.prototype.onLoginSuccess = function(socket, obj) {
          app.userMgr.sendUserList(socket);
+         app.userMgr.sendGroupList(socket);
          app.notifyMgr.sendUserNotify(socket);
          app.messageMgr.sendOfflineMessage(socket);
     };
@@ -41,6 +42,14 @@ module.exports = (function() {
             var online = app.onlineUserMgr.getOnlineUserList();
             _.each(docs, function(doc){doc.online = _.indexOf(online, doc.userid)!==-1;});
             socket.emit('USERS_LIST_NF', docs);
+        });
+    };
+    UserMgr.prototype.sendGroupList = function(socket) {
+        app.db.User.findOne({userid:socket.userid}, function (err, doc) {
+            var groupids = doc.groups;
+            app.db.Group.find({id:{$in:groupids}}, '-_id -__v', function(err, docs) {
+                socket.emit('GROUP_LIST_NF', docs);
+            });
         });
     };
     UserMgr.prototype.updateHead = function(socket, obj) {

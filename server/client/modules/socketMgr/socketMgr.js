@@ -8,8 +8,10 @@ module.exports = define(function(require) {
     SocketMgr.prototype.start = function() {
         app.socket.on('connect', function(obj) {
             app.console.log("connect to server");
+            app.router.ON_CONNECT();
         }).on('disconnect', function(obj) {
             app.console.log("disconnect to server");
+            app.router.ON_DISCONNECT();
         }).on('connect_error', function(obj) {
             app.console.error("connect to server error");
         }).on('connect_timeout', function(obj) {
@@ -29,6 +31,8 @@ module.exports = define(function(require) {
             app.router.ON_USER_LOGIN_NF(obj);
         }).on('USERS_LIST_NF', function(obj) {
             app.router.ON_USERS_LIST_NF(obj);
+        }).on('GROUP_LIST_NF', function(obj) {
+            app.router.ON_GROUP_LIST_NF(obj);
         }).on('USERS_NOTIFY_NF', function(obj) {
             app.router.ON_USERS_NOTIFY_NF(obj);
         }).on('USER_SEND_MESSAGE_RS', function(obj) {

@@ -10,14 +10,14 @@ module.exports = (function() {
         msgtype: {type:String, required:true},
         msgid: {type:Number, required:true},
         type: {type:String},
-        group: {type:String},
+        groupid: {type:Number},
         touserid: {type:String}
     }, {
         collection: 'messages'
     });
 
-    MessageSchema.statics._add = function(from, to, msg, msgtype, msgid, type, group, time, touserid) {
-        var doc = this({from:from, to:to, msg:msg, msgtype:msgtype, msgid:msgid, type:type, group:group, time:time, touserid:touserid});
+    MessageSchema.statics._add = function(from, to, msg, msgtype, msgid, type, groupid, time, touserid) {
+        var doc = this({from:from, to:to, msg:msg, msgtype:msgtype, msgid:msgid, type:type, groupid:groupid, time:time, touserid:touserid});
         doc.save();
     };
     MessageSchema.statics._getByUser = function(userid1, userid2, time, cnt, callback) {
@@ -31,11 +31,11 @@ module.exports = (function() {
             callback(docs);
         });
     };
-    MessageSchema.statics._getByGroup = function(userid, group, time, cnt, callback) {
+    MessageSchema.statics._getByGroup = function(userid, groupid, time, cnt, callback) {
         this.find({time:{$lt:time}})
         .select('-_id -__v')
         .sort({time:-1})
-        .or([{group:group, from:userid}, {group:group, to:userid}])
+        .or([{groupid:groupid, from:userid}, {groupid:groupid, to:userid}])
         .limit(cnt)
         .exec(function(err, docs){
             callback(docs);

@@ -11,12 +11,12 @@ module.exports = (function() {
         }
     };
     GroupMgr.prototype.getGroupList = function(socket, obj) {
-        app.db.Group._getList(obj.name, obj.creators, obj.members, socket.userid, function(docs) {
+        app.db.Group._getList(obj.id, obj.creators, obj.members, socket.userid, function(docs) {
             socket.emit('GROUP_LIST_RS', docs)
         });
     };
     GroupMgr.prototype.getGroupInfo = function(socket, obj) {
-        app.db.Group._getInfo(obj.name, function(doc) {
+        app.db.Group._getInfo(obj.id, function(doc) {
             socket.emit('GROUP_INFO_RS', doc)
         });
     };
@@ -25,9 +25,7 @@ module.exports = (function() {
         members.push(socket.userid);
         app.db.Group._create(obj.name, socket.userid, members, obj.type, function(err, doc) {
             if (!err) {
-                for (var i=0,len=members.length; i<len; i++) {
-                    app.db.User._joinGroup(members[i], doc.id, obj.name, socket.userid, obj.type, members);
-                }
+                app.db.User._joinGroup(members, doc.id);
                 app.socketMgr.notifyOtherUsers(members, socket.userid, 'GROUP_PULL_IN_NF', {id:doc.id, name:obj.name, pulledmembers:_.without(members, socket.userid), creator:socket.userid, type:obj.type, members:members});
                 socket.emit('GROUP_CREATE_RS', {error:null, id:doc.id, name:obj.name, type:obj.type, members:members});
             } else {
@@ -46,12 +44,8 @@ module.exports = (function() {
                 var oldrm = _.reject(oldmembers, function(userid){
                     return _.contains(members, userid);
                 });
-                for (var i=0,len=newadd.length; i<len; i++) {
-                    app.db.User._joinGroup(newadd[i], obj.id, obj.name, socket.userid, obj.type, members);
-                }
-                for (var i=0,len=oldrm.length; i<len; i++) {
-                    app.db.User._leaveGroup(oldrm[i], obj.id);
-                }
+                app.db.User._joinGroup(newadd, obj.id);
+                app.db.User._leaveGroup(oldrm, obj.id);
                 _self.setActiveGroups(obj.id, doc);
 
                 app.socketMgr.notifyOtherUsers(doc.members, socket.userid, 'GROUP_PULL_IN_NF', {id:obj.id, name:obj.name, pulledmembers:newadd, creator:doc.creator, type:doc.type, members:doc.members});
@@ -74,8 +68,8 @@ module.exports = (function() {
                     socket.emit('GROUP_DELETE_RS', {error:app.error.GROUP_NOT_CREATOR, id:obj.id});
                 } else {
                     var members = doc.members;
+                    app.db.User._leaveGroup(members, obj.id);
                     for (var i=0,len=members.length; i<len; i++) {
-                        app.db.User._leaveGroup(members[i], obj.id);
                         var client = app.onlineUserMgr.getClient(members[i]);
                         if (client && members[i]!=socket.userid) {
                             app.io.to(client.socketid).emit('GROUP_DELETE_NF', {id:obj.id});
@@ -103,7 +97,7 @@ module.exports = (function() {
     GroupMgr.prototype.joinGroup = function(socket, obj) {
         app.db.Group._join(obj.id, socket.userid, function(err, doc, oldmembers) {
             if (!err) {
-                app.db.User._joinGroup(socket.userid, obj.id, doc.name, doc.creator, doc.type, doc.members);
+                app.db.User._joinGroup([socket.userid], obj.id);
                 _self.setActiveGroups(obj.id, doc);
 
                 app.socketMgr.notifyOtherUsers(doc.members, socket.userid, 'GROUP_JOIN_NF', {id:obj.id, userid:socket.userid});
@@ -115,7 +109,7 @@ module.exports = (function() {
     };
     GroupMgr.prototype.leaveGroup = function(socket, obj) {
         app.db.Group._leave(obj.id, socket.userid, function(doc) {
-            app.db.User._leaveGroup(socket.userid, obj.id);
+            app.db.User._leaveGroup([socket.userid], obj.id);
             _self.setActiveGroups(obj.id, doc);
 
             app.socketMgr.notifyOtherUsers(doc.members, socket.userid, 'GROUP_LEAVE_NF', {id:obj.id, userid:socket.userid});
@@ -126,9 +120,7 @@ module.exports = (function() {
         var members = obj.members;
         app.db.Group._pullIn(obj.id, socket.userid, members, function(err, doc, oldmembers) {
             if (!err) {
-                for (var i=0,len=members.length; i<len; i++) {
-                    app.db.User._joinGroup(members[i], obj.id, doc.name, doc.creator, doc.type, doc.members);
-                }
+                app.db.User._joinGroup(members, obj.id);
                 _self.setActiveGroups(obj.id, doc);
 
                 app.socketMgr.notifyOtherUsers(doc.members, socket.userid, 'GROUP_PULL_IN_NF', {id:obj.id, name:doc.name, pulledmembers:members, creator:doc.creator, type:doc.type, members:doc.members});
@@ -142,9 +134,7 @@ module.exports = (function() {
         var members = obj.members.split(',');
         app.db.Group._fireOut(obj.id, socket.userid, members, function(err, doc, oldmembers) {
             if (!err) {
-                for (var i=0,len=members.length; i<len; i++) {
-                    app.db.User._leaveGroup(members[i], obj.id);
-                }
+                app.db.User._leaveGroup(members, obj.id);
                 _self.setActiveGroups(obj.id, doc);
 
                 app.socketMgr.notifyOtherUsers(oldmembers, socket.userid, 'GROUP_FIRE_OUT_NF', {id:obj.id, name:doc.name, firedmembers:members, members:doc.members});

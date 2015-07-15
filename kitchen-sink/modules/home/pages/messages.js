@@ -15,7 +15,7 @@ var MessageItem = React.createClass({
             type: type
         };
         if (type===app.messageMgr.GROUP_TYPE) {
-            param["groupname"] = target;
+            param["groupid"] = target;
         } else {
             param["userid"] = target;
         }
@@ -28,15 +28,16 @@ var MessageItem = React.createClass({
         var username = (userid===app.loginMgr.userid)?"我":(user.username);
         var time = app.date.getShowDate(msg.time);
         var group = (msg.type===app.messageMgr.GROUP_TYPE);
-        var groupname = msg.username;
+        var groupid = msg.groupid;
+        var groupname = app.groupMgr.list[groupid].name;
         var message = msg.msg;
         var style = app.color.usernameColor(user.online);
         if (group) {
-            var badge = app.messageMgr.unreadMessage.group[groupname];
+            var badge = app.messageMgr.unreadMessage.group[groupid];
             return (
                 <List.ItemContent>
-                    <List.ItemMedia><Icon name={"default_head user_head_"+groupname} round/></List.ItemMedia>
-                    <List.ItemInner onTap={this.showMessageInfo.bind(this, msg.type, groupname)}>
+                    <List.ItemMedia><Icon name={"default_head user_head_"+groupid} round/></List.ItemMedia>
+                    <List.ItemInner onTap={this.showMessageInfo.bind(this, msg.type, groupid)}>
                         <List.ItemTitleRow>
                             <List.ItemTitle>
                                 <span style={{color:"red"}}>{groupname}</span>
