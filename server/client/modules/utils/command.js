@@ -122,7 +122,7 @@ module.exports = define(function(require) {
                     obj = JSON.parse(args[1])||{};
                 } catch (e) {}
             }
-            app.groupMgr.getGroupList(obj.name, obj.creator, obj.users);
+            app.groupMgr.getGroupList(obj.name, obj.creators, obj.users);
         } else if (args[0]=='c' || args[0]=='create') {
             if (/^\S+$/.test(args[1])) {
                 var users = args[2]&&args[2].split(',')||[];
@@ -242,7 +242,7 @@ module.exports = define(function(require) {
         app.console.print('    <u|users>: show all users online and offline');
         app.console.print('    <he|head> [head]: update user\'s head');
         app.console.print('    <ui|update> [username sign]: update user\'s info');
-        app.console.print('    <g|groups l|list {name:xx,users:xx,creator:xx}>: show group list, userid and creator is option');
+        app.console.print('    <g|groups l|list {name:xx,users:xx,creators:xx}>: show group list, userid and creators is option');
         app.console.print('    <g|groups i|info group>: show group info');
         app.console.print('    <g|groups c|create|m|modify name[users type]|d|delete name>: create, modify or delete group');
         app.console.print('    <g|groups j|join|q|leave group>: join or leave group or show group');

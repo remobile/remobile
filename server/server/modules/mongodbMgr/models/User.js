@@ -35,32 +35,11 @@ module.exports = (function() {
             callback(count);
         });
     };
-    UserSchema.statics._updateGroup = function(updateusers, name, users, type) {
-        for (var i=0,len=updateusers.length; i<len; i++) {
-            var userid = updateusers[i];
-            this.findOne({userid:userid}, function(err, doc) {
-                if (doc) {
-                    var groups = doc.groups;
-                    _.map(groups, function(obj) {
-                        if (obj.name == name) {
-                            obj.users = users;
-                            if (type != null) {
-                                obj.type = type;
-                            }
-                        }
-                        return obj;
-                    });
-                    doc.markModified('groups');
-                    doc.save();
-                }
-            });
-        }
+    UserSchema.statics._joinGroup = function(userid, groupid) {
+        this.findOneAndUpdate({userid:userid}, {$push:{groups:groupid}}, function(){});
     };
-    UserSchema.statics._joinGroup = function(userid, name, creator, type, users) {
-        this.findOneAndUpdate({userid:userid}, {$push:{groups:{name:name, creator:creator, type:type, users:users}}}, function(){});
-    };
-    UserSchema.statics._leaveGroup = function(userid, name) {
-        this.findOneAndUpdate({userid:userid}, {$pull:{groups:{name:name}}}, function(){});
+    UserSchema.statics._leaveGroup = function(userid, groupid) {
+        this.findOneAndUpdate({userid:userid}, {$pull:{groups:groupid}}}, function(){});
     };
     UserSchema.statics._updateUserInfo = function(userid, obj, callback) {
         this.findOneAndUpdate({userid:userid}, obj, function(){

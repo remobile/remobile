@@ -1,19 +1,22 @@
 module.exports = (function() {
     var mongoose = require('mongoose'),
+        autoIncrement = require('mongoose-auto-increment'),
         Schema = mongoose.Schema;
 
     var GroupSchema = Schema({
-        name: {type:String, unique:true, required: true},
+        name: {type:String, required: true},
         creator: {type:String, required: true},
-        users: {type:Array, required:true},
+        members: {type:Array, required:true},
         type: {type:Number, default:0}
     }, {
         collection: 'groups'
     });
 
-    GroupSchema.statics._create = function(name, creator, users, type, callback) {
-        var group = this({name:name, creator:creator, users:users, type:type});
-        group.save(function(err){
+    GroupSchema.plugin(autoIncrement.plugin, { model: 'Group', field: 'id' });
+
+    GroupSchema.statics._create = function(name, creator, members, type, callback) {
+        var group = this({name:name, creator:creator, members:members, type:type});
+        group.save(function(err, doc){
             var error = null;
             if (err) {
                 if (err.code == 11000) {
@@ -22,50 +25,53 @@ module.exports = (function() {
                     error = app.error.UNKNOWN_ERROR;
                 }
             }
-            callback(error);
+            callback(error, doc);
         });
     };
-    GroupSchema.statics._modify = function(name, users, type, callback) {
-        this.findOne({name:name}, function(err, doc){
+    GroupSchema.statics._modify = function(id, name, members, type, callback) {
+        this.findOne({id:id}, function(err, doc){
             if (doc) {
-                var oldusers = doc.users;
-                doc.users = users;
+                var oldmembers = doc.members;
+                doc.members = members;
                 if (type != null) {
                     doc.type = type;
                 }
+                if (name != null) {
+                    doc.name = name;
+                }
                 doc.save();
-                callback(null, doc, oldusers);
+                callback(null, doc, oldmembers);
             } else {
                 callback(app.error.GROUP_NOT_EXIST);
             }
         });
     };
-    GroupSchema.statics._remove = function(name, callback) {
-        this.remove({name:name}, function() {
+    GroupSchema.statics._remove = function(id, callback) {
+        this.remove({id:id}, function() {
             callback();
         });
     };
-    GroupSchema.statics._getList = function(name, creator, users, selfid, callback) {
+    GroupSchema.statics._getList = function(name, creators, members, selfid, callback) {
         var obj = {type: 0};
         if (name) {
             obj.name = new RegExp('.*'+name+'.*', 'i');
         }
-        if (creator) {
-            obj.creator = creator;
+        if (creators) {
+            obj.creator = {$in: creators};
         }
         this.find(obj,'-_id -__v', function(err, docs) {
             var ret = [];
-            if (!users||!users.length) {
+            if (!members||!members.length) {
                 for (var i=0,len=docs.length; i<len; i++) {
                     var doc = docs[i];
-                    if (!_.contains(doc.users, selfid)) {
+                    if (!_.contains(doc.members, selfid)) {
                         ret.push(doc);
                     }
                 }
             } else {
                 for (var i=0,len=docs.length; i<len; i++) {
                     var doc = docs[i];
-                    if (!_.contains(doc.users, selfid) && _.intersection(users, doc.users).length) {
+                    if (!_.contains(doc.members, selfid) && _.intersection(members, doc.members).length) {
                         ret.push(doc);
                     }
                 }
@@ -73,21 +79,21 @@ module.exports = (function() {
             callback(ret);
         });
     };
-    GroupSchema.statics._getInfo = function(name, callback) {
-        this.findOne({name:name}, '-_id -__v', function(err, doc) {
+    GroupSchema.statics._getInfo = function(id, callback) {
+        this.findOne({id:id}, '-_id -__v', function(err, doc) {
             callback(doc);
         });
     };
-    GroupSchema.statics._join = function(name, userid, callback) {
-        this.findOne({name:name}, function(err, doc){
+    GroupSchema.statics._join = function(id, userid, callback) {
+        this.findOne({id:id}, function(err, doc){
             if (doc) {
-                var users = doc.users;
-                var oldusers = _.union(users, null);
-                if (users.indexOf(userid) == -1) {
-                    users.push(userid);
-                    doc.users = users;
+                var members = doc.members;
+                var oldmembers = _.union(members, null);
+                if (members.indexOf(userid) == -1) {
+                    members.push(userid);
+                    doc.members = members;
                     doc.save();
-                    callback(null, doc, oldusers);
+                    callback(null, doc, oldmembers);
                 } else {
                     callback(app.error.GROUP_JOIN_MORE_TIMES);
                 }
@@ -96,33 +102,33 @@ module.exports = (function() {
             }
         });
     };
-    GroupSchema.statics._leave = function(name, userid, callback) {
-        var update = {$pull:{users:userid}};
-        this.findOneAndUpdate({name:name}, update, function(err, doc) {
+    GroupSchema.statics._leave = function(id, userid, callback) {
+        var update = {$pull:{members:userid}};
+        this.findOneAndUpdate({id:id}, update, function(err, doc) {
             callback(doc);
         });
     };
-    GroupSchema.statics._pullIn = function(name, userid, users, callback) {
-        this.findOne({name:name, creator:userid}, function(err, doc) {
+    GroupSchema.statics._pullIn = function(id, userid, members, callback) {
+        this.findOne({id:id, creator:userid}, function(err, doc) {
             if (!doc) {
                 callback(app.error.GROUP_NOT_CREATOR);
             } else {
-                var oldusers = doc.users;
-                doc.users = _.union(doc.users, users);
+                var oldmembers = doc.members;
+                doc.members = _.union(doc.members, members);
                 doc.save();
-                callback(null, doc, oldusers);
+                callback(null, doc, oldmembers);
             }
         });
     };
-    GroupSchema.statics._fireOut = function(name, userid, users, callback) {
-        this.findOne({name:name, creator:userid}, function(err, doc) {
+    GroupSchema.statics._fireOut = function(id, userid, members, callback) {
+        this.findOne({id:id, creator:userid}, function(err, doc) {
             if (!doc) {
                 callback(app.error.GROUP_NOT_CREATOR);
             } else {
-                var oldusers = doc.users;
-                doc.users = _.difference(doc.users, users);
+                var oldmembers = doc.members;
+                doc.members = _.difference(doc.members, members);
                 doc.save();
-                callback(null, doc, oldusers);
+                callback(null, doc, oldmembers);
             }
         });
     };
