@@ -28,12 +28,12 @@ var MessageItem = React.createClass({
         var username = (userid===app.loginMgr.userid)?"我":(user.username);
         var time = app.date.getShowDate(msg.time);
         var group = (msg.type===app.messageMgr.GROUP_TYPE);
-        var groupid = msg.groupid;
-        var groupname = app.groupMgr.list[groupid].name;
         var message = msg.msg;
         var style = app.color.usernameColor(user.online);
         if (group) {
+            var groupid = msg.groupid;
             var badge = app.messageMgr.unreadMessage.group[groupid];
+            var groupname = app.groupMgr.list[groupid].name;
             return (
                 <List.ItemContent>
                     <List.ItemMedia><Icon name={"default_head user_head_"+groupid} round/></List.ItemMedia>
@@ -81,7 +81,7 @@ var NewestMessage = React.createClass({
         var messages = this.props.messages;
         return (
             <List.List block media>
-                {messages.map((msg)=>{return <MessageItem msg={msg}/>})}
+                {messages.map((msg, i)=>{return <MessageItem key={i} msg={msg}/>})}
             </List.List>
         );
     }

@@ -9,6 +9,27 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 var View = UI.View;
 
+function showGroupList(){
+    app.showView("groupList", "left");
+}
+function sendMultiMessage(){
+    app.showView("sendMultiMessage", "left");
+}
+var MenuList =[
+    <List.ItemContent key={1} link onTap={showGroupList}>
+        <List.ItemMedia><Icon name={"img_create_group"}/></List.ItemMedia>
+        <List.ItemInner>
+            <List.ItemTitle style={{color:"blue"}}>群聊</List.ItemTitle>
+        </List.ItemInner>
+    </List.ItemContent>,
+    <List.ItemContent key={2} link onTap={sendMultiMessage}>
+        <List.ItemMedia><Icon name={"img_send_multi"}/></List.ItemMedia>
+        <List.ItemInner>
+            <List.ItemTitle style={{color:"blue"}}>群发</List.ItemTitle>
+        </List.ItemInner>
+    </List.ItemContent>
+];
+
 var ContactItemInner = function(userid, username, online) {
     return [
         <List.ItemMedia key="0"><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>,
@@ -74,6 +95,7 @@ var ContactList = React.createClass({
         var select = this.props.select;
         return (
             <List.List block group class="contacts-block">
+                {!select&&MenuList}
                 {_.map(letters, (letter)=>{return <ContactGroup key={letter} letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
             </List.List>
         );

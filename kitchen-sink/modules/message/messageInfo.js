@@ -143,6 +143,7 @@ module.exports = React.createClass({
         } else {
             mgr.sendUserMessage(this.userid, text, mgr.TEXT_TYPE);
         }
+        this.refs.toolbar.setValue('');
     },
     handleRefresh: function(e) {
         var msg = this.state.messages[0];

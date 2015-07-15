@@ -126,6 +126,11 @@ module.exports = React.createClass({
     getValue: function() {
         return this.state.value;
     },
+    setValue: function(value) {
+        this.setState({
+            value: value
+        });
+    },
     render: function() {
         var canSend = (this.props.sendChecked && this.state.value.length);
         var sendButtonStyle = canSend?{color:"#007aff"}:{color:"gray"}
