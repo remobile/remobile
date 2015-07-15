@@ -47,7 +47,7 @@ function getMessageList(messages, isGroup) {
         var next = messages[i+1];
         var pre = messages[i-1];
         var user = users[userid];
-        var username = user.username||userid;
+        var username = user.username;
         props.tail = (!next || (userid!==next.userid) || !((!!msg.send)===(!!next.send)));
         props.sent = !!msg.send;
         props.avatar = msg.send?app.loginMgr.userid:userid;

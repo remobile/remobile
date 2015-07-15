@@ -54,6 +54,7 @@ module.exports = {
 	'audioCall': require('./call/audioCall'),
 	'videoCall': require('./call/videoCall'),
 	'createGroup': require('./group/createGroup'),
+	'searchGroup': require('./group/searchGroup'),
    //icons
 	'icons': require('./common/icons')
 };

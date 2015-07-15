@@ -59,18 +59,20 @@ var App = React.createClass({
         this.socket.emit.apply(this.socket, arguments);
     },
     showWait: function(text) {
-        var Modal = UI.Modal;
-        var preLoaderModal = (
-            <Modal.ModalNoButttons>
-                <Modal.ModalInner>
-                    {text&&<Modal.ModalTitle>{text}</Modal.ModalTitle>}
-                    <Modal.ModalText>
-                        <Modal.BlackPreloader />
-                    </Modal.ModalText>
-                </Modal.ModalInner>
-            </Modal.ModalNoButttons>
-        );
-       this.showModal('modal', preLoaderModal);
+        if (text) {
+        	var Modal = UI.Modal;
+       		this.showModal('modal', 
+       				<Modal.ModalNoButttons>
+	                <Modal.ModalInner>
+	                    <Modal.ModalTitle>{text}</Modal.ModalTitle>
+	                    <Modal.ModalText>
+	                        <Modal.BlackPreloader />
+	                    </Modal.ModalText>
+	                </Modal.ModalInner>
+	            </Modal.ModalNoButttons>);
+      	} else {
+      		this.showModal('indicator');
+      	}
     },
     hideWait: function() {
         this.hideModal();

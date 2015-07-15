@@ -131,7 +131,7 @@ module.exports = React.createClass({
     render: function() {
         var userid = this.userid;
         var user = app.userMgr.users[userid];
-        var username = user.username||userid;
+        var username = user.username;
         return (
             <View.Page title="Audio Call">
             <View.PageContent>

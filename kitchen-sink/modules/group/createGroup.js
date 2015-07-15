@@ -27,6 +27,16 @@ var FormItem = React.createClass({
     }
 });
 
+var FormInputItem = React.createClass({
+     render: function() {
+        return (
+             <FormItem icon={this.props.icon} label={this.props.label}>
+                 <input type={this.props.input_type} placeholder={this.props.placeholder} value={this.props.value} onChange={this.props.onChange}/>
+            </FormItem>
+        );
+    }
+});
+
 var ContactItem = React.createClass({
     render: function() {
         var userid = this.props.userid;
@@ -40,16 +50,6 @@ var ContactItem = React.createClass({
                 </List.ItemInner>
             </List.ItemContent>
         )
-    }
-});
-
-var FormInputItem = React.createClass({
-     render: function() {
-        return (
-             <FormItem icon={this.props.icon} label={this.props.label}>
-                 <input type={this.props.input_type} placeholder={this.props.placeholder} value={this.props.value} onChange={this.props.onChange}/>
-            </FormItem>
-        );
     }
 });
 

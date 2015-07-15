@@ -25,49 +25,47 @@ module.exports = (function() {
         this.init = false;
     };
     GroupMgr.prototype.add = function(obj, noupdate) {
-        var name = obj.name,
+        var id = obj.id,
         list = this.list;
-        if(!list.hasOwnProperty(name)) {
-            list[name] = obj;
-            this.addAlphaList(name);
+        if(!list.hasOwnProperty(id)) {
+            list[id] = obj;
+            this.addAlphaList(id, obj.name);
             this.emitChange();
         }
     };
-    GroupMgr.prototype.addAlphaList = function(name) {
+    GroupMgr.prototype.addAlphaList = function(id, name) {
         var alpha = $.fisrtPinyin(name);
         var alphaList = this.alphaList;
-        if (!alphaList[alpha]) {
-            alphaList[alpha] = [];
-        }
-        alphaList[alpha].push(name);
+        alphaList[alpha] = alphaList[alpha]||[];
+        alphaList[alpha].push(id);
     };
     GroupMgr.prototype.remove = function(obj) {
-        if(this.list.hasOwnProperty(obj.name)) {
-            delete this.list[obj.name];
-            this.removeAlphaList(name);
+        if(this.list.hasOwnProperty(obj.id)) {
+            delete this.list[obj.id];
+            this.removeAlphaList(obj.id, obj.name);
             this.emitChange();
         }
     };
-    GroupMgr.prototype.removeAlphaList = function(name) {
+    GroupMgr.prototype.removeAlphaList = function(id, name) {
         var alpha = $.fisrtPinyin(name);
-        var alphaList = this.alphaList;
-        if (alphaList[alpha]) {
-            alphaList[alpha] = _.without(alphaList[alpha], name);
+        var alphaList = this.alphaList[alpha];
+        if (alphaList) {
+            alphaList = _.without(alphaList, id);
         }
     };
     GroupMgr.prototype.updateUsers = function(obj) {
-        this.list[obj.name].users = obj.users;
+        this.list[obj.id].members = obj.members;
         if (obj.type != null) {
-            this.list[obj.name].type = obj.type;
+            this.list[obj.id].type = obj.type;
         }
     };
     GroupMgr.prototype.addUsers = function(obj) {
-        var list = this.list[obj.name].users;
+        var list = this.list[obj.id].members;
         list.push(obj.userid);
     };
     GroupMgr.prototype.removeUsers = function(obj) {
-        var list = this.list[obj.name].users;
-        this.list[obj.name].users = _.without(list, obj.userid);
+        var list = this.list[obj.id].members;
+        this.list[obj.id].members = _.without(list, obj.userid);
     };
     GroupMgr.prototype.addList = function(list) {
         for (var i in list) {
@@ -78,24 +76,42 @@ module.exports = (function() {
     GroupMgr.prototype.showGroupMessage = function(obj) {
         console.log('[',  obj.group,  obj.from, ']'+obj.msg);
     };
-    GroupMgr.prototype.getGroupList = function(name, creator, users) {
+    GroupMgr.prototype.getGroupList = function(name, creators, members) {
+        app.showWait();
         var obj = {};
         if (name) {
             obj.name = name;
         }
-        if (creator) {
-            obj.creator = creator;
+        if (creators) {
+            obj.creators = creators;
         }
-        if (users) {
-            obj.users = users;
+        if (members) {
+            obj.members = members;
         }
         app.emit('GROUP_LIST_RQ', obj);
     };
-    GroupMgr.prototype.onGetGroupList = function(obj) {
-        app.searchGroup.updateGroupList(obj);
+    GroupMgr.prototype.onGetGroupList = function(groups) {
+        app.hideWait();
+        if (!groups.length) {
+            app.toast("没有符合条件的群组");
+            return;
+        }
+        var list = {};
+        var alphaList = {};
+        _.each(groups, (group)=> {
+            var name = group.name;
+            var id = group.id;
+            var type = group.type;
+            var creator = group.creator;
+            var alpha = $.fisrtPinyin(name);
+            list[id] = group;
+            alphaList[alpha] = alphaList[alpha]||[];
+            alphaList[alpha].push(id);
+        });
+        app.showView("searchGroupList", "fade", {alphaList: alphaList, list: list});
     };
-    GroupMgr.prototype.getGroupInfo = function(group) {
-        app.emit('GROUP_INFO_RQ', {name: group});
+    GroupMgr.prototype.getGroupInfo = function(groupid) {
+        app.emit('GROUP_INFO_RQ', {id: groupid});
     };
     GroupMgr.prototype.onGetGroupInfo = function(obj) {
         if (obj) {
@@ -104,30 +120,30 @@ module.exports = (function() {
             console.error("there is no group");
         }
     };
-    GroupMgr.prototype.createGroup = function(name, users, type) {
+    GroupMgr.prototype.createGroup = function(name, members, type) {
         type = type&&1||0;
-        app.emit('GROUP_CREATE_RQ', {name:name, users:users, type:type});
+        app.emit('GROUP_CREATE_RQ', {name:name, members:members, type:type});
     };
     GroupMgr.prototype.onCreateGroup = function(obj) {
         if (obj.error) {
             console.error("create "+obj.name+" failed: for "+obj.error);
             app.error(app.error[obj.error]);
         } else {
-            this.add({name:obj.name, creator:app.login.userid, type:obj.type, users:obj.users});
+            this.add({id:obj.id, name:obj.name, creator:app.login.userid, type:obj.type, members:obj.members});
             console.log("create "+obj.name+" success");
         }
     };
-    GroupMgr.prototype.modifyGroup = function(name, users, type) {
+    GroupMgr.prototype.modifyGroup = function(name, members, type) {
         type = type&&1||0;
-        app.emit('GROUP_MODIFY_RQ', {name:name, users:users, type:type});
+        app.emit('GROUP_MODIFY_RQ', {name:name, members:members, type:type});
     };
     GroupMgr.prototype.onModifyGroup = function(obj) {
         if (obj.error) {
             console.error("modify "+obj.name+" failed: for "+obj.error);
             app.error(app.error[obj.error]);
         } else {
-            this.list[obj.name].users = obj.users;
-            this.list[obj.name].type = obj.type;
+            this.list[obj.id].members = obj.members;
+            this.list[obj.id].type = obj.type;
             if (app.groupDetail) {
                 app.groupDetail.showGroupDetail();
             }
@@ -135,8 +151,8 @@ module.exports = (function() {
             console.log("modify "+obj.name+" success");
         }
     };
-    GroupMgr.prototype.removeGroup = function(name) {
-        app.emit('GROUP_DELETE_RQ', {name:name});
+    GroupMgr.prototype.removeGroup = function(id) {
+        app.emit('GROUP_DELETE_RQ', {id:id});
     };
     GroupMgr.prototype.onRemoveGroup = function(obj) {
         if (obj.error) {
@@ -159,7 +175,7 @@ module.exports = (function() {
             console.error("join "+obj.name+" failed: for "+obj.error);
             app.error(app.error[obj.error]);
         } else {
-            this.add({name:obj.name, creator:obj.creator, type:obj.type, users:obj.users});
+            this.add({name:obj.name, creator:obj.creator, type:obj.type, members:obj.members});
             console.log("join "+obj.name+" success");
         }
     };
@@ -175,53 +191,53 @@ module.exports = (function() {
         console.log("leave "+obj.name+" success");
     };
     GroupMgr.prototype.onLeaveGroupNotify = function(obj) {
-        this.removeUsers({name:obj.name, userid:obj.userid});
+        this.removeUsers({id:obj.id, userid:obj.userid});
         console.log( obj.userid, 'lest group',  obj.name);
     };
-    GroupMgr.prototype.pullInGroup = function(name, users) {
-        app.emit('GROUP_PULL_IN_RQ', {name:name, users:users});
+    GroupMgr.prototype.pullInGroup = function(id, members) {
+        app.emit('GROUP_PULL_IN_RQ', {id:id, members:members});
     };
     GroupMgr.prototype.onPullInGroup = function(obj) {
         if (obj.error) {
             console.error("pull "+obj.name+" failed: for "+obj.error);
             app.error(app.error[obj.error]);
         } else {
-            this.updateUsers({name:obj.name, users:obj.users});
+            this.updateUsers({id:obj.id, members:obj.members});
             console.log("pull "+obj.name+" success");
         }
     };
     GroupMgr.prototype.onPullInGroupNotify = function(obj) {
-        if (_.contains(obj.users, app.login.userid)) {
-            this.add({name:obj.name, creator:obj.creator, type:obj.type, users:obj.users});
+        if (_.contains(obj.members, app.login.userid)) {
+            this.add({id:obj.id, name:obj.name, creator:obj.creator, type:obj.type, members:obj.members});
             console.log('you have been pull',  obj.name);
         } else {
-            this.updateUsers({name:obj.name, users:obj.users, type:obj.type});
+            this.updateUsers({id:obj.id, members:obj.members, type:obj.type});
             if (obj.pulledusers.length) {
-                console.log(JSON.stringify(obj.pulledusers), 'been pull', obj.name, obj.users);
+                console.log(JSON.stringify(obj.pulledusers), 'been pull', obj.name, obj.members);
             } else {
                 console.log(obj.name, 'been modify', 'type='+obj.type);
             }
         }
     };
-    GroupMgr.prototype.fireOutGroup = function(name, users) {
-        app.emit('GROUP_FIRE_OUT_RQ', {name:name, users:users});
+    GroupMgr.prototype.fireOutGroup = function(id, members) {
+        app.emit('GROUP_FIRE_OUT_RQ', {id:id, members:members});
     };
     GroupMgr.prototype.onFireOutGroup = function(obj) {
         if (obj.error) {
             console.error("fireOut "+obj.name+" failed: for "+obj.error);
             app.error(app.error[obj.error]);
         } else {
-            this.updateUsers({name:obj.name, users:obj.users});
+            this.updateUsers({id:obj.id, members:obj.members});
             console.log("fireOut "+obj.name+" success");
         }
     };
     GroupMgr.prototype.onFireOutGroupNotify = function(obj) {
-        if (_.contains(obj.users, app.login.userid)) {
+        if (_.contains(obj.members, app.loginMgr.userid)) {
             this.remove(obj);
             console.log('you have been fire',  obj.name);
         } else {
-            this.updateUsers({name:obj.name, users:obj.users});
-            console.log(JSON.stringify(obj.users), 'been fire', obj.name);
+            this.updateUsers({id:obj.id, members:obj.members});
+            console.log(JSON.stringify(obj.members), 'been fire', obj.name);
         }
     };
 

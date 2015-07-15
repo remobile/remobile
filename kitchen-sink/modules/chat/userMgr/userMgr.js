@@ -70,7 +70,7 @@ module.exports = (function() {
             return;
         }
         var user = this.users[userid];
-        var username = user.username||userid;
+        var username = user.username;
         var alpha = $.fisrtPinyin(username);
         var list = this.groupedUsers;
         if (!list[alpha]) {
@@ -83,7 +83,7 @@ module.exports = (function() {
             return;
         }
         var user = this.users[userid];
-        var username = user.username||userid;
+        var username = user.username;
         var alpha = $.fisrtPinyin(username);
         var list = this.groupedUsers;
         if (list[alpha]) {

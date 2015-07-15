@@ -59,7 +59,7 @@ module.exports = React.createClass({
 	render: function() {
         var userid = this.userid;
         var user = app.userMgr.users[userid];
-        var username = user.username||userid;
+        var username = user.username;
         var sign = user.sign||"这个家伙很懒，什么都没有留下";
         var callButtonColor = user.online?"green":"gray";
         return (

@@ -26,7 +26,7 @@ var ContactItem = React.createClass({
     render: function() {
        var userid = this.props.userid;
        var user = this.props.users[userid];
-       var username = user.username||userid;
+       var username = user.username;
        var select = this.props.select;
        if (!select) {
            return (
@@ -55,9 +55,10 @@ var ContactGroup = React.createClass({
         var users = this.props.users;
         var userids = this.props.userids;
         var select = this.props.select;
+        var letter = this.props.letter;
         return (
             <List.ListGroup>
-                <List.ListGroupTitle data={{'data-index-letter':this.props.letter}}>{this.props.letter}</List.ListGroupTitle>
+                <List.ListGroupTitle data={{'data-index-letter':letter}}>{letter}</List.ListGroupTitle>
                 {userids.map((userid)=>{return <ContactItem key={userid} userid={userid} users={users} select={select}/>})}
             </List.ListGroup>
         )
@@ -73,7 +74,7 @@ var ContactList = React.createClass({
         var select = this.props.select;
         return (
             <List.List block group class="contacts-block">
-                {_.map(letters, (letter)=>{return <ContactGroup key={"letter_"+letter} letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
+                {_.map(letters, (letter)=>{return <ContactGroup key={letter} letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
             </List.List>
         );
     }
