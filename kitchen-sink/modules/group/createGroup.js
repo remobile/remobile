@@ -46,7 +46,7 @@ var ContactItem = React.createClass({
             <List.ItemContent swipeout swipeoutRight=<a className="swipeout-delete" onClick={this.props.onDelete.bind(null, userid)}>Delete</a>>
                 <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
                 <List.ItemInner>
-                    <List.ItemTitle style={app.color.usernameColor(user.online)}>{username}</List.ItemTitle>
+                    <List.ItemTitle style={app.color.usernameColor(user)}>{username}</List.ItemTitle>
                 </List.ItemInner>
             </List.ItemContent>
         )
@@ -60,8 +60,25 @@ module.exports = React.createClass({
         return {
             private: saved.private||false,
             groupname: saved.groupname||'',
-            users: param.users||[]
+            members: param.users||[]
         };
+    },
+    componentDidMount: function() {
+        app.groupMgr.addEventListener(this._onListener);
+    },
+    componentWillUnmount: function() {
+        app.groupMgr.removeEventListener(this._onListener);
+    },
+    _onListener: function(obj) {
+        var type = obj.type;
+        switch(type) {
+            case "ON_CREATE_GROUP":
+                obj.error?app.showChatError(obj.error):app.toast("创建群组成功");
+                app.hideWait();
+                app.goBack();
+            break;
+            default:;
+        }
     },
     handleInputChange: function(type, e) {
         var state = {};
@@ -77,12 +94,12 @@ module.exports = React.createClass({
         var clicked = $(e.target);
         var self = this;
         this.refs.list.swipeout.delete(clicked.parents('.swipeout'), function() {
-            self.setState({users: _.without(self.state.users, userid)});
+            self.setState({members: _.without(self.state.members, userid)});
         });
     },
     addReceivers: function() {
         var param = {
-            value: this.state.users,
+            value: this.state.members,
             saved: {
                 private: this.state.private,
                 groupname: this.state.groupname
@@ -91,7 +108,11 @@ module.exports = React.createClass({
         app.showView('selectUsers', 'left', param)
     },
     doCreateGroup: function() {
-        console.log(this.state);
+        var name = this.state.groupname;
+        var members = this.state.members;
+        var type = this.state.private;
+        app.showWait();
+        app.groupMgr.createGroup(name, members, type);
     },
     render: function() {
         return (
@@ -116,7 +137,7 @@ module.exports = React.createClass({
                         </List.ItemInner>
                     </List.ItemContent>
                     <List.List inset swipeout ref="list">
-                        {this.state.users.map((userid)=>{return <ContactItem key={userid} userid={userid} onDelete={this.onDelete}/>})}
+                        {this.state.members.map((userid)=>{return <ContactItem key={userid} userid={userid} onDelete={this.onDelete}/>})}
                     </List.List>
                 </List.List>
                 <Content.ContentBlock>

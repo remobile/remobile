@@ -30,7 +30,7 @@ module.exports = (function() {
             reconnect: reconnect
         };
         this.reconnect = reconnect;
-        app.showWait("login...");
+        app.showWait();
         app.socket.emit('USER_LOGIN_RQ', param);
     };
     LoginMgr.prototype.onLogin = function(obj) {

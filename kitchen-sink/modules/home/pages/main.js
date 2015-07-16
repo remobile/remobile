@@ -58,8 +58,7 @@ var MenuList = React.createClass({
         return (
             <List.List block>
                 <ListItem page="button">Button</ListItem>
-                <ListItem page="createGroup">Create Group</ListItem>
-                <ListItem page="searchGroup">Search Group</ListItem>
+                <ListItem page="groupList">Group</ListItem>
                 <ListItem page="toast">Toast</ListItem>
                 <ListItem page="selectOneContacts">Select One Contacts</ListItem>
                 <ListItem page="selectMultiContacts">Select Multi Contacts</ListItem>

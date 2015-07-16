@@ -56,7 +56,7 @@ module.exports = (function() {
         if (name) {
             obj.name = new RegExp('.*'+name+'.*', 'i');
         }
-        if (creators) {
+        if (creators&&creators.length) {
             obj.creator = {$in: creators};
         }
         this.find(obj,'-_id -__v', function(err, docs) {

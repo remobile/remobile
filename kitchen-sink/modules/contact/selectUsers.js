@@ -16,6 +16,7 @@ module.exports = React.createClass({
     componentWillMount: function() {
         var value = this.props.data.param.value;
         this.users = value;
+        this.originUsers = value;
         if (_.isArray(value)) {
             this.type = "checkbox";
             var list = value.concat();
@@ -39,13 +40,17 @@ module.exports = React.createClass({
     doSetSelectUsers: function() {
         app.goBack(1, {users: this.users});
     },
+    goBack: function() {
+        app.goBack(1, {users: this.originUsers});
+        return true;
+    },
     render: function() {
         var value = this.props.data.param.value;
         var type = this.type;
         return (
-            <View.Page title="Select Users">
+            <View.Page title="Select Users" goBack={this.goBack}>
                 <View.PageContent>
-                    <Contacts select={{type:type, name:"contacts-"+type, default:value, onChange:this.onChange}}/>
+                    <Contacts select={{type:type, name:"contacts-"+type, default:value, onChange:this.onChange}} data={{param:{}}}/>
                     <Content.ContentBlock>
                         <Grid.Row>
                             <Grid.Col><Button big fill color="green" onTap={this.doSetSelectUsers}>确定</Button></Grid.Col>

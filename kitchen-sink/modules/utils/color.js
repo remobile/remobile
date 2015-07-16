@@ -3,8 +3,8 @@ module.exports = (function() {
     function Color() {
     }
 
-    Color.prototype.usernameColor = function(online) {
-        return online?{color:"#00FF7F"}:{color:"gray"};
+    Color.prototype.usernameColor = function(user) {
+        return (user.userid===app.loginMgr.userid)?{color:"blue"}:user.online?{color:"#00FF7F"}:{color:"gray"};
     };
 
     return new Color();

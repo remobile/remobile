@@ -29,16 +29,17 @@ module.exports = (function() {
         if(!users.hasOwnProperty(userid)) {
             users[userid] = obj;
             this.addGroupedUser(userid);
-        		this.emitChange();
+            this.emitChange();
         }
     };
     UserMgr.prototype.remove = function(obj) {
         var users = this.users;
         var userid = obj.userid;
         if(users.hasOwnProperty(userid)) {
+            var username = users[userid].username;
             delete users[userid];
-            this.removeGroupedUser(userid);
-        		this.emitChange();
+            this.removeGroupedUser(userid, username);
+            this.emitChange();
         }
     };
     UserMgr.prototype.online = function(obj) {
@@ -78,16 +79,16 @@ module.exports = (function() {
         }
         list[alpha].push(userid);
     };
-    UserMgr.prototype.removeGroupedUser = function(userid) {
-        if (app.loginMgr.userid === userid) {
-            return;
-        }
-        var user = this.users[userid];
-        var username = user.username;
+    UserMgr.prototype.removeGroupedUser = function(userid, username) {
         var alpha = $.fisrtPinyin(username);
-        var list = this.groupedUsers;
-        if (list[alpha]) {
-            list[alpha] = _.without(list[alpha], userid);
+        var list = this.groupedUsers[alpha];
+        if (list) {
+            list = _.without(list, userid);
+            if (list.length === 0) {
+                delete this.groupedUsers[alpha];
+            } else {
+                this.groupedUsers[alpha] = list;
+            }
         }
     };
     UserMgr.prototype.getUseridByUsername = function(username) {

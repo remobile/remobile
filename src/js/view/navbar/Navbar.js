@@ -11,7 +11,7 @@ module.exports = React.createClass({
         return (
             <div className="navbar" ref="navbar">
                 <div className="navbar-inner">
-                    <BackButton>Back</BackButton>
+                    <BackButton goBack={this.props.goBack}>Back</BackButton>
                     {this.props.children}
                 </div>
             </div>

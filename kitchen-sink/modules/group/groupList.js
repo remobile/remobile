@@ -9,37 +9,52 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 var View = UI.View;
 
-var menu_list = {
-	"-1":{name: "新建一个群", icon: "img_create_group", onTap: function(){app.showView("createGroup", "left")}},
-	"-2":{name: "加入群组", icon: "img_search_group", onTap: function(){app.showView("searchGroup", "left")}}
-};
+
+var MenuItem = React.createClass({
+    getDefaultProps: function() {
+        return {color:"blue"}
+    },
+    render: function() {
+        return (
+            <List.ItemContent onTap={this.props.onTap}>
+                <List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>
+                <List.ItemInner>
+                    <List.ItemTitle style={{color:this.props.color, fontWeight:"bold"}}>{this.props.label}</List.ItemTitle>
+                </List.ItemInner>
+            </List.ItemContent>
+        )
+   }
+});
+
+var MenuList = React.createClass({
+    createGroup: function(){
+        app.showView("createGroup", "left");
+    },
+    searchGroup: function(){
+        app.showView("searchGroup", "left");
+    },
+    render: function() {
+        return (
+            <List.ListGroup>
+                <MenuItem icon="img_create_group" label="新建一个群" onTap={this.createGroup} />
+                <MenuItem icon="img_send_multi" label="加入群组" onTap={this.searchGroup} />
+            </List.ListGroup>
+        )
+    }
+});
 
 var GroupItem = React.createClass({
-    showGroupInfo: function(ismenu, group) {
-    	if (ismenu) {
-    		group.onTap();
-        } else {
-            var param = {group: group};
-            app.showView("groupDetail", "left", param);
-        }
+    showGroupInfo: function(group) {
+        var param = {group: group};
+        app.showView("groupDetail", "left", param);
     },
     render: function() {
        var groupid = this.props.groupid;
-       var groupname, icon, group;
-       var ismenu = !!menu_list[groupid];
-
        var icon = "group_head_"+groupid;
-       if (ismenu) {
-       		group = menu_list[groupid];
-       		groupname = group.name;
-       		icon = group.icon;
-       } else {
-       		group = app.groupMgr.list[groupid];
-       		groupname = group.name;
-       		icon = "group_head_"+groupid;
-       }
+       var  group = app.groupMgr.list[groupid];
+       var groupname = group.name;
        return (
-           <List.ItemContent onTap={this.showGroupInfo.bind(this, ismenu, group)}>
+           <List.ItemContent onTap={this.showGroupInfo.bind(this, group)}>
              <List.ItemMedia><Icon name={"icon-default-head "+icon}/></List.ItemMedia>
                <List.ItemInner>
                     <List.ItemTitle>{groupname}</List.ItemTitle>
@@ -56,7 +71,7 @@ var GroupGroup = React.createClass({
         return (
             <List.ListGroup>
                 <List.ListGroupTitle data={{'data-index-letter':letter}}>{letter}</List.ListGroupTitle>
-                {groupids.map((groupid)=>{return <GroupItem groupid={groupid}/>})}
+                {groupids.map((groupid)=>{return <GroupItem key={groupid} groupid={groupid}/>})}
             </List.ListGroup>
         )
     }
@@ -66,9 +81,10 @@ var GroupGroup = React.createClass({
 var GroupList = React.createClass({
     render: function() {
         var alphaList = this.props.alphaList;
-        var letters = _.keys(alphaList).sort(function(a, b) {return a.localeCompare(b)});
+        var letters = this.props.letters;
         return (
             <List.List block group class="contacts-block">
+                <MenuList />
                 {_.map(letters, (letter)=>{return <GroupGroup key={letter} letter={letter} groupids={alphaList[letter]}/>})}
             </List.List>
         );
@@ -78,27 +94,38 @@ var GroupList = React.createClass({
 module.exports = React.createClass({
     getInitialState: function() {
         var alphaList = app.groupMgr.alphaList;
-        alphaList = assign({"*":_.keys(menu_list)}, alphaList);
         return {
             alphaList: alphaList
         };
     },
     componentDidMount: function() {
-        app.groupMgr.addChangeListener(this._onChange);
+        app.groupMgr.addEventListener(this._onListener);
     },
     componentWillUnmount: function() {
-        app.groupMgr.removeChangeListener(this._onChange);
+        app.groupMgr.removeEventListener(this._onListener);
     },
-    _onChange: function() {
-        var alphaList = app.groupMgr.alphaList;
-        alphaList = assign({"*":_.keys(menu_list)}, alphaList);
-        this.setState({
-            alphaList: alphaList
-        });
+    _onListener: function(obj) {
+        var type = obj.type;
+        switch(type) {
+            case "ON_GROUP_LIST_CHANGE":
+                var alphaList = app.groupMgr.alphaList;
+                this.setState({
+                    alphaList: alphaList
+                });
+            break;
+            default:;
+        }
     },
     render: function() {
+        var alphaList = this.state.alphaList;
+        var letters = _.keys(alphaList).sort(function(a, b) {return a.localeCompare(b)});
         return (
-            <GroupList alphaList={this.state.alphaList}/>
+            <View.Page title="群聊">
+                <View.PageContent>
+                    <GroupList alphaList={alphaList} letters={letters}/>
+                </View.PageContent>
+                <List.IndexedList letters={letters}/>
+            </View.Page>
         );
     }
 });

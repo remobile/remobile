@@ -48,10 +48,10 @@ var GroupList = React.createClass({
     render: function() {
         var list = this.props.list;
         var alphaList = this.props.alphaList;
-        var letters = _.keys(list).sort(function(a, b) {return a.localeCompare(b)});
+        var letters = this.props.letters;
         return (
             <List.List block group class="contacts-block">
-                {_.map(letters, (letter)=>{return <GroupGroup key={letter} letter={letter} groupids={list[letter]} list={list}/>})}
+                {_.map(letters, (letter)=>{return <GroupGroup key={letter} letter={letter} groupids={alphaList[letter]} list={list}/>})}
             </List.List>
         );
     }
@@ -66,8 +66,15 @@ module.exports = React.createClass({
         };
     },
     render: function() {
+        var alphaList = this.state.alphaList;
+        var letters = _.keys(alphaList).sort(function(a, b) {return a.localeCompare(b)});
         return (
-            <GroupList alphaList={this.state.alphaList} list={this.state.list}/>
+            <View.Page title="群组列表">
+                <View.PageContent>
+                    <GroupList alphaList={alphaList} list={this.state.list} letters={letters}/>
+                <List.IndexedList letters={letters}/>
+                </View.PageContent>
+            </View.Page>
         );
     }
 });

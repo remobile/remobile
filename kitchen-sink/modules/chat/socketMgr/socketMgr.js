@@ -1,12 +1,8 @@
 module.exports = (function() {
     "use strict";
-    var _self;
     var router = require('./router');
-
     function SocketMgr() {
-        _self = this;
     }
-
     SocketMgr.prototype.start = function(url) {
         app.socket = io.connect(url, {
             connect_timeout: 3000

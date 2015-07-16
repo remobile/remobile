@@ -19,5 +19,6 @@ module.exports = {
 	BlackPreloader: require('./Preloader/BlackPreloader'),
 	IndicatorModal: require('./Preloader/IndicatorModal'),
 	PreloaderIndicatorModal: require('./Preloader/PreloaderIndicatorModal'),
-	WhitePreloader: require('./Preloader/WhitePreloader')
+	WhitePreloader: require('./Preloader/WhitePreloader'),
+	Confirm: require('./Samples/Confirm')
 };

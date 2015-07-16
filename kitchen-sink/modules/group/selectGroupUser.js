@@ -22,7 +22,7 @@ var ContactItem = React.createClass({
             <List.ItemContent radio value={userid} name={select.name} onChange={this.props.onChange}>
                 <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
                 <List.ItemInner>
-                    <List.ItemTitle style={app.color.usernameColor(user.online)}>{username}</List.ItemTitle>
+                    <List.ItemTitle style={app.color.usernameColor(user)}>{username}</List.ItemTitle>
                 </List.ItemInner>
             </List.ItemContent>
         )

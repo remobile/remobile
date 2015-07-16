@@ -44,8 +44,18 @@ function App (views) {
             Toast({text: text, icon:icon});
         },
         componentWillMount: function () {
-            window.app = this;
             window._ = require('underscore');
+            _.mixin({
+                deepClone: function(obj) { return (!obj || (typeof obj !== 'object'))?obj:
+                        (_.isString(obj))?String.prototype.slice.call(obj):
+                        (_.isDate(obj))?obj.valueOf():
+                        (_.isFunction(obj.clone))?obj.clone():
+                        (_.isArray(obj)) ? _.map(obj, function(t){return _.deepClone(t)}):
+                        _.mapObject(obj, function(val, key) {return _.deepClone(val)});
+                }
+            });
+
+            window.app = this;
             this.history = [];
             this.data = {};
             this.methods = {};

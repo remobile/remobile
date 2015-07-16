@@ -2,7 +2,10 @@ var React = require('react');
 
 module.exports = React.createClass({
     goBack: function() {
-        app.goBack();
+        var goBack = this.props.goBack;
+        if (!goBack || !goBack()) {
+            app.goBack();
+        }
     },
     render: function() {
         return (

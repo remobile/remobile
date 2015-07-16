@@ -29,7 +29,7 @@ var MessageItem = React.createClass({
         var time = app.date.getShowDate(msg.time);
         var group = (msg.type===app.messageMgr.GROUP_TYPE);
         var message = msg.msg;
-        var style = app.color.usernameColor(user.online);
+        var style = app.color.usernameColor(user);
         if (group) {
             var groupid = msg.groupid;
             var badge = app.messageMgr.unreadMessage.group[groupid];

@@ -46,20 +46,20 @@ var MenuList = React.createClass({
         } else {
             return (
                 <List.ListGroup>
-                    <MenuItem icon="img_create_group" label="群聊" onTap={this.showGroupList} />
+                    <MenuItem icon="img_group_chat" label="群聊" onTap={this.showGroupList} />
                     <MenuItem icon="img_send_multi" label="发送给多人" onTap={this.sendMultiMessage} />
-                    <MenuItem color={onlineType?"blue":"green"} icon={onlineType?"img_user_online":"img_user_offline"} label={onlineType?"只显示在线联系人":"显示所有联系人"} onTap={this.props.changeShowOnline} />
+                    <MenuItem color={onlineType?"green":"blue"} icon={onlineType?"img_user_online":"img_user_offline"} label={onlineType?"显示所有联系人":"只显示在线联系人"} onTap={this.props.changeShowOnline} />
                 </List.ListGroup>
             )
         }
    }
 });
 
-var ContactItemInner = function(userid, username, online) {
+var ContactItemInner = function(userid, username, user) {
     return [
         <List.ItemMedia key="0"><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>,
         <List.ItemInner key="1">
-            <List.ItemTitle style={app.color.usernameColor(online)}>{username}</List.ItemTitle>
+            <List.ItemTitle style={app.color.usernameColor(user)}>{username}</List.ItemTitle>
         </List.ItemInner>
     ];
 };
@@ -77,19 +77,19 @@ var ContactItem = React.createClass({
        if (!select) {
            return (
                <List.ItemContent onTap={this.showContactInfo.bind(this, userid)}>
-                    {ContactItemInner(userid, username, user.online)}
+                    {ContactItemInner(userid, username, user)}
                </List.ItemContent>
             )
        } else if (select.type == "radio") {
            return (
                <List.ItemContent radio value={userid} name={select.name} checked={select.default===userid} onChange={select.onChange}>
-                    {ContactItemInner(userid, username, user.online)}
+                    {ContactItemInner(userid, username, user)}
                </List.ItemContent>
             )
        } else {
            return (
                <List.ItemContent checkbox value={userid} name={select.name} checked={select.default.indexOf(userid)!==-1} onChange={select.onChange}>
-                    {ContactItemInner(userid, username, user.online)}
+                    {ContactItemInner(userid, username, user)}
                </List.ItemContent>
             )
        }

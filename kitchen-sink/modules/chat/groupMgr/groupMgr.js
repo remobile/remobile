@@ -10,14 +10,14 @@ module.exports = (function() {
         this.reset();
     }
 
-    GroupMgr.prototype.emitChange = function() {
-        this.emit("change");
+    GroupMgr.prototype.emitEvent = function(data) {
+        this.emit("GROUP_EVENT", data);
     };
-    GroupMgr.prototype.addChangeListener = function(callback) {
-        this.on("change", callback);
+    GroupMgr.prototype.addEventListener = function(callback) {
+        this.on("GROUP_EVENT", callback);
     };
-    GroupMgr.prototype.removeChangeListener = function(callback) {
-        this.removeListener("change", callback);
+    GroupMgr.prototype.removeEventListener = function(callback) {
+        this.removeListener("GROUP_EVENT", callback);
     };
     GroupMgr.prototype.reset = function() {
         this.list = {};
@@ -30,7 +30,6 @@ module.exports = (function() {
         if(!list.hasOwnProperty(id)) {
             list[id] = obj;
             this.addAlphaList(id, obj.name);
-            this.emitChange();
         }
     };
     GroupMgr.prototype.addAlphaList = function(id, name) {
@@ -41,9 +40,9 @@ module.exports = (function() {
     };
     GroupMgr.prototype.remove = function(obj) {
         if(this.list.hasOwnProperty(obj.id)) {
+            var groupname = this.list[obj.id].name;
             delete this.list[obj.id];
-            this.removeAlphaList(obj.id, obj.name);
-            this.emitChange();
+            this.removeAlphaList(obj.id, groupname);
         }
     };
     GroupMgr.prototype.removeAlphaList = function(id, name) {
@@ -51,6 +50,11 @@ module.exports = (function() {
         var alphaList = this.alphaList[alpha];
         if (alphaList) {
             alphaList = _.without(alphaList, id);
+            if (alphaList.length === 0) {
+                delete this.alphaList[alpha];
+            } else {
+                this.alphaList[alpha] = alphaList;
+            }
         }
     };
     GroupMgr.prototype.updateMembers = function(obj) {
@@ -82,33 +86,16 @@ module.exports = (function() {
         if (name) {
             obj.name = name;
         }
-        if (creators) {
+        if (creators&&creators.length) {
             obj.creators = creators;
         }
-        if (members) {
+        if (members&&members.length) {
             obj.members = members;
         }
         app.emit('GROUP_LIST_RQ', obj);
     };
     GroupMgr.prototype.onGetGroupList = function(groups) {
-        app.hideWait();
-        if (!groups.length) {
-            app.toast("没有符合条件的群组");
-            return;
-        }
-        var list = {};
-        var alphaList = {};
-        _.each(groups, (group)=> {
-            var name = group.name;
-            var id = group.id;
-            var type = group.type;
-            var creator = group.creator;
-            var alpha = $.fisrtPinyin(name);
-            list[id] = group;
-            alphaList[alpha] = alphaList[alpha]||[];
-            alphaList[alpha].push(id);
-        });
-        app.showView("searchGroupList", "fade", {alphaList: alphaList, list: list});
+        this.emitEvent({type:"ON_GET_GROUP_LIST", groups: groups});
     };
     GroupMgr.prototype.getGroupInfo = function(groupid) {
         app.emit('GROUP_INFO_RQ', {id: groupid});
@@ -125,13 +112,14 @@ module.exports = (function() {
         app.emit('GROUP_CREATE_RQ', {name:name, members:members, type:type});
     };
     GroupMgr.prototype.onCreateGroup = function(obj) {
+        console.log(obj);
         if (obj.error) {
             console.error("create "+obj.name+" failed: for "+obj.error);
-            app.error(app.error[obj.error]);
         } else {
-            this.add({id:obj.id, name:obj.name, creator:app.login.userid, type:obj.type, members:obj.members});
+            this.add({id:obj.id, name:obj.name, creator:app.loginMgr.userid, type:obj.type, members:obj.members});
             console.log("create "+obj.name+" success");
         }
+        this.emitEvent({type:"ON_CREATE_GROUP", error: obj.error});
     };
     GroupMgr.prototype.modifyGroup = function(id, name, members, type) {
         type = type&&1||0;
@@ -140,7 +128,6 @@ module.exports = (function() {
     GroupMgr.prototype.onModifyGroup = function(obj) {
         if (obj.error) {
             console.error("modify "+obj.id+" failed: for "+obj.error);
-            app.error(app.error[obj.error]);
         } else {
             this.list[obj.id].members = obj.members;
             this.list[obj.id].type = obj.type;
@@ -157,11 +144,11 @@ module.exports = (function() {
     GroupMgr.prototype.onRemoveGroup = function(obj) {
         if (obj.error) {
             console.error("remove "+obj.id+" failed: for "+obj.error);
-            app.error(app.error[obj.error]);
         } else {
             this.remove(obj);
             console.log("remove "+obj.id+" success");
         }
+        this.emitEvent({type:"ON_REMOVE_GROUP", error: obj.error});
     };
     GroupMgr.prototype.onRemoveGroupNotify = function(obj) {
         this.remove(obj);
@@ -173,11 +160,11 @@ module.exports = (function() {
     GroupMgr.prototype.onJoinGroup = function(obj) {
         if (obj.error) {
             console.error("join "+obj.id+" failed: for "+obj.error);
-            app.error(app.error[obj.error]);
         } else {
             this.add({id:obj.id, name:obj.name, creator:obj.creator, type:obj.type, members:obj.members});
             console.log("join "+obj.id+" success");
         }
+        this.emitEvent({type:"ON_JOIN_GROUP", error: obj.error});
     };
     GroupMgr.prototype.onJoinGroupNotify = function(obj) {
         this.addMembers({id:obj.id, userid:obj.userid});
@@ -200,7 +187,6 @@ module.exports = (function() {
     GroupMgr.prototype.onPullInGroup = function(obj) {
         if (obj.error) {
             console.error("pull "+obj.id+" failed: for "+obj.error);
-            app.error(app.error[obj.error]);
         } else {
             this.updateMembers({id:obj.id, members:obj.members});
             console.log("pull "+obj.id+" success");
@@ -225,7 +211,6 @@ module.exports = (function() {
     GroupMgr.prototype.onFireOutGroup = function(obj) {
         if (obj.error) {
             console.error("fireOut "+obj.id+" failed: for "+obj.error);
-            app.error(app.error[obj.error]);
         } else {
             this.updateMembers({id:obj.id, members:obj.members});
             console.log("fireOut "+obj.id+" success");

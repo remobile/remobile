@@ -7,7 +7,7 @@ var Content = UI.Content;
 var Grid = UI.Grid;
 var Button = UI.Button.Button;
 var Modal = UI.Modal;
-		
+
    function showAlertModal() {
         var alertModal = (
             <Modal.Modal>
@@ -20,10 +20,10 @@ var Modal = UI.Modal;
                 </Modal.ModalButtons>
             </Modal.Modal>
         );
-        
+
         app.showModal('modal', alertModal);
    }
-   
+
     function showConfirmModal() {
         var confirmModal = (
             <Modal.Modal>
@@ -37,10 +37,10 @@ var Modal = UI.Modal;
                 </Modal.ModalButtons>
             </Modal.Modal>
         );
-        
+
         app.showModal('modal', confirmModal);
    }
-   
+
    function showPromptModal() {
         var promptModal = (
             <Modal.Modal>
@@ -57,7 +57,7 @@ var Modal = UI.Modal;
         );
         app.showModal('modal', promptModal);
    }
-   
+
    function showLoginModal() {
         var loginModal = (
             <Modal.Modal>
@@ -75,7 +75,7 @@ var Modal = UI.Modal;
         );
         app.showModal('modal', loginModal);
    }
-   
+
    function showPasswordModal() {
         var loginModal = (
             <Modal.Modal>
@@ -92,7 +92,7 @@ var Modal = UI.Modal;
         );
         app.showModal('modal', loginModal);
    }
-   
+
    function showActionsModal() {
         var actionsModal = (
             <Modal.ActionsModal>
@@ -114,11 +114,11 @@ var Modal = UI.Modal;
             </Modal.ActionsModalGroup>
         </Modal.ActionsModal>
         );
-        
+
         app.showModal('actionsModal', actionsModal);
    }
-   
-   
+
+
    function showPreLoaderModal() {
         var preLoaderModal = (
             <Modal.ModalNoButttons>
@@ -135,7 +135,7 @@ var Modal = UI.Modal;
             app.hideModal();
         }, 3000);
    }
-   
+
    function showIndicator() {
    		app.showModal('indicator');
    		setTimeout(function() {
@@ -166,14 +166,14 @@ module.exports = React.createClass({
 		          </Grid.Row>
 	      		</Content.ContentBlockInner>
 	        </Content.ContentBlock>
-	        
+
 	        <Content.ContentBlockTitle>Action Sheet To Popover</Content.ContentBlockTitle>
 		      <Content.ContentBlock>
 		        <Content.ContentBlockInner>
 		          <p>Action Sheet could be automatically converted to Popover (for tablets). This button will open Popover on tablets and Action Sheet on phones: <Button inline round onTap={showActionsModal}>Action/Popover</Button></p>
 		        </Content.ContentBlockInner>
 		      </Content.ContentBlock>
-		      
+
 		      <Content.ContentBlockTitle>Picker Modal</Content.ContentBlockTitle>
 		      <Content.ContentBlock>
 		        <Content.ContentBlockInner>
@@ -188,7 +188,7 @@ module.exports = React.createClass({
 		          <p><Button>Open Multiple Alerts</Button></p>
 		        </Content.ContentBlockInner>
 		      </Content.ContentBlock>
-	      
+
 				</View.PageContent>
        </View.Page>
 		);

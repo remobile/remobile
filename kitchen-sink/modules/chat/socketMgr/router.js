@@ -1,9 +1,7 @@
 module.exports = (function() {
     "use strict";
-    var _self;
 
     function Router() {
-        _self = this;
     }
 
     Router.prototype.ON_CONNECT = function(obj) {

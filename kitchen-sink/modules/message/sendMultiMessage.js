@@ -15,7 +15,7 @@ var ContactItem = React.createClass({
             <List.ItemContent swipeout swipeoutRight=<a className="swipeout-delete" onClick={this.props.onDelete.bind(null, userid)}>Delete</a>>
                 <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
                 <List.ItemInner>
-                    <List.ItemTitle style={app.color.usernameColor(user.online)}>{username}</List.ItemTitle>
+                    <List.ItemTitle style={app.color.usernameColor(user)}>{username}</List.ItemTitle>
                 </List.ItemInner>
             </List.ItemContent>
         )

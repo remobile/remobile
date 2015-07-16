@@ -146,7 +146,7 @@ module.exports = React.createClass({
         });
         return (
             <div className={className} style={this.props.style} ref="container">
-                {!!title&&<Navbar><NavbarTitle>{title}</NavbarTitle>{this.props.right}</Navbar>}
+                {!!title&&<Navbar goBack={this.props.goBack}><NavbarTitle>{title}</NavbarTitle>{this.props.right}</Navbar>}
                 {this.props.children}
             </div>
         );

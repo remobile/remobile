@@ -23,7 +23,7 @@ var IndexedList =  React.createClass({
         app.userMgr.removeChangeListener(this._onChange);
     },
     _onChange: function() {
-        this.setState({letters:_.keys(app.userMgr.groupedUsers)});
+        this.setState({letters:_.keys(app.userMgr.groupedUsers).sort(function(a, b) {return a.localeCompare(b)})});
     },
     render: function() {
         return (

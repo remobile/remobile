@@ -568,7 +568,7 @@ module.exports = React.createClass({
         this.props.class&&(obj[this.props.class]=true);
         var className = cn(obj);
 
-        var style= this.props.block?{}:{marginTop:'0px'};
+        var style= this.props.block?{}:{margin:'0px 0px'};
         if (this.props.group) {
          return (
              <div className={className} style={style}>

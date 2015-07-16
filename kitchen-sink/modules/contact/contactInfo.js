@@ -71,7 +71,7 @@ module.exports = React.createClass({
                         <List.ItemMedia><div className={"big_user_head default_head user_head_"+userid}/></List.ItemMedia>
                         <List.ItemInner style={{fontSize:"2em"}}>
                             <List.ItemTitleRow>
-                                <List.ItemTitle style={app.color.usernameColor(user.online)}>{username}</List.ItemTitle>
+                                <List.ItemTitle style={app.color.usernameColor(user)}>{username}</List.ItemTitle>
                             </List.ItemTitleRow>
                             <List.ItemText style={{fontSize:"0.8em"}}>
                                 <span style={{color:"olivedrab"}}>{userid}</span>

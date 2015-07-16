@@ -145,7 +145,7 @@ module.exports = React.createClass({
                     if (this.state.activeAlpha == letter) {
                         obj.active = true;
                     }
-                    return <li className={cn(obj)} data-index-letter={letter}>{letter}</li>
+                    return <li key={letter} className={cn(obj)} data-index-letter={letter}>{letter}</li>
                 })}
             </ul>
         );
