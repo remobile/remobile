@@ -83,11 +83,16 @@ function App (views) {
         },
         showView: function (viewId, transition, param, norecord) {
             var trans = VIEW_TRANSITIONS[transition];
-            var p = assign({}, param, {scrollTop: $('.page-content').scrollTop()});
+            param = param||{};
             if (!norecord) {
-                this.history.push({id:this.state.currentView, transition:transition, param:p});
+                var saved = param.saved||{};
+                if (param.saved) {
+                    delete param.saved;
+                }
+                saved = assign(saved, {scrollTop: $('.page-content').scrollTop()});
+                this.history.push({id:this.state.currentView, transition:transition, saved:saved});
             }
-            this.displayView(viewId, trans? trans.go: 'none', assign({}, param));
+            this.displayView(viewId, trans? trans.go: 'none', param);
         },
         goBack: function(step, param) {
             if (!step) {
@@ -101,7 +106,7 @@ function App (views) {
             if (obj) {
                 var trans = VIEW_TRANSITIONS[obj.transition];
                 param = assign({}, param);
-                param.saved = obj.param;
+                param.saved = obj.saved;
                 this.displayView(obj.id, trans? trans.back: 'none', param);
             }
         }

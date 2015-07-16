@@ -83,8 +83,10 @@ module.exports = React.createClass({
     addReceivers: function() {
         var param = {
             value: this.state.users,
-            private: this.state.private,
-            groupname: this.state.groupname,
+            saved: {
+                private: this.state.private,
+                groupname: this.state.groupname
+            }
         };
         app.showView('selectUsers', 'left', param)
     },

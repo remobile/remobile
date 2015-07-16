@@ -6,7 +6,7 @@ var View = UI.View;
 
 
 function getImage(i) {
-	return {backgroundImage: 'url(img/'+i+'.jpg)'}
+	return {backgroundImage: 'url(img/app/photo/'+i+'.jpg)'}
 }
 
 module.exports = React.createClass({

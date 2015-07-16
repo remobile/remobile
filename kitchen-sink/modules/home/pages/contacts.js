@@ -9,26 +9,51 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 var View = UI.View;
 
-function showGroupList(){
-    app.showView("groupList", "left");
-}
-function sendMultiMessage(){
-    app.showView("sendMultiMessage", "left");
-}
-var MenuList =[
-    <List.ItemContent key={1} link onTap={showGroupList}>
-        <List.ItemMedia><Icon name={"img_create_group"}/></List.ItemMedia>
-        <List.ItemInner>
-            <List.ItemTitle style={{color:"blue"}}>群聊</List.ItemTitle>
-        </List.ItemInner>
-    </List.ItemContent>,
-    <List.ItemContent key={2} link onTap={sendMultiMessage}>
-        <List.ItemMedia><Icon name={"img_send_multi"}/></List.ItemMedia>
-        <List.ItemInner>
-            <List.ItemTitle style={{color:"blue"}}>群发</List.ItemTitle>
-        </List.ItemInner>
-    </List.ItemContent>
-];
+var MenuItem = React.createClass({
+    getDefaultProps: function() {
+        return {color:"blue"}
+    },
+    render: function() {
+        return (
+            <List.ItemContent onTap={this.props.onTap}>
+                <List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>
+                <List.ItemInner>
+                    <List.ItemTitle style={{color:this.props.color, fontWeight:"bold"}}>{this.props.label}</List.ItemTitle>
+                </List.ItemInner>
+            </List.ItemContent>
+        )
+   }
+});
+
+var MenuList = React.createClass({
+    showGroupList: function(){
+        var onlineType = this.props.onlineType;
+        app.showView("groupList", "left", {saved:{onlineType:onlineType}});
+    },
+    sendMultiMessage: function(){
+        var onlineType = this.props.onlineType;
+        app.showView("sendMultiMessage", "left", {saved:{onlineType:onlineType}});
+    },
+    render: function() {
+        var onlineType = this.props.onlineType;
+        var select = this.props.select;
+        if (select) {
+            return (
+                <List.ListGroup>
+                    <MenuItem color={onlineType?"blue":"green"} icon={onlineType?"img_user_online":"img_user_offline"} label={onlineType?"只显示在线联系人":"显示所有联系人"} onTap={this.props.changeShowOnline} />
+                </List.ListGroup>
+            )
+        } else {
+            return (
+                <List.ListGroup>
+                    <MenuItem icon="img_create_group" label="群聊" onTap={this.showGroupList} />
+                    <MenuItem icon="img_send_multi" label="发送给多人" onTap={this.sendMultiMessage} />
+                    <MenuItem color={onlineType?"blue":"green"} icon={onlineType?"img_user_online":"img_user_offline"} label={onlineType?"只显示在线联系人":"显示所有联系人"} onTap={this.props.changeShowOnline} />
+                </List.ListGroup>
+            )
+        }
+   }
+});
 
 var ContactItemInner = function(userid, username, online) {
     return [
@@ -41,7 +66,7 @@ var ContactItemInner = function(userid, username, online) {
 
 var ContactItem = React.createClass({
     showContactInfo: function(userid) {
-        var param = {userid: userid};
+        var param = {userid: userid, saved:{onlineType: this.props.onlineType}};
         app.showView("contactInfo", "up", param);
     },
     render: function() {
@@ -77,26 +102,39 @@ var ContactGroup = React.createClass({
         var userids = this.props.userids;
         var select = this.props.select;
         var letter = this.props.letter;
+        var onlineType = this.props.onlineType;
         return (
             <List.ListGroup>
                 <List.ListGroupTitle data={{'data-index-letter':letter}}>{letter}</List.ListGroupTitle>
-                {userids.map((userid)=>{return <ContactItem key={userid} userid={userid} users={users} select={select}/>})}
+                {userids.map((userid)=>{return <ContactItem key={userid} onlineType={onlineType} userid={userid} users={users} select={select}/>})}
             </List.ListGroup>
         )
     }
 });
 
-
 var ContactList = React.createClass({
     render: function() {
+        var onlineType = this.props.onlineType;
         var users = this.props.users;
         var groupedUsers = this.props.groupedUsers;
+        if (onlineType) {
+            var newGroupedUsers = {};
+            _.mapObject(groupedUsers, (userids, letter) => {
+                var newUserids = _.filter(userids, (userid) => {
+                    return users[userid].online;
+                });
+                if (newUserids.length) {
+                    newGroupedUsers[letter] = newUserids;
+                }
+            });
+            groupedUsers = newGroupedUsers;
+        }
         var letters = _.keys(groupedUsers).sort(function(a, b) {return a.localeCompare(b)});
         var select = this.props.select;
         return (
             <List.List block group class="contacts-block">
-                {!select&&MenuList}
-                {_.map(letters, (letter)=>{return <ContactGroup key={letter} letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
+                <MenuList select={select} onlineType={onlineType} changeShowOnline={this.props.changeShowOnline}/>
+                {_.map(letters, (letter)=>{return <ContactGroup key={letter} onlineType={onlineType} letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
             </List.List>
         );
     }
@@ -104,9 +142,11 @@ var ContactList = React.createClass({
 
 module.exports = React.createClass({
     getInitialState: function() {
+        var saved = this.props.data.param.saved||{};
         return {
             groupedUsers: app.userMgr.groupedUsers,
-            users: app.userMgr.users
+            users: app.userMgr.users,
+            onlineType: saved.onlineType
         };
     },
     componentDidMount: function() {
@@ -121,9 +161,12 @@ module.exports = React.createClass({
             users: app.userMgr.users
         });
     },
+    changeShowOnline: function() {
+        this.setState({onlineType: !this.state.onlineType});
+    },
     render: function() {
         return (
-            <ContactList users={this.state.users} groupedUsers={this.state.groupedUsers} select={this.props.select}/>
+            <ContactList users={this.state.users} groupedUsers={this.state.groupedUsers} select={this.props.select} onlineType={this.state.onlineType} changeShowOnline={this.changeShowOnline}/>
         );
     }
 });

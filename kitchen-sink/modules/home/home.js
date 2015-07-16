@@ -61,7 +61,7 @@ module.exports = React.createClass({
 		return (
             <View.Page toolbar>
 			    <View.PageContent>
-                    <CurrentPage />
+                    <CurrentPage data={this.props.data}/>
 			    </View.PageContent>
 			  	{this.state.page===1&&<IndexedList />}
 	            <View.Toolbar tabbar labels>

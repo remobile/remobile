@@ -11,7 +11,7 @@ function getImages() {
     var arr = [];
     for (var i=1; i<10; i++) {
         arr.push({
-            url: 'img/'+i+'.jpg',
+            url: 'img/app/photo/'+i+'.jpg',
             caption: 'chinese star picture index '+i
         });
     }

@@ -24,7 +24,7 @@ module.exports = React.createClass({
     			children.label = (<div className="message-label">{this.props.label}</div>);
     		}
     		if (this.props.avatar) {
-    			children.avatar = (<div className={"message-avatar icon-default-head user_head_"+this.props.avatar}></div>);
+    			children.avatar = (<div className={"message-avatar default-head user_head_"+this.props.avatar}></div>);
     		}
          return (
          	<div className = {className}>

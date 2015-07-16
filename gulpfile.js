@@ -136,14 +136,14 @@ gulp.task('audio', function() {
 gulp.task('img', function() {
     var path = libPath+'img/**/';
     return gulp.src(path+'*.png')
-    .pipe(gulp.dest(destPath+'img'));
+    .pipe(gulp.dest(destPath+'img/f7'));
 });
-gulp.task('demoimg', function() {
+gulp.task('appimg', function() {
     var path = appPath+'img/**/';
     return gulp.src([path+'*.png', path+'*.jpg'])
-    .pipe(gulp.dest(destPath+'img'));
+    .pipe(gulp.dest(destPath+'img/app'));
 });
-gulp.task('images', ['img', 'demoimg']);
+gulp.task('images', ['img', 'appimg']);
 gulp.task('fonts', function() {
     return gulp.src('src/fonts/**')
     .pipe(gulp.dest(destPath+'fonts'));

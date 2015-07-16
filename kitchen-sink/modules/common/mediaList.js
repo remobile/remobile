@@ -9,7 +9,7 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 
 function getImage(i) {
-    return 'img/'+i+'.jpg';
+    return 'img/app/photo/'+i+'.jpg';
 }
 
 var List1 = React.createClass({

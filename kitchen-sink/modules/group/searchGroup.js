@@ -12,14 +12,10 @@ var Switch = UI.Form.Switch;
 var Button = UI.Button.Button;
 
 var ContactItem = React.createClass({
-    showContactInfo: function(userid) {
-        var param = {target: userid};
-        app.showView("contactInfo", "up", param);
-    },
     render: function() {
        var userid = this.props.userid;
        return (
-           <List.ItemContent onTap={this.showContactInfo.bind(this, userid)}>
+           <List.ItemContent>
              <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
                <List.ItemInner>
                     <List.ItemTitle>fangyunjiang</List.ItemTitle>
@@ -72,8 +68,8 @@ var ContactItem = React.createClass({
 });
 
 module.exports = React.createClass({
-		getInitialState: function() {
-				var param = this.props.data.param;
+    getInitialState: function() {
+        var param = this.props.data.param;
         var saved = param.saved||{};
         var obj = {
         	groupname: saved.groupname||'',
@@ -110,14 +106,18 @@ module.exports = React.createClass({
     		if (type === "creators") {
 	        param = {
 	            value: this.state.creators,
-	            members: this.state.members,
-	            groupname: this.state.groupname,
+                saved: {
+                    members: this.state.members,
+                    groupname: this.state.groupname
+                }
 	        };
 	      } else {
 	      	param = {
 	            value: this.state.members,
-	            creators: this.state.creators,
-	            groupname: this.state.groupname,
+                saved: {
+                    creators: this.state.creators,
+                    groupname: this.state.groupname
+                }
 	        };
 	      }
         app.showView('selectUsers', 'left', param)
@@ -131,7 +131,7 @@ module.exports = React.createClass({
             <View.PageContent>
                 <List.List>
                     <FormInputItem icon="icon-form-email" label="群组名称:" input_type="text" placeholder="例如:讨论组" value={this.state.groupname} onChange={this.handleInputChange.bind(this, "groupname")}/>
-                    
+
                     <List.ItemContent onTap={this.addUsers.bind(null, "creators")}>
                         <List.ItemMedia><Icon name="ion-android-contact" /></List.ItemMedia>
                         <List.ItemInner>
@@ -142,7 +142,7 @@ module.exports = React.createClass({
                     <List.List inset swipeout ref="creators-list">
                         {this.state.creators.map((userid)=>{return <ContactItem key={userid} userid={userid} onDelete={this.onDelete.bind(null, "creators-list")}/>})}
                     </List.List>
-                    
+
                     <List.ItemContent onTap={this.addUsers.bind(null, "creators")}>
                         <List.ItemMedia><Icon name="ion-ios7-people" /></List.ItemMedia>
                         <List.ItemInner>
@@ -154,7 +154,7 @@ module.exports = React.createClass({
                         {this.state.members.map((userid)=>{return <ContactItem key={userid} userid={userid} onDelete={this.onDelete.bind(null, "members-list")}/>})}
                     </List.List>
                 </List.List>
-                
+
                 <Content.ContentBlock>
                     <Grid.Row>
                         <Grid.Col><Button big fill color="green" onTap={this.doCreateGroup}>搜索</Button></Grid.Col>

@@ -5,7 +5,7 @@ var Content = UI.Content;
 var View = UI.View;
 
 function getImage(i) {
-	return 'img/'+i+'.jpg';
+	return 'img/app/photo/'+i+'.jpg';
 }
 
 module.exports = React.createClass({

@@ -43,7 +43,7 @@ module.exports = React.createClass({
     },
     addReceivers: function() {
         var text = this.refs.toolbar.getValue();
-        app.showView('selectUsers', 'left', {value:this.state.users, text: text})
+        app.showView('selectUsers', 'left', {value:this.state.users, saved:{text: text}});
     },
     handleSend: function() {
         var text = this.refs.toolbar.getValue();
