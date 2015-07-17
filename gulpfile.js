@@ -17,7 +17,7 @@ var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var libPath = 'src/';
 var destPath = './server/server/www/';
-var releasePath = './dist/';
+var releasePath = './release/';
 var appPath = './kitchen-sink/';
 var appFile = 'app.js';
 
@@ -162,7 +162,7 @@ gulp.task('watch', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts',
     gulp.watch([libPath+'less/**/*.less'], ['less']);
     gulp.watch([appPath+'css/**/*.css'], ['democss']);
 });
-gulp.task('release', ['framework7', 'html', 'audio', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app'], function() {
+gulp.task('release', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app'], function() {
     var path = destPath+'js/';
     gulp.src([
         path+'framework7.js',
@@ -173,6 +173,19 @@ gulp.task('release', ['framework7', 'html', 'audio', 'images', 'fonts', 'less', 
     .pipe(concat('remobile.js'))
     .pipe(uglify({compress: {drop_console: true}}))
     .pipe(gulp.dest(releasePath+'js'));
+
+    gulp.src([
+        path+'cordova.js',
+        path+'cordova_plugins.js'
+    ])
+    .pipe(uglify({compress: {drop_console: true}}))
+    .pipe(gulp.dest(releasePath+'js'));
+
+    gulp.src([
+        path+'plugins/*.js'
+    ])
+    .pipe(uglify({compress: {drop_console: true}}))
+    .pipe(gulp.dest(releasePath+'js/plugins'));
 
     path = destPath+'css/';
     gulp.src([
@@ -192,13 +205,21 @@ gulp.task('release', ['framework7', 'html', 'audio', 'images', 'fonts', 'less', 
     .pipe(gulp.dest(releasePath+'img'));
 
     path = destPath+'fonts/**';
-    gulp.src([path+'*.png', path+'*.jpg'])
+    gulp.src('src/fonts/**')
     .pipe(gulp.dest(releasePath+'fonts'));
 
     gulp.src(destPath+'index.html')
+    .pipe(concat('main.html'))
     .pipe(replace(/<link rel="stylesheet"[\s\S]*demo.css" \/>/, '<link rel="stylesheet" type="text/css" href="css/remobile.css" />'))
-    .pipe(replace(/<script[\s\S]*script>/, '<script type="text/javascript" src="js/remobile.js"></script>'))
+    .pipe(replace(/<script[\s\S]*script>/, '<script type="text/javascript" src="js/cordova.js"></script><script type="text/javascript" src="js/remobile.js"></script>'))
     .pipe(gulp.dest(releasePath));
+
+    path = appPath+'platforms/web/phone/';
+    gulp.src(path+'index.html')
+    .pipe(gulp.dest(releasePath));
+
+    gulp.src(path+'*.png')
+    .pipe(gulp.dest(releasePath+"/img"));
 });
 gulp.task('run', ['watch', 'serve']);
 gulp.task('clean', function() {

@@ -3,6 +3,6 @@
 .DS_Store
 *Thumbs.db
 /server/server/www
-/dist
+/release
 /tools
 /node_modules
