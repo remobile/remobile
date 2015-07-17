@@ -11,6 +11,21 @@ var Slider = UI.Form.Slider;
 var Grid = UI.Grid;
 var Button = UI.Button.Button;
 
+function getImageData(img, width, height) {
+    var canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, width, height);
+
+    return canvas.toDataURL("image/png");
+}
+
+function getImage(i) {
+    return 'img/app/head/'+i+'.jpg';
+}
+
 var MaskInput = React.createClass({
     mixins: [ReactMaskMixin],
     render: function() {
@@ -21,8 +36,8 @@ var MaskInput = React.createClass({
 var FormItem = React.createClass({
      render: function() {
         return (
-             <List.ItemContent>
-                    {this.props.icon&&<List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>}
+            <List.ItemContent>
+                {this.props.icon&&<List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>}
                 <List.ItemInner>
                     {this.props.label&&<List.ItemTitle label>{this.props.label}</List.ItemTitle>}
                     <List.ItemInput>
@@ -45,6 +60,9 @@ var FormInputItem = React.createClass({
 });
 
 module.exports = React.createClass({
+    componentWillMount: function() {
+        this.headImageIndex = this.props.data.param.headImageIndex||0;
+    },
     doRegister: function() {
         var userid = this.state.userid.replace(/-/g, "");
         if (!(/\d{11}/.test(userid))) {
@@ -60,11 +78,13 @@ module.exports = React.createClass({
             app.showError("UserName Empty!");
             return;
         }
+        var head = getImageData(this.refs.head.getDOMNode(), 100,100);
         var param = {
             userid: userid,
             password: password,
             username: this.state.username,
-            sign: this.state.sign
+            sign: this.state.sign,
+            head: head
         };
         app.socket.emit('USER_REGISTER_RQ', param);
     },
@@ -73,14 +93,29 @@ module.exports = React.createClass({
         state[type] = e.target.value;
         this.setState(state);
     },
+    selectHead: function() {
+        app.showView('selectHead', 'left');
+    },
     getInitialState: function() {
         return {
+            userid: '',
+            password: '',
+            username: '',
+            sign: ''
         };
     },
     render: function() {
         return (
             <View.Page title="Register">
                 <View.PageContent>
+                    <Content.ContentBlock>
+                    <List.List block>
+                        <FormItem icon="ion-android-contact" label="Head:">
+                            <img className={"big_user_head"} src={getImage(this.headImageIndex)} onClick={this.selectHead} ref="head"/>
+                        </FormItem>
+                    </List.List>
+                    </Content.ContentBlock>
+
                     <Content.ContentBlock>
                     <List.List block>
                         <FormItem icon="icon-form-tel" label="Phone:">

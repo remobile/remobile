@@ -6,7 +6,7 @@
         i = 0;
     var UTF8 = {
         /**
-         * Encode multi-byte Unicode string into utf-8 multiple single-byte characters
+         * Encode multi-byte Unicode string into utf-8 multiple single-byte     characters
          * (BMP / basic multilingual plane only)
          *
          * Chars in range U+0080 - U+07FF are encoded in 2 chars, U+0800 - U+FFFF in 3 chars
@@ -102,13 +102,13 @@
 (function($) {
     $.dateFormat = function(date, fmt) {
         var o = {
-            "M+": date.getMonth() + 1, //ÔÂ·Ý
-            "d+": date.getDate(), //ÈÕ
+            "M+": date.getMonth() + 1, //ï¿½Â·ï¿½
+            "d+": date.getDate(), //ï¿½ï¿½
             "h+": date.getHours(), //Ð¡Ê±
-            "m+": date.getMinutes(), //·Ö
-            "s+": date.getSeconds(), //Ãë
-            "q+": Math.floor((date.getMonth() + 3) / 3), //¼¾¶È
-            "S": date.getMilliseconds() //ºÁÃë
+            "m+": date.getMinutes(), //ï¿½ï¿½
+            "s+": date.getSeconds(), //ï¿½ï¿½
+            "q+": Math.floor((date.getMonth() + 3) / 3), //ï¿½ï¿½ï¿½ï¿½
+            "S": date.getMilliseconds() //ï¿½ï¿½ï¿½ï¿½
         };
         if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
         for (var k in o)
@@ -129,17 +129,13 @@
         if (uni >= 97 && uni <=122) {
             return String.fromCharCode(uni-32);
         }
-        if (uni > 40869 || uni < 19968) //Èç¹û²»ÔÚºº×Ö´¦Àí·¶Î§Ö®ÄÚ,·µ»Ø#
+        if (uni > 40869 || uni < 19968) //ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½Ö´ï¿½ï¿½?Î§Ö®ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½#
             return "#";
         return strChineseFirstPY.charAt(uni - 19968);
     };
 }($));
 (function($) {
-    $.getImageData = function(id, width, height) {
-        var img = $('#'+id);
-        if (img.length == 0) {
-            return "";
-        }
+    $.getImageData = function(img, width, height) {
         var canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
@@ -214,14 +210,14 @@
         unescape: RegExp('(' + keys(entityMap.unescape).join('|') + ')', 'g')
     };
 
-// ½«HTML×ªÒåÎªÊµÌå
+// ï¿½ï¿½HTML×ªï¿½ï¿½ÎªÊµï¿½ï¿½
     $.escape = function(html) {
         if (typeof html !== 'string') return '';
         return html.replace(entityReg.escape, function(match) {
             return entityMap.escape[match];
         })
     }
-// ½«ÊµÌå×ª»ØÎªHTML
+// ï¿½ï¿½Êµï¿½ï¿½×ªï¿½ï¿½ÎªHTML
     $.unescape = function(str) {
         if (typeof str !== 'string') return '';
         return str.replace(entityReg.unescape, function(match) {

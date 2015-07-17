@@ -6,7 +6,7 @@ module.exports = define(function(require) {
     }
 
     Login.prototype.login = function(args) {
-        if (_self.loginSuccess) {
+        if (_self.online) {
             app.console.error("you have already login");
             return;
         }
@@ -54,7 +54,7 @@ module.exports = define(function(require) {
         if (!obj.error) {
             app.console.success("login success");
             app.console.log(obj);
-            _self.loginSuccess = true;
+            _self.online = true;
             _self.info = obj;
             app.socket.emit('USER_LOGIN_SUCCESS_NFS');
         } else {

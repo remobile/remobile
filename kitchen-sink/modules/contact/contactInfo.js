@@ -75,8 +75,8 @@ module.exports = React.createClass({
                             </List.ItemTitleRow>
                             <List.ItemText style={{fontSize:"0.8em"}}>
                                 <span style={{color:"olivedrab"}}>{userid}</span>
-                                <span className="ion-ios7-telephone" style={{marginLeft: "8%", color:"green"}} onClick={this.systemCall}></span>
-                                <span className="ion-chatbox-working" style={{marginLeft: "3%", color:"green"}} onClick={this.systemMessage}></span>
+                                <span className="ion-ios7-telephone" style={{marginLeft: "5%", color:"green"}} onClick={this.systemCall}></span>
+                                <span className="ion-chatbox-working" style={{marginLeft: "12%", color:"green"}} onClick={this.systemMessage}></span>
                             </List.ItemText>
                         </List.ItemInner>
                      </List.ItemContent>

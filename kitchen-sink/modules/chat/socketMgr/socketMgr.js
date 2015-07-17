@@ -23,12 +23,14 @@ module.exports = (function() {
             router.ON_RECONNECT();
         }).on('reconnect_error', function(obj) {
             console.error("reconnect to server error");
-            app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
+            //app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
         }).on('reconnect_failed', function(obj) {
             console.error("reconnect to server failed");
-            app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
+            //app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
         }).on('USER_REGISTER_RS', function(obj) {
             app.router.ON_USER_REGISTER_RS(obj);
+        }).on('USER_REGISTER_NF', function(obj) {
+            app.router.ON_USER_REGISTER_NF(obj);
         }).on('USER_LOGIN_RS', function(obj) {
             router.ON_USER_LOGIN_RS(obj);
         }).on('USER_LOGOUT_NF', function(obj) {

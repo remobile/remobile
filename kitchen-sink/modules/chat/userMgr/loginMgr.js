@@ -78,6 +78,12 @@ module.exports = (function() {
         app.toast("Register Success");
         app.goBack();
     };
+    LoginMgr.prototype.onRegisterNotify = function(obj) {
+        console.log(obj);
+        app.userMgr.add({userid:obj.userid, username: obj.username, sign:obj.sign});
+        app.notifyMgr.updateUserHead({userid:obj.userid, head:obj.head});
+        app.userMgr.emitChange();
+    };
 
     return new LoginMgr();
 })();

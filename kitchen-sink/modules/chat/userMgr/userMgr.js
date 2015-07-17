@@ -115,7 +115,7 @@ module.exports = (function() {
             users[userid].username = obj.username;
             users[userid].phone = obj.phone;
             users[userid].sign = obj.sign;
-            app.color.updateUserName(userid, obj.username);
+            this.emitChange();
         }
     };
 

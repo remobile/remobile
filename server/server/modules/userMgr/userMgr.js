@@ -10,6 +10,8 @@ module.exports = (function() {
             if (!err) {
                 app.notifyMgr.add(obj.userid);
             }
+            delete obj.password;
+            app.socketMgr.notifyOnlineUsers(socket.userid, 'USER_REGISTER_NF', obj);
         });
     };
     UserMgr.prototype.login = function(socket, obj) {

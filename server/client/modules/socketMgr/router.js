@@ -13,20 +13,28 @@ module.exports = define(function(require) {
     };
     Router.prototype.ON_DISCONNECT = function(obj) {
         app.chatconnect = false;
+        app.login.online = false;
         app.userMgr.reset();
         app.groupMgr.reset();
     };
     Router.prototype.ON_USER_REGISTER_RS = function(obj) {
         app.register.onRegister(obj);
     };
+    Router.prototype.ON_USER_REGISTER_NF = function(obj) {
+        app.register.onRegisterNotify(obj);
+    };
     Router.prototype.ON_USER_LOGIN_RS = function(obj) {
         app.login.onLogin(obj);
     };
     Router.prototype.ON_USER_LOGIN_NF = function(obj) {
-        app.userMgr.online(obj);
+        if (app.login.online) {
+            app.userMgr.online(obj);
+        }
     };
     Router.prototype.ON_USER_LOGOUT_NF = function(obj) {
-        app.userMgr.offline(obj);
+        if (app.login.online) {
+            app.userMgr.offline(obj);
+        }
     };
     Router.prototype.ON_USERS_LIST_NF = function(obj) {
         app.userMgr.addList(obj);

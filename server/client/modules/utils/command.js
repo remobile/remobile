@@ -86,7 +86,7 @@ module.exports = define(function(require) {
         }
     };
     Command.prototype.checkLogin = function() {
-        if (!app.login.loginSuccess) {
+        if (!app.login.online) {
             app.console.error('please login first');
             return false;
         } else {

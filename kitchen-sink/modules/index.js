@@ -47,6 +47,7 @@ module.exports = {
 	//chat
 	'login': require('./login/login'),
 	'register': require('./login/register'),
+	'selectHead': require('./login/selectHead'),
 	'messageInfo': require('./message/messageInfo'),
 	'sendMultiMessage': require('./message/sendMultiMessage'),
 	'contactInfo': require('./contact/contactInfo'),

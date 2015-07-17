@@ -22,6 +22,9 @@ module.exports = (function() {
     Router.prototype.ON_USER_REGISTER_RS = function(obj) {
         app.loginMgr.onRegister(obj);
     };
+    Router.prototype.ON_USER_REGISTER_NF = function(obj) {
+        app.loginMgr.onRegisterNotify(obj);
+    };
     Router.prototype.ON_USER_LOGIN_RS = function(obj) {
         app.loginMgr.onLogin(obj);
     };

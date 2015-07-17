@@ -23,6 +23,8 @@ module.exports = define(function(require) {
             app.console.error("reconnect to server failed");
         }).on('USER_REGISTER_RS', function(obj) {
             app.router.ON_USER_REGISTER_RS(obj);
+        }).on('USER_REGISTER_NF', function(obj) {
+            app.router.ON_USER_REGISTER_NF(obj);
         }).on('USER_LOGIN_RS', function(obj) {
             app.router.ON_USER_LOGIN_RS(obj);
         }).on('USER_LOGOUT_NF', function(obj) {

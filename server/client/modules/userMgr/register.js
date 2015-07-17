@@ -70,5 +70,9 @@ module.exports = define(function(require) {
             app.console.error(obj.error);
         }
     };
+    Register.prototype.onRegisterNotify = function(obj) {
+        app.console.log(obj);
+        app.userMgr.add({userid:obj.userid, username: obj.username, sign:obj.sign});
+    };
     return new Register();
 });
