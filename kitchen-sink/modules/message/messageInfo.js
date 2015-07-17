@@ -95,6 +95,7 @@ module.exports = React.createClass({
         var mgr = app.messageMgr;
         app.userMgr.addChangeListener(this._onChange);
         mgr.addDisplayMessageChangeListener(this._onMessageChange);
+        app.groupMgr.addEventListener(this._onListener);
         if (this.isGroup) {
             mgr.displayMessageInfo.target = this.groupid;
             mgr.getGroupMessage(this.groupid);
@@ -107,6 +108,7 @@ module.exports = React.createClass({
         app.userMgr.removeChangeListener(this._onChange);
         var mgr = app.messageMgr;
         mgr.removeDisplayMessageChangeListener(this._onMessageChange);
+        app.groupMgr.removeEventListener(this._onListener);
         mgr.displayMessageInfo = {};
     },
     _onMessageChange: function() {
@@ -134,6 +136,22 @@ module.exports = React.createClass({
         }, function() {
             noScroll||$('.page-content').scrollBottom(500);
         });
+    },
+    _onListener: function(obj) {
+        var type = obj.type;
+        switch(type) {
+            case "ON_FIRE_OUT_GROUP":
+                if (this.groupid === obj.id) {
+                    app.toast("你已经被踢出了这个群");
+                    if (this.props.data.from === "groupDetail") {
+                        app.goBack(2);
+                    } else {
+                        app.goBack();
+                    }
+                }
+            break;
+            default:;
+        }
     },
     handleSend: function() {
         var text = this.refs.toolbar.getValue();

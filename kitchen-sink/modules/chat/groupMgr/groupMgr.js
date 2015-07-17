@@ -229,6 +229,7 @@ module.exports = (function() {
             console.log('you have been fire',  obj.id);
             this.emitEvent({type:"ON_GROUP_LIST_CHANGE"});
             this.emitEvent({type:"ON_FIRE_OUT_GROUP", id:obj.id});
+            app.messageMgr.removeLeftGroupMessages(obj.id);
         } else {
             this.updateGroup({id:obj.id, members:obj.members, type:obj.type, name:obj.name});
             console.log(JSON.stringify(obj.firedmembers), 'been fire', obj.id);

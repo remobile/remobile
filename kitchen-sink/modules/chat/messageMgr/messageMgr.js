@@ -168,6 +168,14 @@ module.exports = (function() {
         this.unreadMessage.total -= cnt;
         us.object(constants.GROUP_MESSAGE_BADGES, obj);
     };
+    MessageMgr.prototype.removeLeftGroupMessages = function(groupid) {
+        this.clearGroupUnreadNotify(groupid);
+        app.db_history_message.delete({type:this.GROUP_TYPE, groupid:groupid});
+        var self = this;
+        app.db_newest_message.delete({type:this.GROUP_TYPE, groupid:groupid}, function() {
+            self.emitNewestMessageChange();
+        });
+    };
     MessageMgr.prototype.showNewestMessage = function(type, userid, groupid, time, msg, msgtype, send, touserid) {
         var display;
         var isGroup = (type===this.GROUP_TYPE);

@@ -27,13 +27,18 @@ var MessageItem = React.createClass({
         var user = app.userMgr.users[userid];
         var username = (userid===app.loginMgr.userid)?"我":(user.username);
         var time = app.date.getShowDate(msg.time);
-        var group = (msg.type===app.messageMgr.GROUP_TYPE);
+        var isGroup = (msg.type===app.messageMgr.GROUP_TYPE);
         var message = msg.msg;
         var style = app.color.usernameColor(user);
-        if (group) {
+        if (isGroup) {
             var groupid = msg.groupid;
             var badge = app.messageMgr.unreadMessage.group[groupid];
-            var groupname = app.groupMgr.list[groupid].name;
+            var group = app.groupMgr.list[groupid];
+            if (!group) {
+                app.messageMgr.removeLeftGroupMessages(groupid);
+                return null;
+            }
+            var groupname = group.name;
             return (
                 <List.ItemContent>
                     <List.ItemMedia><Icon name={"default_head user_head_"+groupid} round/></List.ItemMedia>
