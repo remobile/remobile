@@ -33,12 +33,21 @@ module.exports = (function() {
         app.showWait();
         app.socket.emit('USER_LOGIN_RQ', param);
     };
+    LoginMgr.prototype.autoLogin = function(userid, password, autoLogin, remeberPassword) {
+        var self = this;
+        var time = 0;
+        async.until(
+            function(){return app.chatconnect||time>3000},
+            function(c) {time+=100;setTimeout(c, 100)},
+            function() {self.login(userid, password, autoLogin, remeberPassword)}
+        );
+    };
     LoginMgr.prototype.onLogin = function(obj) {
         console.log(obj);
         app.hideWait();
         if (obj.error) {
-              app.showChatError(obj.error);
-              return;
+            app.showChatError(obj.error);
+            return;
         }
         if (!this.reconnect) {
             var us = app.us;
@@ -51,7 +60,7 @@ module.exports = (function() {
                 us.string(constants.LOGIN_PASSWORD, '');
             }
             us.bool(constants.LOGIN_AUTO_LOGIN, this.autoLogin);
-               var option = {
+            var option = {
                 indexes: [{name:"time", unique:false}]
                 ,capped: {name:"time", max:1000, direction:1, strict:true}
             };
@@ -72,8 +81,8 @@ module.exports = (function() {
     LoginMgr.prototype.onRegister = function(obj) {
         console.log(obj);
         if (obj.error) {
-          app.showChatError(obj.error);
-          return;
+            app.showChatError(obj.error);
+            return;
         }
         app.toast("Register Success");
         app.goBack();

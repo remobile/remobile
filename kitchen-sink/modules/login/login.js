@@ -45,32 +45,13 @@ var FormInputItem = React.createClass({
 });
 
 module.exports = React.createClass({
-    doLogin: function() {
-        var userid = this.state.userid.replace(/-/g, "");
-        if (!(/\d{11}/.test(userid))) {
-            app.showError("Invalid Phone!");
-            return;
-        }
+    componentDidMount: function() {
+        var autoLogin = this.state.autoLogin;
+        var userid = this.state.userid;
         var password = this.state.password;
-        if (!password) {
-            app.showError("PassWord Needed!");
-            return;
+        if (autoLogin && userid && password) {
+            app.loginMgr.autoLogin(userid, password, autoLogin, true);
         }
-        console.log(userid);
-        app.loginMgr.login(userid, password, this.state.autoLogin, this.state.remeberPassword);
-    },
-    doRegister: function() {
-        app.showView('register', 'left');
-    },
-    handleInputChange: function(type, e) {
-        var state = {};
-        state[type] = e.target.value;
-        this.setState(state);
-    },
-    handleSwitchChange: function(type, checked) {
-        var state = {};
-        state[type] =  checked;
-        this.setState(state);
     },
     getInitialState: function() {
         var us = app.us;
@@ -85,6 +66,32 @@ module.exports = React.createClass({
             autoLogin: autoLogin,
             remeberPassword: remeberPassword
         };
+    },
+    doLogin: function() {
+        var userid = this.state.userid.replace(/-/g, "");
+        if (!(/\d{11}/.test(userid))) {
+            app.showError("Invalid Phone!");
+            return;
+        }
+        var password = this.state.password;
+        if (!password) {
+            app.showError("PassWord Needed!");
+            return;
+        }
+        app.loginMgr.login(userid, password, this.state.autoLogin, this.state.remeberPassword);
+    },
+    doRegister: function() {
+        app.showView('register', 'left');
+    },
+    handleInputChange: function(type, e) {
+        var state = {};
+        state[type] = e.target.value;
+        this.setState(state);
+    },
+    handleSwitchChange: function(type, checked) {
+        var state = {};
+        state[type] =  checked;
+        this.setState(state);
     },
     render: function() {
         return (

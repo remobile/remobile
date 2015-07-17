@@ -9,7 +9,7 @@ module.exports = (function() {
     };
     Router.prototype.ON_RECONNECT = function(obj) {
         app.chatconnect = true;
-        app.userMgr.login();
+        app.loginMgr.login();
         app.toast('服务器重新连接连接成功');
     };
     Router.prototype.ON_DISCONNECT = function(obj) {
