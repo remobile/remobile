@@ -18,7 +18,7 @@ var ContactItem = React.createClass({
        var user = app.userMgr.users[userid];
        return (
            <List.ItemContent>
-             <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
+             <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
                <List.ItemInner>
                     <List.ItemTitle style={app.color.usernameColor(user)}>{user.username}</List.ItemTitle>
                </List.ItemInner>
@@ -42,13 +42,14 @@ var MemberList = React.createClass({
 
 var FormLabelItem = React.createClass({
      render: function() {
+         console.log(this.props.value);
         return (
             <List.ItemContent>
                 <List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>
                 <List.ItemInner>
                     <List.ItemTitle label>{this.props.label}</List.ItemTitle>
                     <List.ItemInput>
-                        <input type="text" defaultValue={this.props.value} disabled/>
+                        <input type="text" value={this.props.value} readonly/>
                     </List.ItemInput>
                 </List.ItemInner>
             </List.ItemContent>
@@ -71,23 +72,25 @@ var ButtonItem = React.createClass({
 module.exports = React.createClass({
     getInitialState: function() {
         var param = this.props.data.param;
-        this.search = param.search;
-        var group = param.group||param.saved.group;
+        this.search = this.props.data.from==="searchGroupList";
+        var group = param.group||app.groupMgr.list[param.saved.groupid];
         return {
             group:group
         };
     },
     componentDidMount: function() {
         app.groupMgr.addEventListener(this._onListener);
+        app.userMgr.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
         app.groupMgr.removeEventListener(this._onListener);
+        app.userMgr.removeChangeListener(this._onChange);
     },
     _onListener: function(obj) {
         var type = obj.type;
         switch(type) {
-            case "ON_REMOVE_GROUP":
-                obj.error?app.showChatError(obj.error):app.toast("解散群组成功");
+            case "ON_LEAVE_GROUP":
+                obj.error?app.showChatError(obj.error):app.toast("退出群组成功");
                 app.hideWait();
                 app.goBack();
             break;
@@ -96,42 +99,44 @@ module.exports = React.createClass({
                 app.hideWait();
                 app.goBack(3);
             break;
+            case "ON_UPDATE_GROUP":
+                if (this.state.group.id === obj.id) {
+                    this.setState({group:app.groupMgr.list[obj.id]});
+                }
+            break;
+            case "ON_FIRE_OUT_GROUP":
+                if (this.state.group.id === obj.id) {
+                    app.toast("你已经被踢出了这个群");
+                    app.goBack();
+                }
+            break;
             default:;
         }
+    },
+    _onChange: function() {
+        this.forceUpdate();
     },
     doGroupChat: function() {
     	var group = this.state.group;
     	app.showView('messageInfo', 'left', {
             type: app.messageMgr.GROUP_TYPE,
             groupid: group.id,
-            saved: {group: group}
+            saved: {groupid: group.id}
         });
     },
     doManageGroup: function() {
         var group = this.state.group;
         app.showView('createGroup', 'left', {
-            type: group.type,
             groupid: group.id,
-            members: group.members,
-            saved: {group: group}
+            saved: {groupid: group.id}
         });
-    },
-    doDeleteGroup: function() {
-        var groupid = this.state.group.id;
-        var confirm = <Modal.Confirm title="警告" text="你确定要解散该群吗?"
-                okFunc={function() {
-                    app.showWait();
-                    app.groupMgr.removeGroup(groupid);
-                }}
-            />;
-        app.showModal('modal', confirm);
     },
     doLeaveGroup: function() {
         var groupid = this.state.group.id;
         var confirm = <Modal.Confirm title="警告" text="你确定要退出该群吗?"
                 okFunc={function() {
+                		app.showWait();
                     app.groupMgr.leaveGroup(groupid);
-                    app.goBack();
                 }}
             />;
         app.showModal('modal', confirm);
@@ -151,9 +156,8 @@ module.exports = React.createClass({
                 buttons.push(<ButtonItem key="groupChat" color="green" label="发消息" onTap={this.doGroupChat}/>);
                 if (group.creator === selfid) {
                     buttons.push(<ButtonItem key="manageGroup" color="green" label="管理群组" onTap={this.doManageGroup}/>);
-                    buttons.push(<ButtonItem key="deleteGroup" color="green" label="解散群组" onTap={this.doDeleteGroup}/>);
                 } else {
-                    buttons.push(<ButtonItem key="leaveGroup" color="green" label="退出群组" onTap={this.doLeaveGroup}/>);
+                    buttons.push(<ButtonItem key="leaveGroup" color="red" label="退出群组" onTap={this.doLeaveGroup}/>);
                 }
         }
 

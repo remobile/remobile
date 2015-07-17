@@ -16,7 +16,7 @@ var ContactItem = React.createClass({
        var userid = this.props.userid;
        return (
            <List.ItemContent>
-             <List.ItemMedia><Icon name={"icon-default-head user_head_"+userid} round/></List.ItemMedia>
+             <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
                <List.ItemInner>
                     <List.ItemTitle>fangyunjiang</List.ItemTitle>
                </List.ItemInner>
@@ -93,11 +93,11 @@ module.exports = React.createClass({
         }
         return obj;
     },
-    componentWillUnmount: function() {
-        app.groupMgr.removeEventListener(this._onListener);
-    },
     componentDidMount: function() {
         app.groupMgr.addEventListener(this._onListener);
+    },
+    componentWillUnmount: function() {
+        app.groupMgr.removeEventListener(this._onListener);
     },
     _onListener: function(obj) {
         var type = obj.type;

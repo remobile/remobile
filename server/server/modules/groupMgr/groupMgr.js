@@ -35,7 +35,6 @@ module.exports = (function() {
     };
     GroupMgr.prototype.modifyGroup = function(socket, obj) {
         var members = obj.members;
-        members.push(socket.userid);
         app.db.Group._modify(obj.id, obj.name, members, obj.type, function(err, doc, oldmembers) {
             if (!err) {
                 var newadd = _.reject(members, function(userid){

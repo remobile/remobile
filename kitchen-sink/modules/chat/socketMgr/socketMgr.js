@@ -15,7 +15,7 @@ module.exports = (function() {
             router.ON_DISCONNECT();
         }).on('connect_error', function(obj) {
             console.error("connect to server error");
-            app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
+            //app.showError(app.error.CANNOT_CONNECT_CHAT_SERVER);
         }).on('connect_timeout', function(obj) {
             console.error("connect to server timeout");
         }).on('reconnect', function(obj) {

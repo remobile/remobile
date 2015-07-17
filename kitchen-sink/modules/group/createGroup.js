@@ -6,6 +6,7 @@ var Content = UI.Content;
 var List = UI.List;
 var Grid = UI.Grid;
 var Card = UI.Card;
+var Modal = UI.Modal;
 var Icon = UI.Icon.Icon;
 var Badge = UI.Badge.Badge;
 var Switch = UI.Form.Switch;
@@ -53,15 +54,40 @@ var ContactItem = React.createClass({
     }
 });
 
+var ButtonItem = React.createClass({
+    render: function() {
+        return (
+            <Content.ContentBlock>
+                <Grid.Row>
+                    <Grid.Col><Button big fill color={this.props.color} onTap={this.props.onTap}>{this.props.label}</Button></Grid.Col>
+                </Grid.Row>
+            </Content.ContentBlock>
+        );
+    }
+})
+
 module.exports = React.createClass({
     getInitialState: function() {
         var param = this.props.data.param;
         var saved = param.saved||{};
-        return {
-            private: saved.private||false,
-            groupname: saved.groupname||'',
-            members: param.users||[]
-        };
+        var from = this.props.data.from;
+        if(from === "groupDetail"){
+            var group = app.groupMgr.list[param.groupid];
+            this.groupid = param.groupid;
+            return {
+                type: group.type,
+                groupname: group.name,
+                members: group.members
+            }
+        } else {
+            this.groupid = saved.groupid;
+            console.log(param);
+            return {
+                type: saved.type||false,
+                groupname: saved.groupname||'',
+                members: param.users||[]
+            }
+        }
     },
     componentDidMount: function() {
         app.groupMgr.addEventListener(this._onListener);
@@ -76,6 +102,26 @@ module.exports = React.createClass({
                 obj.error?app.showChatError(obj.error):app.toast("创建群组成功");
                 app.hideWait();
                 app.goBack();
+            break;
+            case "ON_MODIFY_GROUP":
+                obj.error?app.showChatError(obj.error):app.toast("修改群组成功");
+                app.hideWait();
+                app.goBack();
+            break;
+            case "ON_REMOVE_GROUP":
+                obj.error?app.showChatError(obj.error):app.toast("解散群组成功");
+                app.hideWait();
+                app.goBack(2);
+            break;
+            case "ON_UPDATE_GROUP":
+                if (this.props.data.from === "groupDetail" && this.groupid === obj.id) {
+                    var group = app.groupMgr.list[obj.id];
+                    this.setState({
+                        type: group.type,
+                        groupname: group.name,
+                        members: group.members
+                    });
+                }
             break;
             default:;
         }
@@ -97,12 +143,13 @@ module.exports = React.createClass({
             self.setState({members: _.without(self.state.members, userid)});
         });
     },
-    addReceivers: function() {
+    addMembers: function() {
         var param = {
             value: this.state.members,
             saved: {
-                private: this.state.private,
-                groupname: this.state.groupname
+                type: this.state.type,
+                groupname: this.state.groupname,
+                groupid: this.groupid
             }
         };
         app.showView('selectUsers', 'left', param)
@@ -110,13 +157,40 @@ module.exports = React.createClass({
     doCreateGroup: function() {
         var name = this.state.groupname;
         var members = this.state.members;
-        var type = this.state.private;
+        var type = this.state.type;
         app.showWait();
         app.groupMgr.createGroup(name, members, type);
     },
+    doModifyGroup: function() {
+        var name = this.state.groupname;
+        var members = this.state.members;
+        var type = this.state.type;
+        app.showWait();
+        app.groupMgr.modifyGroup(this.groupid, name, members, type);
+    },
+    doDeleteGroup: function() {
+        var self = this;
+        var confirm = <Modal.Confirm title="警告" text="你确定要解散该群吗?"
+                okFunc={function() {
+                    app.showWait();
+                    app.groupMgr.removeGroup(self.groupid);
+                }}
+            />;
+        app.showModal('modal', confirm);
+    },
     render: function() {
+        var title;
+        var buttons = [];
+        if (this.groupid==null) {
+            title = "创建群组";
+            buttons.push(<ButtonItem key="createGroup" color="green" label="创建" onTap={this.doCreateGroup}/>);
+        } else {
+            title = "修改群组";
+            buttons.push(<ButtonItem key="modifyGroup" color="green" label="确认修改" onTap={this.doModifyGroup}/>);
+            buttons.push(<ButtonItem key="deleteGroup" color="red" label="解散群组" onTap={this.doDeleteGroup}/>);
+        }
         return (
-            <View.Page title="创建群组">
+            <View.Page title={title}>
             <View.PageContent>
                 <List.List>
                     <FormInputItem icon="icon-form-name" label="群组名称:" input_type="text" placeholder="例如:讨论组" value={this.state.groupname} onChange={this.handleInputChange.bind(this, "groupname")}/>
@@ -125,11 +199,11 @@ module.exports = React.createClass({
                         <List.ItemInner>
                             <List.ItemTitle label style={{width:'80%'}}>私有群组:</List.ItemTitle>
                             <List.ItemInput>
-                                <Switch checked={this.state.private} onChange={this.handleSwitchChange.bind(this, "private")}/>
+                                <Switch checked={this.state.type} onChange={this.handleSwitchChange.bind(this, "type")}/>
                             </List.ItemInput>
                         </List.ItemInner>
                     </List.ItemContent>
-                    <List.ItemContent onTap={this.addReceivers}>
+                    <List.ItemContent onTap={this.addMembers}>
                         <List.ItemMedia><Icon name="ion-ios7-people" /></List.ItemMedia>
                         <List.ItemInner>
                             <List.ItemTitle>群组成员</List.ItemTitle>
@@ -140,16 +214,7 @@ module.exports = React.createClass({
                         {this.state.members.map((userid)=>{return <ContactItem key={userid} userid={userid} onDelete={this.onDelete}/>})}
                     </List.List>
                 </List.List>
-                <Content.ContentBlock>
-                    <Grid.Row>
-                        <Grid.Col><Button big fill color="green" onTap={this.doCreateGroup}>创建</Button></Grid.Col>
-                    </Grid.Row>
-                </Content.ContentBlock>
-                {false&&<Content.ContentBlock>
-                    <Grid.Row>
-                        <Grid.Col><Button big fill color="green" onTap={this.doModifyGroup}>确认修改</Button></Grid.Col>
-                    </Grid.Row>
-                </Content.ContentBlock>}
+                {buttons}
             </View.PageContent>
             </View.Page>
         );

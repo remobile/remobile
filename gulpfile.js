@@ -86,7 +86,7 @@ gulp.task('framework7', function() {
     .pipe(gulp.dest(destPath+'js'));
 });
 gulp.task('cordova', function() {
-    var path = appPath+'cordova/web/**/';
+    var path = appPath+'platforms/web/cordova/**/';
     return gulp.src([
         path+'*.js'
     ])
@@ -158,7 +158,7 @@ gulp.task('concat', function() {
 });
 gulp.task('watch', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'watch-app'], function() {
     gulp.watch([appPath+'index.html'], ['html']);
-    gulp.watch([appPath+'cordova/**/*.js'], ['cordova']);
+    gulp.watch([appPath+'platforms/web/cordova/**/*.js'], ['cordova']);
     gulp.watch([libPath+'less/**/*.less'], ['less']);
     gulp.watch([appPath+'css/**/*.css'], ['democss']);
 });

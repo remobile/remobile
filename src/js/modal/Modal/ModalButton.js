@@ -8,7 +8,7 @@ module.exports = React.createClass({
     },
     render: function() {
         return (
-            <span className="modal-button" onClick={this.onTap}>
+            <span className="modal-button" style={this.props.style} onClick={this.onTap}>
                 {this.props.children}
             </span>
         );

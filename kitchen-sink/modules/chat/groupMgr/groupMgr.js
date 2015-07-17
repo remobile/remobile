@@ -57,10 +57,13 @@ module.exports = (function() {
             }
         }
     };
-    GroupMgr.prototype.updateMembers = function(obj) {
+    GroupMgr.prototype.updateGroup = function(obj) {
         this.list[obj.id].members = obj.members;
         if (obj.type != null) {
             this.list[obj.id].type = obj.type;
+        }
+        if (obj.name != null) {
+            this.list[obj.id].name = obj.name;
         }
     };
     GroupMgr.prototype.addMembers = function(obj) {
@@ -131,12 +134,10 @@ module.exports = (function() {
         } else {
             this.list[obj.id].members = obj.members;
             this.list[obj.id].type = obj.type;
-            if (app.groupDetail) {
-                app.groupDetail.showGroupDetail();
-            }
-            app.toast("修改群组成功");
+            this.list[obj.id].name = obj.name;
             console.log("modify "+obj.id+" success");
         }
+        this.emitEvent({type:"ON_MODIFY_GROUP", error: obj.error});
     };
     GroupMgr.prototype.removeGroup = function(id) {
         app.emit('GROUP_DELETE_RQ', {id:id});
@@ -153,6 +154,7 @@ module.exports = (function() {
     GroupMgr.prototype.onRemoveGroupNotify = function(obj) {
         this.remove(obj);
         console.log( obj.id, 'is been delete');
+        this.emitEvent({type:"ON_GROUP_LIST_CHANGE"});
     };
     GroupMgr.prototype.joinGroup = function(id) {
         app.emit('GROUP_JOIN_RQ', {id:id});
@@ -169,6 +171,7 @@ module.exports = (function() {
     GroupMgr.prototype.onJoinGroupNotify = function(obj) {
         this.addMembers({id:obj.id, userid:obj.userid});
         console.log( obj.userid, 'join group',  obj.id);
+        this.emitEvent({type:"ON_UPDATE_GROUP", id:obj.id});
     };
     GroupMgr.prototype.leaveGroup = function(id) {
         app.emit('GROUP_LEAVE_RQ', {id:id});
@@ -176,10 +179,12 @@ module.exports = (function() {
     GroupMgr.prototype.onLeaveGroup = function(obj) {
         this.remove(obj);
         console.log("leave "+obj.id+" success");
+        this.emitEvent({type:"ON_LEAVE_GROUP"});
     };
     GroupMgr.prototype.onLeaveGroupNotify = function(obj) {
         this.removeMembers({id:obj.id, userid:obj.userid});
         console.log( obj.userid, 'lest group',  obj.id);
+        this.emitEvent({type:"ON_UPDATE_GROUP", id:obj.id});
     };
     GroupMgr.prototype.pullInGroup = function(id, members) {
         app.emit('GROUP_PULL_IN_RQ', {id:id, members:members});
@@ -188,21 +193,23 @@ module.exports = (function() {
         if (obj.error) {
             console.error("pull "+obj.id+" failed: for "+obj.error);
         } else {
-            this.updateMembers({id:obj.id, members:obj.members});
+            this.updateGroup({id:obj.id, members:obj.members});
             console.log("pull "+obj.id+" success");
         }
     };
     GroupMgr.prototype.onPullInGroupNotify = function(obj) {
-        if (_.contains(obj.pulledmembers, app.login.userid)) {
+        if (_.contains(obj.pulledmembers, app.loginMgr.userid)) {
             this.add({id:obj.id, name:obj.name, creator:obj.creator, type:obj.type, members:obj.members});
             console.log('you have been pull',  obj.id);
+            this.emitEvent({type:"ON_GROUP_LIST_CHANGE"});
         } else {
-            this.updateMembers({id:obj.id, members:obj.members, type:obj.type});
+            this.updateGroup({id:obj.id, members:obj.members, type:obj.type, name:obj.name});
             if (obj.pulledmembers.length) {
                 console.log(JSON.stringify(obj.pulledmembers), 'been pull', obj.id, obj.members);
             } else {
                 console.log(obj.id, 'been modify', 'type='+obj.type);
             }
+            this.emitEvent({type:"ON_UPDATE_GROUP", id:obj.id});
         }
     };
     GroupMgr.prototype.fireOutGroup = function(id, members) {
@@ -212,7 +219,7 @@ module.exports = (function() {
         if (obj.error) {
             console.error("fireOut "+obj.id+" failed: for "+obj.error);
         } else {
-            this.updateMembers({id:obj.id, members:obj.members});
+            this.updateGroup({id:obj.id, members:obj.members});
             console.log("fireOut "+obj.id+" success");
         }
     };
@@ -220,9 +227,12 @@ module.exports = (function() {
         if (_.contains(obj.firedmembers, app.loginMgr.userid)) {
             this.remove(obj);
             console.log('you have been fire',  obj.id);
+            this.emitEvent({type:"ON_GROUP_LIST_CHANGE"});
+            this.emitEvent({type:"ON_FIRE_OUT_GROUP", id:obj.id});
         } else {
-            this.updateMembers({id:obj.id, members:obj.members});
+            this.updateGroup({id:obj.id, members:obj.members, type:obj.type, name:obj.name});
             console.log(JSON.stringify(obj.firedmembers), 'been fire', obj.id);
+            this.emitEvent({type:"ON_UPDATE_GROUP", id:obj.id});
         }
     };
 

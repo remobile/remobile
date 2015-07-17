@@ -55,7 +55,7 @@ var GroupItem = React.createClass({
        var groupname = group.name;
        return (
            <List.ItemContent onTap={this.showGroupInfo.bind(this, group)}>
-             <List.ItemMedia><Icon name={"icon-default-head "+icon}/></List.ItemMedia>
+             <List.ItemMedia><Icon name={"default_head "+icon}/></List.ItemMedia>
                <List.ItemInner>
                     <List.ItemTitle>{groupname}</List.ItemTitle>
                </List.ItemInner>
@@ -112,6 +112,9 @@ module.exports = React.createClass({
                 this.setState({
                     alphaList: alphaList
                 });
+            break;
+            case "ON_UPDATE_GROUP":
+                this.forceUpdate();
             break;
             default:;
         }

@@ -12,6 +12,8 @@ module.exports = React.createClass({
             title: "温馨提示",
             cancelLabel: "取消",
             okLabel: "确定",
+            cancelColor: 'red',
+            okColor:'green'
         }
     },
     render: function() {
@@ -22,8 +24,8 @@ module.exports = React.createClass({
                     <ModalText>{this.props.text}</ModalText>
                 </ModalInner>
                 <ModalButtons>
-                    <ModalButton onTap={this.props.okFunc}>{this.props.okLabel}</ModalButton>
-                    <ModalButton onTap={this.props.cancelFunc}>{this.props.cancelLabel}</ModalButton>
+                    <ModalButton style={{color:this.props.cancelColor}} onTap={this.props.cancelFunc}>{this.props.cancelLabel}</ModalButton>
+                    <ModalButton style={{color:this.props.okColor}} onTap={this.props.okFunc}>{this.props.okLabel}</ModalButton>
                 </ModalButtons>
             </Modal>
          );
