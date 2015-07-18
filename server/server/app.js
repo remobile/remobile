@@ -2,6 +2,14 @@
     var _self;
     global._ = require('underscore');
     var express = require('express')();
+    var mongourl;
+    var port = process.env.VCAP_APP_PORT||8000;
+    if (process.env.VCAP_SERVICES) {
+        var env = JSON.parse(process.env.VCAP_SERVICES);
+        mongourl = env['mongodb2-2.4.8'][0]['credentials'].url;
+    } else {
+        mongourl = "mongodb://127.0.0.1:27017/MRPCHAT";
+    }
 
     function App() {
         _self = this;
@@ -22,12 +30,13 @@
         _self.db = require(modulePath+'mongodbMgr/mongodbMgr');
     }
 
+
     App.prototype.start = function() {
-        app.db.start('mongodb://localhost/MRPCHAT', function() {
+        app.db.start(mongourl, function() {
             app.expressMgr.start(express, function() {
                 app.socketMgr.start(function() {
-                    _self.server.listen(8000, function(){
-                        console.log("listen on port 8000");
+                    _self.server.listen(port, function(){
+                        console.log("listen on port "+port);
                     });
                 });
             });

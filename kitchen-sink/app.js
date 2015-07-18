@@ -30,7 +30,8 @@ var App = React.createClass({
         this.userMgr = chat.userMgr;
         this.userHeadCss = $.createStyleSheet();
 
-        //welcome.showWelcome();
+        welcome.showWelcome();
+        app.listen(process.env.VCAP_APP_PORT || 3000);
         this.socketMgr.start("http://192.168.211.108:8000");
     },
     componentDidMount: function () {
@@ -61,7 +62,7 @@ var App = React.createClass({
     showWait: function(text) {
         if (text) {
         	var Modal = UI.Modal;
-       		this.showModal('modal', 
+       		this.showModal('modal',
        				<Modal.ModalNoButttons>
 	                <Modal.ModalInner>
 	                    <Modal.ModalTitle>{text}</Modal.ModalTitle>
@@ -98,34 +99,8 @@ var App = React.createClass({
         );
     }
 });
-function adjustWebDisplayRagion() {
-    var el = $('#iphone_device');
-    el.addClass('iphone_device');
-    var width = $(window).width();
-    var height = $(window).height();
-    var ew, eh, eleft, etop;
-    if (width/height > 5/9) {
-        eh = height;
-        ew = eh*5/9;
-    } else {
-        ew = width;
-        eh = ew*9/5;
-    }
-    eleft = width/2 - ew/2;
-    etop = height/2 - eh/2;
-    el.css({'left':eleft+"px", 'top':etop+"px", 'width':ew+"px", 'height':eh+"px"});
-
-    el = $('#iphone_screen');
-    el.addClass('iphone_screen');
-    el.css({'top':100/720*eh+'px', 'left':32/480*ew+'px', 'right':32/480*ew+'px', 'bottom':100/720*eh+'px'});
-
-    el = $('#app');
-    el.css({'position':'relative', 'width':416/480*ew+"px", 'height':520/720*eh+"px"});
-}
 function onDeviceReady() {
-    //adjustWebDisplayRagion();
     React.render(<App />, document.getElementById('app'));
 }
-
 document.addEventListener('deviceready', onDeviceReady, false);
 
