@@ -7,11 +7,11 @@ for all platforms.
 #### watch and run
 - cd remobile
 - npm install
-- gulp run
+- node node_modules/gulp/bin/gulp.js run
 - http://localhost:8000
 
 #### release
-- gulp release
+- node node_modules/gulp/bin/gulp.js release
 
 ### Demo
 [kitchen-sink](http://remobile.ap01.aws.af.cm)

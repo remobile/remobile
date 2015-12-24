@@ -31,8 +31,7 @@ var App = React.createClass({
         this.userHeadCss = $.createStyleSheet();
 
         welcome.showWelcome();
-        app.listen(process.env.VCAP_APP_PORT || 3000);
-        this.socketMgr.start("http://192.168.211.108:8000");
+        this.socketMgr.start("http://192.168.1.117:8000");
     },
     componentDidMount: function () {
         navigator.utils.setupAudio();
@@ -91,7 +90,7 @@ var App = React.createClass({
     },
     render: function() {
         return (
-            <ReactCSSTransitionGroup transitionName={this.state.viewTransition.name} transitionEnter={this.state.viewTransition.in} transitionLeave={this.state.viewTransition.out} component="div">                  
+            <ReactCSSTransitionGroup transitionName={this.state.viewTransition.name} transitionEnter={this.state.viewTransition.in} transitionLeave={this.state.viewTransition.out} component="div">
                 <ModalPanel visible={this.state.modalVisible} type={this.state.modalType}>{this.state.modalChildren}</ModalPanel>
                 <UI.View.Panel visible={this.state.panelVisible} type={this.state.panelType}>{this.state.panelChildren}</UI.View.Panel>
                 {this.getCurrentView()}
