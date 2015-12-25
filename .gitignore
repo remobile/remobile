@@ -4,6 +4,7 @@
 *Thumbs.db
 /chat/server/server/www
 /kitchen-sink/server/www
-/release
+/**/release
+/**/www
 /tools
 /node_modules
