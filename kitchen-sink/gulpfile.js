@@ -85,13 +85,6 @@ gulp.task('framework7', function() {
     .pipe(concat('framework7.js'))
     .pipe(gulp.dest(destPath+'js'));
 });
-gulp.task('cordova', function() {
-    var path = appPath+'platforms/web/cordova/**/';
-    return gulp.src([
-        path+'*.js'
-    ])
-    .pipe(gulp.dest(destPath+'js'));
-});
 gulp.task('html', function() {
     return gulp.src(appPath+'index.html')
     .pipe(gulp.dest(destPath));
@@ -100,10 +93,6 @@ gulp.task('thirdparty', function() {
     var path = appPath+'thirdparty/';
     return gulp.src([
         path+'desktopTouch/desktopTouch.js',
-        path+'async/async.js',
-        path+'indexed/indexedDBShim.js',
-        path+'indexed/indexed.js',
-        path+'socket.io/socket.io.js'
     ])
     .pipe(concat('thirdparty.js'))
     .pipe(gulp.dest(destPath+'js'));
@@ -118,20 +107,9 @@ gulp.task('democss', function() {
     var path = appPath+'css/';
     return gulp.src([
         path+'demo.css',
-        path+'chat.css'
     ])
     .pipe(concat('demo.css'))
     .pipe(gulp.dest(destPath+'css'));
-});
-gulp.task('chatcss', function() {
-    var path = appPath+'css/';
-    return gulp.src(path+'chat.css')
-    .pipe(gulp.dest(destPath+'css'));
-});
-gulp.task('audio', function() {
-    var path = appPath+'audio/**/';
-    return gulp.src([path+'*.wav'])
-    .pipe(gulp.dest(destPath+'audio'));
 });
 gulp.task('img', function() {
     var path = libPath+'img/**/';
@@ -156,13 +134,12 @@ gulp.task('watch-app', function() {
 });
 gulp.task('concat', function() {
 });
-gulp.task('watch', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'watch-app'], function() {
+gulp.task('watch', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'watch-app'], function() {
     gulp.watch([appPath+'index.html'], ['html']);
-    gulp.watch([appPath+'platforms/web/cordova/**/*.js'], ['cordova']);
     gulp.watch([libPath+'less/**/*.less'], ['less']);
     gulp.watch([appPath+'css/**/*.css'], ['democss']);
 });
-gulp.task('release', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app'], function() {
+gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app'], function() {
     var path = destPath+'js/';
     gulp.src([
         path+'framework7.js',
@@ -171,13 +148,6 @@ gulp.task('release', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts
         path+'app.js'
     ])
     .pipe(concat('remobile.js'))
-    .pipe(uglify({compress: {drop_console: true}}))
-    .pipe(gulp.dest(releasePath+'js'));
-
-    gulp.src([
-        path+'cordova.js',
-        path+'cordova_plugins.js'
-    ])
     .pipe(uglify({compress: {drop_console: true}}))
     .pipe(gulp.dest(releasePath+'js'));
 
@@ -196,10 +166,6 @@ gulp.task('release', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts
     .pipe(minifyCSS({advanced: false, aggressiveMerging: false}))
     .pipe(gulp.dest(releasePath+'css'));
 
-    path = destPath+'audio/**/';
-    gulp.src([path+'*.wav', path+'*.mp3'])
-    .pipe(gulp.dest(releasePath+'audio'));
-
     path = destPath+'img/**/';
     gulp.src([path+'*.png', path+'*.jpg'])
     .pipe(gulp.dest(releasePath+'img'));
@@ -211,7 +177,7 @@ gulp.task('release', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts
     gulp.src(destPath+'index.html')
     .pipe(concat('main.html'))
     .pipe(replace(/<link rel="stylesheet"[\s\S]*demo.css" \/>/, '<link rel="stylesheet" type="text/css" href="css/remobile.css" />'))
-    .pipe(replace(/<script[\s\S]*script>/, '<script type="text/javascript" src="js/cordova.js"></script><script type="text/javascript" src="js/remobile.js"></script>'))
+    .pipe(replace(/<script[\s\S]*script>/, '<script type="text/javascript" src="js/remobile.js"></script>'))
     .pipe(gulp.dest(releasePath));
 
     path = appPath+'platforms/web/phone/';

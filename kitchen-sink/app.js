@@ -57,7 +57,5 @@ var App = React.createClass({
         );
     }
 });
-function onDeviceReady() {
-    React.render(<App />, document.getElementById('app'));
-}
-document.addEventListener('deviceready', onDeviceReady, false);
+
+React.render(<App />, document.getElementById('app'));

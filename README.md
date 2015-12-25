@@ -23,5 +23,5 @@ for all platforms.
 #### release
 - node ../node_modules/gulp/bin/gulp.js release
 
-### Demo
+### Demo At AppFog
 [kitchen-sink](http://remobile.ap01.aws.af.cm)

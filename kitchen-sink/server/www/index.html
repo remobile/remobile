@@ -3,36 +3,61 @@
 <head>
 	<title>Remobile</title>
 	<meta charset="utf-8" />
-	<meta name="format-detection" content="telephone=no" />
-	<meta name="msapplication-tap-highlight" content="no" />
-	<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+	<style>
+		#iphone_device {
+		    position: absolute;
+		    background: url('img/iphone.png') no-repeat;
+		    background-size: 100% 100%;
+		    -webkit-user-select: none;
+		    -webkit-app-region: drag;
+		}
 
-	<!-- full screen -->
-	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="mobile-web-app-capable" content="yes" />
-
-	<!-- ios icon -->
-	<link href='img/ios-icon.png' rel='apple-touch-icon' />
-
-	<!-- ios splash screen -->
-	<link href="img/splash-screen.png" rel="apple-touch-startup-image" />
-
-	<!-- ios other -->
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-	<meta name="apple-mobile-web-app-title" content="TouchstoneJS (Demo)" />
-
-	<!-- styles -->
-	<link rel="stylesheet" type="text/css" href="css/app.css" />
-	<link rel="stylesheet" type="text/css" href="css/demo.css" />
-
+		#iphone_screen {
+		    position:absolute;
+		    -webkit-app-region: no-drag;
+		}
+		#splash {
+			position:absolute;
+		    background-repeat: no-repeat;
+		}
+	</style>
 </head>
 <body>
-    <div id="app"></div>
-	<script type="text/javascript" src="js/framework7.js"></script>
-	<script type="text/javascript" src="js/thirdparty.js"></script>
-	<script type="text/javascript" src="js/react.js"></script>
-    <script type="text/javascript" src="js/cordova.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
+    <div id="iphone_device">
+        <iframe id="iphone_screen" src="./main.html" frameborder="0" scrolling="no"></iframe>
+        <div id="splash"></div>
+    </div>
+
+	<script>
+        function css(el, props) {
+            for (var prop in props) {
+                el.style[prop] = props[prop];
+            }
+        }
+	    var el = document.getElementById('iphone_device');
+	    var width = window.innerWidth;
+	    var height = window.innerHeight;
+	    var ew, eh, eleft, etop;
+	    if (width/height > 5/9) {
+	        eh = height;
+	        ew = eh*5/9;
+	    } else {
+	        ew = width;
+	        eh = ew*9/5;
+	    }
+	    eleft = width/2 - ew/2;
+	    etop = height/2 - eh/2;
+	    css(el, {'left':eleft+"px", 'top':etop+"px", 'width':ew+"px", 'height':eh+"px"});
+
+        var rect = {'top':100/720*eh+'px', 'left':32/480*ew+'px', 'width':416/480*ew+'px', 'height':520/720*eh+'px'};
+        css(document.getElementById('iphone_screen'), rect);
+
+	    el = document.getElementById('splash');
+	    css(el, rect);
+	    css(el, {"background-image": "url('img/splash.png')", "background-size": "100% 100%"});
+	    setTimeout(function() {
+	    	 el.remove();
+	    }, 3000);
+	</script>
 </body>
 </html>

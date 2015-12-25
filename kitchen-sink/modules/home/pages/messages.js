@@ -11,7 +11,7 @@ var ButtonsRow = UI.Button.ButtonsRow;
 module.exports = React.createClass({
 	render: function() {
 		return (
-            <View.Page  title="Button" right={<View.NavbarButton icon="icon-bars" right>确定</View.NavbarButton>}>
+            <View.Page>
                 <View.PageContent>
                     <Content.ContentBlockTitle>Usual Buttons</Content.ContentBlockTitle>
                     <Content.ContentBlock>
