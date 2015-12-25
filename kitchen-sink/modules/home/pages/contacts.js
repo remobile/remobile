@@ -1,172 +1,82 @@
 var React = require('react');
 var UI = require('UI');
-var _ = require('underscore');
 
-var List = UI.List;
-var Content = UI.Content;
-var Icon = UI.Icon.Icon;
-var Badge = UI.Badge.Badge;
-var Form = UI.Form;
 var View = UI.View;
-
-var MenuItem = React.createClass({
-    getDefaultProps: function() {
-        return {color:"blue"}
-    },
-    render: function() {
-        return (
-            <List.ItemContent onTap={this.props.onTap}>
-                <List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>
-                <List.ItemInner>
-                    <List.ItemTitle style={{color:this.props.color, fontWeight:"bold"}}>{this.props.label}</List.ItemTitle>
-                </List.ItemInner>
-            </List.ItemContent>
-        )
-   }
-});
-
-var MenuList = React.createClass({
-    showGroupList: function(){
-        var onlineType = this.props.onlineType;
-        app.showView("groupList", "left", {saved:{onlineType:onlineType}});
-    },
-    sendMultiMessage: function(){
-        var onlineType = this.props.onlineType;
-        app.showView("sendMultiMessage", "left", {saved:{onlineType:onlineType}});
-    },
-    render: function() {
-        var onlineType = this.props.onlineType;
-        var select = this.props.select;
-        if (select) {
-            return (
-                <List.ListGroup>
-                    <MenuItem color={onlineType?"blue":"green"} icon={onlineType?"img_user_online":"img_user_offline"} label={onlineType?"只显示在线联系人":"显示所有联系人"} onTap={this.props.changeShowOnline} />
-                </List.ListGroup>
-            )
-        } else {
-            return (
-                <List.ListGroup>
-                    <MenuItem icon="img_group_chat" label="群聊" onTap={this.showGroupList} />
-                    <MenuItem icon="img_send_multi" label="发送给多人" onTap={this.sendMultiMessage} />
-                    <MenuItem color={onlineType?"green":"blue"} icon={onlineType?"img_user_online":"img_user_offline"} label={onlineType?"显示所有联系人":"只显示在线联系人"} onTap={this.props.changeShowOnline} />
-                </List.ListGroup>
-            )
-        }
-   }
-});
-
-var ContactItemInner = function(userid, username, user) {
-    return [
-        <List.ItemMedia key="0"><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>,
-        <List.ItemInner key="1">
-            <List.ItemTitle style={app.color.usernameColor(user)}>{username}</List.ItemTitle>
-        </List.ItemInner>
-    ];
-};
-
-var ContactItem = React.createClass({
-    showContactInfo: function(userid) {
-        var param = {userid: userid, saved:{onlineType: this.props.onlineType}};
-        app.showView("contactInfo", "up", param);
-    },
-    render: function() {
-       var userid = this.props.userid;
-       var user = this.props.users[userid];
-       var username = user.username;
-       var select = this.props.select;
-       if (!select) {
-           return (
-               <List.ItemContent onTap={this.showContactInfo.bind(this, userid)}>
-                    {ContactItemInner(userid, username, user)}
-               </List.ItemContent>
-            )
-       } else if (select.type == "radio") {
-           return (
-               <List.ItemContent radio value={userid} name={select.name} checked={select.default===userid} onChange={select.onChange}>
-                    {ContactItemInner(userid, username, user)}
-               </List.ItemContent>
-            )
-       } else {
-           return (
-               <List.ItemContent checkbox value={userid} name={select.name} checked={select.default.indexOf(userid)!==-1} onChange={select.onChange}>
-                    {ContactItemInner(userid, username, user)}
-               </List.ItemContent>
-            )
-       }
-   }
-});
-
-var ContactGroup = React.createClass({
-    render: function() {
-        var users = this.props.users;
-        var userids = this.props.userids;
-        var select = this.props.select;
-        var letter = this.props.letter;
-        var onlineType = this.props.onlineType;
-        return (
-            <List.ListGroup>
-                <List.ListGroupTitle data={{'data-index-letter':letter}}>{letter}</List.ListGroupTitle>
-                {userids.map((userid)=>{return <ContactItem key={userid} onlineType={onlineType} userid={userid} users={users} select={select}/>})}
-            </List.ListGroup>
-        )
-    }
-});
-
-var ContactList = React.createClass({
-    render: function() {
-        var onlineType = this.props.onlineType;
-        var users = this.props.users;
-        var groupedUsers = this.props.groupedUsers;
-        if (onlineType) {
-            var newGroupedUsers = {};
-            _.mapObject(groupedUsers, (userids, letter) => {
-                var newUserids = _.filter(userids, (userid) => {
-                    return users[userid].online;
-                });
-                if (newUserids.length) {
-                    newGroupedUsers[letter] = newUserids;
-                }
-            });
-            groupedUsers = newGroupedUsers;
-        }
-        var letters = _.keys(groupedUsers).sort(function(a, b) {return a.localeCompare(b)});
-        var select = this.props.select;
-        return (
-            <List.List block group class="contacts-block">
-                <MenuList select={select} onlineType={onlineType} changeShowOnline={this.props.changeShowOnline}/>
-                {_.map(letters, (letter)=>{return <ContactGroup key={letter} onlineType={onlineType} letter={letter} userids={groupedUsers[letter]} users={users} select={select}/>})}
-            </List.List>
-        );
-    }
-});
+var Content = UI.Content;
+var Grid = UI.Grid;
+var List = UI.List;
+var Button = UI.Button.Button;
+var ButtonsRow = UI.Button.ButtonsRow;
 
 module.exports = React.createClass({
-    getInitialState: function() {
-        var saved = this.props.data.param.saved||{};
-        return {
-            groupedUsers: app.userMgr.groupedUsers,
-            users: app.userMgr.users,
-            onlineType: saved.onlineType
-        };
-    },
-    componentDidMount: function() {
-        app.userMgr.addChangeListener(this._onChange);
-    },
-    componentWillUnmount: function() {
-        app.userMgr.removeChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState({
-            groupedUsers: app.userMgr.groupedUsers,
-            users: app.userMgr.users
-        });
-    },
-    changeShowOnline: function() {
-        this.setState({onlineType: !this.state.onlineType});
-    },
-    render: function() {
-        return (
-            <ContactList users={this.state.users} groupedUsers={this.state.groupedUsers} select={this.props.select} onlineType={this.state.onlineType} changeShowOnline={this.changeShowOnline}/>
-        );
-    }
+	render: function() {
+		return (
+            <View.Page  title="Button" right={<View.NavbarButton icon="icon-bars" right>确定</View.NavbarButton>}>
+                <View.PageContent>
+                    <Content.ContentBlockTitle>Usual Buttons</Content.ContentBlockTitle>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={33}><Button active onTap={alert}>Active</Button></Grid.Col>
+                            <Grid.Col per={33}><Button>Button</Button></Grid.Col>
+                            <Grid.Col per={33}><Button round>Round</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={50}><Button active>Active</Button></Grid.Col>
+                            <Grid.Col per={50}><Button round>Round</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <ButtonsRow>
+                            <Button active>Active</Button>
+                            <Button round>Round</Button>
+                        </ButtonsRow>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <ButtonsRow>
+                            <Button round>Round</Button>
+                            <Button round>Round</Button>
+                            <Button round>Round</Button>
+                        </ButtonsRow>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <ButtonsRow>
+                            <Button round>Round</Button>
+                            <Button active>Active</Button>
+                            <Button round>Round</Button>
+                            <Button round>Round</Button>
+                        </ButtonsRow>
+                    </Content.ContentBlock>
+                    <Content.ContentBlockTitle>Big Buttons</Content.ContentBlockTitle>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={50}><Button big active>Active</Button></Grid.Col>
+                            <Grid.Col per={50}><Button big round>Round</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlockTitle>Themed Fill Buttons</Content.ContentBlockTitle>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={50}><Button big fill color="green">Submit</Button></Grid.Col>
+                            <Grid.Col per={50}><Button big fill color="red">Cancel</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlockTitle>List-Block Buttons</Content.ContentBlockTitle>
+                    <List.List block inset>
+                        <li><Button list>List Button 1</Button></li>
+                        <li><Button list>List Button 2</Button></li>
+                        <li><Button list>List Button 3</Button></li>
+                    </List.List>
+                    <List.List block inset>
+                        <li><Button list color="red">List Button 1</Button></li>
+                    </List.List>
+                    <Content.ContentBlock>
+                        <p>this is inline round <Button inline round>Round</Button> or inline <Button inline>Button</Button></p>
+		          					<p>this is inline fill <Button inline fill>Round</Button> or color <Button inline fill color="red">Button</Button></p>
+                    </Content.ContentBlock>
+                </View.PageContent>
+            </View.Page>
+		);
+	}
 });

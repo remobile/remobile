@@ -2,7 +2,8 @@
 *.DS_Store
 .DS_Store
 *Thumbs.db
-/server/server/www
+/chat/server/server/www
+/kitchen-sink/server/www
 /release
 /tools
 /node_modules
