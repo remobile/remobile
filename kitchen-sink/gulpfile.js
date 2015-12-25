@@ -184,7 +184,7 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     gulp.src(path+'index.html')
     .pipe(gulp.dest(releasePath));
 
-    gulp.src(path+'*.png')
+    gulp.src([path+'*.png', path+'*.jpg'])
     .pipe(gulp.dest(releasePath+"/img"));
 });
 gulp.task('run', ['watch', 'server']);
