@@ -1,119 +1,82 @@
 var React = require('react');
 var UI = require('UI');
-var _ = require('underscore');
 
-var List = UI.List;
-var Content = UI.Content;
-var Icon = UI.Icon.Icon;
-var Badge = UI.Badge.Badge;
-var Form = UI.Form;
 var View = UI.View;
-
-var MessageItem = React.createClass({
-    showMessageInfo: function(type, target) {
-        var param = {
-            type: type
-        };
-        if (type===app.messageMgr.GROUP_TYPE) {
-            param["groupid"] = target;
-        } else {
-            param["userid"] = target;
-        }
-        app.showView('messageInfo', 'fade', param);
-    },
-    render: function() {
-        var msg = this.props.msg;
-        var userid = msg.userid;
-        var user = app.userMgr.users[userid];
-        var username = (userid===app.loginMgr.userid)?"我":(user.username);
-        var time = app.date.getShowDate(msg.time);
-        var isGroup = (msg.type===app.messageMgr.GROUP_TYPE);
-        var message = msg.msg;
-        var style = app.color.usernameColor(user);
-        if (isGroup) {
-            var groupid = msg.groupid;
-            var badge = app.messageMgr.unreadMessage.group[groupid];
-            var group = app.groupMgr.list[groupid];
-            if (!group) {
-                app.messageMgr.removeLeftGroupMessages(groupid);
-                return null;
-            }
-            var groupname = group.name;
-            return (
-                <List.ItemContent>
-                    <List.ItemMedia><Icon name={"default_head user_head_"+groupid} round/></List.ItemMedia>
-                    <List.ItemInner onTap={this.showMessageInfo.bind(this, msg.type, groupid)}>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle>
-                                <span style={{color:"red"}}>{groupname}</span>
-                            </List.ItemTitle>
-                            <List.ItemAfter>
-                                {time}
-                                {(badge>0)&&<Badge color="red">{badge}</Badge>}
-                            </List.ItemAfter>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>
-                            <span style={style}>{username}</span>
-                            <span style={{color:"blue"}}>说:</span>
-                            {message}
-                        </List.ItemSubTitle>
-                    </List.ItemInner>
-                </List.ItemContent>
-            )
-        } else {
-            var badge = app.messageMgr.unreadMessage.users[userid];
-            return (
-                <List.ItemContent>
-                    <List.ItemMedia><Icon name={"default_head user_head_"+userid} round/></List.ItemMedia>
-                    <List.ItemInner onTap={this.showMessageInfo.bind(this, msg.type, userid)}>
-                        <List.ItemTitleRow>
-                            <List.ItemTitle style={style}>{username}</List.ItemTitle>
-                            <List.ItemAfter>
-                                {time}
-                                {(badge>0)&&<Badge color="red">{badge}</Badge>}
-                            </List.ItemAfter>
-                        </List.ItemTitleRow>
-                        <List.ItemSubTitle>{message}</List.ItemSubTitle>
-                    </List.ItemInner>
-                </List.ItemContent>
-            )
-        }
-    }
-});
-
-var NewestMessage = React.createClass({
-    render: function() {
-        var messages = this.props.messages;
-        return (
-            <List.List block media>
-                {messages.map((msg, i)=>{return <MessageItem key={i} msg={msg}/>})}
-            </List.List>
-        );
-    }
-});
+var Content = UI.Content;
+var Grid = UI.Grid;
+var List = UI.List;
+var Button = UI.Button.Button;
+var ButtonsRow = UI.Button.ButtonsRow;
 
 module.exports = React.createClass({
-    getInitialState: function() {
-        return {
-            messages: app.messageMgr.newestMessage
-        };
-    },
-    componentDidMount: function() {
-        app.userMgr.addChangeListener(this._onChange);
-        app.messageMgr.addNewestMessageChangeListener(this._onChange);
-    },
-    componentWillUnmount: function() {
-        app.userMgr.removeChangeListener(this._onChange);
-        app.messageMgr.removeNewestMessageChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState({
-            messages: app.messageMgr.newestMessage
-        });
-    },
-    render: function() {
-        return (
-            <NewestMessage messages={this.state.messages}/>
-        );
-    }
+	render: function() {
+		return (
+            <View.Page  title="Button" right={<View.NavbarButton icon="icon-bars" right>确定</View.NavbarButton>}>
+                <View.PageContent>
+                    <Content.ContentBlockTitle>Usual Buttons</Content.ContentBlockTitle>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={33}><Button active onTap={alert}>Active</Button></Grid.Col>
+                            <Grid.Col per={33}><Button>Button</Button></Grid.Col>
+                            <Grid.Col per={33}><Button round>Round</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={50}><Button active>Active</Button></Grid.Col>
+                            <Grid.Col per={50}><Button round>Round</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <ButtonsRow>
+                            <Button active>Active</Button>
+                            <Button round>Round</Button>
+                        </ButtonsRow>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <ButtonsRow>
+                            <Button round>Round</Button>
+                            <Button round>Round</Button>
+                            <Button round>Round</Button>
+                        </ButtonsRow>
+                    </Content.ContentBlock>
+                    <Content.ContentBlock>
+                        <ButtonsRow>
+                            <Button round>Round</Button>
+                            <Button active>Active</Button>
+                            <Button round>Round</Button>
+                            <Button round>Round</Button>
+                        </ButtonsRow>
+                    </Content.ContentBlock>
+                    <Content.ContentBlockTitle>Big Buttons</Content.ContentBlockTitle>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={50}><Button big active>Active</Button></Grid.Col>
+                            <Grid.Col per={50}><Button big round>Round</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlockTitle>Themed Fill Buttons</Content.ContentBlockTitle>
+                    <Content.ContentBlock>
+                        <Grid.Row>
+                            <Grid.Col per={50}><Button big fill color="green">Submit</Button></Grid.Col>
+                            <Grid.Col per={50}><Button big fill color="red">Cancel</Button></Grid.Col>
+                        </Grid.Row>
+                    </Content.ContentBlock>
+                    <Content.ContentBlockTitle>List-Block Buttons</Content.ContentBlockTitle>
+                    <List.List block inset>
+                        <li><Button list>List Button 1</Button></li>
+                        <li><Button list>List Button 2</Button></li>
+                        <li><Button list>List Button 3</Button></li>
+                    </List.List>
+                    <List.List block inset>
+                        <li><Button list color="red">List Button 1</Button></li>
+                    </List.List>
+                    <Content.ContentBlock>
+                        <p>this is inline round <Button inline round>Round</Button> or inline <Button inline>Button</Button></p>
+		          					<p>this is inline fill <Button inline fill>Round</Button> or color <Button inline fill color="red">Button</Button></p>
+                    </Content.ContentBlock>
+                </View.PageContent>
+            </View.Page>
+		);
+	}
 });

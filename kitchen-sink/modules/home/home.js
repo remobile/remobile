@@ -14,16 +14,7 @@ var pages = require('./pages');
 
 var IndexedList =  React.createClass({
     getInitialState: function() {
-        return {letters:_.keys(app.userMgr.groupedUsers).sort(function(a, b) {return a.localeCompare(b)})};
-    },
-    componentDidMount: function() {
-        app.userMgr.addChangeListener(this._onChange);
-    },
-    componentWillUnmount: function() {
-        app.userMgr.removeChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState({letters:_.keys(app.userMgr.groupedUsers).sort(function(a, b) {return a.localeCompare(b)})});
+        return {letters:['A','B','D','E','F','S','X','Y'].sort(function(a, b) {return a.localeCompare(b)})};
     },
     render: function() {
         return (
@@ -37,7 +28,6 @@ module.exports = React.createClass({
     getInitialState: function() {
         return {
             page: app.data.homePageIndex||0,
-            messageBadge: app.messageMgr.unreadMessage.total
         }
     },
     getDefaultProps: function() {
@@ -46,15 +36,6 @@ module.exports = React.createClass({
     switchPage: function(page) {
         app.data.homePageIndex = page;
         this.setState({page: page})
-    },
-    componentDidMount: function() {
-        app.messageMgr.addNewestMessageChangeListener(this._onChange);
-    },
-    componentWillUnmount: function() {
-        app.messageMgr.removeNewestMessageChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState({messageBadge: app.messageMgr.unreadMessage.total});
     },
     render: function() {
         var CurrentPage = this.props.pages[this.state.page];
@@ -77,7 +58,7 @@ module.exports = React.createClass({
 	                </View.ToolbarButton>
 	                <View.ToolbarButton active={this.state.page===2}
 	                    icon="ion-chatbubble-working"
-                        badge={(this.state.messageBadge>0)&&<Badge color="red">{this.state.messageBadge}</Badge>}
+                        	badge={<Badge color="red">9</Badge>}
 	                    onTap={this.switchPage.bind(this, 2)}>
 	                        Messages
 	                </View.ToolbarButton>

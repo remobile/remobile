@@ -31,11 +31,7 @@ function showPhoto() {
 var ListItem = React.createClass({
     showPage: function(page) {
         app.state.panelVisible = false;
-        if (page === 'selectOneContacts') {
-            app.showView('selectUsers', 'left', {value:"3", onChange:function(userid){console.log(userid)}})
-        } else if (page === 'selectMultiContacts') {
-            app.showView('selectUsers', 'left', {value:["3", "4"], onChange:function(userids){console.log(userids)}})
-        } else if (page === 'photo') {
+        if (page === 'photo') {
             showPhoto();
         } else {
             app.showView(page, 'left');
@@ -58,12 +54,7 @@ var MenuList = React.createClass({
         return (
             <List.List block>
                 <ListItem page="button">Button</ListItem>
-                <ListItem page="groupList">Group</ListItem>
-                <ListItem page="selectHead">Head</ListItem>
                 <ListItem page="toast">Toast</ListItem>
-                <ListItem page="selectOneContacts">Select One Contacts</ListItem>
-                <ListItem page="selectMultiContacts">Select Multi Contacts</ListItem>
-                <ListItem page="sendMultiMessage">Send Multi Message</ListItem>
                 <ListItem page="sortableList">Sortable List</ListItem>
                 <ListItem page="barsHideOnScroll">Bars Hide On Scroll</ListItem>
                 <ListItem page="subbarsHideOnScroll">SubNavbar Hide On Scroll</ListItem>
