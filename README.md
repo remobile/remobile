@@ -3,6 +3,9 @@
 remobile(React for Mobile) is a set of React components base on Framework7
 for all platforms.
 
+#update width Framework7
+- in js file /*framework7-base*/ tag
+
 ### install
 - cd remobile
 - npm install

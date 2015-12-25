@@ -1,3 +1,4 @@
+/*framework7-base scroll-toolbars.js*/
 var React = require('react');
 var cn = require('classnames');
 var NavbarTitle = require('./navbar/NavbarTitle');

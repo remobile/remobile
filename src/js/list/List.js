@@ -1,3 +1,4 @@
+/*framework7-base sortable.js swipeout.js*/
 var React = require('react');
 var cn = require('classnames');
 

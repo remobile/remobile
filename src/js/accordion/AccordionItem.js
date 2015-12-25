@@ -1,3 +1,4 @@
+/*framework7-base accordion.js*/
 var React = require('react');
 
 var Accordion = function(params)  {

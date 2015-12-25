@@ -1,3 +1,4 @@
+/*framework7-base calendar.js*/
 var React = require('react');
 
 var Calendar = function (params) {

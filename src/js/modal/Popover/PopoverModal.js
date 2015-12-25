@@ -1,3 +1,4 @@
+/*framework7-base modals.js*/
 var React = require('react');
 
 module.exports = React.createClass({

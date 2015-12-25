@@ -1,3 +1,4 @@
+/*framework7-base swiper.js */
 var Swiper = function (container, params) {
     if (!(this instanceof Swiper)) return new Swiper(container, params);
     var defaults = {

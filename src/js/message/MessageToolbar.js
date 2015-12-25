@@ -1,3 +1,4 @@
+/*framework7-base messagebar.js*/
 var React = require('react');
 var cn = require('classnames');
 

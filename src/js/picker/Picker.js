@@ -1,3 +1,4 @@
+/*framework7-base picker.js*/
 var React = require('react');
 var cn = require('classnames');
 var PickerItems = require('./PickerItems');
