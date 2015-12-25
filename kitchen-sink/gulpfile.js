@@ -17,7 +17,7 @@ var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var libPath = '../src/';
 var destPath = './server/www/';
-var releasePath = './release/';
+var releasePath = '../appfog/remobile/www/';
 var appPath = './';
 var appFile = 'app.js';
 

@@ -1,0 +1,4 @@
+#!/bin/bash
+cd ../appfog/remobile
+af update remobile
+af restart remobile
