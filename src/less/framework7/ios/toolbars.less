@@ -2,14 +2,15 @@
 
 //Toolbar/Navbar
 @toolbarBg : #f7f7f8;
+@toolbarBgBlured: rgba(248,248,249, 0.85);
 @toolbarBorderColor: #c4c4c4;
-@toolbarLinksColor: @blue;
+@toolbarLinksColor: @themeColor;
 @toolbarSize: 44px;
 
 //Tab bar
 @tabbarLabelsSize: 50px;
 @tabbarLinksColor: #929292;
-@tabbarActiveLinksColor: @blue;
+@tabbarActiveLinksColor: @themeColor;
 @tabbarLabelsSizeTablet: 56px;
 
 // Toolbars animations
@@ -22,7 +23,7 @@
     width: 100%;
     height: 100%;
     padding: 0 8px;
-    .border-box();
+    box-sizing: border-box;
     .flexbox();
     .justify-content(space-between);
     .align-items(center);
@@ -33,7 +34,7 @@
 .navbar, .toolbar {
     height: @toolbarSize;
     width: 100%;
-    .border-box();
+    box-sizing: border-box;
     font-size: 17px;
     position: relative;
     margin: 0;
@@ -42,7 +43,13 @@
     backface-visibility: hidden;
     b {
         font-weight: 500;
+        html.ios-gt-8 & {
+            font-weight: 600;
+        }
     }
+}
+.navbar, .toolbar, .subnavbar {
+    background: @toolbarBg;
     a.link {
         line-height: @toolbarSize;
         height: @toolbarSize;
@@ -52,6 +59,7 @@
         .justify-content(flex-start);
         .align-items(center);
         .transition(300ms);
+        .transform(translateZ(0px));
         html:not(.watch-active-state) &:active, &.active-state {
             opacity: 0.3;
             .transition(0ms);
@@ -74,14 +82,19 @@
 .navbar {
     left: 0;
     top: 0;
-    background: @toolbarBg;
     .hairline(bottom, @toolbarBorderColor);
+    &:after {
+        backface-visibility: hidden;
+    }
     &.no-border {
         .hairline-remove(bottom);
     }
     .center {
         font-size: 17px;
         font-weight: 500;
+        html.ios-gt-8 & {
+            font-weight: 600;
+        }
         text-align: center;
         margin: 0;
         position: relative;
@@ -125,9 +138,8 @@
     left: 0;
     top: 100%;
     margin-top: -1px;
-    background: @toolbarBg;
     z-index: 20;
-    .border-box();
+    box-sizing: border-box;
     padding: 0 8px;
     .flexbox();
     .justify-content(space-between);
@@ -166,7 +178,6 @@
 .toolbar {
     left: 0;
     bottom: 0;
-    background: @toolbarBg;
     .hairline(top, @toolbarBorderColor);
     &.no-border {
         .hairline-remove(top);
@@ -196,7 +207,7 @@
     a.tab-link, a.link {
         height: 100%;
         width: 100%;
-        .border-box();
+        box-sizing: border-box;
         .flexbox();
         .justify-content(center);
         .align-items(center);

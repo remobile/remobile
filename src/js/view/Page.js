@@ -48,13 +48,15 @@ var ScrollHideBar = function (container) {
             currentScroll = scrollContent[0].scrollTop;
             scrollHeight = scrollContent[0].scrollHeight;
             offsetHeight = scrollContent[0].offsetHeight;
-            reachEnd = p.showBarsOnPageScrollEnd && (currentScroll + offsetHeight >= scrollHeight - bottomBarHeight);
+            reachEnd = currentScroll + offsetHeight >= scrollHeight - bottomBarHeight;
             navbarHidden = navbar.hasClass('navbar-hidden');
             toolbarHidden = toolbar.hasClass('toolbar-hidden');
             tabbarHidden = tabbar && tabbar.hasClass('toolbar-hidden');
 
             if (reachEnd) {
-                action = 'show';
+		if (p.showBarsOnPageScrollEnd) {
+                	action = 'show';
+		}
             }
             else if (previousScroll > currentScroll) {
                 if (p.showBarsOnPageScrollTop || currentScroll <= 44) {

@@ -5,7 +5,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: 10500;
+    z-index: 11500;
     body > & {
         opacity: 0;
         display: none;
@@ -37,7 +37,7 @@
 .photo-browser-popup {
     background: none;
 }
-.photo-browser, .view[data-page="photo-browser-slides"] {
+.photo-browser, .views .view[data-page="photo-browser-slides"] {
     .navbar, .toolbar {
         background: rgba(247,247,247,0.95);
         .transition(400ms);
@@ -87,7 +87,7 @@
 }
 
 .photo-browser-caption {
-    .border-box();
+    box-sizing: border-box;
     .transition(300ms);
     position:absolute;
     bottom:0;
@@ -98,6 +98,7 @@
     text-align:center;
     color:#fff;
     background: rgba(0,0,0,0.8);
+    
     &:empty {
         display: none;
     }
@@ -145,7 +146,7 @@
     .justify-content(center);
     .align-items(center);
     .flex-shrink(0);
-    .border-box();
+    box-sizing: border-box;
     &.transitioning {
        .transition(400ms); 
     }

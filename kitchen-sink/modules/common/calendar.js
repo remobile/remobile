@@ -5,6 +5,7 @@ var View = UI.View;
 var Picker = UI.Picker;
 var Content = UI.Content;
 var List = UI.List;
+var Badge = UI.Badge.Badge;
 var ActionsModal = UI.Modal.ActionsModal;
 
 var calendarDefaultModal = (
@@ -13,7 +14,7 @@ var calendarDefaultModal = (
 		</ActionsModal>
 );
 function showCalendarDefault() {
-	app.showModal('pickerModal', calendarDefaultModal);	
+	app.showModal('pickerModal', calendarDefaultModal);
 }
 
 var calendarMultipletModal = (
@@ -22,14 +23,23 @@ var calendarMultipletModal = (
 		</ActionsModal>
 );
 function showCalendarMultiple() {
-	app.showModal('pickerModal', calendarMultipletModal);	
+	app.showModal('pickerModal', calendarMultipletModal);
+}
+
+var calendarRangeModal = (
+    <ActionsModal>
+    	<UI.Calendar.Calendar params={{rangePicker:true}} />
+		</ActionsModal>
+);
+function showCalendarRange() {
+    app.showModal('pickerModal', calendarRangeModal);
 }
 
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
 var params = {
     value: [new Date()],
     weekHeader: false,
-    toolbarTemplate: 
+    toolbarTemplate:
         '<div class="toolbar calendar-custom-toolbar">' +
             '<div class="toolbar-inner">' +
                 '<div class="left">' +
@@ -64,7 +74,7 @@ module.exports = React.createClass({
 		        <p>Calendar is a touch optimized component that provides an easy way to handle dates.</p>
         		<p>Calendar could be used as inline component or as overlay. Overlay Calendar will be automatically converted to Popover on tablets (iPad).</p>
 		      </Content.ContentBlock>
-		      
+
 					<Content.ContentBlockTitle>Your birth date</Content.ContentBlockTitle>
 					<List.List>
 						<List.ItemContent>
@@ -73,7 +83,7 @@ module.exports = React.createClass({
 							</List.ItemInner>
 						</List.ItemContent>
 					</List.List>
-					
+
 
 					<Content.ContentBlockTitle>Multiple Values</Content.ContentBlockTitle>
 					<List.List>
@@ -83,7 +93,16 @@ module.exports = React.createClass({
 							</List.ItemInner>
 						</List.ItemContent>
 					</List.List>
-					
+
+                    <Content.ContentBlockTitle>Range Picker<Badge color="green">NEW</Badge></Content.ContentBlockTitle>
+					<List.List>
+						<List.ItemContent>
+							<List.ItemInner>
+								<List.ItemInput><input type="text" placeholder="elect date range" readonly="readonly" onClick={showCalendarRange}/></List.ItemInput>
+							</List.ItemInner>
+						</List.ItemContent>
+					</List.List>
+
 					<Content.ContentBlockTitle>Inline with custom toolbar</Content.ContentBlockTitle>
 						<Content.ContentBlock>
 							<Content.ContentBlockInner style={{padding:'0', marginRight:'-15px', width:'auto'}}>

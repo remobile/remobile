@@ -99,7 +99,7 @@ gulp.task('thirdparty', function() {
 });
 gulp.task('less', function() {
     var path = libPath+'less/';
-    return gulp.src(path+'app.less')
+    return gulp.src(path+'ios.less')
     .pipe(less())
     .pipe(gulp.dest(destPath+'css'));
 });

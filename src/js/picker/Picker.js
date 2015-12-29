@@ -28,6 +28,11 @@ var Picker = function (params) {
 
     // Value
     p.setValue = function (arrValues, transition) {
+	if (p.cols.length === 0) {
+            p.value = arrValues;
+            p.updateValue(arrValues);
+            return;
+        }
         var valueIndex = 0;
         for (var i = 0; i < p.cols.length; i++) {
             if (p.cols[i] && !p.cols[i].divider) {
@@ -36,8 +41,8 @@ var Picker = function (params) {
             }
         }
     };
-    p.updateValue = function () {
-        var newValue = [];
+    p.updateValue = function (forceValues) {
+        var newValue = forceValues || [];
         var newDisplayValue = [];
         for (var i = 0; i < p.cols.length; i++) {
             if (!p.cols[i].divider) {
@@ -151,12 +156,35 @@ var Picker = function (params) {
             if (activeIndex >= col.items.length) activeIndex = col.items.length - 1;
             var previousActiveIndex = col.activeIndex;
             col.activeIndex = activeIndex;
-            col.wrapper.find('.picker-selected, .picker-after-selected, .picker-before-selected').removeClass('picker-selected picker-after-selected picker-before-selected');
+            col.wrapper.find('.picker-selected').removeClass('picker-selected');
 
             col.items.transition(transition);
+            
             var selectedItem = col.items.eq(activeIndex).addClass('picker-selected').transform('');
-            var prevItems = selectedItem.prevAll().addClass('picker-before-selected');
-            var nextItems = selectedItem.nextAll().addClass('picker-after-selected');
+                
+            // Set 3D rotate effect
+            if (p.params.rotateEffect) {
+                var percentage = (translate - (Math.floor((translate - maxTranslate)/itemHeight) * itemHeight + maxTranslate)) / itemHeight;
+                
+                col.items.each(function () {
+                    var item = $(this);
+                    var itemOffsetTop = item.index() * itemHeight;
+                    var translateOffset = maxTranslate - translate;
+                    var itemOffset = itemOffsetTop - translateOffset;
+                    var percentage = itemOffset / itemHeight;
+
+                    var itemsFit = Math.ceil(col.height / itemHeight / 2) + 1;
+                    
+                    var angle = (-18*percentage);
+                    if (angle > 180) angle = 180;
+                    if (angle < -180) angle = -180;
+                    // Far class
+                    if (Math.abs(percentage) > itemsFit) item.addClass('picker-item-far');
+                    else item.removeClass('picker-item-far');
+                    // Set transform
+                    item.transform('translate3d(0, ' + (-translate + maxTranslate) + 'px, ' + (originBug ? -110 : 0) + 'px) rotateX(' + angle + 'deg)');
+                });
+            }
 
             if (valueCallbacks || typeof valueCallbacks === 'undefined') {
                 // Update values
@@ -165,36 +193,11 @@ var Picker = function (params) {
                 // On change callback
                 if (previousActiveIndex !== activeIndex) {
                     if (col.onChange) {
-                        col.onChange(p, col.value);
+                        col.onChange(p, col.value, col.displayValue);
                     }
                     p.updateValue();
                 }
             }
-                
-            // Set 3D rotate effect
-            if (!p.params.rotateEffect) {
-                return;
-            }
-            var percentage = (translate - (Math.floor((translate - maxTranslate)/itemHeight) * itemHeight + maxTranslate)) / itemHeight;
-            
-            col.items.each(function () {
-                var item = $(this);
-                var itemOffsetTop = item.index() * itemHeight;
-                var translateOffset = maxTranslate - translate;
-                var itemOffset = itemOffsetTop - translateOffset;
-                var percentage = itemOffset / itemHeight;
-
-                var itemsFit = Math.ceil(col.height / itemHeight / 2) + 1;
-                
-                var angle = (-18*percentage);
-                if (angle > 180) angle = 180;
-                if (angle < -180) angle = -180;
-                // Far class
-                if (Math.abs(percentage) > itemsFit) item.addClass('picker-item-far');
-                else item.removeClass('picker-item-far');
-                // Set transform
-                item.transform('translate3d(0, ' + (-translate + maxTranslate) + 'px, ' + (originBug ? -110 : 0) + 'px) rotateX(' + angle + 'deg)');
-            });
         };
 
         function updateDuringScroll() {
