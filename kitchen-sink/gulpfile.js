@@ -113,7 +113,7 @@ gulp.task('democss', function() {
 });
 gulp.task('img', function() {
     var path = libPath+'img/**/';
-    return gulp.src(path+'*.png')
+    return gulp.src([path+'*.png', path+'*.svg'])
     .pipe(gulp.dest(destPath+'img/f7'));
 });
 gulp.task('appimg', function() {
@@ -167,7 +167,7 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     .pipe(gulp.dest(releasePath+'css'));
 
     path = destPath+'img/**/';
-    gulp.src([path+'*.png', path+'*.jpg'])
+    gulp.src([path+'*.png', path+'*.jpg', path+'*.svg'])
     .pipe(gulp.dest(releasePath+'img'));
 
     path = destPath+'fonts/**';
@@ -183,9 +183,6 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     path = appPath+'platforms/web/phone/';
     gulp.src(path+'index.html')
     .pipe(gulp.dest(releasePath));
-
-    gulp.src([path+'*.png', path+'*.jpg'])
-    .pipe(gulp.dest(releasePath+"/img"));
 });
 gulp.task('run', ['watch', 'server']);
 gulp.task('clean', function() {
