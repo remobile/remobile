@@ -99,7 +99,7 @@ gulp.task('thirdparty', function() {
 });
 gulp.task('less', function() {
     var path = libPath+'less/';
-    return gulp.src(path+'ios.less')
+    return gulp.src(path+'material.less')
     .pipe(less())
     .pipe(gulp.dest(destPath+'css'));
 });
@@ -158,10 +158,7 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     .pipe(gulp.dest(releasePath+'js/plugins'));
 
     path = destPath+'css/';
-    gulp.src([
-        path+'app.css',
-        path+'demo.css'
-    ])
+    gulp.src([path+'*.css'])
     .pipe(concat('remobile.css'))
     .pipe(minifyCSS({advanced: false, aggressiveMerging: false}))
     .pipe(gulp.dest(releasePath+'css'));
@@ -184,7 +181,7 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     gulp.src(path+'index.html')
     .pipe(gulp.dest(releasePath));
 });
-gulp.task('run', ['watch', 'server']);
+gulp.task('run', ['clean', 'watch', 'server']);
 gulp.task('clean', function() {
     del([destPath]);
 });

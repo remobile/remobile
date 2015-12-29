@@ -1,0 +1,48 @@
+/* === Panels === */
+@panelWidth:260px;
+@panelsDuration: 300ms;
+.panel-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    opacity: 0;
+    z-index: 5999;
+    display: none;
+    .transform(translate3d(0,0,0));
+    .transition(@panelsDuration);
+}
+.panel {
+    z-index: 1000;
+    display: none;
+    background: #fff;
+    box-sizing: border-box;
+    .scrollable();
+    position: absolute;
+    width: @panelWidth;
+    top: 0;
+    height: 100%;
+    .translate3d(0);
+    .transition(@panelsDuration);
+
+    &.panel-left {
+        left: 0;
+        &.modal-in {
+        	.translate3d(0);
+        }
+        &.modal-out {
+        	.translate3d(-@panelWidth);
+        }
+    }
+    &.panel-right {
+        right: 0;
+        &.modal-in {
+        	.translate3d(0);
+        }
+        &.modal-out {
+        	.translate3d(@panelWidth);
+        }
+    }
+}
