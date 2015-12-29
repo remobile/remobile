@@ -9,6 +9,7 @@ var welcome = require('./modules/home/welcome');
 var App = React.createClass({
     mixins: [UI.Mixins.App(views)],
     componentWillMount: function () {
+        this.material = true;
         // welcome.showWelcome();
     },
     showModal: function(modalType, modalChildren) {

@@ -1,6 +1,7 @@
 /*framework7-base navbars.js*/
 module.exports = {
 	sizeNavbars :function(container) {
+		if (app.material) return;
 		var navbarInner =  $(container).find('.navbar .navbar-inner:not(.cached)');
 		navbarInner.each(function () {
 			var n = $(this);

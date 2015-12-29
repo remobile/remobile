@@ -54,9 +54,9 @@ var ScrollHideBar = function (container) {
             tabbarHidden = tabbar && tabbar.hasClass('toolbar-hidden');
 
             if (reachEnd) {
-		if (p.showBarsOnPageScrollEnd) {
-                	action = 'show';
-		}
+                if (p.showBarsOnPageScrollEnd) {
+                    action = 'show';
+                }
             }
             else if (previousScroll > currentScroll) {
                 if (p.showBarsOnPageScrollTop || currentScroll <= 44) {
@@ -148,11 +148,20 @@ module.exports = React.createClass({
             'toolbar-through': this.props.toolbar
         });
         return (
-            <div className={className} style={this.props.style} ref="container">
-                {!!title&&<Navbar goBack={this.props.goBack}><NavbarTitle>{title}</NavbarTitle>{this.props.right}</Navbar>}
+            <div
+                className={className}
+                style={this.props.style}
+                ref="container">
+                {!!title&&
+                    <Navbar goBack={this.props.goBack} backText={this.props.backText}>
+                        <NavbarTitle>
+                            {title}
+                        </NavbarTitle>
+                        {this.props.right}
+                    </Navbar>
+                }
                 {this.props.children}
             </div>
         );
     }
 });
-

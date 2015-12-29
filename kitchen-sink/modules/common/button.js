@@ -11,7 +11,7 @@ var ButtonsRow = UI.Button.ButtonsRow;
 module.exports = React.createClass({
 	render: function() {
 		return (
-            <View.Page  title="Button" right={<View.NavbarButton icon="icon-bars" right>确定</View.NavbarButton>}>
+            <View.Page  title="Button" right={<View.NavbarButton right>确定</View.NavbarButton>}>
                 <View.PageContent>
                     <Content.ContentBlockTitle>Usual Buttons</Content.ContentBlockTitle>
                     <Content.ContentBlock>
@@ -73,7 +73,7 @@ module.exports = React.createClass({
                     </List.List>
                     <Content.ContentBlock>
                         <p>this is inline round <Button inline round>Round</Button> or inline <Button inline>Button</Button></p>
-		          					<p>this is inline fill <Button inline fill>Round</Button> or color <Button inline fill color="red">Button</Button></p>
+		          		<p>this is inline fill <Button inline fill>Round</Button> or color <Button inline fill color="red">Button</Button></p>
                     </Content.ContentBlock>
                 </View.PageContent>
             </View.Page>
