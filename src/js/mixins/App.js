@@ -6,6 +6,8 @@ var fastClicks = require('../framework7/previous/fast-clicks.js');
 var materialInputs = require('../framework7/previous/material-inputs.js');
 var materialPreloader = require('../framework7/previous/material-preloader.js');
 var materialTabbar = require('../framework7/previous/material-tabbar.js');
+var swipeout = require('../framework7/previous/swipeout.js');
+var sortable = require('../framework7/previous/sortable.js');
 
 
 var VERSION = '1.4.0';
@@ -175,6 +177,8 @@ function App (views) {
             materialInputs(this).initMaterialWatchInputs();
             materialPreloader(this);
             materialTabbar(this);
+            swipeout(this).initSwipeout();
+            sortable(this).initSortable();
         },
         componentWillMount: function () {
             window._ = require('underscore');

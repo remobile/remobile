@@ -29,7 +29,7 @@ module.exports = React.createClass({
 		}
 	},
 	handleClick: function() {
-		this.refs.list.sortable.toggle();
+		app.sortableToggle();
 		this.setState({open:!this.state.open});
 	},
 	render: function() {
@@ -40,7 +40,7 @@ module.exports = React.createClass({
             <Content.ContentBlock>
             	<p>Just click "Edit" button on navigation bar to enable sorting</p>
             </Content.ContentBlock>
-            <List.List block sortable ref="list">
+            <List.List block sortable>
                 {[1,2,3,4,5].map((item)=>{ return <ListItem value={item}/>})}
             </List.List>
         </View.PageContent>
