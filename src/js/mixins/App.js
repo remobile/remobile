@@ -2,7 +2,11 @@ var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
 var Toast = require('../Toast').Toast;
-var FastClicks = require('../framework7/previous/fast-clicks.js');
+var fastClicks = require('../framework7/previous/fast-clicks.js');
+var materialInputs = require('../framework7/previous/material-inputs.js');
+var materialPreloader = require('../framework7/previous/material-preloader.js');
+var materialTabbar = require('../framework7/previous/material-tabbar.js');
+
 
 var VERSION = '1.4.0';
 var TRANSITIONS_INOUT = {
@@ -167,7 +171,10 @@ function App (views) {
             Toast({text: text, icon:icon});
         },
         init: function () {
-            FastClicks();
+            fastClicks(this).initFastClicks();
+            materialInputs(this).initMaterialWatchInputs();
+            materialPreloader(this);
+            materialTabbar(this);
         },
         componentWillMount: function () {
             window._ = require('underscore');
@@ -186,8 +193,6 @@ function App (views) {
             this.data = {};
             this.methods = {};
             this.resPath = window.location.pathname.replace(/index.html$/,/index.html$/, '');
-        },
-        componentDidMount: function() {
             this.init();
         },
         getCurrentView: function () {

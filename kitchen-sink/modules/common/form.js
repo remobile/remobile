@@ -38,7 +38,7 @@ var FormInputItem = React.createClass({
 var FormList = React.createClass({
     render: function() {
         return (
-            <List.List block>
+            <List.List block inputs>
             	<FormInputItem icon="icon-form-name" label="Name" input_type="text" placeholder="Please Input Your Name" />
             	<FormInputItem icon="icon-form-email" label="Email" input_type="email" placeholder="Please Input Your Email" />
             	<FormInputItem icon="icon-form-url" label="URL" input_type="url" placeholder="Please Input Your URL" />
@@ -74,7 +74,7 @@ var FormList = React.createClass({
 var FormList1 = React.createClass({
     render: function() {
         return (
-            <List.List block>
+            <List.List block inputs>
             	<FormInputItem icon="icon-form-name" input_type="text" placeholder="Please Input Your Name" />
             	<FormInputItem icon="icon-form-email" input_type="email" placeholder="Please Input Your Email" />
             	<FormItem icon="icon-form-gender">
@@ -97,7 +97,7 @@ var FormList1 = React.createClass({
 var FormList2 = React.createClass({
     render: function() {
         return (
-            <List.List block>
+            <List.List block inputs>
             	<FormInputItem input_type="text" placeholder="Please Input Your Name" />
             	<FormInputItem input_type="email" placeholder="Please Input Your Email" />
             	<FormItem>
@@ -120,7 +120,7 @@ var FormList2 = React.createClass({
 var FormList3 = React.createClass({
     render: function() {
         return (
-            <List.List block inset>
+            <List.List block inputs inset>
             	<FormInputItem input_type="text" placeholder="Please Input Your Name" />
             	<FormInputItem input_type="email" placeholder="Please Input Your Email" />
             	<FormItem>

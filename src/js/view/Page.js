@@ -124,10 +124,17 @@ var ScrollHideBar = function (container) {
 
 module.exports = React.createClass({
     componentDidMount: function() {
+        var pageContainer = $(this.refs.container.getDOMNode());
         if (this.props.scrollHideBar) {
-            this.scrollHideBar = new ScrollHideBar($(this.refs.container.getDOMNode()));
+            this.scrollHideBar = new ScrollHideBar(pageContainer);
             this.scrollHideBar.init();
         }
+        // Init Material Preloader
+        if (app.params.material && app.initPageMaterialPreloader) app.initPageMaterialPreloader(pageContainer);
+        // Init Material Inputs
+        if (app.params.material && app.initPageMaterialInputs) app.initPageMaterialInputs(pageContainer);
+        // Init Material Tabbar
+        if (app.params.material && app.initPageMaterialTabbar) app.initPageMaterialTabbar(pageContainer);
     },
     componentWillUnmount: function() {
         if (this.props.scrollHideBar) {

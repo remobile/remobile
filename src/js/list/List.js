@@ -2,30 +2,30 @@
 var React = require('react');
 var cn = require('classnames');
 
-var Sortable = function (container) {
+var Sortable = function (sortableContainer) {
 	var p = this;
 
-	p.toggle = function() {
-		container.toggleClass('sortable-opened');
-		if (container.hasClass('sortable-opened')) {
-			container.trigger('open');
+	p.sortableToggle = function() {
+		sortableContainer.toggleClass('sortable-opened');
+		if (sortableContainer.hasClass('sortable-opened')) {
+			sortableContainer.trigger('open');
 		}
 		else {
-			container.trigger('close');
+			sortableContainer.trigger('close');
 		}
-		return container;
+		return sortableContainer;
 	};
-	p.open = function() {
-		container.addClass('sortable-opened');
-		container.trigger('open');
-		return container;
+	p.sortableOpen = function() {
+		sortableContainer.addClass('sortable-opened');
+		sortableContainer.trigger('open');
+		return sortableContainer;
 	};
-	p.close = function () {
-		container.removeClass('sortable-opened');
-		container.trigger('close');
-		return container;
+	p.sortableClose = function () {
+		sortableContainer.removeClass('sortable-opened');
+		sortableContainer.trigger('close');
+		return sortableContainer;
 	};
-	p.init = function () {
+	p.initSortable = function () {
 		var isTouched, isMoved, touchStartY, touchesDiff, sortingEl, sortingElHeight, sortingItems, minTop, maxTop, insertAfter, insertBefore;
 
 		function handleTouchStart(e) {
@@ -43,7 +43,7 @@ var Sortable = function (container) {
 			var pageY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
 			if (!isMoved) {
 				sortingEl.addClass('sorting');
-				container.addClass('sortable-sorting');
+				sortableContainer.addClass('sortable-sorting');
 				minTop = sortingEl[0].offsetTop;
 				maxTop = sortingEl.parent().height() - sortingEl[0].offsetTop - sortingEl.height();
 				sortingElHeight = sortingEl[0].offsetHeight;
@@ -91,7 +91,7 @@ var Sortable = function (container) {
 			e.preventDefault();
 			sortingItems.transform('');
 			sortingEl.removeClass('sorting');
-			container.removeClass('sortable-sorting');
+			sortableContainer.removeClass('sortable-sorting');
 			var virtualList, oldIndex, newIndex;
 			if (insertAfter) {
 				sortingEl.insertAfter(insertAfter);
@@ -101,8 +101,8 @@ var Sortable = function (container) {
 				sortingEl.insertBefore(insertBefore);
 				sortingEl.trigger('sort');
 			}
-			if ((insertAfter || insertBefore) && container.hasClass('virtual-list')) {
-				virtualList = container[0].f7VirtualList;
+			if ((insertAfter || insertBefore) && sortableContainer.hasClass('virtual-list')) {
+				virtualList = sortableContainer[0].f7VirtualList;
 				oldIndex = sortingEl[0].f7VirtualListIndex;
 				newIndex = insertBefore ? insertBefore[0].f7VirtualListIndex : insertAfter[0].f7VirtualListIndex;
 				if (virtualList) virtualList.moveItem(oldIndex, newIndex);
@@ -132,7 +132,7 @@ var Sortable = function (container) {
 			}
 		};
 	};
-	p.destory = function () {
+	p.destorySortable = function () {
 		p.destroySortableEvents&&p.destroySortableEvents();
 	};
 
@@ -144,10 +144,8 @@ var Swipeout = function(container) {
 
 	app.swipeoutOpenedEl = undefined;
 	app.allowSwipeout = true;
-	app.swipeoutActionsNoFold = false;
-	app.swipeoutNoFollow = false;
 
-	p.init = function (swipeoutEl) {
+	p.initSwipeout = function (swipeoutEl) {
 		var isTouched, isMoved, isScrolling, touchesStart = {}, touchStartTime, touchesDiff, swipeOutEl, swipeOutContent, actionsRight, actionsLeft, actionsLeftWidth, actionsRightWidth, translate, opened, openedActions, buttonsLeft, buttonsRight, direction, overswipeLeftButton, overswipeRightButton, overswipeLeft, overswipeRight, noFoldLeft, noFoldRight;
 		$(document).on(app.touchEvents.start, function (e) {
 			if (app.swipeoutOpenedEl) {
@@ -160,7 +158,7 @@ var Swipeout = function(container) {
 					target.hasClass('actions-modal') ||
 					target.parents('.actions-modal.modal-in, .modal.modal-in').length > 0
 				)) {
-					p.close(app.swipeoutOpenedEl);
+					p.swipeoutClose(app.swipeoutOpenedEl);
 				}
 			}
 		});
@@ -194,8 +192,8 @@ var Swipeout = function(container) {
 				actionsRight = swipeOutEl.find('.swipeout-actions-right');
 				actionsLeft = swipeOutEl.find('.swipeout-actions-left');
 				actionsLeftWidth = actionsRightWidth = buttonsLeft = buttonsRight = overswipeRightButton = overswipeLeftButton = null;
-				noFoldLeft = actionsLeft.hasClass('swipeout-actions-no-fold') || app.swipeoutActionsNoFold;
-				noFoldRight = actionsRight.hasClass('swipeout-actions-no-fold') || app.swipeoutActionsNoFold;
+				noFoldLeft = actionsLeft.hasClass('swipeout-actions-no-fold') || app.params.swipeoutActionsNoFold;
+				noFoldRight = actionsRight.hasClass('swipeout-actions-no-fold') || app.params.swipeoutActionsNoFold;
 				if (actionsLeft.length > 0) {
 					actionsLeftWidth = actionsLeft.outerWidth();
 					buttonsLeft = actionsLeft.children('a');
@@ -252,21 +250,21 @@ var Swipeout = function(container) {
 			var i, buttonOffset, progress;
 
 			e.f7PreventPanelSwipe = true;
-			if (app.swipeoutNoFollow) {
+			if (app.params.swipeoutNoFollow) {
 				if (opened) {
 					if (openedActions === 'right' && touchesDiff > 0) {
-						p.close(swipeOutEl);
+						p.swipeoutClose(swipeOutEl);
 					}
 					if (openedActions === 'left' && touchesDiff < 0) {
-						p.close(swipeOutEl);
+						p.swipeoutClose(swipeOutEl);
 					}
 				}
 				else {
 					if (touchesDiff < 0 && actionsRight.length > 0) {
-						p.open(swipeOutEl, 'right');
+						p.swipeoutOpen(swipeOutEl, 'right');
 					}
 					if (touchesDiff > 0 && actionsLeft.length > 0) {
-						p.open(swipeOutEl, 'left');
+						p.swipeoutOpen(swipeOutEl, 'left');
 					}
 				}
 				isTouched = false;
@@ -447,7 +445,7 @@ var Swipeout = function(container) {
 			}
 		};
 	};
-	p.open = function (el, dir, callback) {
+	p.swipeoutOpen = function (el, dir, callback) {
 		el = $(el);
 		if (arguments.length === 2) {
 			if (typeof arguments[1] === 'function') {
@@ -464,7 +462,7 @@ var Swipeout = function(container) {
 		}
 		var swipeOutActions = el.find('.swipeout-actions-' + dir);
 		if (swipeOutActions.length === 0) return;
-		var noFold = swipeOutActions.hasClass('swipeout-actions-no-fold') || app.swipeoutActionsNoFold;
+		var noFold = swipeOutActions.hasClass('swipeout-actions-no-fold') || app.params.swipeoutActionsNoFold;
 		el.trigger('open').addClass('swipeout-opened').removeClass('transitioning');
 		swipeOutActions.addClass('swipeout-actions-opened');
 		var buttons = swipeOutActions.children('a');
@@ -492,13 +490,13 @@ var Swipeout = function(container) {
 		});
 		app.swipeoutOpenedEl = el;
 	};
-	p.close = function (el, callback) {
+	p.swipeoutClose = function (el, callback) {
 		el = $(el);
 		if (el.length === 0) return;
 		if (!el.hasClass('swipeout-opened')) return;
 		var dir = el.find('.swipeout-actions-opened').hasClass('swipeout-actions-right') ? 'right' : 'left';
 		var swipeOutActions = el.find('.swipeout-actions-opened').removeClass('swipeout-actions-opened');
-		var noFold = swipeOutActions.hasClass('swipeout-actions-no-fold') || app.swipeoutActionsNoFold;
+		var noFold = swipeOutActions.hasClass('swipeout-actions-no-fold') || app.params.swipeoutActionsNoFold;
 		var buttons = swipeOutActions.children('a');
 		var swipeOutActionsWidth = swipeOutActions.outerWidth();
 		app.allowSwipeout = false;
@@ -529,7 +527,7 @@ var Swipeout = function(container) {
 		}
 		if (app.swipeoutOpenedEl && app.swipeoutOpenedEl[0] === el[0]) app.swipeoutOpenedEl = undefined;
 	};
-	p.delete = function (el, callback) {
+	p.swipeoutDelete = function (el, callback) {
 		el = $(el);
 		if (el.length === 0) return;
 		if (el.length > 1) el = $(el[0]);
@@ -553,7 +551,7 @@ var Swipeout = function(container) {
 		var translate = '-100%';
 		el.find('.swipeout-content').transform('translate3d(' + translate + ',0,0)');
 	};
-	p.destory = function () {
+	p.swipeoutDestory = function () {
 		p.destroySwipeoutEvents&&p.destroySwipeoutEvents();
 	};
 
@@ -564,19 +562,19 @@ module.exports = React.createClass({
 	componentDidMount: function() {
 		if (this.props.sortable) {
 			this.sortable = new Sortable($(this.refs.container.getDOMNode()));
-			this.sortable.init();
+			this.sortable.initSortable();
 		}
 		if (this.props.swipeout) {
 			this.swipeout = new Swipeout($(this.refs.container.getDOMNode()));
-			this.swipeout.init();
+			this.swipeout.initSwipeout();
 		}
 	},
 	componentWillUnmount: function() {
 		if (this.props.sortable) {
-			this.sortable.destory();
+			this.sortable.destorySortable();
 		}
 		if (this.props.swipeout) {
-			this.swipeout.destory();
+			this.swipeout.swipeoutDestory();
 		}
 	},
 	render: function() {
@@ -585,7 +583,8 @@ module.exports = React.createClass({
 			'inset': this.props.inset,
 			'list-block-label': this.props.tabletInset,
 			'media-list': this.props.media,
-			'sortable': this.props.sortable
+			'sortable': this.props.sortable,
+			'inputs-list': this.props.inputs&&app.params.material,
 		};
 		this.props.class&&(obj[this.props.class]=true);
 		var className = cn(obj);

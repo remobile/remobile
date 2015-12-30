@@ -1,8 +1,9 @@
+module.exports = function(app) {
 /*===============================================================================
 ************   Fast Clicks   ************
 ************   Inspired by https://github.com/ftlabs/fastclick   ************
 ===============================================================================*/
-module.exports = function () {
+app.initFastClicks = function () {
     if (app.params.activeState) {
         $('html').addClass('watch-active-state');
     }
@@ -509,7 +510,6 @@ module.exports = function () {
 
         return allowClick;
     }
-
     if (app.support.touch) {
         document.addEventListener('click', handleClick, true);
 
@@ -532,4 +532,6 @@ module.exports = function () {
         });
     }
 
+};
+return app;
 };
