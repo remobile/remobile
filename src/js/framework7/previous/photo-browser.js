@@ -1,5 +1,7 @@
-var React = require('react');
-
+module.exports = function(app) {
+/*======================================================
+************   Photo Browser   ************
+======================================================*/
 var PhotoBrowser = function (params) {
     var pb = this, i;
 
@@ -13,6 +15,7 @@ var PhotoBrowser = function (params) {
         minZoom: 1,
         exposition: true,
         expositionHideCaptions: false,
+        type: 'standalone',
         navbar: true,
         toolbar: true,
         theme: 'light',
@@ -23,14 +26,17 @@ var PhotoBrowser = function (params) {
         lazyLoading: false,
         lazyLoadingInPrevNext: false,
         lazyLoadingOnTransitionStart: false,
+        material: app.params.material,
+        materialPreloaderSvg: app.params.materialPreloaderSvg,
+        materialPreloaderHtml: app.params.materialPreloaderHtml,
         /*
         Callbacks:
         onLazyImageLoad(pb, slide, img)
         onLazyImageReady(pb, slide, img)
         onOpen(pb)
         onClose(pb)
-        onSlideTransitionStart(swiper)
-        onSlideTransitionEnd(swiper)
+        onTransitionStart(swiper)
+        onTransitionEnd(swiper)
         onSlideChangeStart(swiper)
         onSlideChangeEnd(swiper)
         onTap(swiper, e)
@@ -41,6 +47,7 @@ var PhotoBrowser = function (params) {
     };
 
     params = params || {};
+    if (!params.backLinkText && app.params.material) defaults.backLinkText = '';
     for (var def in defaults) {
         if (typeof params[def] === 'undefined') {
             params[def] = defaults[def];
@@ -48,95 +55,93 @@ var PhotoBrowser = function (params) {
     }
 
     pb.params = params;
+    pb.params.iconsColorClass = pb.params.iconsColor ? 'color-' + pb.params.iconsColor : (pb.params.theme === 'dark' ? 'color-white' : '');
+    pb.params.preloaderColorClass = pb.params.theme === 'dark' ? 'preloader-white' : '';
 
-    var iconColor = pb.params.theme === 'dark' ? 'color-white' : '';
-
+    // Templates
+    var photoTemplate = pb.params.photoTemplate ||
+        '<div class="photo-browser-slide swiper-slide">' +
+            '<span class="photo-browser-zoom-container">' +
+                '<img src="{{js "this.url || this"}}">' +
+            '</span>' +
+        '</div>';
+    var photoLazyTemplate = pb.params.lazyPhotoTemplate ||
+        '<div class="photo-browser-slide photo-browser-slide-lazy swiper-slide">' +
+            '<div class="preloader {{@root.preloaderColorClass}}">{{#if @root.material}}{{@root.materialPreloaderHtml}}{{/if}}</div>' +
+            '<span class="photo-browser-zoom-container">' +
+                '<img data-src="{{js "this.url || this"}}" class="swiper-lazy">' +
+            '</span>' +
+        '</div>';
+    var objectTemplate = pb.params.objectTemplate ||
+        '<div class="photo-browser-slide photo-browser-object-slide swiper-slide">{{js "this.html || this"}}</div>';
+    var captionTemplate = pb.params.captionTemplate ||
+        '<div class="photo-browser-caption" data-caption-index="{{@index}}">' +
+            '{{caption}}' +
+        '</div>';
     var navbarTemplate = pb.params.navbarTemplate ||
-                        '<div class="navbar">' +
-                            '<div class="navbar-inner">' +
-                                '<div class="left sliding"><a href="#" class="link ' + ' close-popup photo-browser-close-link" data-popup=".photo-browser-popup"><i class="icon icon-back ' + iconColor + '"></i><span>' + pb.params.backLinkText + '</span></a></div>' +
-                                '<div class="center sliding"><span class="photo-browser-current"></span> <span class="photo-browser-of">' + pb.params.ofText + '</span> <span class="photo-browser-total"></span></div>' +
-                                '<div class="right"></div>' +
-                            '</div>' +
-                        '</div>';
+        '<div class="navbar">' +
+            '<div class="navbar-inner">' +
+                '<div class="left sliding">' +
+                    '<a href="#" class="link close-popup photo-browser-close-link {{#unless backLinkText}}icon-only{{/unless}} {{js "this.type === \'page\' ? \'back\' : \'\'"}}">' +
+                        '<i class="icon icon-back {{iconsColorClass}}"></i>' +
+                        '{{#if backLinkText}}<span>{{backLinkText}}</span>{{/if}}' +
+                    '</a>' +
+                '</div>' +
+                '<div class="center sliding">' +
+                    '<span class="photo-browser-current"></span> ' +
+                    '<span class="photo-browser-of">{{ofText}}</span> ' +
+                    '<span class="photo-browser-total"></span>' +
+                '</div>' +
+                '<div class="right"></div>' +
+            '</div>' +
+        '</div>';
     var toolbarTemplate = pb.params.toolbarTemplate ||
-                        '<div class="toolbar tabbar">' +
-                            '<div class="toolbar-inner">' +
-                                '<a href="#" class="link photo-browser-prev"><i class="icon icon-prev ' + iconColor + '"></i></a>' +
-                                '<a href="#" class="link photo-browser-next"><i class="icon icon-next ' + iconColor + '"></i></a>' +
-                            '</div>' +
-                        '</div>';
+        '<div class="toolbar tabbar">' +
+            '<div class="toolbar-inner">' +
+                '<a href="#" class="link photo-browser-prev">' +
+                    '<i class="icon icon-prev {{iconsColorClass}}"></i>' +
+                '</a>' +
+                '<a href="#" class="link photo-browser-next">' +
+                    '<i class="icon icon-next {{iconsColorClass}}"></i>' +
+                '</a>' +
+            '</div>' +
+        '</div>';
 
-    var template = pb.params.template ||
-                    '<div class="photo-browser photo-browser-' + pb.params.theme + '">' +
-                        '<div class="view navbar-fixed toolbar-fixed">' +
-                            '{{navbar}}' +
-                            '<div data-page="photo-browser-slides" class="page no-toolbar {{noNavbar}} toolbar-fixed navbar-fixed">' +
-                                '{{toolbar}}' +
-                                '{{captions}}' +
-                                '<div class="photo-browser-swiper-container swiper-container">' +
-                                    '<div class="photo-browser-swiper-wrapper swiper-wrapper">' +
-                                        '{{photos}}' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>' +
+    var htmlTemplate = t7.compile('<div class="photo-browser photo-browser-{{theme}}">' +
+            '<div class="view navbar-fixed toolbar-fixed">' +
+                '{{#unless material}}{{#if navbar}}' +
+                navbarTemplate +
+                '{{/if}}{{/unless}}' +
+                '<div class="page no-toolbar {{#unless navbar}}no-navbar{{/unless}} toolbar-fixed navbar-fixed" data-page="photo-browser-slides">' +
+                    '{{#if material}}{{#if navbar}}' +
+                    navbarTemplate +
+                    '{{/if}}{{/if}}' +
+                    '{{#if toolbar}}' +
+                    toolbarTemplate +
+                    '{{/if}}' +
+                    '<div class="photo-browser-captions photo-browser-captions-{{js "this.captionsTheme || this.theme"}}">' +
+                        '{{#each photos}}{{#if caption}}' +
+                        captionTemplate +
+                        '{{/if}}{{/each}}' +
+                    '</div>' +
+                    '<div class="photo-browser-swiper-container swiper-container">' +
+                        '<div class="photo-browser-swiper-wrapper swiper-wrapper">' +
+                            '{{#each photos}}' +
+                            '{{#js_compare "this.html || ((typeof this === \'string\' || this instanceof String) && (this.indexOf(\'<\') >= 0 || this.indexOf(\'>\') >= 0))"}}' +
+                                objectTemplate +
+                            '{{else}}' +
+                                '{{#if @root.lazyLoading}}' +
+                                photoLazyTemplate +
+                                '{{else}}' +
+                                photoTemplate +
+                                '{{/if}}' +
+                            '{{/js_compare}}' +
+                            '{{/each}}' +
                         '</div>' +
-                    '</div>';
-
-    var photoTemplate = !pb.params.lazyLoading ?
-        (pb.params.photoTemplate || '<div class="photo-browser-slide swiper-slide"><span class="photo-browser-zoom-container"><img src="{{url}}"></span></div>') :
-        (pb.params.photoLazyTemplate || '<div class="photo-browser-slide photo-browser-slide-lazy swiper-slide"><div class="preloader' + (pb.params.theme === 'dark' ? ' preloader-white' : '') + '"></div><span class="photo-browser-zoom-container"><img data-src="{{url}}" class="swiper-lazy"></span></div>');
-
-    var captionsTheme = pb.params.captionsTheme || pb.params.theme;
-    var captionsTemplate = pb.params.captionsTemplate || '<div class="photo-browser-captions photo-browser-captions-' + captionsTheme + '">{{captions}}</div>';
-    var captionTemplate = pb.params.captionTemplate || '<div class="photo-browser-caption" data-caption-index="{{captionIndex}}">{{caption}}</div>';
-
-    var objectTemplate = pb.params.objectTemplate || '<div class="photo-browser-slide photo-browser-object-slide swiper-slide">{{html}}</div>';
-    var photosHtml = '';
-    var captionsHtml = '';
-    for (i = 0; i < pb.params.photos.length; i ++) {
-        var photo = pb.params.photos[i];
-        var thisTemplate = '';
-
-        //check if photo is a string or string-like object, for backwards compatibility
-        if (typeof(photo) === 'string' || photo instanceof String) {
-
-            //check if "photo" is html object
-            if (photo.indexOf('<') >= 0 || photo.indexOf('>') >= 0) {
-                thisTemplate = objectTemplate.replace(/{{html}}/g, photo);
-            } else {
-                thisTemplate = photoTemplate.replace(/{{url}}/g, photo);
-            }
-
-            //photo is a string, thus has no caption, so remove the caption template placeholder
-            //otherwise check if photo is an object with a url property
-        } else if (typeof(photo) === 'object') {
-
-            //check if "photo" is html object
-            if (photo.hasOwnProperty('html') && photo.html.length > 0) {
-                thisTemplate = objectTemplate.replace(/{{html}}/g, photo.html);
-            } else if (photo.hasOwnProperty('url') && photo.url.length > 0) {
-                thisTemplate = photoTemplate.replace(/{{url}}/g, photo.url);
-            }
-
-            //check if photo has a caption
-            if (photo.hasOwnProperty('caption') && photo.caption.length > 0) {
-                captionsHtml += captionTemplate.replace(/{{caption}}/g, photo.caption).replace(/{{captionIndex}}/g, i);
-            } else {
-                thisTemplate = thisTemplate.replace(/{{caption}}/g, '');
-            }
-        }
-
-        photosHtml += thisTemplate;
-
-    }
-
-    var htmlTemplate = template
-                        .replace('{{navbar}}', (pb.params.navbar ? navbarTemplate : ''))
-                        .replace('{{noNavbar}}', (pb.params.navbar ? '' : 'no-navbar'))
-                        .replace('{{photos}}', photosHtml)
-                        .replace('{{captions}}', captionsTemplate.replace(/{{captions}}/g, captionsHtml))
-                        .replace('{{toolbar}}', (pb.params.toolbar ? toolbarTemplate : ''));
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>')(pb.params);
 
     pb.activeIndex = pb.params.initialSlide;
     pb.openIndex = pb.activeIndex;
@@ -151,8 +156,20 @@ var PhotoBrowser = function (params) {
         }
         pb.opened = true;
         pb.openIndex = index;
-        // pb.initialLazyLoaded = false;
-				$('body').append(htmlTemplate);
+        if (pb.params.type === 'standalone') {
+            $('body').append(htmlTemplate);
+        }
+        if (pb.params.type === 'popup') {
+            pb.popup = app.popup('<div class="popup photo-browser-popup">' + htmlTemplate + '</div>');
+            $(pb.popup).on('closed', pb.onPopupClose);
+        }
+        if (pb.params.type === 'page') {
+            $(document).on('pageBeforeInit', pb.onPageBeforeInit);
+            $(document).on('pageBeforeRemove', pb.onPageBeforeRemove);
+            if (!pb.params.view) pb.params.view = app.mainView;
+            pb.params.view.loadContent(htmlTemplate);
+            return;
+        }
         pb.layout(pb.openIndex);
         if (pb.params.onOpen) {
             pb.params.onOpen(pb);
@@ -170,9 +187,11 @@ var PhotoBrowser = function (params) {
         // Detach events
         pb.attachEvents(true);
         // Delete from DOM
-        pb.container.removeClass('photo-browser-in').addClass('photo-browser-out').animationEnd(function () {
-            pb.container.remove();
-        });
+        if (pb.params.type === 'standalone') {
+            pb.container.removeClass('photo-browser-in').addClass('photo-browser-out').animationEnd(function () {
+                pb.container.remove();
+            });
+        }
         // Destroy slider
         pb.swiper.destroy();
         // Delete references
@@ -247,9 +266,16 @@ var PhotoBrowser = function (params) {
     };
 
     pb.layout = function (index) {
-        pb.container = $('.photo-browser');
-        pb.container.addClass('photo-browser-in');
-        app.sizeNavbars(pb.container);
+        if (pb.params.type === 'page') {
+            pb.container = $('.photo-browser-swiper-container').parents('.view');
+        }
+        else {
+            pb.container = $('.photo-browser');
+        }
+        if (pb.params.type === 'standalone') {
+            pb.container.addClass('photo-browser-in');
+            app.sizeNavbars(pb.container);
+        }
         pb.swiperContainer = pb.container.find('.photo-browser-swiper-container');
         pb.swiperWrapper = pb.container.find('.photo-browser-swiper-wrapper');
         pb.slides = pb.container.find('.photo-browser-slide');
@@ -276,7 +302,7 @@ var PhotoBrowser = function (params) {
                 if (pb.params.onClick) pb.params.onClick(swiper, e);
             },
             onDoubleTap: function (swiper, e) {
-                pb.toggleZoom($(e.target).parents('.photo-browser-slide'));
+                pb.toggleZoom(e);
                 if (pb.params.onDoubleTap) pb.params.onDoubleTap(swiper, e);
             },
             onTransitionStart: function (swiper) {
@@ -296,7 +322,7 @@ var PhotoBrowser = function (params) {
             }
         };
 
-        if (pb.params.swipeToClose) {
+        if (pb.params.swipeToClose && pb.params.type !== 'page') {
             sliderSettings.onTouchStart = pb.swipeCloseTouchStart;
             sliderSettings.onTouchMoveOpposite = pb.swipeCloseTouchMove;
             sliderSettings.onTouchEnd = pb.swipeCloseTouchEnd;
@@ -383,21 +409,73 @@ var PhotoBrowser = function (params) {
         isScaling = false;
         if (scale === 1) gestureSlide = undefined;
     };
-    pb.toggleZoom = function () {
+    pb.toggleZoom = function (e) {
         if (!gestureSlide) {
             gestureSlide = pb.swiper.slides.eq(pb.swiper.activeIndex);
             gestureImg = gestureSlide.find('img, svg, canvas');
             gestureImgWrap = gestureImg.parent('.photo-browser-zoom-container');
         }
         if (!gestureImg || gestureImg.length === 0) return;
-        gestureImgWrap.transition(300).transform('translate3d(0,0,0)');
+
+        var touchX, touchY, offsetX, offsetY, diffX, diffY, translateX, translateY, imageWidth, imageHeight, scaledWidth, scaledHeight, translateMinX, translateMinY, translateMaxX, translateMaxY;
+
+        if (typeof imageTouchesStart.x === 'undefined' && e) {
+            touchX = e.type === 'touchend' ? e.changedTouches[0].pageX : e.pageX;
+            touchY = e.type === 'touchend' ? e.changedTouches[0].pageY : e.pageY;
+        }
+        else {
+            touchX = imageTouchesStart.x;
+            touchY = imageTouchesStart.y;
+        }
+
         if (scale && scale !== 1) {
+            // Zoom Out
             scale = currentScale = 1;
+            gestureImgWrap.transition(300).transform('translate3d(0,0,0)');
             gestureImg.transition(300).transform('translate3d(0,0,0) scale(1)');
             gestureSlide = undefined;
         }
         else {
+            // Zoom In
             scale = currentScale = pb.params.maxZoom;
+            if (e) {
+                offsetX = pb.container.offset().left;
+                offsetY = pb.container.offset().top;
+                diffX = offsetX + pb.container[0].offsetWidth/2 - touchX;
+                diffY = offsetY + pb.container[0].offsetHeight/2 - touchY;
+
+                imageWidth = gestureImg[0].offsetWidth;
+                imageHeight = gestureImg[0].offsetHeight;
+                scaledWidth = imageWidth * scale;
+                scaledHeight = imageHeight * scale;
+
+                translateMinX = Math.min((pb.swiper.width / 2 - scaledWidth / 2), 0);
+                translateMinY = Math.min((pb.swiper.height / 2 - scaledHeight / 2), 0);
+                translateMaxX = -translateMinX;
+                translateMaxY = -translateMinY;
+
+                translateX = diffX * scale;
+                translateY = diffY * scale;
+
+                if (translateX < translateMinX) {
+                    translateX =  translateMinX;
+                }
+                if (translateX > translateMaxX) {
+                    translateX = translateMaxX;
+                }
+
+                if (translateY < translateMinY) {
+                    translateY =  translateMinY;
+                }
+                if (translateY > translateMaxY) {
+                    translateY = translateMaxY;
+                }
+            }
+            else {
+                translateX = 0;
+                translateY = 0;
+            }
+            gestureImgWrap.transition(300).transform('translate3d(' + translateX + 'px, ' + translateY + 'px,0)');
             gestureImg.transition(300).transform('translate3d(0,0,0) scale(' + scale + ')');
         }
     };
@@ -553,7 +631,12 @@ var PhotoBrowser = function (params) {
         var timeDiff = (new Date()).getTime() - swipeToCloseTimeStart;
         if ((timeDiff < 300 && diff > 20) || (timeDiff >= 300 && diff > 100)) {
             setTimeout(function () {
-                pb.close();
+                if (pb.params.type === 'standalone') {
+                    pb.close();
+                }
+                if (pb.params.type === 'popup') {
+                    app.closeModal(pb.popup);
+                }
                 if (pb.params.onSwipeToClose) {
                     pb.params.onSwipeToClose(pb);
                 }
@@ -577,6 +660,8 @@ var PhotoBrowser = function (params) {
     return pb;
 };
 
-module.exports = function (params) {
+app.photoBrowser = function (params) {
     return new PhotoBrowser(params);
+};
+return app;
 };

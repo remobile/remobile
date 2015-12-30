@@ -1,6 +1,5 @@
 var React = require('react');
 var UI = require('UI');
-var swiper = UI.Mixins.Swiper.swiper;
 var Content = UI.Content;
 var View = UI.View;
 
@@ -10,14 +9,14 @@ module.exports = React.createClass({
 			pagination: ".swiper-pagination-h",
 			paginationHide: false
 		};
-		this.props.sliderh = swiper(this.refs.swiperh.getDOMNode(), paramsh);
+		this.props.sliderh = app.swiper(this.refs.swiperh.getDOMNode(), paramsh);
 		
 		var paramsv = {
 			pagination: ".swiper-pagination-v",
 			direction: "vertical",
 			paginationHide: false
 		};
-		this.props.sliderv = swiper(this.refs.swiperv.getDOMNode(), paramsv);
+		this.props.sliderv = app.swiper(this.refs.swiperv.getDOMNode(), paramsv);
   },
   componentWillUnmount: function() {
 		this.props.sliderh.destroy();

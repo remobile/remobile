@@ -4,7 +4,6 @@ var cn = require('classnames');
 var NavbarTitle = require('./navbar/NavbarTitle');
 var Navbar = require('./navbar/Navbar');
 var BackButton = require('./navbar/BackButton');
-var NavbarMixins = require('../mixins').Navbar;
 
 var ScrollHideBar = function (container) {
     var p = this;
@@ -77,34 +76,34 @@ var ScrollHideBar = function (container) {
 
             if (action === 'show') {
                 if (hasNavbar && hideNavbar && navbarHidden) {
-                    NavbarMixins.showNavbar(navbar);
+                    app.showNavbar(navbar);
                     container.removeClass('no-navbar-by-scroll');
                     navbarHidden = false;
                 }
                 if (hasToolbar && hideToolbar && toolbarHidden) {
-                    NavbarMixins.showToolbar(toolbar);
+                    app.showToolbar(toolbar);
                     container.removeClass('no-toolbar-by-scroll');
                     toolbarHidden = false;
                 }
                 if (hasTabbar && hideTabbar && tabbarHidden) {
-                    NavbarMixins.showToolbar(tabbar);
+                    app.showToolbar(tabbar);
                     container.removeClass('no-tabbar-by-scroll');
                     tabbarHidden = false;
                 }
             }
             else {
                 if (hasNavbar && hideNavbar && !navbarHidden) {
-                    NavbarMixins.hideNavbar(navbar);
+                    app.hideNavbar(navbar);
                     container.addClass('no-navbar-by-scroll');
                     navbarHidden = true;
                 }
                 if (hasToolbar && hideToolbar && !toolbarHidden) {
-                    NavbarMixins.hideToolbar(toolbar);
+                    app.hideToolbar(toolbar);
                     container.addClass('no-toolbar-by-scroll');
                     toolbarHidden = true;
                 }
                 if (hasTabbar && hideTabbar && !tabbarHidden) {
-                    NavbarMixins.hideToolbar(tabbar);
+                    app.hideToolbar(tabbar);
                     container.addClass('no-tabbar-by-scroll');
                     tabbarHidden = true;
                 }

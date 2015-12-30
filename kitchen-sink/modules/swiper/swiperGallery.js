@@ -1,6 +1,5 @@
 var React = require('react');
 var UI = require('UI');
-var swiper = UI.Mixins.Swiper.swiper;
 var Content = UI.Content;
 var View = UI.View;
 
@@ -15,7 +14,7 @@ module.exports = React.createClass({
 		    prevButton: '.swiper-button-prev',
 		    spaceBetween: 10
      });
-		this.props.sliderThumbs = swiper(this.refs.swiperThumbs.getDOMNode(), {
+		this.props.sliderThumbs = app.swiper(this.refs.swiperThumbs.getDOMNode(), {
 				slidesPerView: 'auto',
         spaceBetween: 10,
         centeredSlides: true,

@@ -1,6 +1,4 @@
 var React = require('react');
- var Minxins = require('../mixins');
- var Swiper = Minxins.Swiper;
 
 var Welcomescreen = function (slides, options) {
 var p = this,
@@ -53,7 +51,7 @@ var p = this,
 
 	  $('body').append(container);
 
-	  swiper = Swiper.swiper('.swiper-container', {
+	  swiper = app.swiper('.swiper-container', {
 	    direction: 'horizontal',
 	    loop: options.loop,
 	    pagination: options.pagination ? swiperContainer.find('.swiper-pagination') : undefined

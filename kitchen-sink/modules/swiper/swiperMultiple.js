@@ -1,6 +1,5 @@
 var React = require('react');
 var UI = require('UI');
-var swiper = UI.Mixins.Swiper.swiper;
 var Content = UI.Content;
 var View = UI.View;
 
@@ -10,21 +9,21 @@ module.exports = React.createClass({
 			pagination: ".swiper-pagination-c1",
 			spaceBetween:50
 		};
-		this.props.slider1 = swiper(this.refs.swiper1.getDOMNode(), params1);
+		this.props.slider1 = app.swiper(this.refs.swiper1.getDOMNode(), params1);
 		
 		var params2 = {
 			pagination: ".swiper-pagination-c2",
 			spaceBetween:20,
 			slidesPerView: 2
 		};
-		this.props.slider2 = swiper(this.refs.swiper2.getDOMNode(), params2);
+		this.props.slider2 = app.swiper(this.refs.swiper2.getDOMNode(), params2);
 		
 		var params3 = {
 			pagination: ".swiper-pagination-c3",
 			spaceBetween:10,
 			slidesPerView: 3
 		};
-		this.props.slider3 = swiper(this.refs.swiper3.getDOMNode(), params3);
+		this.props.slider3 = app.swiper(this.refs.swiper3.getDOMNode(), params3);
 		
 		var params4 = {
 			pagination: ".swiper-pagination-c4",
@@ -32,21 +31,21 @@ module.exports = React.createClass({
 			slidesPerView: "auto",
 			centeredSlides: true
 		};
-		this.props.slider4 = swiper(this.refs.swiper4.getDOMNode(), params4);
+		this.props.slider4 = app.swiper(this.refs.swiper4.getDOMNode(), params4);
 		
 		var params5 = {
 			pagination: ".swiper-pagination-c5",
 			spaceBetween: 10,
 			direction: "vertical"
 		};
-		this.props.slider5 = swiper(this.refs.swiper5.getDOMNode(), params5);
+		this.props.slider5 = app.swiper(this.refs.swiper5.getDOMNode(), params5);
 		
 		var params6 = {
 			speed: 900,
 			pagination: ".swiper-pagination-c6",
 			spaceBetween: 50
 		};
-		this.props.slider6 = swiper(this.refs.swiper6.getDOMNode(), params6);
+		this.props.slider6 = app.swiper(this.refs.swiper6.getDOMNode(), params6);
   },
   componentWillUnmount: function() {
 		this.props.slider1.destroy();

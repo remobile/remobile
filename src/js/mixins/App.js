@@ -2,12 +2,16 @@ var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
 var Toast = require('../Toast').Toast;
+var clicks = require('../framework7/previous/clicks.js');
 var fastClicks = require('../framework7/previous/fast-clicks.js');
 var materialInputs = require('../framework7/previous/material-inputs.js');
 var materialPreloader = require('../framework7/previous/material-preloader.js');
 var materialTabbar = require('../framework7/previous/material-tabbar.js');
 var swipeout = require('../framework7/previous/swipeout.js');
 var sortable = require('../framework7/previous/sortable.js');
+var swiper = require('../framework7/previous/swiper.js');
+var navbars = require('../framework7/previous/navbars.js');
+var photoBrowser = require('../framework7/previous/photo-browser.js');
 
 
 var VERSION = '1.4.0';
@@ -160,10 +164,12 @@ var params = {
 
 function App (views) {
     return {
+        version: VERSION,
         params: params,
         device: system.Device,
         support: system.Support,
         ls: window.localStorage,
+        swiper: swiper,
         touchEvents: {
             start: system.Support.touch ? 'touchstart' : 'mousedown',
             move: system.Support.touch ? 'touchmove' : 'mousemove',
@@ -173,12 +179,15 @@ function App (views) {
             Toast({text: text, icon:icon});
         },
         init: function () {
+            clicks(this).initClickEvents();
             fastClicks(this).initFastClicks();
             materialInputs(this).initMaterialWatchInputs();
             materialPreloader(this);
             materialTabbar(this);
             swipeout(this).initSwipeout();
             sortable(this).initSortable();
+            navbars(this);
+            photoBrowser(this);
         },
         componentWillMount: function () {
             window._ = require('underscore');

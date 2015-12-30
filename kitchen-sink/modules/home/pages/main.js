@@ -19,7 +19,7 @@ function getImages() {
 }
 
 function showPhoto() {
-    var photo = UI.Photo.Photo({
+    var photo = app.photoBrowser({
         photos: getImages(),
         lazyLoading: true,
         theme: 'dark'

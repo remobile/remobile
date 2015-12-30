@@ -1,6 +1,5 @@
 var React = require('react');
 var UI = require('UI');
-var swiper = UI.Mixins.Swiper.swiper;
 var Content = UI.Content;
 var View = UI.View;
 
@@ -11,7 +10,7 @@ module.exports = React.createClass({
 			pagination: ".swiper-pagination",
 			paginationHide: true
 		};
-		this.props.slider = swiper(this.refs.swiper.getDOMNode(), params);			
+		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);			
   },
   componentWillUnmount: function() {
 		this.props.slider.destroy();
