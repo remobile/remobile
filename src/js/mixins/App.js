@@ -2,7 +2,9 @@ var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
 var Toast = require('../Toast').Toast;
+var FastClicks = require('../framework7/previous/fast-clicks.js');
 
+var VERSION = '1.4.0';
 var TRANSITIONS_INOUT = {
     'none': { in: false, out: false },
     'fade': { in: true, out: true },
@@ -30,11 +32,132 @@ var VIEW_TRANSITIONS = {
 };
 
 
+var params = {
+    cache: true,
+    cacheIgnore: [],
+    cacheIgnoreGetParameters: false,
+    cacheDuration: 1000 * 60 * 10, // Ten minutes
+    preloadPreviousPage: true,
+    uniqueHistory: false,
+    uniqueHistoryIgnoreGetParameters: false,
+    dynamicPageUrl: 'content-{{index}}',
+    allowDuplicateUrls: false,
+    router: true,
+    // Push State
+    pushState: false,
+    pushStateRoot: undefined,
+    pushStateNoAnimation: false,
+    pushStateSeparator: '#!/',
+    pushStatePreventOnLoad: true,
+    // Fast clicks
+    fastClicks: true,
+    fastClicksDistanceThreshold: 10,
+    fastClicksDelayBetweenClicks: 50,
+    // Tap Hold
+    tapHold: false,
+    tapHoldDelay: 750,
+    tapHoldPreventClicks: true,
+    // Active State
+    activeState: true,
+    activeStateElements: 'a, button, label, span',
+    // Animate Nav Back Icon
+    animateNavBackIcon: false,
+    // Swipe Back
+    swipeBackPage: true,
+    swipeBackPageThreshold: 0,
+    swipeBackPageActiveArea: 30,
+    swipeBackPageAnimateShadow: true,
+    swipeBackPageAnimateOpacity: true,
+    // Ajax
+    ajaxLinks: undefined, // or CSS selector
+    // External Links
+    externalLinks: '.external', // CSS selector
+    // Sortable
+    sortable: true,
+    // Scroll toolbars
+    hideNavbarOnPageScroll: false,
+    hideToolbarOnPageScroll: false,
+    hideTabbarOnPageScroll: false,
+    showBarsOnPageScrollEnd: true,
+    showBarsOnPageScrollTop: true,
+    // Swipeout
+    swipeout: true,
+    swipeoutActionsNoFold: false,
+    swipeoutNoFollow: false,
+    // Smart Select Back link template
+    smartSelectOpenIn: 'page', // or 'popup' or 'picker'
+    smartSelectBackText: 'Back',
+    smartSelectPopupCloseText: 'Close',
+    smartSelectPickerCloseText: 'Done',
+    smartSelectSearchbar: false,
+    smartSelectBackOnSelect: false,
+    // Tap Navbar or Statusbar to scroll to top
+    scrollTopOnNavbarClick: false,
+    scrollTopOnStatusbarClick: false,
+    // Panels
+    swipePanel: false, // or 'left' or 'right'
+    swipePanelActiveArea: 0,
+    swipePanelCloseOpposite: true,
+    swipePanelOnlyClose: false,
+    swipePanelNoFollow: false,
+    swipePanelThreshold: 0,
+    panelsCloseByOutside: true,
+    // Modals
+    modalButtonOk: 'OK',
+    modalButtonCancel: 'Cancel',
+    modalUsernamePlaceholder: 'Username',
+    modalPasswordPlaceholder: 'Password',
+    modalTitle: 'Framework7',
+    modalCloseByOutside: false,
+    actionsCloseByOutside: true,
+    popupCloseByOutside: true,
+    modalPreloaderTitle: 'Loading... ',
+    modalStack: true,
+    // Lazy Load
+    imagesLazyLoadThreshold: 0,
+    imagesLazyLoadSequential: true,
+    // Name space
+    viewClass: 'view',
+    viewMainClass: 'view-main',
+    viewsClass: 'views',
+    // Notifications defaults
+    notificationCloseOnClick: false,
+    notificationCloseIcon: true,
+    notificationCloseButtonText: 'Close',
+    // Animate Pages
+    animatePages: true,
+    // Template7
+    templates: {},
+    template7Data: {},
+    template7Pages: false,
+    precompileTemplates: false,
+    // Material
+    material: true,
+    materialPageLoadDelay: 0,
+    materialPreloaderSvg: '<svg xmlns="http://www.w3.org/2000/svg" height="75" width="75" viewbox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="8"/></svg>',
+    materialPreloaderHtml:
+    '<span class="preloader-inner">' +
+    '<span class="preloader-inner-gap"></span>' +
+    '<span class="preloader-inner-left">' +
+    '<span class="preloader-inner-half-circle"></span>' +
+    '</span>' +
+    '<span class="preloader-inner-right">' +
+    '<span class="preloader-inner-half-circle"></span>' +
+    '</span>' +
+    '</span>',
+    materialRipple: true,
+    materialRippleElements: '.ripple, a.link, a.item-link, .button, .modal-button, .tab-link, .label-radio, .label-checkbox, .actions-modal-button, a.searchbar-clear, a.floating-button, .floating-button > a, .speed-dial-buttons a',
+    // Auto init
+    init: true,
+};
+
+
 function App (views) {
-    console.log(system);
     return {
+        params: params,
         device: system.Device,
         support: system.Support,
+        ls: window.localStorage,
         touchEvents: {
             start: system.Support.touch ? 'touchstart' : 'mousedown',
             move: system.Support.touch ? 'touchmove' : 'mousemove',
@@ -43,15 +166,18 @@ function App (views) {
         toast: function (text, icon) {
             Toast({text: text, icon:icon});
         },
+        init: function () {
+            FastClicks();
+        },
         componentWillMount: function () {
             window._ = require('underscore');
             _.mixin({
                 deepClone: function(obj) { return (!obj || (typeof obj !== 'object'))?obj:
-                        (_.isString(obj))?String.prototype.slice.call(obj):
-                        (_.isDate(obj))?obj.valueOf():
-                        (_.isFunction(obj.clone))?obj.clone():
-                        (_.isArray(obj)) ? _.map(obj, function(t){return _.deepClone(t)}):
-                        _.mapObject(obj, function(val, key) {return _.deepClone(val)});
+                    (_.isString(obj))?String.prototype.slice.call(obj):
+                    (_.isDate(obj))?obj.valueOf():
+                    (_.isFunction(obj.clone))?obj.clone():
+                    (_.isArray(obj)) ? _.map(obj, function(t){return _.deepClone(t)}):
+                    _.mapObject(obj, function(val, key) {return _.deepClone(val)});
                 }
             });
 
@@ -59,7 +185,10 @@ function App (views) {
             this.history = [];
             this.data = {};
             this.methods = {};
-            this.resPath = window.location.pathname.replace(/index.html$/, '');
+            this.resPath = window.location.pathname.replace(/index.html$/,/index.html$/, '');
+        },
+        componentDidMount: function() {
+            this.init();
         },
         getCurrentView: function () {
             var currentView = this.state.currentView;

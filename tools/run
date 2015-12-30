@@ -1,4 +1,6 @@
 #!/bin/bash
+
 proj=${1:-kitchen-sink}
 cd ../$proj
+rm -fr server/www
 node ../node_modules/gulp/bin/gulp.js run

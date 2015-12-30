@@ -73,7 +73,7 @@ gulp.task('server', function() {
     require('./server/app');
 });
 gulp.task('framework7', function() {
-    var path = libPath+'thirdparty/framework7/';
+    var path = libPath+'js/framework7/main/';
     return gulp.src([
         path+'dom7-intro.js',
         path+'dom7-methods.js',
@@ -181,7 +181,7 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     gulp.src(path+'index.html')
     .pipe(gulp.dest(releasePath));
 });
-gulp.task('run', ['clean', 'watch', 'server']);
+gulp.task('run', ['watch', 'server']);
 gulp.task('clean', function() {
     del([destPath]);
 });
