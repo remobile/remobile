@@ -40,7 +40,7 @@ module.exports = React.createClass({
     render: function() {
         var CurrentPage = this.props.pages[this.state.page];
 		return (
-            <View.Page toolbar>
+            <View.Page labelsTabbar>
 			    <View.PageContent>
                     <CurrentPage data={this.props.data}/>
 			    </View.PageContent>

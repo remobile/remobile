@@ -35,7 +35,8 @@ module.exports = React.createClass({
         }
         var className = cn("page", {
             'navbar-through': navbar,
-            'toolbar-through': this.props.toolbar
+            'toolbar-through': this.props.toolbar,
+            'tabbar-labels-through': this.props.labelsTabbar,
         });
         return (
             <div

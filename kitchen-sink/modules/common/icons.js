@@ -1,4 +1,4 @@
-﻿var React = require('react');
+var React = require('react');
 var cn = require('classnames');
 var UI = require('UI');
 
@@ -625,7 +625,7 @@ module.exports = React.createClass({
         var params = {
             customSearch: true
         };
-        this.searchbar = UI.Search.Search.Searchbar(container, params);
+        this.searchbar = app.searchbar(container, params);
         var self = this;
         container.on("search", function(e) {
             self.updateSearch(e.detail.query);
@@ -658,5 +658,3 @@ module.exports = React.createClass({
         );
     }
 });
-
-
