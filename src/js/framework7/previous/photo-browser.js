@@ -106,8 +106,7 @@ var PhotoBrowser = function (params) {
                 '</a>' +
             '</div>' +
         '</div>';
-
-    var htmlTemplate = t7.compile('<div class="photo-browser photo-browser-{{theme}}">' +
+    var htmlTemplate = app.t7.compile('<div class="photo-browser photo-browser-{{theme}}">' +
             '<div class="view navbar-fixed toolbar-fixed">' +
                 '{{#unless material}}{{#if navbar}}' +
                 navbarTemplate +

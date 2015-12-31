@@ -74,7 +74,7 @@ module.exports = React.createClass({
         var params = {
             searchList: $(this.refs.searchlist.getDOMNode()).find('.searchbar-found')
         };
-        this.searchbar = UI.Search.Search.Searchbar(container, params);
+        this.searchbar = app.searchbar(container, params);
     },
     componentWillUnmount: function() {
         this.searchbar.destroy();

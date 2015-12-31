@@ -3,7 +3,7 @@ var BackButton = require('./BackButton');
 
 module.exports = React.createClass({
     componentDidMount: function() {
-        this.sizeNavbars(this.refs.navbar.getDOMNode());
+        app.sizeNavbars(this.refs.navbar.getDOMNode());
     },
     render: function() {
         return (
