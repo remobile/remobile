@@ -25,6 +25,7 @@ module.exports = React.createClass({
                 <li>
                     <label className="label-radio item-content">
                         <input type="radio" value={this.props.value} name={this.props.name} defaultChecked={this.props.checked} onChange={onChange}/>
+                        {app.params.material&&<div className="item-media"><i className="icon icon-form-radio"></i></div>}
                         {this.props.children}
                     </label>
                 </li>
