@@ -3,7 +3,6 @@ var React = require('react/addons');
 var system = require('../system');
 var Toast = require('../Toast').Toast;
 var template7 = require('../framework7/previous/template7.js');
-var clicks = require('../framework7/previous/clicks.js');
 var fastClicks = require('../framework7/previous/fast-clicks.js');
 var materialInputs = require('../framework7/previous/material-inputs.js');
 var materialPreloader = require('../framework7/previous/material-preloader.js');
@@ -183,7 +182,6 @@ function App (views) {
         },
         init: function () {
             this.t7 =  template7;
-            clicks(this).initClickEvents();
             fastClicks(this).initFastClicks();
             materialInputs(this).initMaterialWatchInputs();
             materialPreloader(this);
