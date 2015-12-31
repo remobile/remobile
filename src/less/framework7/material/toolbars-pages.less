@@ -7,74 +7,29 @@
 .subnavbar ~ .page-content {
     padding-top: @toolbarSize;
 }
-.toolbar-fixed, .tabbar-fixed {
+.navbar-through, .navbar-fixed {
     .page-content {
         padding-top: @toolbarSize;
     }
-}
-.tabbar-labels-fixed {
-    .page-content {
-        padding-top: @tabbarLabelsSize;
+    .with-subnavbar .page-content, .page-content.with-subnavbar, .subnavbar ~ .page-content {
+        padding-top: @toolbarSize * 2;
+    }
+    .page .subnavbar, &.page .subnavbar {
+        top: @toolbarSize;
     }
 }
 
-.toolbar ~ .page-content {
-    padding-top: @toolbarSize;
-}
-.tabbar-labels ~ .page-content {
-    padding-top: @tabbarLabelsSize;
-}
-.toolbar-bottom, .messagebar {
-    ~ .page-content {
-        padding-top: 0;
+.toolbar-through, .toolbar-fixed, .tabbar-through, .tabbar-fixed {
+    .page-content {
         padding-bottom: @toolbarSize;
     }
 }
-.tabbar-labels.toolbar-bottom ~ .page-content {
-    padding-bottom: @tabbarLabelsSize;
-}
-.navbar-fixed {
+.tabbar-labels-fixed, .tabbar-labels-through {
     .page-content {
-        padding-top: @navbarSize;
-    }
-
-    &.toolbar-fixed, &.tabbar-fixed, .toolbar-fixed, .tabbar-fixed, .toolbar-fixed &, .tabbar-fixed & {
-        .page-content {
-            padding-top: @navbarSize + @toolbarSize;
+        padding-bottom: @tabbarLabelsSize;
+        @media all and (min-width:768px) {
+            padding-bottom: @tabbarLabelsSizeTablet;
         }
-    }
-    &.tabbar-labels-fixed, .tabbar-labels-fixed, .tabbar-labels-fixed & {
-        .page-content {
-            padding-top: @navbarSize + @tabbarLabelsSize;
-        }
-    }
-    .toolbar ~ .page-content {
-        padding-top: @navbarSize + @toolbarSize;
-    }
-    .messagebar ~ .page-content, .toolbar-bottom ~ .page-content {
-        padding-top: @navbarSize;
-    }
-
-    .tabbar-labels ~ .page-content {
-        padding-top: @navbarSize + @tabbarLabelsSize;
-    }
-    .tabbar-labels.toolbar-bottom ~ .page-content {
-        padding-top: @navbarSize;
-    }
-
-    .with-subnavbar .page-content, .page-content.with-subnavbar, .subnavbar ~ .page-content {
-        padding-top: @navbarSize + @toolbarSize;
-    }
-
-    .page .subnavbar, &.page .subnavbar {
-        top: @navbarSize;
-    }
-
-    .toolbar {
-        top: @navbarSize;
-    }
-    .messagebar, .toolbar-bottom {
-        top: auto;
     }
 }
 // Page Hidden Navbar
@@ -90,9 +45,6 @@
                 .transition(400ms);
             }
         }
-        & ~ .subnavbar, & ~ .toolbar {
-            .transition(400ms);
-        }
     }
     &.navbar-hidden {
         .transition(400ms);
@@ -100,16 +52,12 @@
         & ~ .page-content, & ~ .pages, & ~ .page {
             .list-group-title {
                 .transition(400ms);
-                top:-@navbarSize;
+                top:-@toolbarSize;
             }
             .subnavbar {
-                .translate3d(0,-@navbarSize,0);
+                .translate3d(0,-100%,0);
                 .transition(400ms);
             }
-        }
-        & ~ .subnavbar, & ~ .toolbar:not(.messagebar):not(.toolbar-bottom) {
-            .translate3d(0,-@navbarSize,0);
-            .transition(400ms);
         }
     }
 }
@@ -129,19 +77,7 @@
     }
     &.toolbar-hidden, &.tabbar-hidden {
         .transition(400ms);
-    }
-
-    &.toolbar-hidden, &.tabbar-hidden {
-        .translate3d(0,-100%,0);
-    }
-    .navbar ~ &.toolbar-hidden, .navbar ~ &.tabbar-hidden {
-        .translate3d(0,-104px,0);
-    }
-    .navbar ~ &.tabbar-labels.toolbar-hidden {
-        .translate3d(0,-128px,0);
-    }
-    &.toolbar-hidden.messagebar, &.toolbar-hidden.toolbar-bottom {
-        .translate3d(0, 100%,0);
+        .translate3d(0,100%,0);
     }
 }
 .page.no-toolbar .page-content, .page.no-tabbar .page-content {
