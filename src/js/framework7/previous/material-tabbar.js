@@ -33,10 +33,6 @@ app.initPageMaterialTabbar = function (pageContainer) {
         }
 
         tabbarSetHighlight();
-        $(window).on('resize', tabbarSetHighlight);
-        pageContainer.once('pageBeforeRemove', function () {
-            $(window).off('resize', tabbarSetHighlight);
-        });
     }
 };
 return app;

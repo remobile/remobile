@@ -185,12 +185,6 @@ app.initClickEvents = function () {
             app.pickerModal(pickerToOpen, clicked);
         }
 
-        // Tabs
-        var isTabLink;
-        if (clicked.hasClass('tab-link')) {
-            isTabLink = true;
-            app.showTab(clickedData.tab || clicked.attr('href'), clicked);
-        }
         // Swipeout Close
         if (clicked.hasClass('swipeout-close')) {
             app.swipeoutClose(clicked.parents('.swipeout-opened'));
