@@ -52,6 +52,10 @@ module.exports = React.createClass({
                         icon={["icon-camera", "icon-back"]}>
                        Edit
                     </View.ToolbarButton>
+                    <View.ToolbarButton 
+                        icon={["icon-camera", "icon-back"]}>
+                       Edit
+                    </View.ToolbarButton>
                 </View.Toolbar>
             </View.Page>
         );
