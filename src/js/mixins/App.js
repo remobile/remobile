@@ -13,6 +13,7 @@ var sortable = require('../framework7/previous/sortable.js');
 var swiper = require('../framework7/previous/swiper.js');
 var navbars = require('../framework7/previous/navbars.js');
 var searchbar = require('../framework7/previous/searchbar.js');
+var scrollToolbars = require('../framework7/previous/scroll-toolbars.js');
 var photoBrowser = require('../framework7/previous/photo-browser.js');
 
 
@@ -129,9 +130,9 @@ var params = {
     imagesLazyLoadThreshold: 0,
     imagesLazyLoadSequential: true,
     // Name space
-    viewClass: 'view',
-    viewMainClass: 'view-main',
-    viewsClass: 'views',
+    // viewClass: 'view',
+    // viewMainClass: 'view-main',
+    // viewsClass: 'views',
     // Notifications defaults
     notificationCloseOnClick: false,
     notificationCloseIcon: true,
@@ -191,6 +192,7 @@ function App (views) {
             sortable(this).initSortable();
             navbars(this);
             searchbar(this);
+            scrollToolbars(this);
             photoBrowser(this);
         },
         componentWillMount: function () {
