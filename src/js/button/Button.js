@@ -3,7 +3,7 @@ var cn = require('classnames');
 var assign = require('object-assign');
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         var obj = {
             'button': !this.props.list,
             'active': this.props.active,
@@ -21,7 +21,11 @@ module.exports = React.createClass({
         var style = this.props.inline?{display:'inline-block', verticalAlign:'middle'}:{};
         style = assign(style, this.props.style);
         return (
-            <a href={link} className={className} style={style} onClick={this.props.onTap}>
+            <a
+                href={link}
+                className={className}
+                style={style}
+                onClick={this.props.onTap}>
                 {this.props.children}
             </a>
         );

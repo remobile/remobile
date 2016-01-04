@@ -1,12 +1,14 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    toggle: function() {
+    toggle() {
         app.accordionToggle(this.getDOMNode());
     },
-    render: function() {
+    render() {
         var content = (
-            <div className="accordion-item-content" onClick={function(e){e.stopPropagation()}}>
+            <div
+                className="accordion-item-content"
+                onClick={(e)=>{e.stopPropagation()}}>
                 {this.props.content}
             </div>
         );
@@ -27,4 +29,3 @@ module.exports = React.createClass({
         }
     }
 });
-

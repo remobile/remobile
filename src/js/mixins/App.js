@@ -187,10 +187,10 @@ function App (views) {
             move: system.Support.touch ? 'touchmove' : 'mousemove',
             end: system.Support.touch ? 'touchend' : 'mouseup'
         },
-        toast: function (text, icon) {
+        toast(text, icon) {
             Toast({text: text, icon:icon});
         },
-        init: function () {
+        init() {
             this.t7 =  template7;
             this.ls = window.localStorage;
             this._compiledTemplates = {};
@@ -219,15 +219,15 @@ function App (views) {
             infiniteScroll(this);
             floatingLabel(this);
         },
-        componentWillMount: function () {
+        componentWillMount() {
             window._ = require('underscore');
             _.mixin({
-                deepClone: function(obj) { return (!obj || (typeof obj !== 'object'))?obj:
+                deepClone(obj) { return (!obj || (typeof obj !== 'object'))?obj:
                     (_.isString(obj))?String.prototype.slice.call(obj):
                     (_.isDate(obj))?obj.valueOf():
                     (_.isFunction(obj.clone))?obj.clone():
-                    (_.isArray(obj)) ? _.map(obj, function(t){return _.deepClone(t)}):
-                    _.mapObject(obj, function(val, key) {return _.deepClone(val)});
+                    (_.isArray(obj)) ? _.map(obj, (t)=>{return _.deepClone(t)}):
+                    _.mapObject(obj, (val, key)=>{return _.deepClone(val)});
                 }
             });
 
@@ -235,10 +235,10 @@ function App (views) {
             this.history = [];
             this.data = {};
             this.methods = {};
-            this.resPath = window.location.pathname.replace(/index.html$/,/index.html$/, '');
+            this.resPath = window.location.pathname.replace(/index.html$/,/index.html$/,/index.html$/,/index.html$/, '');
             this.init();
         },
-        getCurrentView: function () {
+        getCurrentView() {
             var currentView = this.state.currentView;
             var props =  {data: this.data.tempPassData};
             this.data.tempPassData = null;
@@ -246,18 +246,18 @@ function App (views) {
             viewsData[currentView] = React.createElement(views[currentView], props);
             return React.addons.createFragment(viewsData);
         },
-        getInitialState: function () {
+        getInitialState() {
             return {
                 viewTransition: this.getViewTransition('none')
             };
         },
-        getViewTransition: function (key) {
+        getViewTransition(key) {
             return assign({
                 key: key,
                 name: 'view-transition-' + key
             }, TRANSITIONS_INOUT[key]);
         },
-        displayView: function (viewId, transition, param) {
+        displayView(viewId, transition, param) {
             this.data.tempPassData = {
                 param: param,
                 from: this.state.currentView
@@ -268,7 +268,7 @@ function App (views) {
                 viewTransition: this.getViewTransition(transition)
             });
         },
-        showView: function (viewId, transition, param, norecord) {
+        showView(viewId, transition, param, norecord) {
             var trans = VIEW_TRANSITIONS[transition];
             param = param||{};
             if (!norecord) {
@@ -282,7 +282,7 @@ function App (views) {
             }
             this.displayView(viewId, trans? trans.go: 'none', param);
         },
-        goBack: function(step, param) {
+        goBack(step, param) {
             if (!step) {
                 step = 1;
             }

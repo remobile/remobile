@@ -1,11 +1,11 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    render: function() {
-         return (
+    render() {
+        return (
             <div className="messages-date">
-            	{this.props.children}
+                {this.props.children}
             </div>
-         );
+        );
     }
 });

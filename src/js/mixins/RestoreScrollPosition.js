@@ -1,5 +1,5 @@
 module.exports = {
-    componentDidMount: function() {
+    componentDidMount() {
         var data = this.props.data||{};
         var param = data.param||{};
         var scrollTop = param.saved&&param.saved.scrollTop;

@@ -1,11 +1,12 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    render: function() {
-         return (
-             <li className="list-group-title" {...this.props.data}>
+    render() {
+        return (
+            <li
+                className="list-group-title" {...this.props.data}>
                 {this.props.children}
-             </li>
-         );
+            </li>
+        );
     }
 });

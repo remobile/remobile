@@ -1,9 +1,11 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         return (
-            <div className="center sliding">{this.props.children}</div>
+            <div className="center sliding">
+                {this.props.children}
+            </div>
         );
     }
 });

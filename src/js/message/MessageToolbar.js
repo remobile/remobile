@@ -38,7 +38,7 @@ var Messagebar = function (container, maxRows) {
             m.textarea.css('height', newAreaHeight + 'px');
             m.container.css('height', newBarHeight + 'px');
             m.buttons.css('bottom', ((newBarHeight-m.buttonsHeight)/2) + 'px');
-	    var onBottom = (m.pageContent[0].scrollTop === m.pageContent[0].scrollHeight - m.pageContent[0].offsetHeight);
+            var onBottom = (m.pageContent[0].scrollTop === m.pageContent[0].scrollHeight - m.pageContent[0].offsetHeight);
             if (m.pageContent.length > 0) {
                 m.pageContent.css('padding-bottom', newBarHeight + 'px');
                 if (m.pageContent.find('.messages-new-first').length === 0 && onBottom) {
@@ -101,48 +101,60 @@ var Messagebar = function (container, maxRows) {
 };
 
 module.exports = React.createClass({
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             maxRows: 5,
             sendChecked: true
         }
     },
-    getInitialState: function() {
+    getInitialState() {
         var value = this.props.value||'';
         return {
             value: value
         }
     },
-    componentDidMount: function() {
+    componentDidMount() {
         this.messagebar = new Messagebar($(this.refs.messagebar.getDOMNode()), this.props.maxRows);
     },
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this.messagebar.destroy();
     },
-    handleChange: function(e) {
+    handleChange(e) {
         var value = e.target.value;
         this.setState({
             value: value
         });
     },
-    getValue: function() {
+    getValue() {
         return this.state.value;
     },
-    setValue: function(value) {
+    setValue(value) {
         this.setState({
             value: value
         });
     },
-    render: function() {
+    render() {
         var canSend = (this.props.sendChecked && this.state.value.length);
         var sendButtonStyle = canSend?{color:"#007aff"}:{color:"gray"}
         var onSend = canSend&&this.props.onSend;
         return (
-            <div className="toolbar messagebar" ref="messagebar">
+            <div
+                className="toolbar messagebar"
+                ref="messagebar">
                 <div className="toolbar-inner">
-                    <a className="link icon-only"><i className="icon icon-camera"></i></a>
-                    <textarea placeholder="Message" value={this.state.value} onChange={this.handleChange}></textarea>
-                    <a className="link" style={sendButtonStyle} onClick={onSend}>Send</a>
+                    <a className="link icon-only">
+                        <i className="icon icon-camera">
+                        </i>
+                    </a>
+                    <textarea
+                        placeholder="Message"
+                        value={this.state.value}
+                        onChange={this.handleChange}>
+                    </textarea>
+                    <a
+                        className="link"
+                        style={sendButtonStyle}
+                        onClick={onSend}>Send</a>
                 </div>
             </div>
         );

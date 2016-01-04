@@ -1,11 +1,11 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    render: function() {
-         return (
-             <div className="buttons-row">
+    render() {
+        return (
+            <div className="buttons-row">
                 {this.props.children}
-             </div>
-         );
+            </div>
+        );
     }
 });

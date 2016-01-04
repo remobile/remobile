@@ -1,4 +1,4 @@
-module.exports =  (function () {
+module.exports =  (()=>{
     var device = {};
     var ua = navigator.userAgent;
 

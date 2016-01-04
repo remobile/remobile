@@ -117,12 +117,12 @@ function IndexedList(params) {
 
 
 module.exports = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             activeAlpha: this.props.letters[0]
         }
     },
-    componentDidMount: function() {
+    componentDidMount() {
         var self = this;
         var callback = app.methods.setActiveAlpha = function(letter) {
             self.setState({activeAlpha:letter});
@@ -134,22 +134,28 @@ module.exports = React.createClass({
         });
         this.indexedList.init();
     },
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this.indexedList.destory();
     },
-    render: function() {
+    render() {
         return (
-            <ul className="list-index" ref="list" style={this.props.style}>
+            <ul
+                className="list-index"
+                ref="list"
+                style={this.props.style}>
                 {this.props.letters.map((letter)=>{
                     var obj = {};
                     if (this.state.activeAlpha == letter) {
                         obj.active = true;
                     }
-                    return <li key={letter} className={cn(obj)} data-index-letter={letter}>{letter}</li>
+                    return <li
+                        key={letter}
+                        className={cn(obj)}
+                        data-index-letter={letter}>
+                        {letter}
+                    </li>
                 })}
             </ul>
         );
     }
 });
-
-

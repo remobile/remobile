@@ -1,18 +1,18 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    componentDidMount: function() {
+    componentDidMount() {
         var self = this;
         var container = $('.infinite-scroll');
         app.initInfiniteScroll(container);
-        container.on('infinite', function (e) {
+        container.on('infinite', (e)=>{
             self.props.onInfinite && self.props.onInfinite(e);
         });
     },
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         app.destroyInfiniteScroll();
     },
-    render: function() {
+    render() {
         return null;
     }
 });

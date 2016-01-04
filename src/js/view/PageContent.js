@@ -2,7 +2,7 @@ var React = require('react');
 var cn = require('classnames');
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         var obj = {
             "messages-content": this.props.message,
             "hide-bars-on-scroll": this.props.scrollHideBar,
@@ -10,16 +10,18 @@ module.exports = React.createClass({
             "tab": this.props.tab,
             "active": this.props.active,
         };
-        this.props.class&&(obj[this.props.class]=true);        
+        this.props.class&&(obj[this.props.class]=true);
         var className = cn("page-content", obj);
-        
+
         var data = this.props.data;
         var dataAttribute = {};
         for (var key in data) {
-        	dataAttribute['data-'+key] = data[key];
+            dataAttribute['data-'+key] = data[key];
         }
         return (
-            <div className={className} id={this.props.tab} {...dataAttribute}>
+            <div
+                className={className}
+                id={this.props.tab} {...dataAttribute}>
                 {this.props.children}
             </div>
         );

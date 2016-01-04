@@ -1,14 +1,17 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    onTap: function(){
+    onTap(){
         var func = this.props.onTap;
         func && func(this);
         app.closeModal();
     },
-    render: function() {
+    render() {
         return (
-            <span className="modal-button" style={this.props.style} onClick={this.onTap}>
+            <span
+                className="modal-button"
+                style={this.props.style}
+                onClick={this.onTap}>
                 {this.props.children}
             </span>
         );

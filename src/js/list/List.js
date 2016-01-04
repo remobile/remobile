@@ -2,7 +2,7 @@ var React = require('react');
 var cn = require('classnames');
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		var obj = {
 			'list-block': true,
 			'inset': this.props.inset,
@@ -29,6 +29,7 @@ module.exports = React.createClass({
 					ref="container">
 					<ul>
 						{this.props.children}
+
 					</ul>
 				</div>
 			)

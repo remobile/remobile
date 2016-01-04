@@ -3,7 +3,7 @@ var assign = require('object-assign');
 var cn = require('classnames');
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         var obj = {
             "row": this.props.row
         };

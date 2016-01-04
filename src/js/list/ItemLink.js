@@ -1,14 +1,17 @@
 var React = require('react');
 
 module.exports = React.createClass({
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             link: false
         }
     },
-    render: function() {
+    render() {
         return (
-            <a href="#" className="item-link item-content" onClick={this.props.onTap}>
+            <a
+                href="#"
+                className="item-link item-content"
+                onClick={this.props.onTap}>
                 {this.props.children}
             </a>
         );

@@ -2,14 +2,14 @@ var React = require('react');
 var cn = require('classnames');
 
 module.exports = React.createClass({
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.active) {
             var el = $(this.refs.link.getDOMNode());
             var tabbar = el.parents('.tabbar')[0];
             app.materialTabbarSetHighlight(tabbar, el);
         }
     },
-    render: function() {
+    render() {
         var className = cn("tab-link", {
             "active": this.props.active
         });
@@ -20,9 +20,16 @@ module.exports = React.createClass({
             icon = this.props.icon;
         }
         return (
-            <a className={className} onClick={this.props.onTap} ref="link">
-                <i className={"icon "+icon}>{this.props.badge}</i>
-                <span className ="tabbar-label">{this.props.children}</span>
+            <a
+                className={className}
+                onClick={this.props.onTap}
+                ref="link">
+                <i className={"icon "+icon}>
+                    {this.props.badge}
+                </i>
+                <span className ="tabbar-label">
+                    {this.props.children}
+                </span>
             </a>
         );
     }

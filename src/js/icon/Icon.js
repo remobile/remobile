@@ -3,7 +3,7 @@ var cn = require('classnames');
 var assign = require('object-assign');
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         var obj = {
             'icon':true
         };
@@ -19,7 +19,8 @@ module.exports = React.createClass({
         }
         style = assign(style, this.props.style);
         return (
-            <i className={className} style={style}></i>
+            <i className={className} style={style}>
+            </i>
         );
     }
 });

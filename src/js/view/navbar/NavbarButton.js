@@ -2,7 +2,7 @@ var React = require('react');
 var cn = require('classnames');
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         var divCN = cn({
             "right": this.props.right,
             "left": this.props.left
@@ -17,8 +17,12 @@ module.exports = React.createClass({
             var iCN = cn(obj);
             return (
                 <div className={divCN}>
-                    <a href="#" className={aCN} onClick={this.props.onTap}>
-                        <i className={iCN}></i>
+                    <a
+                        href="#"
+                        className={aCN}
+                        onClick={this.props.onTap}>
+                        <i className={iCN}>
+                        </i>
                         {this.props.children}
                     </a>
                 </div>
@@ -26,7 +30,10 @@ module.exports = React.createClass({
         } else {
             return (
                 <div className={divCN}>
-                    <a href="#" className={aCN} onClick={this.props.onTap}>
+                    <a
+                        href="#"
+                        className={aCN}
+                        onClick={this.props.onTap}>
                         {this.props.children}
                     </a>
                 </div>

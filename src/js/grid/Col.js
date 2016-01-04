@@ -2,12 +2,12 @@ var React = require('react');
 var cn = require('classnames');
 
 module.exports = React.createClass({
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             per: 100,
         }
     },
-    render: function() {
+    render() {
         var obj = {};
         obj['col-'+this.props.per] = true;
         this.props.class&&(obj[this.props.class]=true);
