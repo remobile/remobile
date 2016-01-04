@@ -6,7 +6,7 @@ var Content = UI.Content;
 var List = UI.List;
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var today = new Date();
 
     // iOS Device picker
@@ -44,14 +44,14 @@ module.exports = React.createClass({
     var pickerDependent = app.picker({
         input: '#ks-picker-dependent',
         rotateEffect: true,
-        formatValue: function (picker, values) {
+        formatValue(picker, values) {
             return values[1];
         },
         cols: [
             {
                 textAlign: 'left',
                 values: ['Japanese', 'German', 'American'],
-                onChange: function (picker, country) {
+                onChange(picker, country) {
                     if(picker.cols[1].replaceValues){
                         picker.cols[1].replaceValues(carVendors[country]);
                     }
@@ -91,7 +91,7 @@ module.exports = React.createClass({
                 values: ('Man Luthor Woman Boy Girl Person Cutie Babe Raccoon').split(' ')
             },
         ],
-        onOpen: function (picker) {
+        onOpen(picker) {
             picker.container.find('.toolbar-randomize-link').on('click', function () {
                 var col0Values = picker.cols[0].values;
                 var col0Random = col0Values[Math.floor(Math.random() * col0Values.length)];
@@ -114,13 +114,13 @@ module.exports = React.createClass({
         toolbar: false,
         rotateEffect: true,
         value: [today.getMonth(), today.getDate(), today.getFullYear(), today.getHours(), (today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes())],
-        onChange: function (picker, values, displayValues) {
+        onChange(picker, values, displayValues) {
             var daysInMonth = new Date(picker.value[2], picker.value[0]*1 + 1, 0).getDate();
             if (values[1] > daysInMonth) {
                 picker.cols[1].setValue(daysInMonth);
             }
         },
-        formatValue: function (p, values, displayValues) {
+        formatValue(p, values, displayValues) {
             return displayValues[0] + ' ' + values[1] + ', ' + values[2] + ' ' + values[3] + ':' + values[4];
         },
         cols: [
@@ -171,7 +171,7 @@ module.exports = React.createClass({
         ]
     });
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Picker">
 				<View.PageContent>

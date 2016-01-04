@@ -13,10 +13,10 @@ var pages = require('./pages');
 
 
 var IndexedList =  React.createClass({
-    getInitialState: function() {
-        return {letters:['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'W', 'X', 'Y', 'Z'].sort(function(a, b) {return a.localeCompare(b)})};
+    getInitialState() {
+        return {letters:['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'W', 'X', 'Y', 'Z'].sort((a, b)=>{return a.localeCompare(b)})};
     },
-    render: function() {
+    render() {
         return (
             <List.IndexedList letters={this.state.letters}/>
         );
@@ -25,19 +25,19 @@ var IndexedList =  React.createClass({
 
 module.exports = React.createClass({
     mixins: [UI.Mixins.RestoreScrollPosition],
-    getInitialState: function() {
+    getInitialState() {
         return {
             page: app.data.homePageIndex||0,
         }
     },
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {pages:[pages.Home, pages.Contacts, pages.Messages, pages.More]}
     },
-    switchPage: function(page) {
+    switchPage(page) {
         app.data.homePageIndex = page;
         this.setState({page: page})
     },
-    render: function() {
+    render() {
         var CurrentPage = this.props.pages[this.state.page];
 		return (
             <View.Page labelsTabbar>

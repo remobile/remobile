@@ -10,7 +10,7 @@ var Badge = UI.Badge.Badge;
 var Button = UI.Button.Button;
 
 var ListItem = React.createClass({
-    render: function() {
+    render() {
         return (
         <List.ItemContent>
             <List.ItemMedia><Icon name="icon-f7" /></List.ItemMedia>
@@ -24,21 +24,21 @@ var ListItem = React.createClass({
 });
 
 module.exports = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             list:[5,4,3,2,1]
         };
     },
-    onRefresh: function(e) {
+    onRefresh(e) {
         var self = this;
-        setTimeout(function () {
+        setTimeout(()=>{
             var len = self.state.list.length;
             self.state.list.unshift(len+1);
             self.setState({list: self.state.list});
             e.detail.done();
         }, 1000);
     },
-	render: function() {
+	render() {
         return (
             <View.Page title="Pull To Refresh">
             <View.PageContent class="pull-to-refresh-content">

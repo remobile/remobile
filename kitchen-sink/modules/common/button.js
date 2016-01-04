@@ -9,7 +9,7 @@ var Button = UI.Button.Button;
 var ButtonsRow = UI.Button.ButtonsRow;
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
             <View.Page title="Button" right={<View.NavbarButton right>确定</View.NavbarButton>}>
                 <View.PageContent>

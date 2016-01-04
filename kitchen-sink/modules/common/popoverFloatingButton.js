@@ -10,7 +10,7 @@ var Icon = UI.Icon.Icon;
 var List = UI.List;
 
 var RectPopover = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<List.List block>
           <List.ItemContent link>
@@ -38,7 +38,7 @@ var RectPopover = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
         return (
             <View.Page title="Chips">
             <View.PageContent>

@@ -609,10 +609,10 @@ var icons = [
 ];
 
 var IconText = React.createClass({
-    showClassName :function(name) {
+    showClassName (name) {
         console.log(name);
     },
-    render: function() {
+    render() {
         var name = this.props.name;
         var className = cn("icon", name);
         return (<i className={className} style={{ margin:"10px"}} onClick={this.showClassName.bind(this, name)}></i>);
@@ -620,34 +620,34 @@ var IconText = React.createClass({
 });
 
 module.exports = React.createClass({
-    componentDidMount: function() {
+    componentDidMount() {
         var container = $(this.refs.searchbar.getDOMNode());
         var params = {
             customSearch: true
         };
         this.searchbar = app.searchbar(container, params);
         var self = this;
-        container.on("search", function(e) {
+        container.on("search", (e)=>{
             self.updateSearch(e.detail.query);
         });
     },
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this.searchbar.destroy();
     },
-    getInitialState: function() {
+    getInitialState() {
         return {searchString:''};
     },
-    updateSearch: function(str) {
+    updateSearch(str) {
         this.setState({ searchString: str });
     },
-    getIconItems: function() {
+    getIconItems() {
         var ss = new RegExp(this.state.searchString);
-        var temp = icons.filter(function(name) {
+        var temp = icons.filter((name)=>{
             return ss.test(name);
         });
         return temp.map((name)=> <IconText name={name}/> )
     },
-    render: function() {
+    render() {
         return (
             <View.Page title="Icons">
                 <UI.Search.Search ref="searchbar"/>

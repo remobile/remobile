@@ -1,13 +1,13 @@
 ﻿var UI =require('UI');
 
-module.exports = {showWelcome: function () {
+module.exports = {showWelcome() {
 	var options = {
 		'bgcolor': '#0da6ec',
 		'fontcolor': '#fff',
-		'onOpened': function () {
+		'onOpened'() {
 			console.log("welcome screen opened");
 		},
-		'onClosed': function () {
+		'onClosed'() {
 			console.log("welcome screen closed");
 		}
 	},
@@ -39,19 +39,19 @@ module.exports = {showWelcome: function () {
 
 	welcomescreen = UI.Welcome.WelcomeScreen(slides, options);
 
-	$(document).on('click', '.tutorial-close-btn', function () {
+	$(document).on('click', '.tutorial-close-btn', ()=>{
 		welcomescreen.close();
 	});
 
-	$('.tutorial-open-btn').click(function () {
-		welcomescreen.open();  
+	$('.tutorial-open-btn').click(()=>{
+		welcomescreen.open();
 	});
 
-	$(document).on('click', '.tutorial-next-link', function (e) {
-		welcomescreen.next(); 
+	$(document).on('click', '.tutorial-next-link', (e)=>{
+		welcomescreen.next();
 	});
 
-	$(document).on('click', '.tutorial-previous-slide', function (e) {
-		welcomescreen.previous(); 
+	$(document).on('click', '.tutorial-previous-slide', (e)=>{
+		welcomescreen.previous();
 	});
 }};

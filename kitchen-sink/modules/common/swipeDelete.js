@@ -10,11 +10,11 @@ var Form = UI.Form;
 
 
 module.exports = React.createClass({
-	deleteItem: function(e) {
+	deleteItem(e) {
 		var clicked = $(e.target);
 		this.refs.list.swipeout.delete(clicked.parents('.swipeout'));
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Swipe Delete">
 				<View.PageContent>

@@ -14,7 +14,7 @@ function getImage(i) {
 }
 
 var List1 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
                 <List.ItemContent>
@@ -44,7 +44,7 @@ var List1 = React.createClass({
 
 
 var List2 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block media>
                 <List.ItemContent link>
@@ -92,7 +92,7 @@ var List2 = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Cards">
 				<View.PageContent>

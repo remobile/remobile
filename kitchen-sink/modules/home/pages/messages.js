@@ -11,7 +11,7 @@ function getImage(i) {
 }
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 				<Message.Messages>
 					<MessageDate>Sunday, Feb 9,<span>12:58</span></MessageDate>

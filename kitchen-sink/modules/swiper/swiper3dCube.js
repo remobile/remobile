@@ -8,16 +8,16 @@ function getImage(i) {
 }
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var params = {
 			effect: "cube"
 		};
 		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);
   },
-  componentWillUnmount: function() {
+  componentWillUnmount() {
 		this.props.slider.destroy();
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Swiper 3d Cube">
          <View.PageContent>

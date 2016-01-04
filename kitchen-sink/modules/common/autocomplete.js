@@ -6,7 +6,7 @@ var Content = UI.Content;
 var List = UI.List;
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		// Fruits data demo array
     var fruits = ('Apple Apricot Avocado Banana Melon Orange Peach Pear Pineapple').split(' ');
 
@@ -14,7 +14,7 @@ module.exports = React.createClass({
     var autocompleteDropdownSimple = app.autocomplete({
         input: '#autocomplete-dropdown',
         openIn: 'dropdown',
-        source: function (autocomplete, query, render) {
+        source(autocomplete, query, render) {
             var results = [];
             if (query.length === 0) {
                 render(results);
@@ -34,7 +34,7 @@ module.exports = React.createClass({
         input: '#autocomplete-dropdown-expand',
         openIn: 'dropdown',
         expandInput: true, // expand input
-        source: function (autocomplete, query, render) {
+        source(autocomplete, query, render) {
             var results = [];
             if (query.length === 0) {
                 render(results);
@@ -53,7 +53,7 @@ module.exports = React.createClass({
     var autocompleteDropdownAll = app.autocomplete({
         input: '#autocomplete-dropdown-all',
         openIn: 'dropdown',
-        source: function (autocomplete, query, render) {
+        source(autocomplete, query, render) {
             var results = [];
             // Find matched items
             for (var i = 0; i < fruits.length; i++) {
@@ -69,7 +69,7 @@ module.exports = React.createClass({
         input: '#autocomplete-dropdown-placeholder',
         openIn: 'dropdown',
         dropdownPlaceholderText: 'Try to type "Apple"',
-        source: function (autocomplete, query, render) {
+        source(autocomplete, query, render) {
             var results = [];
             if (query.length === 0) {
                 render(results);
@@ -94,7 +94,7 @@ module.exports = React.createClass({
         limit: 20, //limit to 20 results
         dropdownPlaceholderText: 'Try "JavaScript"',
         expandInput: true, // expand input
-        source: function (autocomplete, query, render) {
+        source(autocomplete, query, render) {
             var results = [];
             if (query.length === 0) {
                 render(results);
@@ -111,7 +111,7 @@ module.exports = React.createClass({
                 data: {
                     query: query
                 },
-                success: function (data) {
+                success(data) {
                     // Find matched items
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].name.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
@@ -130,7 +130,7 @@ module.exports = React.createClass({
         openIn: 'page', //open in page
         opener: $('#autocomplete-standalone'), //link that opens autocomplete
         backOnSelect: true, //go back after we select something
-        source: function (autocomplete, query, render) {
+        source(autocomplete, query, render) {
             var results = [];
             if (query.length === 0) {
                 render(results);
@@ -143,7 +143,7 @@ module.exports = React.createClass({
             // Render items by passing array with result items
             render(results);
         },
-        onChange: function (autocomplete, value) {
+        onChange(autocomplete, value) {
             // Add item text value to item-after
             $('#autocomplete-standalone').find('.item-after').text(value[0]);
             // Add item value to input value
@@ -151,7 +151,7 @@ module.exports = React.createClass({
         }
     });
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Dropdown Autocomplete">
 				<View.PageContent>

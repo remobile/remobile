@@ -10,15 +10,15 @@ var Button = UI.Button;
 var Form = UI.Form;
 
 module.exports = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             link: 1
         }
     },
-    switchLink: function(link) {
+    switchLink(link) {
         this.setState({link:link});
     },
-    render: function() {
+    render() {
         return (
             <View.Page navbar title="SubNavbar Hide On Scroll" initPageScrollToolbars>
                 <View.Navbar>

@@ -10,12 +10,12 @@ var ProgressBar = UI.Form.ProgressBar;
 var Modal = UI.Modal;
 
 var ProgressModal = React.createClass({
-	getInitialState: function() {
+	getInitialState() {
 		return {
 			value:0,
 		}
 	},
-	updateValue: function() {
+	updateValue() {
 		var value = this.state.value;
 		if (value<100) {
 			value++;
@@ -25,10 +25,10 @@ var ProgressModal = React.createClass({
 			app.closeModal();
 		}
 	},
-	componentDidMount: function() {
+	componentDidMount() {
 		setTimeout(this.updateValue, 100);
 	},
-	render: function() {
+	render() {
 		return (
 			<div>
           <Modal.ModalInner>
@@ -48,16 +48,16 @@ function showProgressModal() {
 
 
 module.exports = React.createClass({
-	getInitialState: function() {
+	getInitialState() {
 		return {
 			buttonIndex:0,
 			progrees1: 10,
 		}
 	},
-	buttonClick: function(index, value) {
+	buttonClick(index, value) {
 		this.setState({buttonIndex:index, progrees1:value})
 	},
-	render: function() {
+	render() {
 		var index = this.state.buttonIndex;
 		return (
 			<View.Page title="Progress Bar">

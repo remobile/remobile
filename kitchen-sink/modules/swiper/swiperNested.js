@@ -4,7 +4,7 @@ var Content = UI.Content;
 var View = UI.View;
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var paramsh = {
 			pagination: ".swiper-pagination-h",
 			paginationHide: false
@@ -18,11 +18,11 @@ module.exports = React.createClass({
 		};
 		this.props.sliderv = app.swiper(this.refs.swiperv.getDOMNode(), paramsv);
   },
-  componentWillUnmount: function() {
+  componentWillUnmount() {
 		this.props.sliderh.destroy();
 		this.props.sliderv.destroy();
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Swiper Nested">
          <View.PageContent>

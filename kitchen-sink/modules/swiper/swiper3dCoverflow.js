@@ -8,7 +8,7 @@ function getImage(i) {
 }
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var params = {
 			pagination: ".swiper-pagination",
 			effect: "coverflow",
@@ -17,10 +17,10 @@ module.exports = React.createClass({
 		};
 		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);
   },
-  componentWillUnmount: function() {
+  componentWillUnmount() {
 		this.props.slider.destroy();
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Swiper 3d Coverflow">
          <View.PageContent>

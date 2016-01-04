@@ -9,11 +9,11 @@ var Button = UI.Button.Button;
 var ButtonsRow = UI.Button.ButtonsRow;
 
 var LayoutCell = React.createClass({
-		changeColorTheme: function(color) {
+		changeColorTheme(color) {
 	    var layouts = 'layout-dark layout-white';
 	    $('body').removeClass(layouts).addClass('layout-' + color);
 		},
-    render: function() {
+    render() {
         return (
           <div className={"col-33 ks-layout-theme ks-layout-"+this.props.color} onClick={this.changeColorTheme.bind(null, this.props.color)}></div>
         );
@@ -21,11 +21,11 @@ var LayoutCell = React.createClass({
 });
 
 var ColorCell = React.createClass({
-		changeColorTheme: function(color) {
+		changeColorTheme(color) {
 			var themes = 'theme-white theme-black theme-yellow theme-red theme-blue theme-green theme-pink theme-lightblue theme-orange theme-gray';
 	    $('body').removeClass(themes).addClass('theme-' + color);
 		},
-    render: function() {
+    render() {
         return (
           <div className={"col-20 ks-layout-theme bg-"+this.props.color} onClick={this.changeColorTheme.bind(null, this.props.color)}></div>
         );
@@ -33,7 +33,7 @@ var ColorCell = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Color Themes">
 				<View.PageContent>

@@ -8,7 +8,7 @@ var Button = UI.Button.Button;
 var ButtonsRow = UI.Button.ButtonsRow;
 
 var Tab1 = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<Content.ContentBlock>
         <p>This is tab 1 content</p>
@@ -20,7 +20,7 @@ var Tab1 = React.createClass({
 });
 
 var Tab2 = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<Content.ContentBlock>
         <p>This is tab 2 content</p>
@@ -32,7 +32,7 @@ var Tab2 = React.createClass({
 });
 
 var Tab3 = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<Content.ContentBlock>
         <p>This is tab 3 content</p>
@@ -44,18 +44,18 @@ var Tab3 = React.createClass({
 });
 
 module.exports = React.createClass({
-		getInitialState: function() {
+		getInitialState() {
         return {
             tab: 0
         }
     },
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {tabs:[Tab1, Tab2, Tab3]}
     },
-    switchTab: function(tab) {
+    switchTab(tab) {
         this.setState({tab: tab})
     },
-	render: function() {
+	render() {
 		var tabs = (
 			<ButtonsRow>
 			  <Button active={this.state.tab===0} onTap={this.switchTab.bind(this, 0)}>Tab 1</Button>

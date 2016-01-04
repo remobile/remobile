@@ -9,10 +9,10 @@ var View = UI.View;
 
 
 var ListItem = React.createClass({
-    showPage: function(page) {
+    showPage(page) {
         app.showView(page, 'left');
     },
-    render: function() {
+    render() {
         return (
             <List.ItemContent link onTap={this.showPage.bind(this, this.props.page)}>
                 <List.ItemMedia><Icon name="icon-f7" /></List.ItemMedia>
@@ -25,7 +25,7 @@ var ListItem = React.createClass({
 });
 
 var MenuList = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
                 <ListItem page="staticFloatingButton">Static Floating Button</ListItem>
@@ -37,7 +37,7 @@ var MenuList = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
             <View.Page title="Tabs">
 							<View.PageContent>

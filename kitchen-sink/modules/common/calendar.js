@@ -8,7 +8,7 @@ var Badge = UI.Badge.Badge;
 
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
     // Default
     var calendarDefault = app.calendar({
         input: '#ks-calendar-default',
@@ -48,7 +48,7 @@ module.exports = React.createClass({
                     '</div>' +
                 '</div>' +
             '</div>',
-        onOpen: function (p) {
+        onOpen(p) {
             $('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] +', ' + p.currentYear);
             $('.calendar-custom-toolbar .left .link').on('click', function () {
                 calendarInline.prevMonth();
@@ -57,12 +57,12 @@ module.exports = React.createClass({
                 calendarInline.nextMonth();
             });
         },
-        onMonthYearChangeStart: function (p) {
+        onMonthYearChangeStart(p) {
             $('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] +', ' + p.currentYear);
         }
     });
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Calendar">
 				<View.PageContent>

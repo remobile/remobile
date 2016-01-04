@@ -11,7 +11,7 @@ var FloatingLabel = UI.Form.FloatingLabel;
 
 
 var FormItem = React.createClass({
-	 render: function() {
+	 render() {
         return (
              <List.ItemContent>
              		{this.props.icon&&<List.ItemMedia><Icon name={this.props.icon}/></List.ItemMedia>}
@@ -27,7 +27,7 @@ var FormItem = React.createClass({
 });
 
 var FormInputItem = React.createClass({
-	 render: function() {
+	 render() {
         return (
              <FormItem icon={this.props.icon} label={this.props.label}>
                  <input type={this.props.input_type} placeholder={this.props.placeholder} />
@@ -37,7 +37,7 @@ var FormInputItem = React.createClass({
 });
 
 var FormList = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block inputs>
             	<FormInputItem icon="icon-form-name" label="Name" input_type="text" placeholder="Please Input Your Name" />
@@ -73,7 +73,7 @@ var FormList = React.createClass({
 
 
 var FormList1 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block inputs>
             	<FormInputItem icon="icon-form-name" input_type="text" placeholder="Please Input Your Name" />
@@ -96,7 +96,7 @@ var FormList1 = React.createClass({
 });
 
 var FormList2 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block inputs>
             	<FormInputItem input_type="text" placeholder="Please Input Your Name" />
@@ -119,7 +119,7 @@ var FormList2 = React.createClass({
 });
 
 var FormList3 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block inputs inset>
             	<FormInputItem input_type="text" placeholder="Please Input Your Name" />
@@ -142,7 +142,7 @@ var FormList3 = React.createClass({
 });
 
 var FormList4 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block inputs inset>
 				<List.ItemContent>
@@ -165,7 +165,7 @@ var FormList4 = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 
 		return (
 			<View.Page title="Form">

@@ -9,7 +9,7 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 
 var List1 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
                 <List.ItemContent>
@@ -38,7 +38,7 @@ var List1 = React.createClass({
 });
 
 var List2 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
                 <List.ItemContent link>
@@ -67,7 +67,7 @@ var List2 = React.createClass({
 });
 
 var List3 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
                 <List.ItemContent link>
@@ -95,7 +95,7 @@ var List3 = React.createClass({
 
 
 var List4 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block group>
                 <List.ListGroup>
@@ -154,7 +154,7 @@ var List4 = React.createClass({
 });
 
 var List5 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
                 <List.ItemContent link>
@@ -227,7 +227,7 @@ var List5 = React.createClass({
 });
 
 var List7 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block tabletInset>
                 <List.ItemContent link>
@@ -257,7 +257,7 @@ var List7 = React.createClass({
 
 
 var List6 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block inset>
                 <List.ItemContent link>
@@ -292,7 +292,7 @@ var List6 = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="List">
 				<View.PageContent>

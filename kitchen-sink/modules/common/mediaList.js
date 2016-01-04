@@ -13,7 +13,7 @@ function getImage(i) {
 }
 
 var List1 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block media>
             	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
@@ -39,7 +39,7 @@ var List1 = React.createClass({
 });
 
 var List2 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block media>
             	{[{name:"Facebook", time:"17:14", title:"New messages from John Doe"}, 
@@ -65,7 +65,7 @@ var List2 = React.createClass({
 });
 
 var List3 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block media>
             	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
@@ -87,7 +87,7 @@ var List3 = React.createClass({
 });
 
 var List4 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block media inset>
               {[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
@@ -111,7 +111,7 @@ var List4 = React.createClass({
 
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="MediaList">
 				<View.PageContent>

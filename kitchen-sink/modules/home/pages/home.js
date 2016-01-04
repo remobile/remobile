@@ -29,14 +29,14 @@ function showPhoto() {
 
 
 var ListItem = React.createClass({
-    showPage: function(page) {
+    showPage(page) {
         if (page === 'photo') {
             showPhoto();
         } else {
             app.showView(page, 'left', {backText:'主页'});
         }
     },
-    render: function() {
+    render() {
         return (
             <List.ItemContent link onTap={this.showPage.bind(this, this.props.page)}>
                 <List.ItemMedia><Icon name="icon-f7" /></List.ItemMedia>
@@ -49,7 +49,7 @@ var ListItem = React.createClass({
 });
 
 var MenuList = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
             		<ListItem page="colorThemes">Color Themes</ListItem>
@@ -91,7 +91,7 @@ var MenuList = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
             <div>
                 <Content.ContentBlockTitle>React-mobile Kitchen Sink</Content.ContentBlockTitle>

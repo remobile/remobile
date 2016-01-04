@@ -16,12 +16,12 @@ function getImage(i) {
 }
 
 var List1 = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             checkedList: []
         }
     },
-    handleChange: function(i, checked) {
+    handleChange(i, checked) {
         if (checked) {
             this.state.checkedList.push(i);
         } else {
@@ -29,7 +29,7 @@ var List1 = React.createClass({
         }
         console.log(this.state.checkedList);
     },
-    render: function() {
+    render() {
         var checkedList = this.state.checkedList;
         return (
             <List.List block>
@@ -48,10 +48,10 @@ var List1 = React.createClass({
 });
 
 var List2 = React.createClass({
-    handleChange: function(i, checked) {
+    handleChange(i, checked) {
         console.log(i, checked);
     },
-    render: function() {
+    render() {
         return (
             <List.List block>
             	{["Books", "Movies", "Food", "Drinks"].map((label, i)=>{return (
@@ -69,12 +69,12 @@ var List2 = React.createClass({
 });
 
 var List3 = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             checkedList: []
         }
     },
-    handleChange: function(i, checked) {
+    handleChange(i, checked) {
         if (checked) {
             this.state.checkedList.push(i);
         } else {
@@ -82,7 +82,7 @@ var List3 = React.createClass({
         }
         console.log(this.state.checkedList);
     },
-    render: function() {
+    render() {
     		var checkedList = this.state.checkedList;
         return (
             <List.List block media>
@@ -109,10 +109,10 @@ var List3 = React.createClass({
 });
 
 var List4 = React.createClass({
-    handleChange: function(i, checked) {
+    handleChange(i, checked) {
         console.log(i, checked);
     },
-    render: function() {
+    render() {
         return (
             <List.List block media>
             	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
@@ -138,7 +138,7 @@ var List4 = React.createClass({
 });
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         return (
             <View.Page title="CheckBox">
                 <View.PageContent>

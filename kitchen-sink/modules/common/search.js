@@ -53,7 +53,7 @@ var persons = [
 
 
 var ListItem = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.ItemContent link>
                 <List.ItemMedia><Icon name="icon-f7" /></List.ItemMedia>
@@ -68,17 +68,17 @@ var ListItem = React.createClass({
 
 
 module.exports = React.createClass({
-    componentDidMount: function() {
+    componentDidMount() {
         var container = $(this.refs.searchbar.getDOMNode());
         var params = {
             searchList: $(this.refs.searchlist.getDOMNode()).find('.searchbar-found')
         };
         this.searchbar = app.searchbar(container, params);
     },
-    componentWillUnmount: function() {
+    componentWillUnmount() {
         this.searchbar.destroy();
     },
-    render: function() {
+    render() {
         return (
             <View.Page title="Search">
                 <UI.Search.Search ref="searchbar"/>

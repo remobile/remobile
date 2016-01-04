@@ -15,10 +15,10 @@ function getImage(i) {
 }
 
 module.exports = React.createClass({
-	dealDelete: function() {
+	dealDelete() {
 		console.log("delete");
 	},
-	render: function() {
+	render() {
         return (
             <View.Page title="Chips">
             <View.PageContent>

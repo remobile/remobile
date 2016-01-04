@@ -8,10 +8,10 @@ var IconButton = UI.Button.IconButton;
 var FloatingButton = UI.Button.FloatingButton;
 
 module.exports = React.createClass({
-	onTap: function() {
+	onTap() {
 		console.log("onTap");
 	},
-	render: function() {
+	render() {
         return (
             <View.Page title="Chips">
             <View.PageContent>

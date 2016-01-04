@@ -32,7 +32,7 @@ var users = {
 };
 
 var ContactItem = React.createClass({
-   render: function() {
+   render() {
        return (
            <List.ItemContent>
            		 <List.ItemMedia><Icon name={"default_head user_head_"+this.props.person.avatar} round/></List.ItemMedia>
@@ -45,7 +45,7 @@ var ContactItem = React.createClass({
 });
 
 var ContactGroup = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.ListGroup>
                 <List.ListGroupTitle data={{'data-index-letter':this.props.letter}}>{this.props.letter}</List.ListGroupTitle>
@@ -57,7 +57,7 @@ var ContactGroup = React.createClass({
 
 
 var ContactList = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block group class="contacts-block">
                 {React.addons.createFragment(_.mapObject(users, (persons, key)=>{return <ContactGroup key={key} letter={key} persons={persons}/>}))}
@@ -68,7 +68,7 @@ var ContactList = React.createClass({
 
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 				<ContactList />
 		);

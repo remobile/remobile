@@ -17,7 +17,7 @@ var content = (
 );
 
 var List1 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List inset>
                 <List.ItemContent>
@@ -46,7 +46,7 @@ var List1 = React.createClass({
 });
 
 var ListItem = React.createClass({
-    render: function() {
+    render() {
         return (
             <UI.Accordion.AccordionItem list content={this.props.value&1?content:<List1 />}>
                 <List.ItemLink>
@@ -62,7 +62,7 @@ var ListItem = React.createClass({
 });
 
 var CustomItem = React.createClass({
-    render: function() {
+    render() {
         return (
             <UI.Accordion.AccordionItem content={this.props.value&1?content:<List1 />}>
                 <div className="accordion-item-toggle">
@@ -76,12 +76,12 @@ var CustomItem = React.createClass({
 });
 
 module.exports = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             list:[1,2,3]
         };
     },
-	render: function() {
+	render() {
         return (
             <View.Page title="Accordion">
             <View.PageContent>

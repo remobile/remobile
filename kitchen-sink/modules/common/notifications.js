@@ -33,14 +33,14 @@ function notificationCallback() {
         subtitle: 'New message from John Doe',
         message: 'Hello, how are you? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut posuere erat. Pellentesque id elementum urna, a aliquam ante. Donec vitae volutpat orci. Aliquam sed molestie risus, quis tincidunt dui.',
         media: '<img width="44" height="44" style="border-radius:100%" src="http://lorempixel.com/output/people-q-c-100-100-9.jpg">',
-        onClose: function () {
+        onClose() {
             alert('Notification closed');
         }
     });
 }
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Notifications">
 				<View.PageContent>

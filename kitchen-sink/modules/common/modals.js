@@ -11,9 +11,9 @@ var Modal = UI.Modal;
 function showAlertModal() {
 	app.alert('Hello!');
 }
-   
+
 var ReactAlertModal = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<div>
           <Modal.ModalInner>
@@ -27,35 +27,35 @@ var ReactAlertModal = React.createClass({
      )
 	}
 });
-   
+
    function showReactAlertModal() {
       app.showCover(<ReactAlertModal />, {type:'modal'});
    }
-   
+
 
     function showConfirmModal() {
-        app.confirm('Are you feel good today?', function () {
+        app.confirm('Are you feel good today?', ()=>{
             app.alert('Great!');
         });
    }
 
    function showPromptModal() {
-        app.prompt('What is your name?', function (data) {
+        app.prompt('What is your name?', (data)=>{
             // @data contains input value
-            app.confirm('Are you sure that your name is ' + data + '?', function () {
+            app.confirm('Are you sure that your name is ' + data + '?', ()=>{
                 app.alert('Ok, your name is ' + data + ' ;)');
             });
         });
    }
 
    function showLoginModal() {
-        app.modalLogin('Enter your username and password', function (username, password) {
+        app.modalLogin('Enter your username and password',  (username, password)=>{
             app.alert('Thank you! Username: ' + username + ', password: ' + password);
         });
    }
 
    function showPasswordModal() {
-        app.modalPassword('Enter your password', function (password) {
+        app.modalPassword('Enter your password', (password)=> {
             app.alert('Thank you! Password: ' + password);
         });
    }
@@ -72,7 +72,7 @@ var ReactAlertModal = React.createClass({
             // First button
             {
                 text: 'Alert',
-                onClick: function () {
+                onClick() {
                     app.alert('He Hoou!');
                 }
             },
@@ -80,7 +80,7 @@ var ReactAlertModal = React.createClass({
             {
                 text: 'Nice Red Button ',
                 color: 'red',
-                onClick: function () {
+                onClick() {
                     app.alert('You have clicked red button!');
                 }
             },
@@ -96,7 +96,7 @@ var ReactAlertModal = React.createClass({
 
        app.actions(actionSheetButtons);
    }
-   
+
    function openMultiAlerts() {
    	 	app.alert('Alert 1');
         app.alert('Alert 2');
@@ -104,7 +104,7 @@ var ReactAlertModal = React.createClass({
         app.alert('Alert 4');
         app.alert('Alert 5');
    }
-   
+
    function turnToPicker() {
 		app.showView('picker', 'left');
 	}
@@ -126,9 +126,9 @@ var ReactAlertModal = React.createClass({
 		html += '</div>';
 		app.pickerModal(html);
 	}
-	
+
 	var RectHTML = React.createClass({
-		render: function() {
+		render() {
 			return (
 					<Content.ContentBlock>
 						<p>Integer mollis nulla id nibh elementum finibus. Maecenas eget fermentum ipsum. Sed sagittis condimentum nisl at tempus. Duis lacus libero, laoreet vitae ligula a, aliquet eleifend sapien. Nullam sodales viverra sodales. Nulla hendrerit condimentum dolor facilisis tempor. Donec at est malesuada, sagittis nisi et, accumsan enim.</p>
@@ -136,14 +136,14 @@ var ReactAlertModal = React.createClass({
 	     )
 		}
 	});
-	
+
 	function openPickerWithRectHTML() {
 		app.showCover(<RectHTML />, {type:'picker'});
 	}
 
 
 	var PopupView = React.createClass({
-		render: function() {
+		render() {
 			return (
 		      <Content.ContentBlock>
 		        <p>Long text block goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sem urna, gravida non scelerisque id, fringilla ac velit. Phasellus elementum a ipsum at ornare. Mauris sagittis rhoncus euismod. Integer convallis augue eu lacus ultrices, in dictum elit consequat. Nulla faucibus massa id felis egestas eleifend. Proin consequat dignissim magna ut scelerisque. Vestibulum ac lorem semper, posuere sapien nec, pharetra massa. Nulla a tellus facilisis, sollicitudin quam porta, aliquam lorem. Fusce dignissim eros ac diam molestie, ut ultrices lorem tristique. Ut facilisis augue ac nisi egestas malesuada. Nunc posuere tortor quis eleifend mollis. Aliquam erat volutpat. Donec feugiat elit tellus, nec convallis orci elementum in. Sed urna mi, vestibulum id tempus id, pretium et ante. Pellentesque eget sollicitudin ligula. Phasellus pellentesque velit eu porta suscipit.</p>
@@ -157,7 +157,7 @@ var ReactAlertModal = React.createClass({
   	}
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Modals">
 				<View.PageContent>

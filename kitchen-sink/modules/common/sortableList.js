@@ -9,7 +9,7 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 
 var ListItem = React.createClass({
-    render: function() {
+    render() {
         return (
         <List.ItemContent sortable>
             <List.ItemMedia><Icon name="icon-f7" /></List.ItemMedia>
@@ -23,16 +23,16 @@ var ListItem = React.createClass({
 });
 
 module.exports = React.createClass({
-	getInitialState: function() {
+	getInitialState() {
 		return {
 			open: false
 		}
 	},
-	handleClick: function() {
+	handleClick() {
 		app.sortableToggle();
 		this.setState({open:!this.state.open});
 	},
-	render: function() {
+	render() {
 		var text = this.state.open?"Done":"Edit";
 		return (
 			<View.Page title="Sortable List" right={<View.NavbarButton right iconOnly onTap={this.handleClick}>{text}</View.NavbarButton>}>

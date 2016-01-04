@@ -4,7 +4,7 @@ var Content = UI.Content;
 var View = UI.View;
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var params1 = {
 			pagination: ".swiper-pagination-c1",
 			spaceBetween:50
@@ -47,7 +47,7 @@ module.exports = React.createClass({
 		};
 		this.props.slider6 = app.swiper(this.refs.swiper6.getDOMNode(), params6);
   },
-  componentWillUnmount: function() {
+  componentWillUnmount() {
 		this.props.slider1.destroy();
 		this.props.slider2.destroy();
 		this.props.slider3.destroy();
@@ -55,7 +55,7 @@ module.exports = React.createClass({
 		this.props.slider5.destroy();
 		this.props.slider6.destroy();
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Swiper Multiple">
          <View.PageContent>

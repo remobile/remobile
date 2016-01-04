@@ -6,7 +6,7 @@ var Content = UI.Content;
 var List = UI.List;
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var today = new Date();
 		// Dependent values
 		var provinces = require('../../data/city-data.js');
@@ -14,14 +14,14 @@ module.exports = React.createClass({
 		var pickerDependent = app.picker({
 			input: '#ks-picker-city',
 			rotateEffect: true,
-			formatValue: function (picker, values, displayValues) {
+			formatValue(picker, values, displayValues) {
 				return displayValues[0] + ' ' + values[1] + ' ' + values[2];
 			},
 			cols: [
 				{
 					textAlign: 'left',
 					values: _.map(provinces, (province)=> {return province.text}),
-					onChange: function (picker, province) {
+					onChange(picker, province) {
 						cities = _.findWhere(provinces, {text:province}).children;
 						if(picker.cols[1].replaceValues){
 							picker.cols[1].replaceValues(_.map(cities, (city)=> {return city.text}));
@@ -31,7 +31,7 @@ module.exports = React.createClass({
 				{
 					textAlign: 'left',
 					values: _.map(provinces[0].children, (city)=> {return city.text}),
-					onChange: function (picker, city) {
+					onChange(picker, city) {
 						if(picker.cols[2].replaceValues){
 							areas = _.findWhere(cities, {text:city}).children;
 							picker.cols[2].replaceValues(_.map(areas, (area)=> {return area.text}));
@@ -51,16 +51,16 @@ module.exports = React.createClass({
 			toolbar: false,
 			rotateEffect: true,
 			value: ['北京市', '北京市', ' 西城区'],
-			onChange: function (picker, values, displayValues) {
+			onChange(picker, values, displayValues) {
 			},
-			formatValue: function (p, values, displayValues) {
+			formatValue(p, values, displayValues) {
 				return displayValues[0] + ' ' + values[1] + ' ' + values[2];
 			},
 			cols: [
 				{
 					textAlign: 'left',
 					values: _.map(provinces, (province)=> {return province.text}),
-					onChange: function (picker, province) {
+					onChange(picker, province) {
 						cities = _.findWhere(provinces, {text:province}).children;
 						if(picker.cols[1].replaceValues){
 							picker.cols[1].replaceValues(_.map(cities, (city)=> {return city.text}));
@@ -70,7 +70,7 @@ module.exports = React.createClass({
 				{
 					textAlign: 'left',
 					values: _.map(provinces[0].children, (city)=> {return city.text}),
-					onChange: function (picker, city) {
+					onChange(picker, city) {
 						if(picker.cols[2].replaceValues){
 							areas = _.findWhere(cities, {text:city}).children;
 							picker.cols[2].replaceValues(_.map(areas, (area)=> {return area.text}));
@@ -83,7 +83,7 @@ module.exports = React.createClass({
 			]
 		});
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Picker">
 				<View.PageContent>

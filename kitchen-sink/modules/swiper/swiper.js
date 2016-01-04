@@ -8,10 +8,10 @@ var Form = UI.Form;
 var View = UI.View;
 
 var ListItem = React.createClass({
-		showPage: function(page) {
+		showPage(page) {
 				app.showView(page, 'left');
 		},
-    render: function() {
+    render() {
         return (
             <List.ItemContent link onTap={this.showPage.bind(this, this.props.page)}>
                 <List.ItemInner>
@@ -23,7 +23,7 @@ var ListItem = React.createClass({
 });
 
 var List1 = React.createClass({
-    render: function() {
+    render() {
         return (
             <List.List block>
                 <ListItem page="swiperHorizontal">Swiper Horizontal</ListItem>
@@ -46,7 +46,7 @@ var List1 = React.createClass({
 });
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Swiper">
          <View.PageContent>

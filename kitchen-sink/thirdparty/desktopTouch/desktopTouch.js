@@ -43,10 +43,10 @@
         this.length=0;
     }
     TouchList.prototype = {
-        item:function(ind){
+        item(ind){
             return this[ind];
         },
-        _add:function(touch){
+        _add(touch){
             this[this.length]=touch;
             this.length++;
         }

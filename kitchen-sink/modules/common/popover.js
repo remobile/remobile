@@ -30,7 +30,7 @@ function showPopover(e) {
 }
 
 var RectPopover = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<List.List block>
           <List.ItemContent link>
@@ -62,7 +62,7 @@ function showReactPopover(e) {
 }
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Popover">
 				<View.PageContent>

@@ -8,7 +8,7 @@ function getImage(i) {
 }
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		this.props.sliderTop = swiper(this.refs.swiperTop.getDOMNode(), {
 				nextButton: '.swiper-button-next',
 		    prevButton: '.swiper-button-prev',
@@ -24,11 +24,11 @@ module.exports = React.createClass({
 		this.props.sliderTop.params.control = this.props.sliderThumbs;
     this.props.sliderThumbs.params.control = this.props.sliderTop;
   },
-  componentWillUnmount: function() {
+  componentWillUnmount() {
 		this.props.sliderTop.destroy();
 		this.props.sliderThumbs.destroy();
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Two Way Control Gallery">
          <View.PageContent>

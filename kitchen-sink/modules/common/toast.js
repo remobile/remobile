@@ -18,7 +18,7 @@ function showCenterToastWithOnlyText() {
 }
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
         return (
             <View.Page title="Toast">
             <View.PageContent>

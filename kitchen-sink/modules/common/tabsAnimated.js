@@ -13,7 +13,7 @@ var Form = UI.Form;
 var TAB_ID_PREFIX = 'tab_'
 
 var Tab1 = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.PageContent subnavbar tab={TAB_ID_PREFIX+1} active>
 				<Content.ContentBlock>
@@ -27,7 +27,7 @@ var Tab1 = React.createClass({
 });
 
 var Tab2 = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.PageContent subnavbar tab={TAB_ID_PREFIX+2} >
 				<Content.ContentBlock>
@@ -41,7 +41,7 @@ var Tab2 = React.createClass({
 });
 
 var Tab3 = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.PageContent subnavbar tab={TAB_ID_PREFIX+3} >
 				<Content.ContentBlock>
@@ -55,11 +55,11 @@ var Tab3 = React.createClass({
 });
 
 module.exports = React.createClass({
-    switchTab: function(tab, e) {
+    switchTab(tab, e) {
         app.showTab('#'+TAB_ID_PREFIX+tab, e.target);
         e.preventDefault();
     },
-    render: function() {
+    render() {
     		var buttons = [<Button key='1' tab={'#'+TAB_ID_PREFIX+1} active onTap={this.switchTab.bind(this, 1)}>Tab 1</Button>,
 											  <Button key='2'  tab={'#'+TAB_ID_PREFIX+2} onTap={this.switchTab.bind(this, 2)}>Tab 2</Button>,
 											  <Button key='3'  tab={'#'+TAB_ID_PREFIX+3} onTap={this.switchTab.bind(this, 3)}>Tab 3</Button>];

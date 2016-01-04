@@ -4,16 +4,16 @@ var Content = UI.Content;
 var View = UI.View;
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var params = {
 			scrollbar: ".swiper-scrollbar"
 		};
 		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);			
   },
-  componentWillUnmount: function() {
+  componentWillUnmount() {
 		this.props.slider.destroy();
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Button">
          <View.PageContent>

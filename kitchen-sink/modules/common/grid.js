@@ -9,7 +9,7 @@ var Button = UI.Button.Button;
 var ButtonsRow = UI.Button.ButtonsRow;
 
 module.exports = React.createClass({
-	render: function() {
+	render() {
 		return (
 			<View.Page title="Grid">
 				<View.PageContent>

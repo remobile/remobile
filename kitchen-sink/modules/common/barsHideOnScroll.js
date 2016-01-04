@@ -9,7 +9,7 @@ var Badge = UI.Badge.Badge;
 var Form = UI.Form;
 
 module.exports = React.createClass({
-    render: function() {
+    render() {
         return (
             <View.Page title="Bars Hide On Scroll" initPageScrollToolbars>
                 <View.PageContent scrollHideBar>

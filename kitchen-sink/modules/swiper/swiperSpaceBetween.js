@@ -4,7 +4,7 @@ var Content = UI.Content;
 var View = UI.View;
 
 module.exports = React.createClass({
-	componentDidMount: function() {
+	componentDidMount() {
 		var params = {
 			spaceBetween: 50,
 			pagination: ".swiper-pagination",
@@ -12,10 +12,10 @@ module.exports = React.createClass({
 		};
 		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);			
   },
-  componentWillUnmount: function() {
+  componentWillUnmount() {
 		this.props.slider.destroy();
 	},
-	render: function() {
+	render() {
 		return (
 			<View.Page  title="Swiper Space Between">
          <View.PageContent>
