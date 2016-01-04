@@ -16,6 +16,7 @@ module.exports = {
 	'form': require('./common/form.js'),
 	'progressBar': require('./common/progressBar.js'),
 	'picker': require('./common/picker.js'),
+	'cityPicker': require('./common/cityPicker.js'),
 	'popover': require('./common/popover.js'),
 	'modals': require('./common/modals'),
 	'preloader': require('./common/preloader'),

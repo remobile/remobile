@@ -78,6 +78,7 @@ var MenuList = React.createClass({
                 <ListItem page="radioCheckBox">Radio And Checkbox</ListItem>
                 <ListItem page="form">Form</ListItem>
                 <ListItem page="picker">Picker</ListItem>
+                <ListItem page="cityPicker">City Picker</ListItem>
                 <ListItem page="popover">Popover</ListItem>
                 <ListItem page="modals">Modals</ListItem>
                 <ListItem page="calendar">Calendar</ListItem>
