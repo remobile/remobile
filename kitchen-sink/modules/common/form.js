@@ -7,6 +7,7 @@ var Content = UI.Content;
 var Icon = UI.Icon.Icon;
 var Switch = UI.Form.Switch;
 var Slider = UI.Form.Slider;
+var FloatingLabel = UI.Form.FloatingLabel;
 
 
 var FormItem = React.createClass({
@@ -140,13 +141,36 @@ var FormList3 = React.createClass({
     }
 });
 
+var FormList4 = React.createClass({
+    render: function() {
+        return (
+            <List.List block inputs inset>
+				<List.ItemContent>
+                   <List.ItemInner>
+                       <FloatingLabel label="UserName">
+						   <input type='text'/>
+                       </FloatingLabel>
+                   </List.ItemInner>
+               </List.ItemContent>
+			   <List.ItemContent>
+				  <List.ItemInner>
+					  <FloatingLabel label="PassWord">
+						  <input type='password'/>
+					  </FloatingLabel>
+				  </List.ItemInner>
+			  </List.ItemContent>
+           </List.List>
+        );
+    }
+});
+
 module.exports = React.createClass({
 	render: function() {
 
 		return (
 			<View.Page title="Form">
 				<View.PageContent>
-        	<Content.ContentBlockTitle>Full Layout</Content.ContentBlockTitle>
+        			<Content.ContentBlockTitle>Full Layout</Content.ContentBlockTitle>
 					<FormList />
 					<Content.ContentBlockTitle>Icons And Inputs</Content.ContentBlockTitle>
 					<FormList1 />
@@ -154,6 +178,8 @@ module.exports = React.createClass({
 					<FormList2 />
 					<Content.ContentBlockTitle>Inset, Just Inputs</Content.ContentBlockTitle>
 					<FormList3 />
+					<Content.ContentBlockTitle>Floating Label</Content.ContentBlockTitle>
+					<FormList4 />
 				</View.PageContent>
        </View.Page>
 		);

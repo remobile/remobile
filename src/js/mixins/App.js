@@ -26,6 +26,7 @@ var tabs = require('../framework7/tabs.js');
 var accordion = require('../framework7/accordion.js');
 var pullToRefresh = require('../framework7/pull-to-refresh.js');
 var infiniteScroll = require('../framework7/infinite-scroll.js');
+var floatingLabel = require('../framework7/floating-label.js');
 
 var VERSION = '1.4.0';
 var TRANSITIONS_INOUT = {
@@ -216,6 +217,7 @@ function App (views) {
             accordion(this);
             pullToRefresh(this);
             infiniteScroll(this);
+            floatingLabel(this);
         },
         componentWillMount: function () {
             window._ = require('underscore');

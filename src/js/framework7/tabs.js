@@ -78,7 +78,7 @@ app.showTab = function (tab, tabLink, force) {
             });
         }
     }
-console.log("========");
+
     // Update links' classes
     if (tabLink && tabLink.length > 0) {
         tabLink.addClass('active');
