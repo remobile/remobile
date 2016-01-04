@@ -20,7 +20,7 @@ module.exports = React.createClass({
     },
     render: function() {
         return (
-            <View.Page navbar title="SubNavbar Hide On Scroll" scrollHideBar>
+            <View.Page navbar title="SubNavbar Hide On Scroll" initPageScrollToolbars>
                 <View.Navbar>
                     <View.NavbarTitle>List</View.NavbarTitle>
                     <View.SubNavbar>

@@ -2,19 +2,30 @@ var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
 var Toast = require('../Toast').Toast;
-var template7 = require('../framework7/previous/template7.js');
-var fastClicks = require('../framework7/previous/fast-clicks.js');
-var materialInputs = require('../framework7/previous/material-inputs.js');
-var materialPreloader = require('../framework7/previous/material-preloader.js');
-var materialTabbar = require('../framework7/previous/material-tabbar.js');
-var swipeout = require('../framework7/previous/swipeout.js');
-var sortable = require('../framework7/previous/sortable.js');
-var swiper = require('../framework7/previous/swiper.js');
-var navbars = require('../framework7/previous/navbars.js');
-var searchbar = require('../framework7/previous/searchbar.js');
-var scrollToolbars = require('../framework7/previous/scroll-toolbars.js');
-var photoBrowser = require('../framework7/previous/photo-browser.js');
-
+var template7 = require('../framework7/template7.js');
+var clicks = require('../framework7/clicks.js');
+var fastClicks = require('../framework7/fast-clicks.js');
+var materialInputs = require('../framework7/material-inputs.js');
+var materialPreloader = require('../framework7/material-preloader.js');
+var materialTabbar = require('../framework7/material-tabbar.js');
+var swipeout = require('../framework7/swipeout.js');
+var sortable = require('../framework7/sortable.js');
+var swiper = require('../framework7/swiper.js');
+var swiperInit = require('../framework7/swiper-init.js');
+var navbars = require('../framework7/navbars.js');
+var searchbar = require('../framework7/searchbar.js');
+var scrollToolbars = require('../framework7/scroll-toolbars.js');
+var photoBrowser = require('../framework7/photo-browser.js');
+var notifications = require('../framework7/notifications.js');
+var modals = require('../framework7/modals.js');
+var picker = require('../framework7/picker.js');
+var calendar = require('../framework7/calendar.js');
+var panels = require('../framework7/panels.js');
+var autocomplete = require('../framework7/autocomplete.js');
+var tabs = require('../framework7/tabs.js');
+var accordion = require('../framework7/accordion.js');
+var pullToRefresh = require('../framework7/pull-to-refresh.js');
+var infiniteScroll = require('../framework7/infinite-scroll.js');
 
 var VERSION = '1.4.0';
 var TRANSITIONS_INOUT = {
@@ -49,7 +60,7 @@ var params = {
     cacheIgnore: [],
     cacheIgnoreGetParameters: false,
     cacheDuration: 1000 * 60 * 10, // Ten minutes
-    preloadPreviousPage: true,
+    preloadf7Page: true,
     uniqueHistory: false,
     uniqueHistoryIgnoreGetParameters: false,
     dynamicPageUrl: 'content-{{index}}',
@@ -144,7 +155,7 @@ var params = {
     template7Pages: false,
     precompileTemplates: false,
     // Material
-    material: true,
+    material: false,
     materialPageLoadDelay: 0,
     materialPreloaderSvg: '<svg xmlns="http://www.w3.org/2000/svg" height="75" width="75" viewbox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="8"/></svg>',
     materialPreloaderHtml:
@@ -170,8 +181,6 @@ function App (views) {
         params: params,
         device: system.Device,
         support: system.Support,
-        ls: window.localStorage,
-        swiper: swiper,
         touchEvents: {
             start: system.Support.touch ? 'touchstart' : 'mousedown',
             move: system.Support.touch ? 'touchmove' : 'mousemove',
@@ -182,16 +191,31 @@ function App (views) {
         },
         init: function () {
             this.t7 =  template7;
+            this.ls = window.localStorage;
+            this._compiledTemplates = {};
             fastClicks(this).initFastClicks();
+            clicks(this).initClickEvents();
             materialInputs(this).initMaterialWatchInputs();
             materialPreloader(this);
             materialTabbar(this);
+            swiper(this);
+            swiperInit(this);
             swipeout(this).initSwipeout();
             sortable(this).initSortable();
             navbars(this);
             searchbar(this);
             scrollToolbars(this);
             photoBrowser(this);
+            notifications(this);
+            modals(this);
+            picker(this);
+            calendar(this);
+            panels(this).initSwipePanels();
+            autocomplete(this);
+            tabs(this);
+            accordion(this);
+            pullToRefresh(this);
+            infiniteScroll(this);
         },
         componentWillMount: function () {
             window._ = require('underscore');
@@ -251,7 +275,8 @@ function App (views) {
                     delete param.saved;
                 }
                 saved = assign(saved, {scrollTop: $('.page-content').scrollTop()});
-                this.history.push({id:this.state.currentView, transition:transition, saved:saved});
+                this.history.push({id:this.state.currentView, title:this.data.lastTitle, transition:transition, saved:saved});
+                this.data.lastTitle = param.backText||this.data.currentTitle||'Back';
             }
             this.displayView(viewId, trans? trans.go: 'none', param);
         },
@@ -268,6 +293,7 @@ function App (views) {
                 var trans = VIEW_TRANSITIONS[obj.transition];
                 param = assign({}, param);
                 param.saved = obj.saved;
+                this.data.lastTitle = obj.title;
                 this.displayView(obj.id, trans? trans.back: 'none', param);
             }
         }

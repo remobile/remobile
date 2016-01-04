@@ -4,16 +4,15 @@ var UI = require('UI');
 var View = UI.View;
 var Content = UI.Content;
 var Button = UI.Button.Button;
-var Notifications = UI.Notifications.Notifications;
 
 function notificationSimple() {
-    Notifications.addNotification({
+    app.addNotification({
         title: 'Framework7',
         message: 'This is a simple notification message with title and message'
     });
 }
 function notificationFull() {
-    Notifications.addNotification({
+    app.addNotification({
         title: 'Framework7',
         subtitle: 'Notification subtitle',
         message: 'This is a simple notification message with custom icon and subtitle',
@@ -21,7 +20,7 @@ function notificationFull() {
     });
 }
 function notificationCustom() {
-    Notifications.addNotification({
+    app.addNotification({
         title: 'My Awesome App',
         subtitle: 'New message from John Doe',
         message: 'Hello, how are you? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut posuere erat. Pellentesque id elementum urna, a aliquam ante. Donec vitae volutpat orci. Aliquam sed molestie risus, quis tincidunt dui.',
@@ -29,7 +28,7 @@ function notificationCustom() {
     });
 }
 function notificationCallback() {
-    Notifications.addNotification({
+    app.addNotification({
         title: 'My Awesome App',
         subtitle: 'New message from John Doe',
         message: 'Hello, how are you? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut posuere erat. Pellentesque id elementum urna, a aliquam ante. Donec vitae volutpat orci. Aliquam sed molestie risus, quis tincidunt dui.',

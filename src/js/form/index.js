@@ -1,4 +1,5 @@
 module.exports = {
 	Slider: require('./Slider'),
-	Switch: require('./Switch')
+	Switch: require('./Switch'),
+	ProgressBar: require('./ProgressBar'),
 };

@@ -23,12 +23,12 @@
     height: 100%;
     background: rgba(0,0,0,0.4);
     z-index: 13000;
-    visibility: visible;
-    opacity: 1;
+    visibility: hidden;
+    opacity: 0;
     .transition(@modalDuration);
-    &.modal-overlay-invisible {
-        .transition(@modalDuration);
-        opacity: 0;
+    &.modal-overlay-visible {
+        visibility: visible;
+        opacity: 1;
     }
 }
 .popup-overlay {
@@ -41,11 +41,11 @@
     left: 50%;
     margin-left: -135px;
     margin-top: 0;
-    top: 45%;
+    top: 50%;
     text-align: center;
     border-radius: 13px;
     overflow: hidden;
-    opacity: 1;
+    opacity: 0;
     .transform(translate3d(0,0,0) scale(1.185));
     -webkit-transition-property: -webkit-transform, opacity;
     -moz-transition-property: -moz-transform, opacity;
@@ -161,7 +161,7 @@
     bottom: 0;
     z-index: 13500;
     width: 100%;
-    //.transform(translate3d(0,100%,0));
+    .transform(translate3d(0,100%,0));
     @media (min-width:496px) {
         width: 480px;
         left: 50%;
@@ -296,12 +296,12 @@ input.modal-text-input {
 }
 // Popover
 .popover {
-    width: 240px;
+    width: 320px;
     background:@popoverBg;
     z-index: 13500;
     margin: 0;
     top: 0;
-    opacity: 1;
+    opacity: 0;
     left: 0;
     border-radius: 13px;
     position: absolute;
@@ -315,10 +315,6 @@ input.modal-text-input {
     &.modal-in {
         .transition(@actionsModalDuration);
         opacity: 1;
-    }
-    &.modal-out {
-        .transition(@actionsModalDuration);
-        opacity: 0;
     }
     .list-block {
         margin: 0;
@@ -571,13 +567,6 @@ html.with-statusbar-overlay {
             .hairline-remove(top);
             .hairline(bottom, #929499);
         }
-    }
-    &.picker-modal-on {
-        display: block;
-        position: relative;
-        z-index: inherit;
-    		.transition(400ms);
-        .translate3d(0,100%,0);
     }
     .popover & {
         width: auto;

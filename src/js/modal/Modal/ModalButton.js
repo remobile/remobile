@@ -4,7 +4,7 @@ module.exports = React.createClass({
     onTap: function(){
         var func = this.props.onTap;
         func && func(this);
-        app.hideModal();
+        app.closeModal();
     },
     render: function() {
         return (

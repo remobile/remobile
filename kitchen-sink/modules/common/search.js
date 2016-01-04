@@ -3,7 +3,6 @@ var UI = require('UI');
 
 var View = UI.View;
 var Content = UI.Content;
-var PopoverModal = UI.Modal.PopoverModal;
 var List = UI.List;
 var Button = UI.Button.Button;
 var Icon = UI.Icon.Icon;

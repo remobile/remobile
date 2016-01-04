@@ -3,10 +3,13 @@ var cn = require('classnames');
 
 module.exports = React.createClass({
     render: function() {
-        var className = cn("toolbar", {
+    		var obj = {
+    				"toolbar": true,
             "tabbar": this.props.tabbar,
             "tabbar-labels": this.props.labels
-        });
+        };
+        this.props.class&&(obj[this.props.class]=true);
+        var className = cn(obj);
          return (
              <div className={className}>
                 <div className="toolbar-inner">

@@ -4,9 +4,28 @@ var UI = require('UI');
 var View = UI.View;
 var Content = UI.Content;
 var Grid = UI.Grid;
+var List = UI.List;
+var Icon = UI.Icon.Icon;
 var Button = UI.Button.Button;
-var MenuList = require('../home/pages/main').MenuList;
 
+
+
+var ListItem = React.createClass({
+    showPage: function(page) {
+    	app.closePanel();
+    	app.showView(page, 'left');
+    },
+    render: function() {
+        return (
+            <List.ItemContent link onTap={this.showPage.bind(this, this.props.page)}>
+                <List.ItemMedia><Icon name="icon-f7" /></List.ItemMedia>
+                <List.ItemInner>
+                    <List.ItemTitle>{this.props.children}</List.ItemTitle>
+                </List.ItemInner>
+             </List.ItemContent>
+        );
+    }
+});
 
 var LeftPanel = React.createClass({
 	render: function() {
@@ -18,7 +37,10 @@ var LeftPanel = React.createClass({
 		      </Content.ContentBlock>
 		      <Content.ContentBlockTitle>Framework7 Kitchen Sink</Content.ContentBlockTitle>
 		      
-		      <MenuList />
+		      <List.List block>
+                <ListItem page="button">Button</ListItem>
+                <ListItem page="toast">Toast</ListItem>
+            </List.List>
 		      
 		      <Content.ContentBlock>
 		        <p>Long text block goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sem urna, gravida non scelerisque id, fringilla ac velit. Phasellus elementum a ipsum at ornare. Mauris sagittis rhoncus euismod. Integer convallis augue eu lacus ultrices, in dictum elit consequat. Nulla faucibus massa id felis egestas eleifend. Proin consequat dignissim magna ut scelerisque. Vestibulum ac lorem semper, posuere sapien nec, pharetra massa. Nulla a tellus facilisis, sollicitudin quam porta, aliquam lorem. Fusce dignissim eros ac diam molestie, ut ultrices lorem tristique. Ut facilisis augue ac nisi egestas malesuada. Nunc posuere tortor quis eleifend mollis. Aliquam erat volutpat. Donec feugiat elit tellus, nec convallis orci elementum in. Sed urna mi, vestibulum id tempus id, pretium et ante. Pellentesque eget sollicitudin ligula. Phasellus pellentesque velit eu porta suscipit.</p>
@@ -42,19 +64,19 @@ var RightPanel = React.createClass({
 });
 
 function showLeftPanel() {
-	app.showPanel('left', <LeftPanel />);
+	app.showCover(<LeftPanel />, {type:'panel', side: 'left'});
 }
 
 
 function showRightPanel() {
-	app.showPanel('right', <RightPanel />);
+	app.showCover(<RightPanel />, {type:'panel', side: 'right'});
 }
 
 function showRightPanelFromLeft() {
-	app.hidePanel();
-	setTimeout(function() {
-		showRightPanel();
-	}, 500);
+		app.closePanel();
+		setTimeout(function() {
+			showRightPanel();
+		}, 500);
 }
 
 module.exports = React.createClass({

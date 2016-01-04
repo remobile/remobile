@@ -90,15 +90,15 @@ module.exports = React.createClass({
                     {this.state.list.map((item)=>{ return <ListItem value={item}/>})}
                 </List.List>
                 <Content.ContentBlockTitle>Group List View Accordion</Content.ContentBlockTitle>
-                <List.List class="accordion-group">
+                <List.List class="accordion-list">
                     {this.state.list.map((item)=>{ return <ListItem value={item}/>})}
                 </List.List>
                 <Content.ContentBlockTitle>Inset Accordion</Content.ContentBlockTitle>
-                <List.List inset class="accordion-group">
+                <List.List inset class="accordion-list">
                     {this.state.list.map((item)=>{ return <ListItem value={item}/>})}
                 </List.List>
                 <Content.ContentBlockTitle>Custom Styled Accordion</Content.ContentBlockTitle>
-                <Content.ContentBlock class="custom-accordion accordion-group">
+                <Content.ContentBlock class="custom-accordion accordion-list">
                 		{this.state.list.map((item)=>{ return <CustomItem value={item}/>})}
                 </Content.ContentBlock>
             </View.PageContent>

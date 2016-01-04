@@ -2,56 +2,35 @@
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var classnames = require('classnames');
 var UI =require('UI');
-var ModalPanel = UI.Modal.ModalPanel;
 var views = require('./modules');
 var welcome = require('./modules/home/welcome');
+
+function getHead(i) {
+    return 'img/app/head/'+i+'.jpg';
+}
 
 var App = React.createClass({
     mixins: [UI.Mixins.App(views)],
     componentWillMount: function () {
         // welcome.showWelcome();
-    },
-    showModal: function(modalType, modalChildren) {
-        this.setState({modalVisible:true, modalChildren:modalChildren, modalType:modalType});
-    },
-    hideModal: function() {
-        this.setState({modalVisible:false});
-    },
-    showWait: function(text) {
-        if (text) {
-        	var Modal = UI.Modal;
-       		this.showModal('modal',
-       				<Modal.ModalNoButttons>
-	                <Modal.ModalInner>
-	                    <Modal.ModalTitle>{text}</Modal.ModalTitle>
-	                    <Modal.ModalText>
-	                        <Modal.BlackPreloader />
-	                    </Modal.ModalText>
-	                </Modal.ModalInner>
-	            </Modal.ModalNoButttons>);
-      	} else {
-      		this.showModal('indicator');
-      	}
-    },
-    hideWait: function() {
-        this.hideModal();
-    },
-    showPanel: function(panelType, panelChildren) {
-        this.setState({panelVisible:true, panelChildren:panelChildren, panelType:panelType});
-    },
-    hidePanel: function() {
-        this.setState({panelVisible:false});
+        this.userHeadCss = $.createStyleSheet();
+        [1,2,3,4,5,6,7,8,9].map((i)=>{$.upsertStyleSheet(app.userHeadCss, '.user_head_'+i, 'background-image:url('+getHead(i)+')')});
     },
     getInitialState: function() {
         return {
-            currentView: 'home'
+            currentView: 'main'
         };
+    },
+    showCover: function(coverChildren, coverParams) {
+        this.setState({coverVisible:true, coverChildren:coverChildren, coverParams:coverParams});
+    },
+    hideCover: function() {
+        this.setState({coverVisible:false});
     },
     render: function() {
         return (
             <ReactCSSTransitionGroup transitionName={this.state.viewTransition.name} transitionEnter={this.state.viewTransition.in} transitionLeave={this.state.viewTransition.out} component="div">
-                <ModalPanel visible={this.state.modalVisible} type={this.state.modalType}>{this.state.modalChildren}</ModalPanel>
-                <UI.View.Panel visible={this.state.panelVisible} type={this.state.panelType}>{this.state.panelChildren}</UI.View.Panel>
+                {this.state.coverVisible&&<UI.View.Cover params={this.state.coverParams}>{this.state.coverChildren}</UI.View.Cover>}
                 {this.getCurrentView()}
             </ReactCSSTransitionGroup>
         );

@@ -73,7 +73,7 @@ gulp.task('server', function() {
     require('./server/app');
 });
 gulp.task('framework7', function() {
-    var path = libPath+'js/framework7/main/';
+    var path = libPath+'js/framework7/dom7/';
     return gulp.src([
         path+'dom7-intro.js',
         path+'dom7-methods.js',
@@ -99,7 +99,7 @@ gulp.task('thirdparty', function() {
 });
 gulp.task('less', function() {
     var path = libPath+'less/';
-    return gulp.src(path+'material.less')
+    return gulp.src(path+'ios.less')
     .pipe(less())
     .pipe(gulp.dest(destPath+'css'));
 });
@@ -123,6 +123,10 @@ gulp.task('appimg', function() {
 });
 gulp.task('images', ['img', 'appimg']);
 gulp.task('fonts', function() {
+    return gulp.src(appPath+'data/**')
+    .pipe(gulp.dest(destPath+'data'));
+});
+gulp.task('data', function() {
     return gulp.src(libPath+'fonts/**')
     .pipe(gulp.dest(destPath+'fonts'));
 });
@@ -134,12 +138,12 @@ gulp.task('watch-app', function() {
 });
 gulp.task('concat', function() {
 });
-gulp.task('watch', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'watch-app'], function() {
+gulp.task('watch', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'watch-app', 'data'], function() {
     gulp.watch([appPath+'index.html'], ['html']);
     gulp.watch([libPath+'less/**/*.less'], ['less']);
     gulp.watch([appPath+'css/**/*.css'], ['democss']);
 });
-gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app'], function() {
+gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app', 'data'], function() {
     var path = destPath+'js/';
     gulp.src([
         path+'framework7.js',
@@ -167,9 +171,11 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     gulp.src([path+'*.png', path+'*.jpg', path+'*.svg'])
     .pipe(gulp.dest(releasePath+'img'));
 
-    path = destPath+'fonts/**';
     gulp.src(libPath+'fonts/**')
     .pipe(gulp.dest(releasePath+'fonts'));
+    
+    gulp.src(destPath+'data/**')
+    .pipe(gulp.dest(releasePath+'data'));
 
     gulp.src(destPath+'index.html')
     .pipe(concat('main.html'))

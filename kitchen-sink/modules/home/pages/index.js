@@ -1,6 +1,6 @@
 module.exports = {
 	Contacts: require('./contacts'),
-	Main: require('./main'),
+	Home: require('./home'),
 	Messages: require('./messages'),
 	More: require('./more')
 };

@@ -8,7 +8,8 @@ module.exports = React.createClass({
             "left": this.props.left
         });
         var aCN = cn("link", {
-            "icon-only": this.props.iconOnly
+            "icon-only": this.props.iconOnly,
+            'close-popup': this.props.popup
         });
         if (this.props.icon) {
             var obj = {"icon": true};

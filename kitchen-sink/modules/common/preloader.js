@@ -7,30 +7,25 @@ var Grid = UI.Grid;
 var Button = UI.Button.Button;
 var Modal = UI.Modal;
 	
-function showPreloader(text) {
-	console.log(text);
-		text = text||'Loading...';console.log(text);
-    var preLoaderModal = (
-        <Modal.ModalNoButttons>
-            <Modal.ModalInner>
-                <Modal.ModalTitle>{text}</Modal.ModalTitle>
-                <Modal.ModalText>
-                    <Modal.BlackPreloader />
-                </Modal.ModalText>
-            </Modal.ModalInner>
-        </Modal.ModalNoButttons>
-    );
-   app.showModal('modal', preLoaderModal);
-   setTimeout(function() {
-        app.hideModal();
-    }, 3000);
+function showIndicator1() {
+	app.showIndicator();
+  setTimeout(function () {
+      app.hideIndicator();
+  }, 2000);
 }
 
-function showIndicator() {
-	app.showModal('indicator');
-	setTimeout(function() {
-        app.hideModal();
-    }, 3000);
+function showIndicator2() {
+	app.showPreloader();
+	setTimeout(function () {
+	    app.hidePreloader();
+	}, 2000);
+}
+
+function showIndicator3() {
+	app.showPreloader('My text...');
+	setTimeout(function () {
+	    app.hidePreloader();
+	}, 2000);
 }
 
 module.exports = React.createClass({
@@ -51,12 +46,12 @@ module.exports = React.createClass({
 	        </Content.ContentBlock>
 	        
 		      <Content.ContentBlock>
-			        <p>With <b>showIndicator()</b> you can call small overlay with indicator:</p>
-			        <Button onTap={showIndicator}>Open small indicator overlay</Button>
-			        <p>With <b>showPreloader()</b> you can call modal window with preloader:</p>
-			        <Button onTap={showPreloader.bind(this, '')}>Open preloader modal</Button>
-			        <p>With <b>showPreloader('My text...')</b> you can call it with custom title:</p>
-			        <Button onTap={showPreloader.bind(this, 'My text...')}>Open custom preloade</Button>
+			        <p>With <b>app.showIndicator()</b> you can call small overlay with indicator:</p>
+			        <Button onTap={showIndicator1}>Open small indicator overlay</Button>
+			        <p>With <b>app.showPreloader()</b> you can call modal window with preloader:</p>
+			        <Button onTap={showIndicator2}>Open preloader modal</Button>
+			        <p>With <b>app.showPreloader('My text...')</b> you can call it with custom title:</p>
+			        <Button onTap={showIndicator3}>Open custom preloade</Button>
 		      </Content.ContentBlock>
 	        
 				</View.PageContent>

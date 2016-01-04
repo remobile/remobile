@@ -15,12 +15,11 @@
     background: rgba(0,0,0,0.4);
     z-index: 13000;
     visibility: hidden;
-    opacity: 1;
+    opacity: 0;
     .transition(@modalDuration);
-    .transition(@modalDuration);
-    &.modal-overlay-invisible {
-        .transition(@modalDuration);
-        opacity: 0;
+    &.modal-overlay-visible {
+        visibility: visible;
+        opacity: 1;
     }
 }
 .popup-overlay {
@@ -33,12 +32,12 @@
     width: 280px;
     position: absolute;
     z-index: 13500;
-    left: 45%;
+    left: 50%;
     margin-left: -140px;
     margin-top: 0;
     top: 50%;
     border-radius: 3px;
-    opacity: 1;
+    opacity: 0;
     .transform(translate3d(0,0,0) scale(1.185));
     -webkit-transition-property: -webkit-transform, opacity;
     -moz-transition-property: -moz-transform, opacity;
@@ -122,7 +121,7 @@
     z-index: 13500;
     width: 100%;
     background: #fff;
-    //.transform(translate3d(0,100%,0));
+    .transform(translate3d(0,100%,0));
     &.modal-in {
         .transition(@actionsModalDuration);
         .transform(translate3d(0,0,0));
@@ -222,12 +221,12 @@ input.modal-text-input {
 }
 // Popover
 .popover {
-    width: 240px;
+    width: 320px;
     background: #fff;
     z-index: 13500;
     margin: 0;
     top: 0;
-    opacity: 1;
+    opacity: 0;
     left: 0;
     border-radius: 3px;
     position: absolute;
@@ -532,13 +531,6 @@ html.with-statusbar-overlay {
         .toolbar {
             top: 0;
         }
-    }
-    &.picker-modal-on {
-        display: block;
-        position: relative;
-        z-index: inherit;
-    		.transition(400ms);
-        .translate3d(0,100%,0);
     }
     .popover & {
         width: auto;

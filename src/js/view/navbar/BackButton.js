@@ -8,11 +8,12 @@ module.exports = React.createClass({
         }
     },
     render: function() {
+    		var haveBackButton = this.props.goBack!==false;
         return (
             <div className="left sliding">
-                <a href="#" className="back link" onClick={this.goBack}><i className="icon icon-back"></i>
+                {haveBackButton?<a href="#" className="link" onClick={this.goBack}><i className="icon icon-back"></i>
                     <span>{this.props.children}</span>
-                </a>
+                </a>:<a href="#" className="link"></a>}
             </div>
         );
     }

@@ -11,15 +11,17 @@ module.exports = React.createClass({
             'button-big': this.props.big,
             'button-fill': this.props.fill,
             'list-button item-link': this.props.list,
+            'tab-link': this.props.tab,
         };
         if (this.props.color) {
             obj['color-'+this.props.color] = true;
         }
+        var link = this.props.tab?this.props.tab:'#';
         var className = cn(obj);
         var style = this.props.inline?{display:'inline-block', verticalAlign:'middle'}:{};
         style = assign(style, this.props.style);
         return (
-            <a href='#' className={className} style={style} onClick={this.props.onTap}>
+            <a href={link} className={className} style={style} onClick={this.props.onTap}>
                 {this.props.children}
             </a>
         );

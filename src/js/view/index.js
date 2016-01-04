@@ -6,7 +6,7 @@ module.exports = {
 	NavbarTitle: require('./navbar/NavbarTitle'),
 	Page: require('./Page'),
 	PageContent: require('./PageContent'),
-	Panel: require('./panel/Panel'),
+	Cover: require('./cover/Cover'),
 	Toolbar: require('./toolbar/Toolbar'),
 	ToolbarButton: require('./toolbar/ToolbarButton')
 };

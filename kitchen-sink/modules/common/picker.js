@@ -2,47 +2,29 @@ var React = require('react');
 var UI = require('UI');
 
 var View = UI.View;
-var Picker = UI.Picker;
 var Content = UI.Content;
 var List = UI.List;
-var ActionsModal = UI.Modal.ActionsModal;
 
-var DevicePicker = React.createClass({
-	onChange: function(value) {
-		console.log(value);
-	},
-	render: function() {
-		var cols = [
+module.exports = React.createClass({
+	componentDidMount: function() {
+		var today = new Date();
+
+    // iOS Device picker
+    var pickerDevice = app.picker({
+        input: '#ks-picker-device',
+        cols: [
             {
                 textAlign: 'center',
                 values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3']
             }
-        ];
-     var toolbar = <Picker.ToolBar><div className="left"></div><div className="right"><a href="#" className="link right" onClick={app.hideModal}>Close</a></div></Picker.ToolBar>;
-	   return (
-			<Picker.Picker cols={cols} defaultValue={[5]} toolbar={toolbar} onChange={this.onChange}/>
-		);
-	}
-});
+        ]
+    });
 
-var devicePickerModal = (
-    <ActionsModal>
-    	<DevicePicker />
-		</ActionsModal>
-);
-
-function showDevicePicker() {
-	app.showModal('pickerModal', devicePickerModal);	
-}
-
-
-
-var DescribePicker = React.createClass({
-	onChange: function(value) {
-		console.log(value);
-	},
-	render: function() {
-		var cols = [
+    // Describe yourself picker
+    var pickerDescribe = app.picker({
+        input: '#ks-picker-describe',
+        rotateEffect: true,
+        cols: [
             {
                 textAlign: 'left',
                 values: ('Super Lex Amazing Bat Iron Rocket Lex Cool Beautiful Wonderful Raining Happy Amazing Funny Cool Hot').split(' ')
@@ -50,76 +32,54 @@ var DescribePicker = React.createClass({
             {
                 values: ('Man Luthor Woman Boy Girl Person Cutie Babe Raccoon').split(' ')
             },
-        ];
-     var toolbar = <Picker.ToolBar><div className="left"></div><div className="right"><a href="#" className="link right" onClick={app.hideModal}>Close</a></div></Picker.ToolBar>;
-	   return (
-			<Picker.Picker cols={cols} defaultValue={[5]} toolbar={toolbar} onChange={this.onChange}/>
-		);
-	}
-});
+        ]
+    });
 
-var describePickerModal = (
-    <ActionsModal>
-    	<DescribePicker />
-		</ActionsModal>
-);
-
-function showDescribePicker() {
-	app.showModal('pickerModal', describePickerModal);	
-}
-
-
-var carVendors = {
+    // Dependent values
+    var carVendors = {
         Japanese : ['Honda', 'Lexus', 'Mazda', 'Nissan', 'Toyota'],
         German : ['Audi', 'BMW', 'Mercedes', 'Volkswagen', 'Volvo'],
         American : ['Cadillac', 'Chrysler', 'Dodge', 'Ford']
     };
-
-    
-var countries = ['Japanese', 'German', 'American'];
-var DependentPickerModal = React.createClass({
-	onChange: function(value) {
-		console.log(value);
-	},
-	render: function() {
-		var cols = [{
+    var pickerDependent = app.picker({
+        input: '#ks-picker-dependent',
+        rotateEffect: true,
+        formatValue: function (picker, values) {
+            return values[1];
+        },
+        cols: [
+            {
                 textAlign: 'left',
-                values: countries,
-                onChange: function (picker, index) {
-                		var country = countries[index];
+                values: ['Japanese', 'German', 'American'],
+                onChange: function (picker, country) {
                     if(picker.cols[1].replaceValues){
-                        picker.cols[1].replaceValues((function(n){var arr=[];for(var i=0;i<n;i++){arr[i]=i}return arr})(carVendors[country].length), carVendors[country]);
+                        picker.cols[1].replaceValues(carVendors[country]);
                     }
                 }
             },
             {
                 values: carVendors.Japanese,
                 width: 160,
-            }];
-     var toolbar = <Picker.ToolBar><div className="left"></div><div className="right"><a href="#" className="link right" onClick={app.hideModal}>Close</a></div></Picker.ToolBar>;
-	   return (
-			<Picker.Picker cols={cols} toolbar={toolbar} onChange={this.onChange}/>
-		);
-	}
-});
+            },
+        ]
+    });
 
-var dependentPickerModal = (
-    <ActionsModal>
-    	<DependentPickerModal />
-		</ActionsModal>
-);
-
-function showDependentPicker() {
-	app.showModal('pickerModal', dependentPickerModal);	
-}
- 
-
-var CustomPicker = React.createClass({
-	onChange: function(value) {
-		console.log(value);
-	},
-	render: function() {
-		var cols = [
+    // Custom Toolbar
+    var pickerCustomToolbar = app.picker({
+        input: '#ks-picker-custom-toolbar',
+        rotateEffect: true,
+        toolbarTemplate:
+            '<div class="toolbar">' +
+                '<div class="toolbar-inner">' +
+                    '<div class="left">' +
+                        '<a href="#" class="link toolbar-randomize-link">Randomize</a>' +
+                    '</div>' +
+                    '<div class="right">' +
+                        '<a href="#" class="link close-picker">That\'s me</a>' +
+                    '</div>' +
+                '</div>' +
+            '</div>',
+        cols: [
             {
                 values: ['Mr', 'Ms'],
             },
@@ -130,34 +90,44 @@ var CustomPicker = React.createClass({
             {
                 values: ('Man Luthor Woman Boy Girl Person Cutie Babe Raccoon').split(' ')
             },
-        ];
-     var toolbar = <Picker.ToolBar><div className="left"></div><div className="right"><a href="#" className="link right" onClick={app.hideModal}>Close</a></div></Picker.ToolBar>;
-	   return (
-			<Picker.Picker cols={cols} defaultValue={[5]} toolbar={toolbar} onChange={this.onChange}/>
-		);
-	}
-});
+        ],
+        onOpen: function (picker) {
+            picker.container.find('.toolbar-randomize-link').on('click', function () {
+                var col0Values = picker.cols[0].values;
+                var col0Random = col0Values[Math.floor(Math.random() * col0Values.length)];
 
-var customPickerModal = (
-    <ActionsModal>
-    	<CustomPicker />
-		</ActionsModal>
-);
+                var col1Values = picker.cols[1].values;
+                var col1Random = col1Values[Math.floor(Math.random() * col1Values.length)];
 
-function showCustomPicker() {
-	app.showModal('pickerModal', customPickerModal);	
-}
+                var col2Values = picker.cols[2].values;
+                var col2Random = col2Values[Math.floor(Math.random() * col2Values.length)];
 
+                picker.setValue([col0Random, col1Random, col2Random]);
+            });
+        }
+    });
 
-var DateTimePicker = React.createClass({
-	onChange: function(value) {
-		console.log(value);
-	},
-	render: function() {
-		var cols = [
+    // Inline date-time
+    var pickerInline = app.picker({
+        input: '#ks-picker-date',
+        container: '#ks-picker-date-container',
+        toolbar: false,
+        rotateEffect: true,
+        value: [today.getMonth(), today.getDate(), today.getFullYear(), today.getHours(), (today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes())],
+        onChange: function (picker, values, displayValues) {
+            var daysInMonth = new Date(picker.value[2], picker.value[0]*1 + 1, 0).getDate();
+            if (values[1] > daysInMonth) {
+                picker.cols[1].setValue(daysInMonth);
+            }
+        },
+        formatValue: function (p, values, displayValues) {
+            return displayValues[0] + ' ' + values[1] + ', ' + values[2] + ' ' + values[3] + ':' + values[4];
+        },
+        cols: [
             // Months
             {
-                values: ('January February March April May June July August September October November December').split(' '),
+                values: ('0 1 2 3 4 5 6 7 8 9 10 11').split(' '),
+                displayValues: ('January February March April May June July August September October November December').split(' '),
                 textAlign: 'left'
             },
             // Days
@@ -175,7 +145,7 @@ var DateTimePicker = React.createClass({
             // Space divider
             {
                 divider: true,
-                content: ' '
+                content: '&nbsp;&nbsp;'
             },
             // Hours
             {
@@ -198,15 +168,9 @@ var DateTimePicker = React.createClass({
                     return arr;
                 })(),
             }
-        ];
-   	 return (
-			<Picker.Picker cols={cols} defaultValue={[4,5,20,1,2]} onChange={this.onChange} inline/>
-		);
-	}
-});
-
-
-module.exports = React.createClass({
+        ]
+    });
+	},
 	render: function() {
 		return (
 			<View.Page title="Picker">
@@ -220,7 +184,7 @@ module.exports = React.createClass({
 					<List.List>
 						<List.ItemContent>
 							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Your iOS device" readonly="readonly" onClick={showDevicePicker}/></List.ItemInput>
+								<List.ItemInput><input type="text" placeholder="Your iOS device" readonly="readonly" id="ks-picker-device"/></List.ItemInput>
 							</List.ItemInner>
 						</List.ItemContent>
 					</List.List>
@@ -229,7 +193,7 @@ module.exports = React.createClass({
 					<List.List>
 						<List.ItemContent>
 							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" onClick={showDescribePicker}/></List.ItemInput>
+								<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" id="ks-picker-describe"/></List.ItemInput>
 							</List.ItemInner>
 						</List.ItemContent>
 					</List.List>
@@ -238,7 +202,7 @@ module.exports = React.createClass({
 					<List.List>
 						<List.ItemContent>
 							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Your car" readonly="readonly" onClick={showDependentPicker}/></List.ItemInput>
+								<List.ItemInput><input type="text" placeholder="Your car" readonly="readonly" id="ks-picker-dependent"/></List.ItemInput>
 							</List.ItemInner>
 						</List.ItemContent>
 					</List.List>
@@ -247,7 +211,7 @@ module.exports = React.createClass({
 					<List.List>
 						<List.ItemContent>
 							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" onClick={showCustomPicker}/></List.ItemInput>
+								<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" id="ks-picker-custom-toolbar"/></List.ItemInput>
 							</List.ItemInner>
 						</List.ItemContent>
 					</List.List>
@@ -256,11 +220,11 @@ module.exports = React.createClass({
 					<List.List>
 						<List.ItemContent>
 							<List.ItemInner>
-									<DateTimePicker />
+									<List.ItemInput><input type="text" placeholder="Date Time" readonly="readonly" id="ks-picker-date"/></List.ItemInput>
 							</List.ItemInner>
 						</List.ItemContent>
 					</List.List>
-					
+					<div id="ks-picker-date-container"></div>
 				</View.PageContent>
        </View.Page>
 		);

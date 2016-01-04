@@ -10,6 +10,7 @@ module.exports = React.createClass({
     render: function() {
         var obj = {};
         obj['col-'+this.props.per] = true;
+        this.props.class&&(obj[this.props.class]=true);
         var className = cn(obj);
         if (this.props.p) {
             return (

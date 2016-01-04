@@ -40,7 +40,7 @@ module.exports = React.createClass({
 	render: function() {
         return (
             <View.Page title="Infinite Scroll">
-                <View.PageContent class="infinite-scroll">
+                <View.PageContent class="infinite-scroll" data={{distance:10}}>
                     <UI.Refresh.InfiniteScroll onInfinite={this.onInfinite}/>
                     <List.List block>
                         {this.state.list.map((item)=>{ return <ListItem value={item}/>})}
