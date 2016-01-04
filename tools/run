@@ -1,6 +1,23 @@
 #!/bin/bash
 
+material=0
 proj=${1:-kitchen-sink}
+if [ "$1" = "1" -o "$2" = "1" ];then
+    material=1
+fi
+if [ "$proj" = "1" ];then
+    proj="kitchen-sink"
+fi
+gulpfile=../${proj}/gulpfile.js
+
+if [ "$material" = "1" ];then
+    vim -e -s -c ":%s/material:.*/material: true,/" -c "wq" ../src/js/mixins/App.js
+    vim -e -s -c ":%s/ios.less/material.less/" -c "wq" ${gulpfile}
+else
+    vim -e -s -c ":%s/material:.*/material: false,/" -c "wq" ../src/js/mixins/App.js
+    vim -e -s -c ":%s/material.less/ios.less/" -c "wq" ${gulpfile}
+fi
+
 cd ../$proj
 rm -fr server/www
 node ../node_modules/gulp/bin/gulp.js run

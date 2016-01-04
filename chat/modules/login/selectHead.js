@@ -1,7 +1,6 @@
 var React = require('react');
 var UI = require('UI');
 
-var swiper = UI.Mixins.Swiper.swiper;
 var Content = UI.Content;
 var View = UI.View;
 var Grid = UI.Grid;
@@ -19,7 +18,7 @@ module.exports = React.createClass({
             slidesPerView: "auto",
             centeredSlides: true
         };
-        this.slider = swiper(this.refs.swiper.getDOMNode(), params);
+        this.slider = app.swiper(this.refs.swiper.getDOMNode(), params);
         this.headImageIndex = 0;
         var self = this;
         this.slider.on('onProgress', function(el, per) {

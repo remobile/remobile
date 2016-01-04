@@ -13,6 +13,7 @@ var merge = require('merge-stream');
 var plumber = require('gulp-plumber');
 var shell = require('gulp-shell');
 var replace = require('gulp-replace');
+var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var libPath = '../src/';
@@ -99,8 +100,9 @@ gulp.task('thirdparty', function() {
 });
 gulp.task('less', function() {
     var path = libPath+'less/';
-    return gulp.src(path+'ios.less')
+    return gulp.src(path+'material.less')
     .pipe(less())
+    .pipe(rename('app.css'))
     .pipe(gulp.dest(destPath+'css'));
 });
 gulp.task('democss', function() {
@@ -113,7 +115,7 @@ gulp.task('democss', function() {
 });
 gulp.task('img', function() {
     var path = libPath+'img/**/';
-    return gulp.src([path+'*.png', path+'*.svg'])
+    return gulp.src([path+'*.png', path+'*.svg', path+'*.jpg'])
     .pipe(gulp.dest(destPath+'img/f7'));
 });
 gulp.task('appimg', function() {
@@ -122,11 +124,11 @@ gulp.task('appimg', function() {
     .pipe(gulp.dest(destPath+'img/app'));
 });
 gulp.task('images', ['img', 'appimg']);
-gulp.task('fonts', function() {
+gulp.task('data', function() {
     return gulp.src(appPath+'data/**')
     .pipe(gulp.dest(destPath+'data'));
 });
-gulp.task('data', function() {
+gulp.task('fonts', function() {
     return gulp.src(libPath+'fonts/**')
     .pipe(gulp.dest(destPath+'fonts'));
 });
@@ -173,7 +175,7 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
 
     gulp.src(libPath+'fonts/**')
     .pipe(gulp.dest(releasePath+'fonts'));
-    
+
     gulp.src(destPath+'data/**')
     .pipe(gulp.dest(releasePath+'data'));
 

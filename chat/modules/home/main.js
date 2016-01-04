@@ -41,7 +41,7 @@ module.exports = React.createClass({
         }
     },
     getDefaultProps: function() {
-        return {pages:[pages.Main, pages.Contacts, pages.Messages, pages.More]}
+        return {pages:[pages.Contacts, pages.Messages, pages.More]}
     },
     switchPage: function(page) {
         app.data.homePageIndex = page;
@@ -59,34 +59,29 @@ module.exports = React.createClass({
     render: function() {
         var CurrentPage = this.props.pages[this.state.page];
 		return (
-            <View.Page toolbar>
-			    <View.PageContent>
-                    <CurrentPage data={this.props.data}/>
-			    </View.PageContent>
-			  	{this.state.page===1&&<IndexedList />}
-	            <View.Toolbar tabbar labels>
+            <View.Page labelsTabbar>
+            	<View.Toolbar tabbar labels class="toolbar-bottom">
 	                <View.ToolbarButton active={this.state.page===0}
-	                    icon="ion-social-windows-outline"
-	                    onTap={this.switchPage.bind(this, 0)}>
-	                        Home
-	                </View.ToolbarButton>
-	                <View.ToolbarButton active={this.state.page===1}
 	                    icon="ion-android-contacts"
-	                    onTap={this.switchPage.bind(this, 1)}>
+	                    onTap={this.switchPage.bind(this, 0)}>
 	                        Contacts
 	                </View.ToolbarButton>
-	                <View.ToolbarButton active={this.state.page===2}
+	                <View.ToolbarButton active={this.state.page===1}
 	                    icon="ion-chatbubble-working"
                         badge={(this.state.messageBadge>0)&&<Badge color="red">{this.state.messageBadge}</Badge>}
-	                    onTap={this.switchPage.bind(this, 2)}>
+	                    onTap={this.switchPage.bind(this, 1)}>
 	                        Messages
 	                </View.ToolbarButton>
-	                <View.ToolbarButton active={this.state.page===3}
+	                <View.ToolbarButton active={this.state.page===2}
 	                    icon="ion-settings"
-	                    onTap={this.switchPage.bind(this, 3)}>
+	                    onTap={this.switchPage.bind(this, 2)}>
 	                        More
 	                </View.ToolbarButton>
 	             </View.Toolbar>
+			    <View.PageContent>
+                    <CurrentPage data={this.props.data}/>
+			    </View.PageContent>
+			  	{this.state.page===0&&<IndexedList />}
             </View.Page>
 		);
 	}

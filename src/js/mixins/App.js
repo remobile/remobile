@@ -156,7 +156,7 @@ var params = {
     template7Pages: false,
     precompileTemplates: false,
     // Material
-    material: false,
+    material: true,
     materialPageLoadDelay: 0,
     materialPreloaderSvg: '<svg xmlns="http://www.w3.org/2000/svg" height="75" width="75" viewbox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="8"/></svg>',
     materialPreloaderHtml:

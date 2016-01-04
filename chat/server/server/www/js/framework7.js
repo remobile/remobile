@@ -157,10 +157,16 @@ Dom7.prototype = {
         if (typeof value === 'undefined') {
             // Get value
             if (this[0]) {
-                var dataKey = this[0].getAttribute('data-' + key);
-                if (dataKey) return dataKey;
-                else if (this[0].dom7ElementDataStorage && (key in this[0].dom7ElementDataStorage)) return this[0].dom7ElementDataStorage[key];
-                else return undefined;
+                if (this[0].dom7ElementDataStorage && (key in this[0].dom7ElementDataStorage)) {
+                    return this[0].dom7ElementDataStorage[key];
+                }
+                else {
+                    var dataKey = this[0].getAttribute('data-' + key);    
+                    if (dataKey) {
+                        return dataKey;
+                    }
+                    else return undefined;
+                }
             }
             else return undefined;
         }
@@ -305,28 +311,31 @@ Dom7.prototype = {
     once: function (eventName, targetSelector, listener, capture) {
         var dom = this;
         if (typeof targetSelector === 'function') {
-            targetSelector = false;
             listener = arguments[1];
             capture = arguments[2];
+            targetSelector = false;
         }
         function proxy(e) {
-            listener(e);
+            listener.call(e.target, e);
             dom.off(eventName, targetSelector, proxy, capture);
         }
-        dom.on(eventName, targetSelector, proxy, capture);
+        return dom.on(eventName, targetSelector, proxy, capture);
     },
     trigger: function (eventName, eventData) {
-        for (var i = 0; i < this.length; i++) {
-            var evt;
-            try {
-                evt = new CustomEvent(eventName, {detail: eventData, bubbles: true, cancelable: true});
+        var events = eventName.split(' ');
+        for (var i = 0; i < events.length; i++) {
+            for (var j = 0; j < this.length; j++) {
+                var evt;
+                try {
+                    evt = new CustomEvent(events[i], {detail: eventData, bubbles: true, cancelable: true});
+                }
+                catch (e) {
+                    evt = document.createEvent('Event');
+                    evt.initEvent(events[i], true, true);
+                    evt.detail = eventData;
+                }
+                this[j].dispatchEvent(evt);
             }
-            catch (e) {
-                evt = document.createEvent('Event');
-                evt.initEvent(eventName, true, true);
-                evt.detail = eventData;
-            }
-            this[i].dispatchEvent(evt);
         }
         return this;
     },
@@ -596,6 +605,10 @@ Dom7.prototype = {
         }
         return this;
     },
+    appendTo: function (parent) {
+        $(parent).append(this);
+        return this;
+    },
     prepend: function (newChild) {
         var i, j;
         for (i = 0; i < this.length; i++) {
@@ -616,6 +629,10 @@ Dom7.prototype = {
                 this[i].insertBefore(newChild, this[i].childNodes[0]);
             }
         }
+        return this;
+    },
+    prependTo: function (parent) {
+        $(parent).prepend(this);
         return this;
     },
     insertBefore: function (selector) {
@@ -701,11 +718,13 @@ Dom7.prototype = {
     parent: function (selector) {
         var parents = [];
         for (var i = 0; i < this.length; i++) {
-            if (selector) {
-                if ($(this[i].parentNode).is(selector)) parents.push(this[i].parentNode);
-            }
-            else {
-                parents.push(this[i].parentNode);
+            if (this[i].parentNode !== null) {
+                if (selector) {
+                    if ($(this[i].parentNode).is(selector)) parents.push(this[i].parentNode);
+                }
+                else {
+                   parents.push(this[i].parentNode);
+                }
             }
         }
         return $($.unique(parents));
@@ -780,9 +799,9 @@ Dom7.prototype = {
     var shortcuts = ('click blur focus focusin focusout keyup keydown keypress submit change mousedown mousemove mouseup mouseenter mouseleave mouseout mouseover touchstart touchend touchmove resize scroll').split(' ');
     var notTrigger = ('resize scroll').split(' ');
     function createMethod(name) {
-        Dom7.prototype[name] = function (handler) {
+        Dom7.prototype[name] = function (targetSelector, listener, capture) {
             var i;
-            if (typeof handler === 'undefined') {
+            if (typeof targetSelector === 'undefined') {
                 for (i = 0; i < this.length; i++) {
                     if (notTrigger.indexOf(name) < 0) {
                         if (name in this[i]) this[i][name]();
@@ -794,7 +813,7 @@ Dom7.prototype = {
                 return this;
             }
             else {
-                return this.on(name, handler);
+                return this.on(name, targetSelector, listener, capture);
             }
         };
     }
@@ -924,7 +943,7 @@ $.ajax = function (options) {
     }
 
     // Cache for GET/HEAD requests
-    if (_method === 'GET' || _method === 'HEAD') {
+    if (_method === 'GET' || _method === 'HEAD' || _method === 'OPTIONS' || _method === 'DELETE') {
         if (options.cache === false) {
             options.url += (paramsPrefix + '_nocache=' + Date.now());
         }
@@ -943,7 +962,7 @@ $.ajax = function (options) {
     // Create POST Data
     var postData = null;
 
-    if ((_method === 'POST' || _method === 'PUT') && options.data) {
+    if ((_method === 'POST' || _method === 'PUT' || _method === 'PATCH') && options.data) {
         if (options.processData) {
             var postDataInstances = [ArrayBuffer, Blob, Document, FormData];
             // Post Data
@@ -1020,7 +1039,8 @@ $.ajax = function (options) {
                 }
             }
             else {
-                fireAjaxCallback('ajaxSuccess', {xhr: xhr}, 'success', xhr.responseText, xhr.status, xhr);
+                responseData = xhr.responseType === 'text' || xhr.responseType === '' ? xhr.responseText : xhr.response;
+                fireAjaxCallback('ajaxSuccess', {xhr: xhr}, 'success', responseData, xhr.status, xhr);
             }
         }
         else {
@@ -1048,6 +1068,9 @@ $.ajax = function (options) {
 
     // Timeout
     if (options.timeout > 0) {
+        xhr.onabort = function () {
+            if (xhrTimeout) clearTimeout(xhrTimeout);
+        };
         xhrTimeout = setTimeout(function () {
             xhr.abort();
             fireAjaxCallback('ajaxError', {xhr: xhr, timeout: true}, 'error', xhr, 'timeout');
@@ -1119,27 +1142,60 @@ $.unique = function (arr) {
     }
     return unique;
 };
-$.serializeObject = function (obj) {
+$.serializeObject = $.param = function (obj, parents) {
     if (typeof obj === 'string') return obj;
     var resultArray = [];
     var separator = '&';
+    parents = parents || [];
+    var newParents;
+    function var_name(name) {
+        if (parents.length > 0) {
+            var _parents = '';
+            for (var j = 0; j < parents.length; j++) {
+                if (j === 0) _parents += parents[j];
+                else _parents += '[' + encodeURIComponent(parents[j]) + ']';
+            }
+            return _parents + '[' + encodeURIComponent(name) + ']';
+        }
+        else {
+            return encodeURIComponent(name);
+        }
+    }
+    function var_value(value) {
+        return encodeURIComponent(value);
+    }
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
+            var toPush;
             if ($.isArray(obj[prop])) {
-                var toPush = [];
+                toPush = [];
                 for (var i = 0; i < obj[prop].length; i ++) {
-                    toPush.push(encodeURIComponent(prop) + '=' + encodeURIComponent(obj[prop][i]));
+                    if (!$.isArray(obj[prop][i]) && typeof obj[prop][i] === 'object') {
+                        newParents = parents.slice();
+                        newParents.push(prop);
+                        newParents.push(i + '');
+                        toPush.push($.serializeObject(obj[prop][i], newParents));
+                    }
+                    else {
+                        toPush.push(var_name(prop) + '[]=' + var_value(obj[prop][i]));
+                    }
+                    
                 }
                 if (toPush.length > 0) resultArray.push(toPush.join(separator));
             }
-            else {
-                // Should be string
-                resultArray.push(encodeURIComponent(prop) + '=' + encodeURIComponent(obj[prop]));
+            else if (typeof obj[prop] === 'object') {
+                // Object, convert to named array
+                newParents = parents.slice();
+                newParents.push(prop);
+                toPush = $.serializeObject(obj[prop], newParents);
+                if (toPush !== '') resultArray.push(toPush);
+            }
+            else if (typeof obj[prop] !== 'undefined' && obj[prop] !== '') {
+                // Should be string or plain value
+                resultArray.push(var_name(prop) + '=' + var_value(obj[prop]));
             }
         }
-            
     }
-
     return resultArray.join(separator);
 };
 $.toCamelCase = function (string) {
@@ -1160,9 +1216,15 @@ $.getTranslate = function (el, axis) {
 
     curStyle = window.getComputedStyle(el, null);
     if (window.WebKitCSSMatrix) {
+        curTransform = curStyle.transform || curStyle.webkitTransform;
+        if (curTransform.split(',').length > 6) {
+            curTransform = curTransform.split(', ').map(function(a){
+                return a.replace(',','.');
+            }).join(', ');
+        }
         // Some old versions of Webkit choke when 'none' is passed; pass
         // empty string instead in this case
-        transformMatrix = new WebKitCSSMatrix(curStyle.webkitTransform === 'none' ? '' : curStyle.webkitTransform);
+        transformMatrix = new WebKitCSSMatrix(curTransform === 'none' ? '' : curTransform);
     }
     else {
         transformMatrix = curStyle.MozTransform || curStyle.OTransform || curStyle.MsTransform || curStyle.msTransform  || curStyle.transform || curStyle.getPropertyValue('transform').replace('translate(', 'matrix(1, 0, 0, 1,');

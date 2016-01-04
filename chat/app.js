@@ -30,7 +30,7 @@ var App = React.createClass({
         this.userMgr = chat.userMgr;
         this.userHeadCss = $.createStyleSheet();
 
-        welcome.showWelcome();
+        // welcome.showWelcome();
         this.socketMgr.start("http://192.168.1.119:8000");
     },
     componentDidMount: function () {
@@ -44,12 +44,6 @@ var App = React.createClass({
     showChatError: function(error) {
         this.toast(this.error[error]);
     },
-    showModal: function(modalType, modalChildren) {
-        this.setState({modalVisible:true, modalChildren:modalChildren, modalType:modalType});
-    },
-    hideModal: function() {
-        this.setState({modalVisible:false});
-    },
     emit: function() {
         console.log(arguments[0], JSON.stringify(arguments[1]));
         if (!this.loginMgr.online) {
@@ -59,29 +53,16 @@ var App = React.createClass({
         this.socket.emit.apply(this.socket, arguments);
     },
     showWait: function(text) {
-        if (text) {
-        	var Modal = UI.Modal;
-       		this.showModal('modal',
-       				<Modal.ModalNoButttons>
-	                <Modal.ModalInner>
-	                    <Modal.ModalTitle>{text}</Modal.ModalTitle>
-	                    <Modal.ModalText>
-	                        <Modal.BlackPreloader />
-	                    </Modal.ModalText>
-	                </Modal.ModalInner>
-	            </Modal.ModalNoButttons>);
-      	} else {
-      		this.showModal('indicator');
-      	}
+        this.showPreloader(text);
     },
     hideWait: function() {
-        this.hideModal();
+        this.hidePreloader();
     },
-    showPanel: function(panelType, panelChildren) {
-        this.setState({panelVisible:true, panelChildren:panelChildren, panelType:panelType});
+    showCover(coverChildren, coverParams) {
+        this.setState({coverVisible:true, coverChildren:coverChildren, coverParams:coverParams});
     },
-    hidePanel: function() {
-        this.setState({panelVisible:false});
+    hideCover() {
+        this.setState({coverVisible:false});
     },
     getInitialState: function() {
         return {
@@ -91,8 +72,7 @@ var App = React.createClass({
     render: function() {
         return (
             <ReactCSSTransitionGroup transitionName={this.state.viewTransition.name} transitionEnter={this.state.viewTransition.in} transitionLeave={this.state.viewTransition.out} component="div">
-                <ModalPanel visible={this.state.modalVisible} type={this.state.modalType}>{this.state.modalChildren}</ModalPanel>
-                <UI.View.Panel visible={this.state.panelVisible} type={this.state.panelType}>{this.state.panelChildren}</UI.View.Panel>
+                {this.state.coverVisible&&<UI.View.Cover params={this.state.coverParams}>{this.state.coverChildren}</UI.View.Cover>}
                 {this.getCurrentView()}
             </ReactCSSTransitionGroup>
         );
@@ -102,4 +82,3 @@ function onDeviceReady() {
     React.render(<App />, document.getElementById('app'));
 }
 document.addEventListener('deviceready', onDeviceReady, false);
-

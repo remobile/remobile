@@ -13,6 +13,7 @@ var merge = require('merge-stream');
 var plumber = require('gulp-plumber');
 var shell = require('gulp-shell');
 var replace = require('gulp-replace');
+var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var libPath = '../src/';
@@ -73,7 +74,7 @@ gulp.task('server', function() {
     require('./server/server/app');
 });
 gulp.task('framework7', function() {
-    var path = libPath+'thirdparty/framework7/';
+    var path = libPath+'js/framework7/dom7/';
     return gulp.src([
         path+'dom7-intro.js',
         path+'dom7-methods.js',
@@ -110,8 +111,9 @@ gulp.task('thirdparty', function() {
 });
 gulp.task('less', function() {
     var path = libPath+'less/';
-    return gulp.src(path+'app.less')
+    return gulp.src(path+'material.less')
     .pipe(less())
+    .pipe(rename('app.css'))
     .pipe(gulp.dest(destPath+'css'));
 });
 gulp.task('democss', function() {
@@ -135,7 +137,7 @@ gulp.task('audio', function() {
 });
 gulp.task('img', function() {
     var path = libPath+'img/**/';
-    return gulp.src(path+'*.png')
+    return gulp.src([path+'*.png', path+'*.svg', path+'*.jpg'])
     .pipe(gulp.dest(destPath+'img/f7'));
 });
 gulp.task('appimg', function() {
@@ -145,7 +147,7 @@ gulp.task('appimg', function() {
 });
 gulp.task('images', ['img', 'appimg']);
 gulp.task('fonts', function() {
-    return gulp.src('src/fonts/**')
+    return gulp.src(libPath+'fonts/**')
     .pipe(gulp.dest(destPath+'fonts'));
 });
 gulp.task('app', function() {
@@ -188,10 +190,7 @@ gulp.task('release', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts
     .pipe(gulp.dest(releasePath+'js/plugins'));
 
     path = destPath+'css/';
-    gulp.src([
-        path+'app.css',
-        path+'demo.css'
-    ])
+    gulp.src([path+'*.css'])
     .pipe(concat('remobile.css'))
     .pipe(minifyCSS({advanced: false, aggressiveMerging: false}))
     .pipe(gulp.dest(releasePath+'css'));
@@ -204,8 +203,7 @@ gulp.task('release', ['framework7', 'cordova', 'html', 'audio', 'images', 'fonts
     gulp.src([path+'*.png', path+'*.jpg'])
     .pipe(gulp.dest(releasePath+'img'));
 
-    path = destPath+'fonts/**';
-    gulp.src('src/fonts/**')
+    gulp.src(libPath+'fonts/**')
     .pipe(gulp.dest(releasePath+'fonts'));
 
     gulp.src(destPath+'index.html')
