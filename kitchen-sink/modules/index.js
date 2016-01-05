@@ -8,6 +8,7 @@ module.exports = {
 	'medialist': require('./common/mediaList'),
 	'grid': require('./common/grid'),
 	'chip': require('./common/chip'),
+	'upscroller': require('./common/upscroller'),
 	'floatingButton': require('./common/floatingButton'),
 	'staticFloatingButton': require('./common/staticFloatingButton'),
 	'dialFloatingButton': require('./common/dialFloatingButton'),

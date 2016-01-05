@@ -14,7 +14,6 @@ module.exports = {
 	Mixins: require('./mixins'),
 	Refresh: require('./refresh'),
 	Search: require('./search'),
-	Welcome: require('./welcome'),
 	System: require('./system'),
 	View: require('./view')
 };

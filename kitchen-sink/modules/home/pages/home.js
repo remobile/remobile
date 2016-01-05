@@ -52,8 +52,9 @@ var MenuList = React.createClass({
     render() {
         return (
             <List.List block>
-            		<ListItem page="colorThemes">Color Themes</ListItem>
+            	<ListItem page="colorThemes">Color Themes</ListItem>
                 <ListItem page="button">Button</ListItem>
+                <ListItem page="upscroller">Up Scroller</ListItem>
                 <ListItem page="chip">Chips</ListItem>
                 <ListItem page="floatingButton">Floating Button</ListItem>
                 <ListItem page="toast">Toast</ListItem>

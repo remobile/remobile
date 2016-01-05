@@ -46,6 +46,9 @@ module.exports = React.createClass({
 		if (props.initPageSwiper) {
 			app.initPageSwiper(pageContainer);
 		}
+		if (props.initUpScroller) {
+			app.initUpScroller(this.getDOMNode());
+		}
 	},
 	componentWillUnmount() {
 		var pageContainer = $(this.getDOMNode());

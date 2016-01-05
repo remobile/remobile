@@ -1,6 +1,4 @@
-﻿var UI =require('UI');
-
-module.exports = {showWelcome() {
+﻿module.exports = {showWelcome() {
 	var options = {
 		'bgcolor': '#0da6ec',
 		'fontcolor': '#fff',
@@ -37,7 +35,7 @@ module.exports = {showWelcome() {
 		}
 	];
 
-	welcomescreen = UI.Welcome.WelcomeScreen(slides, options);
+	welcomescreen = app.welcomescreen(slides, options);
 
 	$(document).on('click', '.tutorial-close-btn', ()=>{
 		welcomescreen.close();

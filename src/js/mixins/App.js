@@ -1,7 +1,6 @@
 var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
-var Toast = require('../Toast').Toast;
 var template7 = require('../framework7/template7.js');
 var clicks = require('../framework7/clicks.js');
 var fastClicks = require('../framework7/fast-clicks.js');
@@ -26,7 +25,10 @@ var tabs = require('../framework7/tabs.js');
 var accordion = require('../framework7/accordion.js');
 var pullToRefresh = require('../framework7/pull-to-refresh.js');
 var infiniteScroll = require('../framework7/infinite-scroll.js');
-var floatingLabel = require('../framework7/floating-label.js');
+var floatingLabel = require('../framework7/plugins/floating-label.js');
+var welcomescreen = require('../framework7/plugins/welcomescreen.js');
+var toast = require('../framework7/plugins/toast.js');
+var upscroller = require('../framework7/plugins/upscroller.js');
 
 var VERSION = '1.4.0';
 var TRANSITIONS_INOUT = {
@@ -156,7 +158,7 @@ var params = {
     template7Pages: false,
     precompileTemplates: false,
     // Material
-    material: true,
+    material: false,
     materialPageLoadDelay: 0,
     materialPreloaderSvg: '<svg xmlns="http://www.w3.org/2000/svg" height="75" width="75" viewbox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="8"/></svg>',
     materialPreloaderHtml:
@@ -187,9 +189,6 @@ function App (views) {
             move: system.Support.touch ? 'touchmove' : 'mousemove',
             end: system.Support.touch ? 'touchend' : 'mouseup'
         },
-        toast(text, icon) {
-            Toast({text: text, icon:icon});
-        },
         init() {
             this.t7 =  template7;
             this.ls = window.localStorage;
@@ -218,6 +217,9 @@ function App (views) {
             pullToRefresh(this);
             infiniteScroll(this);
             floatingLabel(this);
+            welcomescreen(this);
+            toast(this);
+            upscroller(this);
         },
         componentWillMount() {
             window._ = require('underscore');
