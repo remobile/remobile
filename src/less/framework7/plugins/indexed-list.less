@@ -4,19 +4,21 @@
     margin: 0;
     padding: 0;
     position:absolute;
-    font-size: 15px;
+    font-size: 9px;
     font-weight: bold;
     position:absolute;
     z-index:199;
     top:0%;
+		line-height: 0.95em;
     height: 100%;
     right: 0;
     background: #fff;
-    width: 20px;
+    width: 12px;
     text-align: center;
     display: -webkit-box;
     display: -ms-flexbox;
     display: -webkit-flex;
+    background: transparent;
     display: flex;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -44,5 +46,21 @@
         width: 10px;
         height: 100%;
         top: 0;
+    }
+}
+
+@media (min-height: 600px) {
+    .list-index {
+        font-size: 13px;
+        width: 17px;
+        line-height: 1.2em;
+    }
+}
+
+@media (min-height: 800px) {
+    .list-index {
+        font-size: 18px;
+        width: 22px;
+        line-height: 1.5em;
     }
 }

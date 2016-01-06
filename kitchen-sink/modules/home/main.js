@@ -14,7 +14,7 @@ var pages = require('./pages');
 
 var IndexedList =  React.createClass({
     getInitialState() {
-        return {letters:['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'W', 'X', 'Y', 'Z'].sort((a, b)=>{return a.localeCompare(b)})};
+        return {letters:['A', 'B', 'C', 'D', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'].sort((a, b)=>{return a.localeCompare(b)})};
     },
     render() {
         return (
@@ -40,7 +40,7 @@ module.exports = React.createClass({
     render() {
         var CurrentPage = this.props.pages[this.state.page];
 		return (
-            <View.Page labelsTabbar>
+            <View.Page labelsTabbar title="fang" goBack={false}>
             	<View.Toolbar tabbar labels class="toolbar-bottom">
 	                <View.ToolbarButton active={this.state.page===0}
 	                    icon="ion-social-windows-outline"
@@ -64,6 +64,7 @@ module.exports = React.createClass({
 	                        More
 	                </View.ToolbarButton>
 	             </View.Toolbar>
+							{this.state.page===1&&<UI.Search.Search ref="searchbar"/>}
 					    <View.PageContent>
 		                    <CurrentPage data={this.props.data}/>
 					    </View.PageContent>

@@ -27,6 +27,7 @@ var pullToRefresh = require('../framework7/pull-to-refresh.js');
 var infiniteScroll = require('../framework7/infinite-scroll.js');
 var floatingLabel = require('../framework7/plugins/floating-label.js');
 var welcomescreen = require('../framework7/plugins/welcomescreen.js');
+var indexedList = require('../framework7/plugins/indexed-list.js');
 var toast = require('../framework7/plugins/toast.js');
 var upscroller = require('../framework7/plugins/upscroller.js');
 
@@ -218,6 +219,7 @@ function App (views) {
             infiniteScroll(this);
             floatingLabel(this);
             welcomescreen(this);
+            indexedList(this);
             toast(this);
             upscroller(this);
         },
