@@ -28,6 +28,7 @@ module.exports = {
 	'tabsAnimated': require('./common/tabsAnimated'),
 	'notifications': require('./common/notifications'),
 	'panels': require('./common/panels'),
+	'panels3d': require('./common/3dpanels'),
 	'search': require('./common/search'),
 	'cards': require('./common/cards'),
 	'pullToRefresh': require('./common/pullToRefresh'),

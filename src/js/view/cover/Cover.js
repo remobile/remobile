@@ -6,10 +6,19 @@ var Page = require('../Page');
 var NavbarButton = require('../navbar/NavbarButton');
 
 module.exports = React.createClass({
+	componentWillUnmount() {
+		var params = this.props.params;
+		if (params.type === 'panel' && params.is3d) {
+			app.destroy3dPanels();
+		}
+	},
 	componentDidMount() {
 		var params = this.props.params;
 		var type = params.type;
 		if (type === 'panel') {
+			if (params.is3d) {
+				app.init3dPanels(params.side);
+			}
 			app.openPanel(params.side);
 			$(this.refs.panel.getDOMNode()).on('closed', ()=>{
 				app.hideCover();
@@ -45,13 +54,13 @@ module.exports = React.createClass({
 		var className = cn("panel", {
 			"panel-left": params.side==="left",
 			"panel-right": params.side==="right",
-			"panel-cover": true,
-			"layout-dark": true,
+			"panel-reveal": params.is3d,
+			"panel-cover": !params.is3d,
+			"layout-dark": !params.is3d,
 		});
 		return (
 			<div>
-				<div className="panel-overlay">
-				</div>
+				<div className="panel-overlay"></div>
 				<div className={className} ref="panel">
 					{this.props.children}
 				</div>

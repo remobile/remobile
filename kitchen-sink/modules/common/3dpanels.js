@@ -62,12 +62,12 @@ var RightPanel = React.createClass({
 });
 
 function showLeftPanel() {
-	app.showCover(<LeftPanel />, {type:'panel', side: 'left'});
+	app.showCover(<LeftPanel />, {type:'panel', side: 'left', is3d:true});
 }
 
 
 function showRightPanel() {
-	app.showCover(<RightPanel />, {type:'panel', side: 'right'});
+	app.showCover(<RightPanel />, {type:'panel', side: 'right', is3d:true});
 }
 
 function showRightPanelFromLeft() {
@@ -80,10 +80,10 @@ function showRightPanelFromLeft() {
 module.exports = React.createClass({
 	render() {
 		return (
-            <View.Page title="Side Panels">
+            <View.Page title="3D Panels">
                 <View.PageContent>
                     <Content.ContentBlock>
-                        <p>Framework7 comes with 2 panels (on left and on right), both are optional. They have two different layouts/effects - <b>cover</b> above the content (like left panel here) and <b>reveal</b> (like right panel). You can put absolutely anything inside: data lists, forms, custom content, and even other isolated app view (like in right panel now) with its own dynamic navbar. Checkout panels:</p>
+                        <p>This 3D Panels plugin convert your "reveal"-effect panels to great looking 3D panels which are also available as a swipe-panels (try left one).</p>
                     </Content.ContentBlock>
                     <Content.ContentBlock>
                         <Grid.Row>

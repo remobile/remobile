@@ -30,6 +30,7 @@ var welcomescreen = require('../framework7/plugins/welcomescreen.js');
 var indexedList = require('../framework7/plugins/indexed-list.js');
 var toast = require('../framework7/plugins/toast.js');
 var upscroller = require('../framework7/plugins/upscroller.js');
+var panels3d = require('../framework7/plugins/3dpanels.js');
 
 var VERSION = '1.4.0';
 var TRANSITIONS_INOUT = {
@@ -222,6 +223,7 @@ function App (views) {
             indexedList(this);
             toast(this);
             upscroller(this);
+            panels3d(this);
         },
         componentWillMount() {
             window._ = require('underscore');

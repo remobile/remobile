@@ -21,11 +21,11 @@ app.openPanel = function (panelPosition) {
 
     // Trigger reLayout
     var clientLeft = panel[0].clientLeft;
-    
+
     // Transition End;
     var transitionEndTarget = effect === 'reveal' ? $('.' + app.params.viewsClass) : panel;
     var openedTriggered = false;
-    
+
     function panelTransitionEnd() {
         transitionEndTarget.transitionEnd(function (e) {
             if ($(e.target).is(transitionEndTarget)) {
@@ -82,10 +82,10 @@ app.initSwipePanels = function () {
         }
         else return;
     }
-    
+
     var panelOverlay = $('.panel-overlay');
     var isTouched, isMoved, isScrolling, touchesStart = {}, touchStartTime, touchesDiff, translate, overlayOpacity, opened, panelWidth, effect, direction;
-    var views = $('.' + app.params.viewsClass);
+    var views = $('.page');
 
     function handleTouchStart(e) {
         if (!app.allowPanelOpen || (!app.params.swipePanel && !app.params.swipePanelOnlyClose) || isTouched) return;
@@ -118,7 +118,7 @@ app.initSwipePanels = function () {
         isMoved = false;
         isTouched = true;
         isScrolling = undefined;
-        
+
         touchStartTime = (new Date()).getTime();
         direction = undefined;
     }
@@ -193,7 +193,7 @@ app.initSwipePanels = function () {
         e.preventDefault();
         var threshold = opened ? 0 : -app.params.swipePanelThreshold;
         if (side === 'right') threshold = -threshold;
-        
+
         touchesDiff = pageX - touchesStart.x + threshold;
 
         if (side === 'right') {
@@ -213,8 +213,8 @@ app.initSwipePanels = function () {
         if (effect === 'reveal') {
             views.transform('translate3d(' + translate + 'px,0,0)').transition(0);
             panelOverlay.transform('translate3d(' + translate + 'px,0,0)').transition(0);
-            
-            app.pluginHook('swipePanelSetTransform', views[0], panel[0], Math.abs(translate / panelWidth));
+
+            app.swipePanelSetTransform(views[0], panel[0], Math.abs(translate / panelWidth));
         }
         else {
             panel.transform('translate3d(' + translate + 'px,0,0)').transition(0);
@@ -223,7 +223,7 @@ app.initSwipePanels = function () {
                 overlayOpacity = Math.abs(translate/panelWidth);
                 panelOverlay.css({opacity: overlayOpacity});
             }
-            app.pluginHook('swipePanelSetTransform', views[0], panel[0], Math.abs(translate / panelWidth));
+            app.swipePanelSetTransform(views[0], panel[0], Math.abs(translate / panelWidth));
         }
     }
     function handleTouchEnd(e) {
