@@ -1,6 +1,6 @@
 module.exports = function(app) {
 	app.initIndexedList = function(params) {
-		var isTouched, lastLetter, lastPreviewLetter, groupPostion = {};
+		var isTouched, lastLetter, lastPreviewLetter, groupPostion = {}, box;
 		var eventsTarget = params.container;
 
 		var pageContainer = $('.page');
@@ -21,7 +21,26 @@ module.exports = function(app) {
 			height -= toolBarOffset;
 		}
 		eventsTarget.css({'height':height+'px'});
-		
+
+		function showThumbnail(letter) {
+			$('.indexed-list-letter-container').off('click').off('transitionEnd').remove();
+			box = $('<div class="indexed-list-letter-container show">');
+			box.html('<div class="letter">' +letter +'</div>');
+			$('body').append(box);
+			box.css('margin-top', box.outerHeight() / -2 + 'px').css('margin-left', box.outerWidth() / -2 + 'px');
+			box.addClass('fadein');
+		}
+
+		function updateThumbnail(letter) {
+			box.find('.letter').html(letter);
+		}
+
+		function hideThumbnail() {
+			box.removeClass('fadein').transitionEnd(function () {
+			  box.remove();
+			});
+		}
+
 		function callback(letter) {
 			var scrollToEl = pageContent.find('.list-group ul li[data-index-letter="' + letter + '"]');
 			if (!scrollToEl.length) return;
@@ -36,7 +55,7 @@ module.exports = function(app) {
 			var target = $(e.target);
 			if (!target.is('li')) target = target.parents('li');
 			if (target.length > 0) {
-				scrollToLetter(target.eq(0).data('index-letter'));
+				scrollToLetter(target.eq(0).data('index-letter'), true);
 			}
 		}
 
@@ -60,13 +79,14 @@ module.exports = function(app) {
 
 		function handleTouchEnd(e) {
 			isTouched = false;
+			hideThumbnail();
 		}
 
 		function handleClick(e) {
 			var target = $(e.target);
 			if (!target.is('li')) target = target.parents('li');
 			if (target.length > 0) {
-				scrollToLetter(target.eq(0).data('index-letter'));
+				scrollToLetter(target.eq(0).data('index-letter'), true);
 			}
 		}
 
@@ -90,11 +110,16 @@ module.exports = function(app) {
 			}
 		}
 
-		function scrollToLetter(letter) {
+		function scrollToLetter(letter, start) {
 			if (lastLetter !== letter) {
 				lastLetter = letter;
 				callback(letter);
 				params.callback(letter);
+				if (start) {
+					showThumbnail(letter);
+				} else {
+					updateThumbnail(letter);
+				}
 			}
 		}
 

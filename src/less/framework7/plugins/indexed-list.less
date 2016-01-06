@@ -64,3 +64,28 @@
         line-height: 1.5em;
     }
 }
+
+// add toast less for letter thumbnail
+.indexed-list-letter-container{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  z-index: 11800;
+  color: #fff;
+  width: 70px;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.8s;
+  &.show {
+    display: block;
+  }
+  &.fadein {
+    opacity: 0.7;
+  }
+  .letter {
+    font-size:50px;
+    text-align:center;
+  }
+}
