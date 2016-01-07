@@ -62,12 +62,12 @@ var RightPanel = React.createClass({
 });
 
 function showLeftPanel() {
-	app.showCover(<LeftPanel />, {type:'panel', side: 'left'});
+	app.showCover(<LeftPanel />, {type:'panel', side: 'left', affect: 'cover'});
 }
 
 
 function showRightPanel() {
-	app.showCover(<RightPanel />, {type:'panel', side: 'right'});
+	app.showCover(<RightPanel />, {type:'panel', side: 'right', affect: 'reveal'});
 }
 
 function showRightPanelFromLeft() {

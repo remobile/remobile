@@ -145,9 +145,8 @@ var params = {
     imagesLazyLoadThreshold: 0,
     imagesLazyLoadSequential: true,
     // Name space
-    // viewClass: 'view',
-    // viewMainClass: 'view-main',
-    // viewsClass: 'views',
+    viewClass: 'page',
+    viewsClass: 'page',
     // Notifications defaults
     notificationCloseOnClick: false,
     notificationCloseIcon: true,
@@ -212,7 +211,7 @@ function App (views) {
             modals(this);
             picker(this);
             calendar(this);
-            panels(this).initSwipePanels();
+            panels(this);
             autocomplete(this);
             tabs(this);
             accordion(this);

@@ -85,7 +85,7 @@ app.initSwipePanels = function () {
 
     var panelOverlay = $('.panel-overlay');
     var isTouched, isMoved, isScrolling, touchesStart = {}, touchStartTime, touchesDiff, translate, overlayOpacity, opened, panelWidth, effect, direction;
-    var views = $('.page');
+    var views = $('.' + app.params.viewsClass);
 
     function handleTouchStart(e) {
         if (!app.allowPanelOpen || (!app.params.swipePanel && !app.params.swipePanelOnlyClose) || isTouched) return;

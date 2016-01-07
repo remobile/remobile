@@ -13,11 +13,11 @@ module.exports = function (app) {
         },
     };
 
-    var leftPanelWidth, rightPanelWidth, page;
+    var leftPanelWidth, rightPanelWidth, views;
 
     function leftPanelOpen() {
         if (!enabled) return;
-        page.css({
+        views.css({
             '-webkit-transform-origin': '100% center',
             'transform-origin': '100% center',
         });
@@ -25,7 +25,7 @@ module.exports = function (app) {
 
     function rightPanelOpen() {
         if (!enabled) return;
-        page.css({
+        views.css({
             '-webkit-transform-origin': '0% center',
             'transform-origin': '0% center',
         });
@@ -33,7 +33,7 @@ module.exports = function (app) {
 
 
     app.init3dPanels = function(side) {
-        page = $('.page');
+        views = $('.'+app.params.viewsClass);
         var panel = $('.panel-'+side+'.panel-reveal');
         var callback = side==='left'?leftPanelOpen:rightPanelOpen;
         app.panels3d.enable();
@@ -46,14 +46,15 @@ module.exports = function (app) {
     };
 
     app.swipePanelSetTransform = function(viewsContainer, panel, perc) {
+    	console.log("================");
         if (!enabled) return;
         panel = $(panel);
         if (!panel.hasClass('panel-reveal')) return;
 
         if (panel.hasClass('panel-left')) {
             if (!leftPanelWidth) leftPanelWidth = panel[0].offsetWidth;
-            page.transform('translate3d(' + (leftPanelWidth * perc) + 'px,0,0) rotateY(' + (-30 * perc) + 'deg)');
-            page.css({
+            views.transform('translate3d(' + (leftPanelWidth * perc) + 'px,0,0) rotateY(' + (-30 * perc) + 'deg)');
+            views.css({
                 '-webkit-transform-origin': '100% center',
                 'transform-origin': '100% center',
             });
@@ -61,8 +62,8 @@ module.exports = function (app) {
         }
         if (panel.hasClass('panel-right')) {
             if (!rightPanelWidth) rightPanelWidth = panel[0].offsetWidth;
-            page.transform('translate3d(' + (-rightPanelWidth * perc) + 'px,0,0) rotateY(' + (30 * perc) + 'deg)');
-            page.css({
+            views.transform('translate3d(' + (-rightPanelWidth * perc) + 'px,0,0) rotateY(' + (30 * perc) + 'deg)');
+            views.css({
                 '-webkit-transform-origin': '0% center',
                 'transform-origin': '0% center',
             });

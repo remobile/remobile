@@ -21,6 +21,7 @@ module.exports = function(app) {
 			height -= toolBarOffset;
 		}
 		eventsTarget.css({'height':height+'px'});
+		pageContent.css({'width': 'calc(100% - '+eventsTarget.width()+'px)'});
 
 		function showThumbnail(letter) {
 			$('.indexed-list-letter-container').off('click').off('transitionEnd').remove();
@@ -32,13 +33,20 @@ module.exports = function(app) {
 		}
 
 		function updateThumbnail(letter) {
-			box.find('.letter').html(letter);
+			if (box) {
+				box.find('.letter').html(letter);
+			} else {
+				showThumbnail(letter);
+			}
 		}
 
 		function hideThumbnail() {
-			box.removeClass('fadein').transitionEnd(function () {
-			  box.remove();
-			});
+			if (box) {
+				box.removeClass('fadein').transitionEnd(function () {
+				  box.remove();
+				  box = null;
+				});
+			}
 		}
 
 		function callback(letter) {

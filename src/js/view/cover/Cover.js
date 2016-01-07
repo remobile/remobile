@@ -17,6 +17,7 @@ module.exports = React.createClass({
 		var type = params.type;
 		if (type === 'panel') {
 			if (params.is3d) {
+				app.initSwipePanels();
 				app.init3dPanels(params.side);
 			}
 			app.openPanel(params.side);
@@ -51,13 +52,19 @@ module.exports = React.createClass({
 	},
 	renderPanel() {
 		var params = this.props.params;
-		var className = cn("panel", {
+		var obj = {
+			"panel": true,
 			"panel-left": params.side==="left",
 			"panel-right": params.side==="right",
 			"panel-reveal": params.is3d,
-			"panel-cover": !params.is3d,
-			"layout-dark": !params.is3d,
-		});
+		};
+		if (!params.is3d) {
+			var affect = params.affect||'cover';
+			obj["panel-"+affect] = true;
+			var color = params.color||'dark';
+			obj["layout-"+color] = true;
+		}
+		var className = cn(obj);
 		return (
 			<div>
 				<div className="panel-overlay"></div>

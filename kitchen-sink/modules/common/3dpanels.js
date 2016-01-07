@@ -62,11 +62,13 @@ var RightPanel = React.createClass({
 });
 
 function showLeftPanel() {
+	app.params.swipePanel = 'left';
 	app.showCover(<LeftPanel />, {type:'panel', side: 'left', is3d:true});
 }
 
 
 function showRightPanel() {
+	app.params.swipePanel = 'right';
 	app.showCover(<RightPanel />, {type:'panel', side: 'right', is3d:true});
 }
 
