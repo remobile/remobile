@@ -10,7 +10,7 @@ app.initClickEvents = function () {
                      clicked.parents('a').length > 0 ||
                      target[0].nodeName.toLowerCase() === 'a' ||
                      target.parents('a').length > 0;
-                     
+
         if (isLink) return;
         var pageContent, page;
         if (app.params.scrollTopOnNavbarClick && clicked.is('.navbar .center')) {
@@ -48,7 +48,7 @@ app.initClickEvents = function () {
             }
             else {
                 // Usual case
-                pageContent = $('.views').find('.page:not(.page-on-left):not(.page-on-right):not(.cached)').find('.page-content');   
+                pageContent = $('.views').find('.page:not(.page-on-left):not(.page-on-right):not(.cached)').find('.page-content');
             }
         }
 
@@ -65,11 +65,11 @@ app.initClickEvents = function () {
         var clicked = $(this);
         var url = clicked.attr('href');
         var isLink = clicked[0].nodeName.toLowerCase() === 'a';
-        
-        // Check if link is external 
+
+        // Check if link is external
         if (isLink) {
-            if (clicked.is(app.params.externalLinks)) {
-                if(clicked.attr('target') === '_system') {
+            if (clicked.is(app.params.externalLinks) || (url && url.indexOf('javascript:') >= 0)) {
+                if(url && clicked.attr('target') === '_system') {
                     e.preventDefault();
                     window.open(url, '_system');
                 }
@@ -84,7 +84,7 @@ app.initClickEvents = function () {
         if (clicked.hasClass('smart-select')) {
             if (app.smartSelectOpen) app.smartSelectOpen(clicked);
         }
-        
+
         // Open Panel
         if (clicked.hasClass('open-panel')) {
             if ($('.panel').length === 1) {
@@ -150,12 +150,16 @@ app.initClickEvents = function () {
                 app.closeModal('.modal.modal-in');
             if ($('.actions-modal.modal-in').length > 0 && app.params.actionsCloseByOutside)
                 app.closeModal('.actions-modal.modal-in');
-            
+
             if ($('.popover.modal-in').length > 0) app.closeModal('.popover.modal-in');
         }
         if (clicked.hasClass('popup-overlay')) {
             if ($('.popup.modal-in').length > 0 && app.params.popupCloseByOutside)
                 app.closeModal('.popup.modal-in');
+        }
+        if (clicked.hasClass('picker-modal-overlay')) {
+            if ($('.picker-modal.modal-in').length > 0)
+                app.closeModal('.picker-modal.modal-in');
         }
 
         // Picker
@@ -198,18 +202,22 @@ app.initClickEvents = function () {
                 if (title) {
                     app.confirm(text, title, function () {
                         app.swipeoutDelete(clicked.parents('.swipeout'));
+                    }, function () {
+                        if (clickedData.closeOnCancel) app.swipeoutClose(clicked.parents('.swipeout'));
                     });
                 }
                 else {
                     app.confirm(text, function () {
                         app.swipeoutDelete(clicked.parents('.swipeout'));
+                    }, function () {
+                        if (clickedData.closeOnCancel) app.swipeoutClose(clicked.parents('.swipeout'));
                     });
                 }
             }
             else {
                 app.swipeoutDelete(clicked.parents('.swipeout'));
             }
-                
+
         }
         // Sortable
         if (clicked.hasClass('toggle-sortable')) {
@@ -227,6 +235,16 @@ app.initClickEvents = function () {
             if (accordionItem.length === 0) accordionItem = clicked.parents('.accordion-item');
             if (accordionItem.length === 0) accordionItem = clicked.parents('li');
             app.accordionToggle(accordionItem);
+        }
+
+        // Speed Dial
+        if (app.params.material) {
+            if (clicked.hasClass('floating-button') && clicked.parent().hasClass('speed-dial')) {
+                clicked.parent().toggleClass('speed-dial-opened');
+            }
+            if (clicked.hasClass('close-speed-dial')) {
+                $('.speed-dial-opened').removeClass('speed-dial-opened');
+            }
         }
 
         // Load Page
@@ -279,7 +297,7 @@ app.initClickEvents = function () {
                 if (clicked.hasClass('with-animation')) animatePages = true;
                 if (clicked.hasClass('no-animation')) animatePages = false;
             }
-            
+
             var options = {
                 animatePages: animatePages,
                 ignoreCache: clickedData.ignoreCache,
@@ -306,7 +324,7 @@ app.initClickEvents = function () {
             else view.router.load(options);
         }
     }
-    $(document).on('click', 'a, .open-panel, .close-panel, .panel-overlay, .modal-overlay, .popup-overlay, .swipeout-delete, .swipeout-close, .close-popup, .open-popup, .open-popover, .open-login-screen, .close-login-screen .smart-select, .toggle-sortable, .open-sortable, .close-sortable, .accordion-item-toggle, .close-picker', handleClicks);
+    $(document).on('click', 'a, .open-panel, .close-panel, .panel-overlay, .modal-overlay, .popup-overlay, .swipeout-delete, .swipeout-close, .close-popup, .open-popup, .open-popover, .open-login-screen, .close-login-screen .smart-select, .toggle-sortable, .open-sortable, .close-sortable, .accordion-item-toggle, .close-picker, .picker-modal-overlay', handleClicks);
     if (app.params.scrollTopOnNavbarClick || app.params.scrollTopOnStatusbarClick) {
         $(document).on('click', '.statusbar-overlay, .navbar .center', handleScrollTop);
     }

@@ -26,8 +26,9 @@ app.modal = function (params) {
         var textHTML = params.text ? '<div class="modal-text">' + params.text + '</div>' : '';
         var afterTextHTML = params.afterText ? params.afterText : '';
         var noButtons = !params.buttons || params.buttons.length === 0 ? 'modal-no-buttons' : '';
-        var verticalButtons = params.verticalButtons ? 'modal-buttons-vertical' : '';
-        modalHTML = '<div class="modal ' + noButtons + ' ' + (params.cssClass || '') + '"><div class="modal-inner">' + (titleHTML + textHTML + afterTextHTML) + '</div><div class="modal-buttons ' + verticalButtons + '">' + buttonsHTML + '</div></div>';
+        var verticalButtons = params.verticalButtons ? 'modal-buttons-vertical': '';
+        var modalButtonsHTML = params.buttons && params.buttons.length > 0 ? '<div class="modal-buttons modal-buttons-' + params.buttons.length + ' ' + verticalButtons + '">' + buttonsHTML + '</div>' : '';
+        modalHTML = '<div class="modal ' + noButtons + ' ' + (params.cssClass || '') + '"><div class="modal-inner">' + (titleHTML + textHTML + afterTextHTML) + '</div>' + modalButtonsHTML + '</div>';
     }
 
     _modalTemplateTempDiv.innerHTML = modalHTML;
@@ -82,7 +83,7 @@ app.prompt = function (text, title, callbackOk, callbackCancel) {
     return app.modal({
         text: text || '',
         title: typeof title === 'undefined' ? app.params.modalTitle : title,
-        afterText: '<input type="text" class="modal-text-input">',
+        afterText: '<div class="input-field"><input type="text" class="modal-text-input"></div>',
         buttons: [
             {
                 text: app.params.modalButtonCancel
@@ -107,7 +108,7 @@ app.modalLogin = function (text, title, callbackOk, callbackCancel) {
     return app.modal({
         text: text || '',
         title: typeof title === 'undefined' ? app.params.modalTitle : title,
-        afterText: '<input type="text" name="modal-username" placeholder="' + app.params.modalUsernamePlaceholder + '" class="modal-text-input modal-text-input-double"><input type="password" name="modal-password" placeholder="' + app.params.modalPasswordPlaceholder + '" class="modal-text-input modal-text-input-double">',
+        afterText: '<div class="input-field modal-input-double"><input type="text" name="modal-username" placeholder="' + app.params.modalUsernamePlaceholder + '" class="modal-text-input"></div><div class="input-field modal-input-double"><input type="password" name="modal-password" placeholder="' + app.params.modalPasswordPlaceholder + '" class="modal-text-input"></div>',
         buttons: [
             {
                 text: app.params.modalButtonCancel
@@ -134,7 +135,7 @@ app.modalPassword = function (text, title, callbackOk, callbackCancel) {
     return app.modal({
         text: text || '',
         title: typeof title === 'undefined' ? app.params.modalTitle : title,
-        afterText: '<input type="password" name="modal-password" placeholder="' + app.params.modalPasswordPlaceholder + '" class="modal-text-input">',
+        afterText: '<div class="input-field"><input type="password" name="modal-password" placeholder="' + app.params.modalPasswordPlaceholder + '" class="modal-text-input"></div>',
         buttons: [
             {
                 text: app.params.modalButtonCancel
@@ -154,7 +155,7 @@ app.modalPassword = function (text, title, callbackOk, callbackCancel) {
 app.showPreloader = function (title) {
     return app.modal({
         title: title || app.params.modalPreloaderTitle,
-        text: '<div class="preloader"></div>',
+        text: '<div class="preloader">' + (app.params.material ? app.params.materialPreloaderHtml : '') + '</div>',
         cssClass: 'modal-preloader'
     });
 };
@@ -162,7 +163,7 @@ app.hidePreloader = function () {
     app.closeModal('.modal.modal-in');
 };
 app.showIndicator = function () {
-    $('body').append('<div class="preloader-indicator-overlay"></div><div class="preloader-indicator-modal"><span class="preloader preloader-white"></span></div>');
+    $('body').append('<div class="preloader-indicator-overlay"></div><div class="preloader-indicator-modal"><span class="preloader preloader-white">' + (app.params.material ? app.params.materialPreloaderHtml : '') + '</span></div>');
 };
 app.hideIndicator = function () {
     $('.preloader-indicator-overlay, .preloader-indicator-modal').remove();
@@ -232,7 +233,7 @@ app.actions = function (target, params) {
                     if (button.color) buttonClass += ' color-' + button.color;
                     if (button.bg) buttonClass += ' bg-' + button.bg;
                     if (button.disabled) buttonClass += ' disabled';
-                    buttonsHTML += '<span class="' + buttonClass + '">' + button.text + '</span>';
+                    buttonsHTML += '<div class="' + buttonClass + '">' + button.text + '</div>';
                     if (j === params[i].length - 1) buttonsHTML += '</div>';
                 }
             }
@@ -293,10 +294,14 @@ app.popover = function (modal, target, removeOnClose) {
         var modalWidth =  modal.width();
         var modalHeight =  modal.height(); // 13 - height of angle
         var modalAngle, modalAngleSize = 0, modalAngleLeft, modalAngleTop;
-        
-        modalAngle = modal.find('.popover-angle');
-        modalAngleSize = modalAngle.width() / 2;
-        modalAngle.removeClass('on-left on-right on-top on-bottom').css({left: '', top: ''});
+        if (!material) {
+            modalAngle = modal.find('.popover-angle');
+            modalAngleSize = modalAngle.width() / 2;
+            modalAngle.removeClass('on-left on-right on-top on-bottom').css({left: '', top: ''});
+        }
+        else {
+            modal.removeClass('popover-on-left popover-on-right popover-on-top popover-on-bottom').css({left: '', top: ''});
+        }
 
         var targetWidth = target.outerWidth();
         var targetHeight = target.outerHeight();
@@ -313,16 +318,17 @@ app.popover = function (modal, target, removeOnClose) {
         var modalLeft = 0;
         var diff = 0;
         // Top Position
-        var modalPosition = 'top';
+        var modalPosition = material ? 'bottom' : 'top';
         if (material) {
-            if (modalHeight < targetOffset.top) {
-                // On top
-                modalTop = targetOffset.top - modalHeight + targetHeight;
-            }
-            else if (modalHeight < windowHeight - targetOffset.top - targetHeight) {
+            if (modalHeight < windowHeight - targetOffset.top - targetHeight) {
                 // On bottom
                 modalPosition = 'bottom';
                 modalTop = targetOffset.top;
+            }
+            else if (modalHeight < targetOffset.top) {
+                // On top
+                modalTop = targetOffset.top - modalHeight + targetHeight;
+                modalPosition = 'top';
             }
             else {
                 // On middle
@@ -331,23 +337,52 @@ app.popover = function (modal, target, removeOnClose) {
             }
 
             if (modalTop <= 0) {
-                modalTop = 5;
+                modalTop = 8;
             }
             else if (modalTop + modalHeight >= windowHeight) {
-                modalTop = windowHeight - modalHeight - 5;
+                modalTop = windowHeight - modalHeight - 8;
             }
 
             // Horizontal Position
             modalLeft = targetOffset.left;
-            if (modalLeft < 5) modalLeft = 5;
-            if (modalLeft + modalWidth > windowWidth) {
-                modalLeft = targetOffset.left + targetWidth - modalWidth;
+            if (modalLeft + modalWidth >= windowWidth - 8) {
+                modalLeft = targetOffset.left + targetWidth - modalWidth - 8;
+            }
+            if (modalLeft < 8) {
+                modalLeft = 8;
             }
             if (modalPosition === 'top') {
                 modal.addClass('popover-on-top');
             }
             if (modalPosition === 'bottom') {
                 modal.addClass('popover-on-bottom');
+            }
+            if (target.hasClass('floating-button-to-popover') && !modal.hasClass('modal-in')) {
+                modal.addClass('popover-floating-button');
+                var diffX = (modalLeft + modalWidth / 2) - (targetOffset.left + targetWidth / 2),
+                    diffY = (modalTop + modalHeight / 2) - (targetOffset.top + targetHeight / 2);
+                target
+                    .addClass('floating-button-to-popover-in')
+                    .transform('translate3d(' + diffX + 'px, ' + diffY + 'px,0)')
+                    .transitionEnd(function (e) {
+                        if (!target.hasClass('floating-button-to-popover-in')) return;
+                        target
+                            .addClass('floating-button-to-popover-scale')
+                            .transform('translate3d(' + diffX + 'px, ' + diffY + 'px,0) scale(' + (modalWidth/targetWidth) + ', ' + (modalHeight/targetHeight) + ')');
+                    });
+
+                modal.once('close', function () {
+                    target
+                        .removeClass('floating-button-to-popover-in floating-button-to-popover-scale')
+                        .addClass('floating-button-to-popover-out')
+                        .transform('')
+                        .transitionEnd(function (e) {
+                            target.removeClass('floating-button-to-popover-out');
+                        });
+                });
+                modal.once('closed', function () {
+                    modal.removeClass('popover-floating-button');
+                });
             }
 
         }
@@ -389,7 +424,7 @@ app.popover = function (modal, target, removeOnClose) {
                 }
                 diff = diff - modalLeft;
                 modalAngleLeft = (modalWidth / 2 - modalAngleSize + diff);
-                modalAngleLeft = Math.max(Math.min(modalAngleLeft, modalWidth - modalAngleSize * 2 - 6), 6);
+                modalAngleLeft = Math.max(Math.min(modalAngleLeft, modalWidth - modalAngleSize * 2 - 13), 13);
                 modalAngle.css({left: modalAngleLeft + 'px'});
 
             }
@@ -402,7 +437,7 @@ app.popover = function (modal, target, removeOnClose) {
                     modalAngle.removeClass('on-right').addClass('on-left');
                 }
                 modalAngleTop = (modalHeight / 2 - modalAngleSize + diff);
-                modalAngleTop = Math.max(Math.min(modalAngleTop, modalHeight - modalAngleSize * 2 - 6), 6);
+                modalAngleTop = Math.max(Math.min(modalAngleTop, modalHeight - modalAngleSize * 2 - 13), 13);
                 modalAngle.css({top: modalAngleTop + 'px'});
             }
         }
@@ -411,9 +446,11 @@ app.popover = function (modal, target, removeOnClose) {
         // Apply Styles
         modal.css({top: modalTop + 'px', left: modalLeft + 'px'});
     }
+
     sizePopover();
 
     $(window).on('resize', sizePopover);
+
     modal.on('close', function () {
         $(window).off('resize', sizePopover);
     });
@@ -436,30 +473,36 @@ app.popup = function (modal, removeOnClose) {
     modal = $(modal);
     if (modal.length === 0) return false;
     modal.show();
-    
+
     app.openModal(modal);
     return modal[0];
 };
-app.pickerModal = function (pickerModal, removeOnClose) {
+app.pickerModal = function (modal, removeOnClose) {
     if (typeof removeOnClose === 'undefined') removeOnClose = true;
-    if (typeof pickerModal === 'string' && pickerModal.indexOf('<') >= 0) {
-        pickerModal = $(pickerModal);
-        if (pickerModal.length > 0) {
-            if (removeOnClose) pickerModal.addClass('remove-on-close');
-            $('body').append(pickerModal[0]);
+    if (typeof modal === 'string' && modal.indexOf('<') >= 0) {
+        modal = $(modal);
+        if (modal.length > 0) {
+            if (removeOnClose) modal.addClass('remove-on-close');
+            $('body').append(modal[0]);
         }
         else return false; //nothing found
     }
-    pickerModal = $(pickerModal);
-    if (pickerModal.length === 0) return false;
-    pickerModal.show();
-    app.openModal(pickerModal);
-    return pickerModal[0];
+    modal = $(modal);
+    if (modal.length === 0) return false;
+    if ($('.picker-modal.modal-in:not(.modal-out)').length > 0 && !modal.hasClass('modal-in')) {
+        app.closeModal('.picker-modal.modal-in:not(.modal-out)');
+    }
+    modal.show();
+    app.openModal(modal);
+    return modal[0];
 };
 app.loginScreen = function (modal) {
     if (!modal) modal = '.login-screen';
     modal = $(modal);
     if (modal.length === 0) return false;
+    if ($('.login-screen.modal-in:not(.modal-out)').length > 0 && !modal.hasClass('modal-in')) {
+        app.closeModal('.login-screen.modal-in:not(.modal-out)');
+    }
     modal.show();
     
     app.openModal(modal);
@@ -503,6 +546,14 @@ app.openModal = function (modal) {
         }
         overlay = isPopup ? $('.popup-overlay') : $('.modal-overlay');
     }
+    if (app.params.material && isPickerModal) {
+        if (modal.hasClass('picker-calendar')) {
+            if ($('.picker-modal-overlay').length === 0 && !isPopup) {
+                $('body').append('<div class="picker-modal-overlay"></div>');
+            }
+            overlay = $('.picker-modal-overlay');
+        }
+    }
 
     //Make sure that styles are applied, trigger relayout;
     var clientLeft = modal[0].clientLeft;
@@ -527,6 +578,7 @@ app.openModal = function (modal) {
 
     // Classes for transition in
     if (!isLoginScreen && !isPickerModal) overlay.addClass('modal-overlay-visible');
+    if (app.params.material && isPickerModal && overlay) overlay.addClass('modal-overlay-visible');
     modal.removeClass('modal-out').addClass('modal-in').transitionEnd(function (e) {
         if (modal.hasClass('modal-out')) modal.trigger('closed');
         else modal.trigger('opened');
@@ -546,13 +598,20 @@ app.closeModal = function (modal) {
 
     var removeOnClose = modal.hasClass('remove-on-close');
 
-    var overlay = isPopup ? $('.popup-overlay') : $('.modal-overlay');
+    var overlay;
+    
+    if (isPopup) overlay = $('.popup-overlay');
+    else {
+        if (isPickerModal && app.params.material) overlay = $('.picker-modal-overlay');
+        else if (!isPickerModal) overlay = $('.modal-overlay');
+    }
+
     if (isPopup){
         if (modal.length === $('.popup.modal-in').length) {
             overlay.removeClass('modal-overlay-visible');
         }
     }
-    else if (!isPickerModal) {
+    else if (overlay && overlay.length > 0) {
         overlay.removeClass('modal-overlay-visible');
     }
 
@@ -564,15 +623,18 @@ app.closeModal = function (modal) {
         $('body').addClass('picker-modal-closing');
     }
 
-    if (!isPopover) {
+    if (!(isPopover && !app.params.material)) {
         modal.removeClass('modal-in').addClass('modal-out').transitionEnd(function (e) {
             if (modal.hasClass('modal-out')) modal.trigger('closed');
-            else modal.trigger('opened');
+            else {
+                modal.trigger('opened');
+                if (isPopover) return;
+            }
 
             if (isPickerModal) {
                 $('body').removeClass('picker-modal-closing');
             }
-            if (isPopup || isLoginScreen || isPickerModal) {
+            if (isPopup || isLoginScreen || isPickerModal || isPopover) {
                 modal.removeClass('modal-out').hide();
                 if (removeOnClose && modal.length > 0) {
                     modal.remove();

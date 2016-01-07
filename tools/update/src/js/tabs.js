@@ -22,7 +22,15 @@ app.showTab = function (tab, tabLink, force) {
     // Animated tabs
     var isAnimatedTabs = tabs.parent().hasClass('tabs-animated-wrap');
     if (isAnimatedTabs) {
-        tabs.transform('translate3d(' + -newTab.index() * 100 + '%,0,0)');
+        var tabTranslate = (app.rtl ? newTab.index() : -newTab.index()) * 100;
+        tabs.transform('translate3d(' + tabTranslate + '%,0,0)');
+    }
+
+    // Swipeable tabs
+    var isSwipeableTabs = tabs.parent().hasClass('tabs-swipeable-wrap'), swiper;
+    if (isSwipeableTabs) {
+        swiper = tabs.parent()[0].swiper;
+        if (swiper.activeIndex !== newTab.index()) swiper.slideTo(newTab.index(), undefined, false);
     }
 
     // Remove active class from old tabs
@@ -33,7 +41,7 @@ app.showTab = function (tab, tabLink, force) {
     newTab.trigger('show');
 
     // Update navbars in new tab
-    if (!isAnimatedTabs && newTab.find('.navbar').length > 0) {
+    if (!isAnimatedTabs && !isSwipeableTabs && newTab.find('.navbar').length > 0) {
         // Find tab's view
         var viewContainer;
         if (newTab.hasClass(app.params.viewClass)) viewContainer = newTab[0];
@@ -71,8 +79,20 @@ app.showTab = function (tab, tabLink, force) {
     }
 
     // Update links' classes
-    if (tabLink && tabLink.length > 0) tabLink.addClass('active');
+    if (tabLink && tabLink.length > 0) {
+        tabLink.addClass('active');
+        // Material Highlight
+        if (app.params.material) {
+            var tabbar = tabLink.parents('.tabbar');
+            if (tabbar.length > 0) {
+                if (tabbar.find('.tab-link-highlight').length === 0) {
+                    tabbar.find('.toolbar-inner').append('<span class="tab-link-highlight"></span>');
+                }
+                app.materialTabbarSetHighlight(tabbar, tabLink);
+            }
+        }
+    }
     if (oldTabLink && oldTabLink.length > 0) oldTabLink.removeClass('active');
-    
+
     return true;
 };

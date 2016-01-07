@@ -3,19 +3,18 @@
 Framework 7
 ===========================*/
 window.Framework7 = function (params) {
-
     // App
     var app = this;
 
     // Version
-    app.version = '1.0.6';
+    app.version = '1.4.0';
 
     // Default Parameters
     app.params = {
         cache: true,
         cacheIgnore: [],
         cacheIgnoreGetParameters: false,
-        cacheDuration: 1000 * 60 * 10, // Ten minutes 
+        cacheDuration: 1000 * 60 * 10, // Ten minutes
         preloadPreviousPage: true,
         uniqueHistory: false,
         uniqueHistoryIgnoreGetParameters: false,
@@ -30,7 +29,7 @@ window.Framework7 = function (params) {
         pushStatePreventOnLoad: true,
         // Fast clicks
         fastClicks: true,
-        fastClicksDistanceThreshold: 0,
+        fastClicksDistanceThreshold: 10,
         fastClicksDelayBetweenClicks: 50,
         // Tap Hold
         tapHold: false,
@@ -64,11 +63,10 @@ window.Framework7 = function (params) {
         swipeoutActionsNoFold: false,
         swipeoutNoFollow: false,
         // Smart Select Back link template
-        smartSelectBackTemplate: '<div class="left sliding"><a href="#" class="back link"><i class="icon icon-back"></i><span>{{backText}}</span></a></div>',
+        smartSelectOpenIn: 'page', // or 'popup' or 'picker'
         smartSelectBackText: 'Back',
-        smartSelectInPopup: false,
-        smartSelectPopupCloseTemplate: '<div class="left"><a href="#" class="link close-popup"><i class="icon icon-back"></i><span>{{closeText}}</span></a></div>',
         smartSelectPopupCloseText: 'Close',
+        smartSelectPickerCloseText: 'Done',
         smartSelectSearchbar: false,
         smartSelectBackOnSelect: false,
         // Tap Navbar or Statusbar to scroll to top
@@ -103,6 +101,7 @@ window.Framework7 = function (params) {
         // Notifications defaults
         notificationCloseOnClick: false,
         notificationCloseIcon: true,
+        notificationCloseButtonText: 'Close',
         // Animate Pages
         animatePages: true,
         // Template7
@@ -110,6 +109,22 @@ window.Framework7 = function (params) {
         template7Data: {},
         template7Pages: false,
         precompileTemplates: false,
+        // Material
+        material: false,
+        materialPageLoadDelay: 0,
+        materialPreloaderSvg: '<svg xmlns="http://www.w3.org/2000/svg" height="75" width="75" viewbox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="8"/></svg>',
+        materialPreloaderHtml:
+            '<span class="preloader-inner">' +
+                '<span class="preloader-inner-gap"></span>' +
+                '<span class="preloader-inner-left">' +
+                    '<span class="preloader-inner-half-circle"></span>' +
+                '</span>' +
+                '<span class="preloader-inner-right">' +
+                    '<span class="preloader-inner-half-circle"></span>' +
+                '</span>' +
+            '</span>',
+        materialRipple: true,
+        materialRippleElements: '.ripple, a.link, a.item-link, .button, .modal-button, .tab-link, .label-radio, .label-checkbox, .actions-modal-button, a.searchbar-clear, a.floating-button, .floating-button > a, .speed-dial-buttons a',
         // Auto init
         init: true,
     };

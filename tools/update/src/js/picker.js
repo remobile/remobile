@@ -10,6 +10,7 @@ var Picker = function (params) {
         momentumRatio: 7,
         freeMode: false,
         // Common settings
+        closeByOutsideClick: true,
         scrollToInput: true,
         inputReadOnly: true,
         convertToPopover: true,
@@ -67,6 +68,11 @@ var Picker = function (params) {
     // Value
     p.setValue = function (arrValues, transition) {
         var valueIndex = 0;
+        if (p.cols.length === 0) {
+            p.value = arrValues;
+            p.updateValue(arrValues);
+            return;
+        }
         for (var i = 0; i < p.cols.length; i++) {
             if (p.cols[i] && !p.cols[i].divider) {
                 p.cols[i].setValue(arrValues[valueIndex], transition);
@@ -74,8 +80,8 @@ var Picker = function (params) {
             }
         }
     };
-    p.updateValue = function () {
-        var newValue = [];
+    p.updateValue = function (forceValues) {
+        var newValue = forceValues || [];
         var newDisplayValue = [];
         for (var i = 0; i < p.cols.length; i++) {
             if (!p.cols[i].divider) {
@@ -193,12 +199,35 @@ var Picker = function (params) {
             if (activeIndex >= col.items.length) activeIndex = col.items.length - 1;
             var previousActiveIndex = col.activeIndex;
             col.activeIndex = activeIndex;
-            col.wrapper.find('.picker-selected, .picker-after-selected, .picker-before-selected').removeClass('picker-selected picker-after-selected picker-before-selected');
+            col.wrapper.find('.picker-selected').removeClass('picker-selected');
 
             col.items.transition(transition);
+            
             var selectedItem = col.items.eq(activeIndex).addClass('picker-selected').transform('');
-            var prevItems = selectedItem.prevAll().addClass('picker-before-selected');
-            var nextItems = selectedItem.nextAll().addClass('picker-after-selected');
+                
+            // Set 3D rotate effect
+            if (p.params.rotateEffect) {
+                var percentage = (translate - (Math.floor((translate - maxTranslate)/itemHeight) * itemHeight + maxTranslate)) / itemHeight;
+                
+                col.items.each(function () {
+                    var item = $(this);
+                    var itemOffsetTop = item.index() * itemHeight;
+                    var translateOffset = maxTranslate - translate;
+                    var itemOffset = itemOffsetTop - translateOffset;
+                    var percentage = itemOffset / itemHeight;
+
+                    var itemsFit = Math.ceil(col.height / itemHeight / 2) + 1;
+                    
+                    var angle = (-18*percentage);
+                    if (angle > 180) angle = 180;
+                    if (angle < -180) angle = -180;
+                    // Far class
+                    if (Math.abs(percentage) > itemsFit) item.addClass('picker-item-far');
+                    else item.removeClass('picker-item-far');
+                    // Set transform
+                    item.transform('translate3d(0, ' + (-translate + maxTranslate) + 'px, ' + (originBug ? -110 : 0) + 'px) rotateX(' + angle + 'deg)');
+                });
+            }
 
             if (valueCallbacks || typeof valueCallbacks === 'undefined') {
                 // Update values
@@ -212,31 +241,6 @@ var Picker = function (params) {
                     p.updateValue();
                 }
             }
-                
-            // Set 3D rotate effect
-            if (!p.params.rotateEffect) {
-                return;
-            }
-            var percentage = (translate - (Math.floor((translate - maxTranslate)/itemHeight) * itemHeight + maxTranslate)) / itemHeight;
-            
-            col.items.each(function () {
-                var item = $(this);
-                var itemOffsetTop = item.index() * itemHeight;
-                var translateOffset = maxTranslate - translate;
-                var itemOffset = itemOffsetTop - translateOffset;
-                var percentage = itemOffset / itemHeight;
-
-                var itemsFit = Math.ceil(col.height / itemHeight / 2) + 1;
-                
-                var angle = (-18*percentage);
-                if (angle > 180) angle = 180;
-                if (angle < -180) angle = -180;
-                // Far class
-                if (Math.abs(percentage) > itemsFit) item.addClass('picker-item-far');
-                else item.removeClass('picker-item-far');
-                // Set transform
-                item.transform('translate3d(0, ' + (-translate + maxTranslate) + 'px, ' + (originBug ? -110 : 0) + 'px) rotateX(' + angle + 'deg)');
-            });
         };
 
         function updateDuringScroll() {
@@ -485,12 +489,15 @@ var Picker = function (params) {
             
     }
     
-    if (!p.inline) $('html').on('click', closeOnHTMLClick);
+    if (!p.inline && p.params.closeByOutsideClick) $('html').on('click', closeOnHTMLClick);
 
     // Open
     function onPickerClose() {
         p.opened = false;
-        if (p.input && p.input.length > 0) p.input.parents('.page-content').css({'padding-bottom': ''});
+        if (p.input && p.input.length > 0) {
+            p.input.parents('.page-content').css({'padding-bottom': ''});
+            if (app.params.material) p.input.trigger('blur');
+        }
         if (p.params.onClose) p.params.onClose(p);
 
         // Destroy events
@@ -542,12 +549,18 @@ var Picker = function (params) {
             
             // Set value
             if (!p.initialized) {
-                if (p.params.value) {
+                if (p.value) p.setValue(p.value, 0);
+                else if (p.params.value) {
                     p.setValue(p.params.value, 0);
                 }
             }
             else {
                 if (p.value) p.setValue(p.value, 0);
+            }
+
+            // Material Focus
+            if (p.input && p.input.length > 0 && app.params.material) {
+                p.input.trigger('focus');
             }
         }
 
@@ -583,6 +596,9 @@ var Picker = function (params) {
 
     if (p.inline) {
         p.open();
+    }
+    else {
+        if (!p.initialized && p.params.value) p.setValue(p.params.value);
     }
 
     return p;

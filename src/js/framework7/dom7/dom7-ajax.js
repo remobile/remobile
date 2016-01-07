@@ -63,7 +63,7 @@ $.ajax = function (options) {
     // UC method
     var _method = options.method.toUpperCase();
     // Data to modify GET URL
-    if ((_method === 'GET' || _method === 'HEAD') && options.data) {
+    if ((_method === 'GET' || _method === 'HEAD' || _method === 'OPTIONS' || _method === 'DELETE') && options.data) {
         var stringData;
         if (typeof options.data === 'string') {
             // Should be key=value string
@@ -74,7 +74,10 @@ $.ajax = function (options) {
             // Should be key=value object
             stringData = $.serializeObject(options.data);
         }
-        options.url += paramsPrefix + stringData;
+        if (stringData.length) {
+            options.url += paramsPrefix + stringData;
+            if (paramsPrefix === '?') paramsPrefix = '&';
+        }
     }
     // JSONP
     if (options.dataType === 'json' && options.url.indexOf('callback=') >= 0) {
