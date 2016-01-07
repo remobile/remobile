@@ -3,10 +3,6 @@ var List = require('../list');
 
 module.exports =  React.createClass({
     render() {
-        var className = "searchbar-found";
-        if (this.props.class) {
-            className = className + " " + this.props.class;
-        }
         return (
             <div>
                 <List.List block class="searchbar-not-found">
@@ -18,7 +14,7 @@ module.exports =  React.createClass({
                         </List.ItemInner>
                     </List.ItemContent>
                 </List.List>
-                <List.List block class={className}>
+                <List.List block search {...this.props}>
                     {this.props.children}
                 </List.List>
             </div>

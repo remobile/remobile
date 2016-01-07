@@ -78,7 +78,7 @@ module.exports = React.createClass({
                       <p>Virtual List allows to render lists with huge amount of elements without loss of performance. And it is fully compatible with all Framework7 list components such as Search Bar, Infinite Scroll, Pull To Refresh, Swipeouts (swipe-to-delete) and Sortable.</p>
                       <p>Here is the example of virtual list with 10 000 items:</p>
                     </Content.ContentBlock>
-                    <UI.Search.SearchList ref="searchlist" class="virtual-list media-list"></UI.Search.SearchList>
+                    <UI.Search.SearchList ref="searchlist" virtual media></UI.Search.SearchList>
                 </View.PageContent>
             </View.Page>
         );

@@ -39,37 +39,65 @@ module.exports = React.createClass({
     },
     render() {
         var CurrentPage = this.props.pages[this.state.page];
-		return (
-            <View.Page labelsTabbar title="fang" goBack={false}>
-            	<View.Toolbar tabbar labels class="toolbar-bottom">
-	                <View.ToolbarButton active={this.state.page===0}
-	                    icon="ion-social-windows-outline"
-	                    onTap={this.switchPage.bind(this, 0)}>
-	                        Home
-	                </View.ToolbarButton>
-	                <View.ToolbarButton active={this.state.page===1}
-	                    icon="ion-android-contacts"
-	                    onTap={this.switchPage.bind(this, 1)}>
-	                        Contacts
-	                </View.ToolbarButton>
-	                <View.ToolbarButton active={this.state.page===2}
-	                    icon="ion-chatbubble-working"
-                        	badge={<Badge color="red">9</Badge>}
-	                    onTap={this.switchPage.bind(this, 2)}>
-	                        Messages
-	                </View.ToolbarButton>
-	                <View.ToolbarButton active={this.state.page===3}
-	                    icon="ion-settings"
-	                    onTap={this.switchPage.bind(this, 3)}>
-	                        More
-	                </View.ToolbarButton>
-	             </View.Toolbar>
-							{this.state.page===1&&<UI.Search.Search ref="searchbar"/>}
-					    <View.PageContent>
-		                    <CurrentPage data={this.props.data}/>
-					    </View.PageContent>
-					  	{this.state.page===1&&<IndexedList />}
+        return (
+            <View.Page
+                labelsTabbar
+                title="fang"
+                goBack={false}>
+
+                <View.Toolbar
+                    tabbar
+                    labels
+                    class="toolbar-bottom">
+
+                    <View.ToolbarButton
+                        active={this.state.page===0}
+                        icon="ion-social-windows-outline"
+                        onTap={this.switchPage.bind(this, 0)}>
+                        Home
+                    </View.ToolbarButton>
+
+                    <View.ToolbarButton
+                        active={this.state.page===1}
+                        icon="ion-android-contacts"
+                        onTap={this.switchPage.bind(this, 1)}>
+                        Contacts
+                    </View.ToolbarButton>
+
+                    <View.ToolbarButton
+                        active={this.state.page===2}
+                        icon="ion-chatbubble-working"
+                        badge={
+                            <Badge color="red">9</Badge>
+                        }
+                        onTap={this.switchPage.bind(this, 2)}>
+                        Messages
+                    </View.ToolbarButton>
+
+                    <View.ToolbarButton
+                        active={this.state.page===3}
+                        icon="ion-settings"
+                        onTap={this.switchPage.bind(this, 3)}>
+                        More
+                    </View.ToolbarButton>
+                </View.Toolbar>
+                
+                {this.state.page===1&&[
+                    <UI.Search.Search
+                        key="searchbar"
+                        ref="searchbar"/>
+                    ,
+                    <UI.Search.SearchOverlay key="searchbar-overlay"/>
+                ]}
+
+                <View.PageContent>
+                    <CurrentPage data={this.props.data}/>
+                </View.PageContent>
+
+                {this.state.page===1&&
+                    <IndexedList />
+                }
             </View.Page>
-		);
-	}
+        );
+    }
 });

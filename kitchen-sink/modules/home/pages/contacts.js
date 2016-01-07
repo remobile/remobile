@@ -67,18 +67,29 @@ var ContactGroup = React.createClass({
 var ContactList = React.createClass({
     render() {
         return (
-            <List.List block group class="contacts-block">
+			<UI.Search.SearchList ref="searchlist" block group contacts>
                 {React.addons.createFragment(_.mapObject(users, (persons, key)=>{return <ContactGroup key={key} letter={key} persons={persons}/>}))}
-            </List.List>
+            </UI.Search.SearchList>
         );
     }
 });
 
 
 module.exports = React.createClass({
+	componentDidMount() {
+		var container = $('.page .searchbar');
+        var searchlist = $(this.getDOMNode());
+        var params = {
+            searchList: searchlist.find('.searchbar-found')
+        };
+        this.searchbar = app.searchbar(container, params);
+    },
+    componentWillUnmount() {
+        this.searchbar.destroy();
+    },
 	render() {
 		return (
-				<ContactList />
+			<ContactList />
 		);
 	}
 });

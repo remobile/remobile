@@ -9,6 +9,9 @@ module.exports = React.createClass({
 			'list-block-label': this.props.tabletInset,
 			'media-list': this.props.media,
 			'sortable': this.props.sortable,
+			'virtual-list': this.props.virtual,
+			'contacts-block': this.props.contacts,
+			'searchbar-found': this.props.search,
 			'inputs-list': this.props.inputs&&app.params.material,
 		};
 		this.props.class&&(obj[this.props.class]=true);
@@ -29,7 +32,6 @@ module.exports = React.createClass({
 					ref="container">
 					<ul>
 						{this.props.children}
-
 					</ul>
 				</div>
 			)
