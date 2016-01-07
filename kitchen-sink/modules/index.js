@@ -4,6 +4,7 @@ module.exports = {
 	'button': require('./common/button'),
 	'colorThemes': require('./common/colorThemes'),
   //list
+	'virtualList': require('./common/virtualList'),
 	'list': require('./common/list'),
 	'medialist': require('./common/mediaList'),
 	'grid': require('./common/grid'),

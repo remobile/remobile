@@ -53,6 +53,7 @@ var MenuList = React.createClass({
         return (
             <List.List block>
             	<ListItem page="colorThemes">Color Themes</ListItem>
+                <ListItem page="virtualList">Virtual List</ListItem>
                 <ListItem page="button">Button</ListItem>
                 <ListItem page="upscroller">Up Scroller</ListItem>
                 <ListItem page="chip">Chips</ListItem>
