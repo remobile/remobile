@@ -23,6 +23,8 @@ var IndexedList =  React.createClass({
     }
 });
 
+var TITLES = ['主页', '联系人', '消息', '设置'];
+
 module.exports = React.createClass({
     mixins: [UI.Mixins.RestoreScrollPosition],
     getInitialState() {
@@ -42,7 +44,7 @@ module.exports = React.createClass({
         return (
             <View.Page
                 labelsTabbar
-                title="fang"
+                title={TITLES[this.state.page]}
                 goBack={false}>
 
                 <View.Toolbar
@@ -81,7 +83,7 @@ module.exports = React.createClass({
                         More
                     </View.ToolbarButton>
                 </View.Toolbar>
-                
+
                 {this.state.page===1&&[
                     <UI.Search.Search
                         key="searchbar"
