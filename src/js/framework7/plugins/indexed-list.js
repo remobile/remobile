@@ -106,6 +106,9 @@ module.exports = function(app) {
 
 			var prevLetter = 'A';
 			for (var letter in groupPostion) {
+				if (!groupPostion[letter].length) {
+					return;
+				}
 				var top = groupPostion[letter].offset().top-fixedNavbarOffset-serachBarOffset-2;
 				if (top >= 0) {
 					break;
@@ -139,6 +142,7 @@ module.exports = function(app) {
 		eventsTarget.on(app.touchEvents.end, handleTouchEnd);
 
 		app.destroyIndexedList = function () {
+			pageContent.css({'width': '100%'});
 			pageContent.off('scroll', handlePageScroll);
 			eventsTarget.off('click', '.list-index li', handleClick);
 			eventsTarget.off(app.touchEvents.start, handleTouchStart);

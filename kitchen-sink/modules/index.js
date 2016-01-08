@@ -7,6 +7,7 @@ module.exports = {
 	'virtualList': require('./common/virtualList'),
 	'list': require('./common/list'),
 	'medialist': require('./common/mediaList'),
+	'lazyLoad': require('./common/lazyLoad'),
 	'grid': require('./common/grid'),
 	'chip': require('./common/chip'),
 	'upscroller': require('./common/upscroller'),

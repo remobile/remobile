@@ -8,6 +8,7 @@ module.exports = {
 	Form: require('./form'),
 	Grid: require('./grid'),
 	Icon: require('./icon'),
+	Image: require('./image'),
 	List: require('./list'),
 	Modal: require('./modal'),
 	Message: require('./message'),

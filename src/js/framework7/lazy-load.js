@@ -112,32 +112,17 @@ app.initImagesLazyLoad = function (pageContainer) {
         pageContent[method]('scroll', lazyHandler);
         $(window)[method]('resize', lazyHandler);
     }
-    function detachEvents() {
+    
+    app.destroyImagesLazyLoad = function() {
         attachEvents(true);
-    }
-
-    // Store detach function
-    pageContainer[0].f7DestroyImagesLazyLoad = detachEvents;
+    };
 
     // Attach events
     attachEvents();
-
-    // Destroy on page remove
-    if (pageContainer.hasClass('page')) {
-        pageContainer.once('pageBeforeRemove', detachEvents);
-    }
-
+    
     // Run loader on page load/init
     lazyHandler();
+};
 
-    // Run after page animation
-    pageContainer.once('pageAfterAnimation', lazyHandler);
-};
-app.destroyImagesLazyLoad = function (pageContainer) {
-    pageContainer = $(pageContainer);
-    if (pageContainer.length > 0 && pageContainer[0].f7DestroyImagesLazyLoad) {
-        pageContainer[0].f7DestroyLazyLoad();
-    }
-};
 return app;
 };
