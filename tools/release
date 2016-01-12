@@ -18,6 +18,12 @@ else
     vim -e -s -c ":%s/material.less/ios.less/" -c "wq" ${gulpfile}
 fi
 
+rm -fr www
 cd ../$proj
 rm -fr server/www
 node ../node_modules/gulp/bin/gulp.js release
+
+cd ..
+rm -fr io/*
+mv tools/www/* io/
+rm -fr tools/www
