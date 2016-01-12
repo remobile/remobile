@@ -19,7 +19,7 @@ var watchify = require('watchify');
 var libPath = '../src/';
 var destPath = './server/www/';
 //var releasePath = '../appfog/remobile/www/';
-var releasePath = '../release/';
+var releasePath = '../tools/www/';
 var appPath = './';
 var appFile = 'app.js';
 
@@ -155,7 +155,7 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
         path+'app.js'
     ])
     .pipe(concat('remobile.js'))
-    // .pipe(uglify({compress: {drop_console: true}}))
+    .pipe(uglify({compress: {drop_console: true}}))
     .pipe(gulp.dest(releasePath+'js'));
 
     path = destPath+'css/';

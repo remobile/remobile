@@ -3,9 +3,6 @@
 remobile(React for Mobile) is a set of React components base on Framework7
 for all platforms.
 
-#update width Framework7
-- in js file /*framework7-base*/ tag
-
 ### install
 - cd remobile
 - npm install
@@ -27,4 +24,4 @@ for all platforms.
 - node ../node_modules/gulp/bin/gulp.js release
 
 ### Demo At AppFog
-[kitchen-sink](http://remobile.ap01.aws.af.cm)
+[kitchen-sink](http://remobile.github.io/remobile)
