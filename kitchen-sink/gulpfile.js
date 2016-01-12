@@ -18,7 +18,8 @@ var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var libPath = '../src/';
 var destPath = './server/www/';
-var releasePath = '../appfog/remobile/www/';
+//var releasePath = '../appfog/remobile/www/';
+var releasePath = '../release/';
 var appPath = './';
 var appFile = 'app.js';
 
@@ -145,23 +146,17 @@ gulp.task('watch', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty
     gulp.watch([libPath+'less/**/*.less'], ['less']);
     gulp.watch([appPath+'css/**/*.css'], ['democss']);
 });
-gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app', 'data'], function() {
+gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdparty', 'democss', 'app'], function() {
     var path = destPath+'js/';
     gulp.src([
         path+'framework7.js',
-        path+'thirdparty.js',
+        // path+'thirdparty.js',
         path+'react.js',
         path+'app.js'
     ])
     .pipe(concat('remobile.js'))
-    .pipe(uglify({compress: {drop_console: true}}))
+    // .pipe(uglify({compress: {drop_console: true}}))
     .pipe(gulp.dest(releasePath+'js'));
-
-    gulp.src([
-        path+'plugins/*.js'
-    ])
-    .pipe(uglify({compress: {drop_console: true}}))
-    .pipe(gulp.dest(releasePath+'js/plugins'));
 
     path = destPath+'css/';
     gulp.src([path+'*.css'])
@@ -176,9 +171,6 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     gulp.src(libPath+'fonts/**')
     .pipe(gulp.dest(releasePath+'fonts'));
 
-    gulp.src(destPath+'data/**')
-    .pipe(gulp.dest(releasePath+'data'));
-
     gulp.src(destPath+'index.html')
     .pipe(concat('main.html'))
     .pipe(replace(/<link rel="stylesheet"[\s\S]*demo.css" \/>/, '<link rel="stylesheet" type="text/css" href="css/remobile.css" />'))
@@ -188,6 +180,9 @@ gulp.task('release', ['framework7', 'html', 'images', 'fonts', 'less', 'thirdpar
     path = appPath+'platforms/web/phone/';
     gulp.src(path+'index.html')
     .pipe(gulp.dest(releasePath));
+
+    gulp.src(path+'*.png')
+    .pipe(gulp.dest(releasePath+"/img"));
 });
 gulp.task('run', ['watch', 'server']);
 gulp.task('clean', function() {
