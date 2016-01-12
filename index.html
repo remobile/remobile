@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Remobile</title>
+	<meta charset="utf-8" />
+	<style>
+		#iphone_device {
+		    position: absolute;
+		    background: url('img/iphone.png') no-repeat;
+		    background-size: 100% 100%;
+		    -webkit-user-select: none;
+		    -webkit-app-region: drag;
+		}
+
+		#iphone_screen {
+		    position:absolute;
+		    -webkit-app-region: no-drag;
+		}
+		#splash {
+				position:absolute;
+		    background-repeat: no-repeat;
+		}
+	</style>
+</head>
+<body>
+    <div id="iphone_device">
+        <iframe id="iphone_screen" src="./main.html" frameborder="0" scrolling="no"></iframe>
+        <div id="splash"></div>
+    </div>
+
+	<script>
+        function css(el, props) {
+            for (var prop in props) {
+                el.style[prop] = props[prop];
+            }
+        }
+	    var el = document.getElementById('iphone_device');
+	    var width = window.innerWidth;
+	    var height = window.innerHeight;
+	    var ew, eh, eleft, etop;
+	    if (width/height > 5/9) {
+	        eh = height;
+	        ew = eh*5/9;
+	    } else {
+	        ew = width;
+	        eh = ew*9/5;
+	    }
+	    eleft = width/2 - ew/2;
+	    etop = height/2 - eh/2;
+	    css(el, {'left':eleft+"px", 'top':etop+"px", 'width':ew+"px", 'height':eh+"px"});
+
+        var rect = {'top':100/720*eh+'px', 'left':32/480*ew+'px', 'width':416/480*ew+'px', 'height':520/720*eh+'px'};
+        css(document.getElementById('iphone_screen'), rect);
+
+	    el = document.getElementById('splash');
+		rect = {'top':100/720*eh+'px', 'left':32/480*ew+'px', 'width':(416/480*ew+2)+'px', 'height':(520/720*eh+2)+'px'};
+	    css(el, rect);
+	    css(el, {"background-image": "url('img/splash.jpg')", "background-size": "100% 100%"});
+	    setTimeout(function() {
+	    	 el.remove();
+	    }, 3000);
+	</script>
+</body>
+</html>
