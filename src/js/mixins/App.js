@@ -272,7 +272,8 @@ function App (views) {
         },
         showView(id, params, saved, norecord) {
             var oldView = this.state.newView;
-
+            params = params||{};
+            params.from = oldView && oldView.id;
             if (!norecord) {
                 var saved = saved||{};
                 saved = assign(saved, {scrollTop: $('.page-content').scrollTop()});
@@ -299,6 +300,7 @@ function App (views) {
             if (obj) {
                 var preObj = this.history[this.history.length-1]||{};
                 params = params||{};
+                params.from = this.state.newView.id;
                 app.view.goBack(()=>{
                     this.setState({
                         oldView: {id:preObj.id, params: {}, saved:preObj.saved},

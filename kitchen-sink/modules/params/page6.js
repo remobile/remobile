@@ -37,7 +37,7 @@ var page = React.createClass({
 			<View.PageContent>
                 <Content.ContentBlockTitle>Page 6</Content.ContentBlockTitle>
               <Content.ContentBlock>
-                  <p>come from: {this.props.from}</p>
+                  <p>come from: {this.props.params.from}</p>
                   <p>params: {this.props.params.text}</p>
                   <p>saved: {this.props.saved.text}</p>
               </Content.ContentBlock>
