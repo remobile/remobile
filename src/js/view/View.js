@@ -29,6 +29,11 @@ module.exports = React.createClass({
         this.pages = [$(this.refs.page0.getDOMNode()), $(this.refs.page1.getDOMNode())];
         this.navbars = [$(this.refs.navbar0.getDOMNode()), $(this.refs.navbar1.getDOMNode())];
         this.pageTag = this.pageTag^1;
+        if (!!this.props.newView.navbar) {
+            this.navbars[0].parents('.navbar').css('display', 'block');
+        } else {
+            this.navbars[0].parents('.navbar').css('display', 'none');
+        }
     },
     componentWillUpdate: function(nextProps, nextState){
         var tag0 = this.pageTag;
@@ -36,9 +41,9 @@ module.exports = React.createClass({
         this.pages[tag0].css('z-index', 1);
         this.pages[tag1].css('z-index', 0);
         if (!!nextProps.newView.navbar) {
-            this.navbars[0].parent().css('display', 'block');
+            this.navbars[0].parents('.navbar').css('display', 'block');
         } else {
-            this.navbars[0].parent().css('display', 'none');
+            this.navbars[0].parents('.navbar').css('display', 'none');
         }
     },
     componentDidUpdate(prevProps, prevState) {
@@ -60,8 +65,12 @@ module.exports = React.createClass({
     },
     render() {
         var newView = this.props.newView, oldView = this.props.oldView||{};
-        var newnavbar = newView.navbar, newtoolbar = newView.toolbar, newpage = <newView.page params={newView.params}/>;
-        var oldnavbar = oldView.navbar, oldtoolbar = oldView.toolbar, oldpage = oldView.page?<oldView.page params={oldView.params}/>:null;
+        var newnavbar = newView.navbar?<newView.navbar params={newView.params} saved={newView.saved}/>:null,
+            newtoolbar = newView.toolbar?<newView.toolbar params={newView.params} saved={newView.saved}/>:null,
+            newpage = <newView.page params={newView.params} saved={newView.saved}/>;
+        var oldnavbar = oldView.navbar?<oldView.navbar params={oldView.params} saved={oldView.saved}/>:null,
+            oldtoolbar = oldView.toolbar?<oldView.toolbar params={oldView.params} saved={oldView.saved}/>:null,
+            oldpage = oldView.page?<oldView.page params={oldView.params} saved={oldView.saved}/>:null;
 
         var co = {
             'pages': true,

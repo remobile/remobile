@@ -183,7 +183,7 @@ var params = {
 };
 
 
-function App (views, initViewId) {
+function App (views) {
     return {
         version: VERSION,
         params: params,
@@ -246,7 +246,7 @@ function App (views, initViewId) {
 
             window.app = this;
             this.history = [];
-            this.data = {lastViewId: initViewId};
+            this.data = {};
             this.methods = {};
             this.resPath = window.location.pathname.replace(/index.html$/,/index.html$/,/index.html$/,/index.html$/, '');
             this.init();
@@ -270,23 +270,20 @@ function App (views, initViewId) {
                 name: 'view-transition-' + key
             }, TRANSITIONS_INOUT[key]);
         },
-        showView(id, params, norecord) {
+        showView(id, params, saved, norecord) {
             var oldView = this.state.newView;
 
             if (!norecord) {
-                var saved = params.saved||{};
-                if (params.saved) {
-                    delete params.saved;
-                }
+                var saved = saved||{};
                 saved = assign(saved, {scrollTop: $('.page-content').scrollTop()});
                 this.history.push({
                     id: oldView.id,
-                    saved:saved
+                    saved: saved
                  });
             }
             this.setState({
                 oldView: oldView,
-                newView: {id:id, params:params},
+                newView: {id:id, params:params, saved:{}},
                 noAnimate: false
             });
         },
@@ -301,12 +298,11 @@ function App (views, initViewId) {
             }
             if (obj) {
                 var preObj = this.history[this.history.length-1]||{};
-                params = assign({}, params);
-                params.saved = obj.saved;
+                params = params||{};
                 app.view.goBack(()=>{
                     this.setState({
-                        oldView: {id:preObj.id, params: {saved: preObj.saved}},
-                        newView: {id:obj.id, params: params},
+                        oldView: {id:preObj.id, params: {}, saved:preObj.saved},
+                        newView: {id:obj.id, params: params,saved:obj.saved},
                         noAnimate: true
                     });
                 });

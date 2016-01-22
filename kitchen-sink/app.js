@@ -1,38 +1,33 @@
-﻿var React = require('react/addons');
+var React = require('react/addons');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-var classnames = require('classnames');
-var UI =require('UI');
+var {View, Mixins} =require('UI');
 var views = require('./modules');
 var welcome = require('./modules/home/welcome');
-
-function getHead(i) {
-    return 'img/app/head/'+i+'.jpg';
-}
+var LifeCycle = require('@remobile/react-lifecycle');
 
 var App = React.createClass({
-    mixins: [UI.Mixins.App(views)],
-    componentWillMount() {
-        // welcome.showWelcome();
-        this.userHeadCss = $.createStyleSheet();
-        [1,2,3,4,5,6,7,8,9].map((i)=>{$.upsertStyleSheet(app.userHeadCss, '.user_head_'+i, 'background-image:url('+getHead(i)+')')});
-    },
+    mixins: [/*LifeCycle('app'),*/ Mixins.App(views)],
+
     getInitialState() {
         return {
-            currentView: 'main'
-        };
-    },
-    showCover(coverChildren, coverParams) {
-        this.setState({coverVisible:true, coverChildren:coverChildren, coverParams:coverParams});
-    },
-    hideCover() {
-        this.setState({coverVisible:false});
+            newView:{id:'page1', params:{text:'Are you page 1'}, saved: {text:'I am developer'}}
+        }
     },
     render() {
+        var props = {};
+        props.noAnimate = this.state.noAnimate;
+        props.newView = views[this.state.newView.id];
+        props.newView.params = this.state.newView.params;
+        props.newView.saved = this.state.newView.saved;
+        if (this.state.oldView) {
+            props.oldView = views[this.state.oldView.id];
+            if (props.oldView) {
+                props.oldView.params = this.state.oldView.params;
+                props.oldView.saved = this.state.oldView.saved;
+            }
+        }
         return (
-            <ReactCSSTransitionGroup transitionName={this.state.viewTransition.name} transitionEnter={this.state.viewTransition.in} transitionLeave={this.state.viewTransition.out} component="div">
-                {this.state.coverVisible&&<UI.View.Cover params={this.state.coverParams}>{this.state.coverChildren}</UI.View.Cover>}
-                {this.getCurrentView()}
-            </ReactCSSTransitionGroup>
+            <View.View {...props} />
         );
     }
 });

@@ -3,7 +3,7 @@ module.exports = {
 	'main': require('./home/main'),
 	'button': require('./common/button'),
 	'colorThemes': require('./common/colorThemes'),
-  //list
+  	//common
 	'virtualList': require('./common/virtualList'),
 	'list': require('./common/list'),
 	'medialist': require('./common/mediaList'),
@@ -42,6 +42,13 @@ module.exports = {
 	'swipeDelete': require('./common/swipeDelete'),
 	'barsHideOnScroll': require('./common/barsHideOnScroll'),
 	'subbarsHideOnScroll': require('./common/subbarsHideOnScroll'),
+	//params
+	'page1': require('./params/page1'),
+	'page2': require('./params/page2'),
+	'page3': require('./params/page3'),
+	'page4': require('./params/page4'),
+	'page5': require('./params/page5'),
+	'page6': require('./params/page6'),
 	//swiper
 	'swiper': require('./swiper/swiper'),
 	'swiperHorizontal': require('./swiper/swiperHorizontal'),
@@ -58,6 +65,6 @@ module.exports = {
 	'swiperCustom': require('./swiper/swiperCustom'),
 	'swiperParallax': require('./swiper/swiperParallax'),
 	'swiperLazy': require('./swiper/swiperLazy'),
-   //icons
+	//icons
 	'icons': require('./common/icons')
 };
