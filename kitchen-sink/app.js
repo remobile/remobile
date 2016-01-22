@@ -14,21 +14,7 @@ var App = React.createClass({
         }
     },
     render() {
-        var props = {};
-        props.noAnimate = this.state.noAnimate;
-        props.newView = views[this.state.newView.id];
-        props.newView.params = this.state.newView.params;
-        props.newView.saved = this.state.newView.saved;
-        if (this.state.oldView) {
-            props.oldView = views[this.state.oldView.id];
-            if (props.oldView) {
-                props.oldView.params = this.state.oldView.params;
-                props.oldView.saved = this.state.oldView.saved;
-            }
-        }
-        return (
-            <View.View {...props} />
-        );
+        return this.renderView();
     }
 });
 

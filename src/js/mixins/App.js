@@ -1,6 +1,7 @@
 var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
+var View = require('../view');
 var template7 = require('../framework7/template7.js');
 var router = require('../framework7/router.js');
 var clicks = require('../framework7/clicks.js');
@@ -259,16 +260,28 @@ function App (views) {
             viewsData[currentView] = React.createElement(views[currentView], props);
             return React.addons.createFragment(viewsData);
         },
-        getInitialState() {
-            return {
-                viewTransition: this.getViewTransition('none')
-            };
-        },
         getViewTransition(key) {
             return assign({
                 key: key,
                 name: 'view-transition-' + key
             }, TRANSITIONS_INOUT[key]);
+        },
+        renderView() {
+            var props = {};
+            props.noAnimate = this.state.noAnimate;
+            props.newView = views[this.state.newView.id];
+            props.newView.params = this.state.newView.params;
+            props.newView.saved = this.state.newView.saved;
+            if (this.state.oldView) {
+                props.oldView = views[this.state.oldView.id];
+                if (props.oldView) {
+                    props.oldView.params = this.state.oldView.params;
+                    props.oldView.saved = this.state.oldView.saved;
+                }
+            }
+            return (
+                <View.View {...props} />
+            );
         },
         showView(id, params, saved, norecord) {
             var oldView = this.state.newView;
