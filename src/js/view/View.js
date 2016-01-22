@@ -60,8 +60,9 @@ module.exports = React.createClass({
     },
     render() {
         var newView = this.props.newView, oldView = this.props.oldView||{};
-        var newnavbar = newView.navbar, newtoolbar = newView.toolbar, newpage = newView.page;
-        var oldnavbar = oldView.navbar, oldtoolbar = oldView.toolbar, oldpage = oldView.page;
+        var newnavbar = newView.navbar, newtoolbar = newView.toolbar, newpage = <newView.page params={newView.params}/>;
+        var oldnavbar = oldView.navbar, oldtoolbar = oldView.toolbar, oldpage = oldView.page?<oldView.page params={oldView.params}/>:null;
+
         var co = {
             'pages': true,
             'navbar-through': !!newnavbar,

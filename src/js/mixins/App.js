@@ -2,6 +2,7 @@ var assign = require('object-assign');
 var React = require('react/addons');
 var system = require('../system');
 var template7 = require('../framework7/template7.js');
+var router = require('../framework7/router.js');
 var clicks = require('../framework7/clicks.js');
 var fastClicks = require('../framework7/fast-clicks.js');
 var materialInputs = require('../framework7/material-inputs.js');
@@ -92,7 +93,7 @@ var params = {
     activeState: true,
     activeStateElements: 'a, button, label, span',
     // Animate Nav Back Icon
-    animateNavBackIcon: false,
+    animateNavBackIcon: true,
     // Swipe Back
     swipeBackPage: true,
     swipeBackPageThreshold: 0,
@@ -182,7 +183,7 @@ var params = {
 };
 
 
-function App (views) {
+function App (views, initViewId) {
     return {
         version: VERSION,
         params: params,
@@ -199,6 +200,7 @@ function App (views) {
             this._compiledTemplates = {};
             fastClicks(this).initFastClicks();
             clicks(this).initClickEvents();
+            router(this);
             materialInputs(this).initMaterialWatchInputs();
             materialPreloader(this);
             materialTabbar(this);
@@ -244,7 +246,7 @@ function App (views) {
 
             window.app = this;
             this.history = [];
-            this.data = {};
+            this.data = {lastViewId: initViewId};
             this.methods = {};
             this.resPath = window.location.pathname.replace(/index.html$/,/index.html$/,/index.html$/,/index.html$/, '');
             this.init();
@@ -268,32 +270,27 @@ function App (views) {
                 name: 'view-transition-' + key
             }, TRANSITIONS_INOUT[key]);
         },
-        displayView(viewId, transition, param) {
-            this.data.tempPassData = {
-                param: param,
-                from: this.state.currentView
-            };
+        showView(id, params, norecord) {
+            var oldView = this.state.newView;
 
-            this.setState({
-                currentView: viewId,
-                viewTransition: this.getViewTransition(transition)
-            });
-        },
-        showView(viewId, transition, param, norecord) {
-            var trans = VIEW_TRANSITIONS[transition];
-            param = param||{};
             if (!norecord) {
-                var saved = param.saved||{};
-                if (param.saved) {
-                    delete param.saved;
+                var saved = params.saved||{};
+                if (params.saved) {
+                    delete params.saved;
                 }
                 saved = assign(saved, {scrollTop: $('.page-content').scrollTop()});
-                this.history.push({id:this.state.currentView, title:this.data.lastTitle, transition:transition, saved:saved});
-                this.data.lastTitle = param.backText||this.data.currentTitle||'Back';
+                this.history.push({
+                    id: oldView.id,
+                    saved:saved
+                 });
             }
-            this.displayView(viewId, trans? trans.go: 'none', param);
+            this.setState({
+                oldView: oldView,
+                newView: {id:id, params:params},
+                noAnimate: false
+            });
         },
-        goBack(step, param) {
+        goBack(step, params) {
             if (!step) {
                 step = 1;
             }
@@ -303,13 +300,18 @@ function App (views) {
                 t && (obj = t);
             }
             if (obj) {
-                var trans = VIEW_TRANSITIONS[obj.transition];
-                param = assign({}, param);
-                param.saved = obj.saved;
-                this.data.lastTitle = obj.title;
-                this.displayView(obj.id, trans? trans.back: 'none', param);
+                var preObj = this.history[this.history.length-1]||{};
+                params = assign({}, params);
+                params.saved = obj.saved;
+                app.view.goBack(()=>{
+                    this.setState({
+                        oldView: {id:preObj.id, params: {saved: preObj.saved}},
+                        newView: {id:obj.id, params: params},
+                        noAnimate: true
+                    });
+                });
             }
-        }
+        },
     };
 }
 
