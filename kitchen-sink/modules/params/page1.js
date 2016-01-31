@@ -8,11 +8,9 @@ var Button = UI.Button.Button;
 var navbar = React.createClass({
     render() {
         return (
-            <div className='navbar-inner'>
-                <div className="left"></div>
-                <div className="center sliding">page1</div>
-                <div className="right"><a href="#" className="open-panel link icon-only"><i className="icon icon-bars"></i></a></div>
-            </div>
+            <View.Navbar goBack={false} title="page1">
+                <View.NavbarButton right>确定</View.NavbarButton>
+            </View.Navbar>
         )
     }
 });

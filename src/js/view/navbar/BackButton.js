@@ -9,9 +9,13 @@ module.exports = React.createClass({
     },
     render() {
         var haveBackButton = this.props.goBack!==false;
+        if (!haveBackButton) {
+            return (
+                <div className="left"></div>
+            )
+        }
         return (
             <div className="left sliding">
-                {haveBackButton?
                     <a
                         href="#"
                         className="link"
@@ -22,11 +26,7 @@ module.exports = React.createClass({
                             {this.props.children}
                         </span>
                     </a>
-                    :
-                    <a href="#" className="link">
-                    </a>
-                }
             </div>
-        );
+        )
     }
 });
