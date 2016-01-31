@@ -18,7 +18,7 @@ module.exports = React.createClass({
             <div className="left sliding">
                     <a
                         href="#"
-                        className="link"
+                        className="back link"
                         onClick={this.goBack}>
                         <i className="icon icon-back">
                         </i>
