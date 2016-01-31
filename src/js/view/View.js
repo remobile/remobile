@@ -81,7 +81,6 @@ module.exports = React.createClass({
             newtoolbar = newView.toolbar?<newView.toolbar params={newView.params} saved={newView.saved}/>:null,
             newpage = <newView.page params={newView.params} saved={newView.saved}/>;
         var oldnavbar = oldView.navbar?<oldView.navbar params={oldView.params} saved={oldView.saved}/>:null,
-            oldtoolbar = oldView.toolbar?<oldView.toolbar params={oldView.params} saved={oldView.saved}/>:null,
             oldpage = oldView.page?<oldView.page params={oldView.params} saved={oldView.saved}/>:null;
 
         var co = {
@@ -99,11 +98,7 @@ module.exports = React.createClass({
                         {this.pageTag===0 ? newnavbar : oldnavbar}
                     </div>
                 </div>
-                { !!newtoolbar &&
-                    <div className='toolbar'>
-                        {newtoolbar}
-                    </div>
-                }
+                {newtoolbar}
                 <div className={cn(co)}>
                     <div ref="page1" className='page'>
                         {this.pageTag===1 ? newpage : oldpage}

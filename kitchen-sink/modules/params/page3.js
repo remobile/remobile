@@ -18,10 +18,10 @@ var navbar = React.createClass({
 var toolbar = React.createClass({
     render() {
         return (
-            <div className="toolbar-inner">
-                <a href="#" className="link">Dummy Link</a>
-                <a href="#" data-popover=".popover-menu" className="open-popover link">Menu</a>
-            </div>
+            <View.Toolbar>
+                <Button link>Dummy Link</Button>
+                <Button link>Menu</Button>
+            </View.Toolbar>
         )
     }
 });

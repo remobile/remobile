@@ -5,13 +5,14 @@ var assign = require('object-assign');
 module.exports = React.createClass({
     render() {
         var obj = {
-            'button': !this.props.list,
+            'button': !this.props.list&&!this.props.link,
             'active': this.props.active,
             'button-round': this.props.round,
             'button-big': this.props.big,
             'button-fill': this.props.fill,
             'list-button item-link': this.props.list,
             'tab-link': this.props.tab,
+            'link': this.props.link,
         };
         if (this.props.color) {
             obj['color-'+this.props.color] = true;
