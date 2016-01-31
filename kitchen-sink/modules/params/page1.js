@@ -8,7 +8,7 @@ var Button = UI.Button.Button;
 var navbar = React.createClass({
     render() {
         return (
-            <View.Navbar goBack={false} title="page1">
+            <View.Navbar goBack={false} title="page1" >
                 <View.NavbarButton right>确定</View.NavbarButton>
             </View.Navbar>
         )

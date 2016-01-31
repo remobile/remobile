@@ -21,6 +21,9 @@ module.exports = React.createClass({
             callback();
         }});
     },
+    updateCurrentTitle(dom) {
+        app.data.currentTitle = dom.find('.navbar-inner>.center').html();
+    },
     componentWillMount() {
         app.view = this;
         this.pageTag = 0;
@@ -34,6 +37,7 @@ module.exports = React.createClass({
         } else {
             this.navbars[0].parents('.navbar').css('display', 'none');
         }
+        this.updateCurrentTitle(this.navbars[0]);
     },
     componentWillUpdate: function(nextProps, nextState){
         var tag0 = this.pageTag;
@@ -54,7 +58,14 @@ module.exports = React.createClass({
         var oldPage = this.pages[tag1];
         var newNavbarInner = this.navbars[tag0];
         var oldNavbarInner = this.navbars[tag1];
-
+        var newBackButton = newNavbarInner.find('.navbar-inner>.left span');
+        var oldBackButton = oldNavbarInner.find('.navbar-inner>.left span');
+        if (!newBackButton.html()) {
+            newBackButton.html(app.data.lastTitle||'');
+        }
+        if (!oldBackButton.html()) {
+            oldBackButton.html(app.data.lastLastTitle||'');
+        }
         app.sizeNavbars($(this.getDOMNode()));
         if (!this.props.noAnimate) {
             app.showViewEnterAnimate({oldPage, newPage, oldNavbarInner, newNavbarInner, dynamicNavbar:true});
@@ -62,6 +73,7 @@ module.exports = React.createClass({
             app.adjustViewBackupNavbars({oldNavbarInner, newNavbarInner});
         }
         this.pageTag = this.pageTag^1;
+        this.updateCurrentTitle(newNavbarInner);
     },
     render() {
         var newView = this.props.newView, oldView = this.props.oldView||{};

@@ -8,7 +8,7 @@ var Button = UI.Button.Button;
 var navbar = React.createClass({
     render() {
         return (
-            <View.Navbar backText="Back" title="page4">
+            <View.Navbar  title="page4">
                 <View.NavbarButton right iconOnly icon="icon-bars"></View.NavbarButton>
             </View.Navbar>
         )

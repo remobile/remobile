@@ -292,8 +292,11 @@ function App (views) {
                 saved = assign(saved, {scrollTop: $('.page-content').scrollTop()});
                 this.history.push({
                     id: oldView.id,
-                    saved: saved
+                    saved: saved,
+                    lastTitle:this.data.lastTitle,
                  });
+                 this.data.lastLastTitle = this.data.lastTitle;
+                 this.data.lastTitle = this.data.currentTitle;
             }
             this.setState({
                 oldView: oldView,
@@ -314,6 +317,8 @@ function App (views) {
                 var preObj = this.history[this.history.length-1]||{};
                 params = params||{};
                 params.from = this.state.newView.id;
+                this.data.lastTitle = obj.lastTitle;
+                this.data.lastLastTitle = preObj.lastTitle;
                 app.view.goBack(()=>{
                     this.setState({
                         oldView: {id:preObj.id, params: {}, saved:preObj.saved},
