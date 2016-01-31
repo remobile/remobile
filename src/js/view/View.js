@@ -61,10 +61,10 @@ module.exports = React.createClass({
         var newBackButton = newNavbarInner.find('.navbar-inner>.left span');
         var oldBackButton = oldNavbarInner.find('.navbar-inner>.left span');
         if (!newBackButton.html()) {
-            newBackButton.html(app.data.lastTitle||'');
+            newBackButton.html(app.getVisibleTitle(app.data.lastTitle));
         }
         if (!oldBackButton.html()) {
-            oldBackButton.html(app.data.lastLastTitle||'');
+            oldBackButton.html(app.getVisibleTitle(app.data.lastLastTitle));
         }
         app.sizeNavbars($(this.getDOMNode()));
         if (!this.props.noAnimate) {
