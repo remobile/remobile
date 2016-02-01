@@ -33,7 +33,7 @@ var ListItem = React.createClass({
         if (page === 'photo') {
             showPhoto();
         } else {
-            app.showView(page, 'left', {backText:'主页'});
+            app.showView(page);
         }
     },
     render() {
