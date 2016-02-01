@@ -67,7 +67,7 @@ var ContactGroup = React.createClass({
 var ContactList = React.createClass({
     render() {
         return (
-					<UI.Search.SearchList ref="searchlist" block group contacts>
+			<UI.Search.SearchList ref="searchlist" block group contacts>
                 {React.addons.createFragment(_.mapObject(this.props.users, (persons, key)=>{return <ContactGroup key={key} letter={key} persons={persons}/>}))}
            </UI.Search.SearchList>
         );
@@ -75,33 +75,20 @@ var ContactList = React.createClass({
 });
 
 module.exports = React.createClass({
-		getInitialState() {
-			this.keys = _.keys(users);
-			this.shownNumber = 2;
-			return {users:_.pick(users, _.first(this.keys, this.shownNumber))};
-		},
-		showLetterSlowly() {
-			this.shownNumber += 2;
-			this.setState({users: _.pick(users, _.first(this.keys, this.shownNumber))});
-			if (this.shownNumber < 26) {
-				setTimeout(this.showLetterSlowly, 100);
-			}
-		},
-		componentDidMount() {
-				var container = $('.page .searchbar');
-        var searchlist = $(this.getDOMNode());
-        var params = {
-            searchList: searchlist.find('.searchbar-found')
-        };
-        this.searchbar = app.searchbar(container, params);
-        setTimeout(this.showLetterSlowly, 100);
-    },
-   componentWillUnmount() {
-        this.searchbar.destroy();
-    },
+	componentDidMount() {
+		// var container = $('.page .searchbar');
+		// var searchlist = $(this.getDOMNode());
+		// var params = {
+		// 	searchList: searchlist.find('.searchbar-found')
+		// };
+		// this.searchbar = app.searchbar(container, params);
+	},
+	componentWillUnmount() {
+		// this.searchbar.destroy();
+	},
 	render() {
 		return (
-			<ContactList users={this.state.users}/>
+			<ContactList users={users}/>
 		);
 	}
 });
