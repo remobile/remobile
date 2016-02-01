@@ -9,5 +9,5 @@ module.exports = {
 	PageContent: require('./PageContent'),
 	Cover: require('./cover/Cover'),
 	Toolbar: require('./toolbar/Toolbar'),
-	ToolbarButton: require('./toolbar/ToolbarButton')
+	LabelTabBarButton: require('./toolbar/LabelTabBarButton')
 };

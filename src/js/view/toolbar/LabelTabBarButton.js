@@ -9,22 +9,27 @@ module.exports = React.createClass({
             app.materialTabbarSetHighlight(tabbar, el);
         }
     },
+    onTap(tab, e) {
+        var el = $(e.target);
+        if (!el.hasClass('tab-link')) {
+            el = el.parent();
+        }
+        app.showTab(tab, el);
+        e.preventDefault();
+        this.props.onTap&&this.props.onTap(tab, e);
+    },
     render() {
         var className = cn("tab-link", {
             "active": this.props.active
         });
-        var icon;
-        if ($.isArray(this.props.icon)) {
-            icon = this.props.active?this.props.icon[0]:this.props.icon[1];
-        } else {
-            icon = this.props.icon;
-        }
+        var href = '#'+this.props.href;
         return (
             <a
+                href={href}
                 className={className}
-                onClick={this.props.onTap}
+                onClick={this.onTap.bind(null, href)}
                 ref="link">
-                <i className={"icon "+icon}>
+                <i className={"icon "+this.props.icon}>
                     {this.props.badge}
                 </i>
                 <span className ="tabbar-label">
