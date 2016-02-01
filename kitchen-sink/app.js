@@ -10,7 +10,7 @@ var App = React.createClass({
 
     getInitialState() {
         return {
-            newView:{id:'main', params:{text:'Are you page 1'}, saved: {text:'I am developer'}}
+            newView:{id:'main'}
         }
     },
     render() {

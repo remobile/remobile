@@ -32,6 +32,8 @@ var ListItem = React.createClass({
     showPage(page) {
         if (page === 'photo') {
             showPhoto();
+        } else if (page === 'page1') {
+            app.showView(page, {text:'Are you page 1'}, {text:'I am developer'});
         } else {
             app.showView(page);
         }
@@ -52,6 +54,7 @@ var MenuList = React.createClass({
     render() {
         return (
             <List.List block>
+            	<ListItem page="page1">Test Trans Params</ListItem>
             	<ListItem page="colorThemes">Color Themes</ListItem>
                 <ListItem page="virtualList">Virtual List</ListItem>
                 <ListItem page="lazyLoad">Lazy Load Image</ListItem>
