@@ -17,6 +17,8 @@ module.exports = React.createClass({
         app.showViewExitAnimate({oldPage, newPage, oldNavbarInner, newNavbarInner, dynamicNavbar:true, callback:()=>{
             newPage.css('z-index', 1);
             oldPage.css('z-index', 0);
+            newNavbarInner.css('z-index', 1);
+            oldNavbarInner.css('z-index', 0);
             oldPage.removeClass('page-from-center-to-right page-on-center').addClass('page-on-left');
             callback();
         }});
@@ -44,6 +46,8 @@ module.exports = React.createClass({
         var tag1 = tag0^1;
         this.pages[tag0].css('z-index', 1);
         this.pages[tag1].css('z-index', 0);
+        this.navbars[tag0].css('z-index', 1);
+        this.navbars[tag1].css('z-index', 0);
         if (!!nextProps.newView.navbar) {
             this.navbars[0].parents('.navbar').css('display', 'block');
         } else {

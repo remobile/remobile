@@ -34,15 +34,15 @@ var page = React.createClass({
 		return (
 			<View.PageContent>
                 <Content.ContentBlockTitle>Page 1</Content.ContentBlockTitle>
-              <Content.ContentBlock>
-                  <p>come from: {this.props.params.from}</p>
-                  <p>params: {this.props.params.text}</p>
-                  <p>saved: {this.props.saved.text}</p>
-              </Content.ContentBlock>
+                <Content.ContentBlock>
+                    <p>come from: {this.props.params.from}</p>
+                    <p>params: {this.props.params.text}</p>
+                    <p>saved: {this.props.saved.text}</p>
+                </Content.ContentBlock>
 
-              <Content.ContentBlock>
-                  <Button onTap={this.gotoNextPage}>go to page 2</Button>
-              </Content.ContentBlock>
+                <Content.ContentBlock>
+                    <Button onTap={this.gotoNextPage}>go to page 2</Button>
+                </Content.ContentBlock>
           </View.PageContent>
 		);
 	}
