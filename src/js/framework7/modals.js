@@ -505,7 +505,7 @@ app.loginScreen = function (modal) {
         app.closeModal('.login-screen.modal-in:not(.modal-out)');
     }
     modal.show();
-    
+
     app.openModal(modal);
     return modal[0];
 };
@@ -573,7 +573,7 @@ app.openModal = function (modal) {
             app.initPageWithCallback(this);
         });
         modal.find('.navbar').each(function () {
-            app.initNavbarWithCallback(this); 
+            app.initNavbarWithCallback(this);
         });
     }
 
@@ -600,7 +600,7 @@ app.closeModal = function (modal) {
     var removeOnClose = modal.hasClass('remove-on-close');
 
     var overlay;
-    
+
     if (isPopup) overlay = $('.popup-overlay');
     else {
         if (isPickerModal && app.params.material) overlay = $('.picker-modal-overlay');
@@ -655,6 +655,7 @@ app.closeModal = function (modal) {
             modal.remove();
         }
     }
+    overlay.remove();
     return true;
 };
 return app;

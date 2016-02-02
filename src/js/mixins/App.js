@@ -266,6 +266,13 @@ function App (views) {
                 name: 'view-transition-' + key
             }, TRANSITIONS_INOUT[key]);
         },
+
+        showCover(coverChildren, coverParams) {
+            app.cover.setState({coverVisible:true, coverChildren:coverChildren, coverParams:coverParams});
+        },
+        hideCover() {
+            app.cover.setState({coverVisible:false});
+        },
         getVisibleTitle(title) {
     		if (!title)return '';
     		var realLength = 0, len = title.length, preLen = -1, charCode = -1, needCut = false;
@@ -302,7 +309,12 @@ function App (views) {
                 }
             }
             return (
-                <View.View {...props} />
+                <div style={{position:"absolute", width:"100%", height:"100%"}}>
+                    <div className="views">
+                        <View.View {...props} />
+                    </div>
+                    <View.Cover />
+                </div>
             );
         },
         showView(id, params, saved, norecord) {

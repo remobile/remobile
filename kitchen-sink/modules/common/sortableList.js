@@ -23,7 +23,17 @@ var ListItem = React.createClass({
 });
 
 module.exports.navbar = React.createClass({
+    getInitialState() {
+		return {
+			open: false
+		}
+	},
+	handleClick() {
+		app.sortableToggle();
+		this.setState({open:!this.state.open});
+	},
     render() {
+        var text = this.state.open?"Done":"Edit";
         return (
             <View.Navbar title="Sortable List">
                 <View.NavbarButton right iconOnly onTap={this.handleClick}>{text}</View.NavbarButton>
@@ -33,17 +43,7 @@ module.exports.navbar = React.createClass({
 });
 
 module.exports.page = React.createClass({
-	getInitialState() {
-		return {
-			open: false
-		}
-	},
-	handleClick() {
-		app.sortableToggle();
-		this.setState({open:!this.state.open});
-	},
 	render() {
-		var text = this.state.open?"Done":"Edit";
 		return (
 			<View.PageContent>
                 <Content.ContentBlock>

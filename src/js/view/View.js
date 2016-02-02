@@ -26,6 +26,11 @@ module.exports = React.createClass({
     updateCurrentTitle(dom) {
         app.data.currentTitle = dom.find('.navbar-inner>.center').html();
     },
+    getInitialState() {
+        return {
+            coverVisible: false
+        };
+    },
     componentWillMount() {
         app.view = this;
         this.pageTag = 0;

@@ -10,7 +10,7 @@ module.exports = React.createClass({
                     {this.props.backText}
                 </BackButton>
                 <NavbarTitle>
-                    {app.getVisibleTitle(this.props.title)}
+                    {this.props.title}
                 </NavbarTitle>
                 {this.props.children}
             </div>

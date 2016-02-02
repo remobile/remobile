@@ -10,7 +10,7 @@ var View = UI.View;
 
 var ListItem = React.createClass({
     showPage(page) {
-        app.showView(page, 'left');
+        app.showView(page);
     },
     render() {
         return (

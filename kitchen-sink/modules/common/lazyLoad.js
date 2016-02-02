@@ -17,7 +17,7 @@ function getImages(i) {
 module.exports.navbar = React.createClass({
     render() {
         return (
-            <View.Navbar title="Lazy Load" />
+            <View.Navbar title="Lazy Load Image" />
         )
     }
 });

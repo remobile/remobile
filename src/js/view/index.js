@@ -8,6 +8,7 @@ module.exports = {
 	View: require('./View'),
 	PageContent: require('./PageContent'),
 	Cover: require('./cover/Cover'),
+	CoverContent: require('./cover/CoverContent'),
 	Toolbar: require('./toolbar/Toolbar'),
 	LabelTabBarButton: require('./toolbar/LabelTabBarButton')
 };

@@ -8,9 +8,9 @@ var Form = UI.Form;
 var View = UI.View;
 
 var ListItem = React.createClass({
-		showPage(page) {
-				app.showView(page, 'left');
-		},
+	showPage(page) {
+			app.showView(page);
+	},
     render() {
         return (
             <List.ItemContent link onTap={this.showPage.bind(this, this.props.page)}>

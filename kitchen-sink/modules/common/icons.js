@@ -657,7 +657,7 @@ module.exports.page = React.createClass({
     },
     render() {
         return (
-            <View.Page title="Icons">
+            <View.Page>
                 <UI.Search.Search ref="searchbar"/>
                 <View.PageContent>
                     {this.getIconItems()}
