@@ -54,15 +54,25 @@ var Tab3 = React.createClass({
 	}
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Swipeable Tabs" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
     switchTab(tab, e) {
         app.showTab('#'+TAB_ID_PREFIX+tab, e.target);
         e.preventDefault();
     },
     render() {
-    		var buttons = [<Button key='1' tab={'#'+TAB_ID_PREFIX+1} active onTap={this.switchTab.bind(this, 1)}>Tab 1</Button>,
-											  <Button key='2'  tab={'#'+TAB_ID_PREFIX+2} onTap={this.switchTab.bind(this, 2)}>Tab 2</Button>,
-											  <Button key='3'  tab={'#'+TAB_ID_PREFIX+3} onTap={this.switchTab.bind(this, 3)}>Tab 3</Button>];
+		var buttons = [
+			<Button key='1' tab={'#'+TAB_ID_PREFIX+1} active onTap={this.switchTab.bind(this, 1)}>Tab 1</Button>,
+			<Button key='2'  tab={'#'+TAB_ID_PREFIX+2} onTap={this.switchTab.bind(this, 2)}>Tab 2</Button>,
+			<Button key='3'  tab={'#'+TAB_ID_PREFIX+3} onTap={this.switchTab.bind(this, 3)}>Tab 3</Button>
+		];
         return (
             <View.Page title="Swipeable Tabs" initPageSwiper tabs={{type:"swipeable", buttons:buttons}}>
                 <Tab1 />

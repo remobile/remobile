@@ -16,7 +16,7 @@ var List1 = React.createClass({
     render() {
         return (
             <List.List block media>
-            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"},
             		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
             		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
             		<List.ItemContent link>
@@ -42,7 +42,7 @@ var List2 = React.createClass({
     render() {
         return (
             <List.List block media>
-            	{[{name:"Facebook", time:"17:14", title:"New messages from John Doe"}, 
+            	{[{name:"Facebook", time:"17:14", title:"New messages from John Doe"},
             		{name:"John Doe (via Twitter)", time:"18:50", title:"John Doe (@_johndoe) mentioned you on Twitter!"},
             		{name:"Facebook", time:"20:20", title:"New messages from John Do"}].map((item, i)=>{return (
             		<List.ItemContent link>
@@ -68,7 +68,7 @@ var List3 = React.createClass({
     render() {
         return (
             <List.List block media>
-            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"},
             		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
             		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
             		<List.ItemContent link>
@@ -90,7 +90,7 @@ var List4 = React.createClass({
     render() {
         return (
             <List.List block media inset>
-              {[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+              {[{name:"Yellow Submarine", price:"$15", title:"Beatles"},
             		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
             		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
             		<List.ItemContent link>
@@ -108,26 +108,30 @@ var List4 = React.createClass({
     }
 });
 
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Media List" />
+        )
+    }
+});
 
-
-module.exports = React.createClass({
+module.exports.page = React.createClass({
 	render() {
 		return (
-			<View.Page title="MediaList">
-				<View.PageContent>
-            <Content.ContentBlock>
-                <p>Media Lists are almost the same as Data Lists, but with a more flexible layout for visualization of mor complex data, like products, services, userc, etc. You can even use them in <a href="#" data-popover=".popover-music" class="open-popover">popovers</a></p>
-            </Content.ContentBlock>
-            <Content.ContentBlockTitle>Songs</Content.ContentBlockTitle>
-            <List1 />
-            <Content.ContentBlockTitle>Mail App (With Swipe to delete and overswipes)</Content.ContentBlockTitle>
-            <List2 />
-            <Content.ContentBlockTitle>Something more simple</Content.ContentBlockTitle>
-            <List3 />
-            <Content.ContentBlockTitle>Inset</Content.ContentBlockTitle>
-            <List4 />
-        </View.PageContent>
-       </View.Page>
+			<View.PageContent>
+                <Content.ContentBlock>
+                    <p>Media Lists are almost the same as Data Lists, but with a more flexible layout for visualization of mor complex data, like products, services, userc, etc. You can even use them in <a href="#" data-popover=".popover-music" class="open-popover">popovers</a></p>
+                </Content.ContentBlock>
+                <Content.ContentBlockTitle>Songs</Content.ContentBlockTitle>
+                <List1 />
+                <Content.ContentBlockTitle>Mail App (With Swipe to delete and overswipes)</Content.ContentBlockTitle>
+                <List2 />
+                <Content.ContentBlockTitle>Something more simple</Content.ContentBlockTitle>
+                <List3 />
+                <Content.ContentBlockTitle>Inset</Content.ContentBlockTitle>
+                <List4 />
+            </View.PageContent>
 		);
 	}
 });

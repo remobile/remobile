@@ -39,10 +39,7 @@ var navbar = React.createClass({
 var toolbar = React.createClass({
     render() {
         return (
-            <View.Toolbar
-                tabbar
-                labels>
-
+            <View.Toolbar tabbar labels>
                 <View.LabelTabBarButton
                     active
                     href='tabbar-with-home'

@@ -7,13 +7,20 @@ var Button = UI.Button.Button;
 var IconButton = UI.Button.IconButton;
 var FloatingButton = UI.Button.FloatingButton;
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Dial Floating Button" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	onTap() {
 		console.log("onTap");
 	},
 	render() {
         return (
-            <View.Page title="Chips">
             <View.PageContent>
             		<FloatingButton>
             			<IconButton name="ks-icon-email" onTap={this.onTap}></IconButton>
@@ -33,7 +40,6 @@ module.exports = React.createClass({
 						      <p>Donec at est ut quam pharetra fermentum. In auctor quam ut velit porttitor, sit amet convallis sapien interdum. Suspendisse sed magna molestie purus iaculis ultrices. Ut convallis facilisis bibendum. Aenean vitae velit quis felis congue aliquam vitae ac felis. Nulla ipsum augue, elementum quis venenatis ullamcorper, auctor at augue. Vestibulum varius tortor sit amet mauris finibus, at consectetur leo dictum. Duis a odio rutrum, efficitur orci a, congue ipsum. Nulla efficitur, velit non pellentesque pretium, tellus tortor auctor purus, nec mollis mauris felis quis elit. Etiam efficitur eleifend mi, vel sagittis neque auctor ut.      </p>
 						    </Content.ContentBlock>
             </View.PageContent>
-            </View.Page>
         );
     }
 });

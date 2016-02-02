@@ -5,7 +5,15 @@ var View = UI.View;
 var Content = UI.Content;
 var List = UI.List;
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Picker" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	componentDidMount() {
 		var today = new Date();
 		// Dependent values
@@ -85,52 +93,50 @@ module.exports = React.createClass({
 	},
 	render() {
 		return (
-			<View.Page title="Picker">
-				<View.PageContent>
-					<Content.ContentBlock>
-						<p>
-							Picker is a powerful component that allows you to create custom overlay pickers which looks like iOS native picker.
-						</p>
-						<p>
-							Picker could be used as inline component or as overlay. Overlay Picker will be automatically converted to Popover on tablets (iPad).
-						</p>
-					</Content.ContentBlock>
-					<Content.ContentBlockTitle>
-						City
-					</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput>
-									<input
-										type="text"
-										placeholder="Your Address"
-										readonly="readonly"
-										id="ks-picker-city"/>
-								</List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					<Content.ContentBlockTitle>
-						Address
-					</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput>
-									<input
-										type="text"
-										placeholder="My Address"
-										readonly="readonly"
-										id="ks-picker-address"/>
-								</List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					<div id="ks-picker-address-container">
-					</div>
-				</View.PageContent>
-			</View.Page>
+			<View.PageContent>
+				<Content.ContentBlock>
+					<p>
+						Picker is a powerful component that allows you to create custom overlay pickers which looks like iOS native picker.
+					</p>
+					<p>
+						Picker could be used as inline component or as overlay. Overlay Picker will be automatically converted to Popover on tablets (iPad).
+					</p>
+				</Content.ContentBlock>
+				<Content.ContentBlockTitle>
+					City
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Your Address"
+									readonly="readonly"
+									id="ks-picker-city"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Address
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="My Address"
+									readonly="readonly"
+									id="ks-picker-address"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<div id="ks-picker-address-container">
+				</div>
+			</View.PageContent>
 		);
 	}
 });

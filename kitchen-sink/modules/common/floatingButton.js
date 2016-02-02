@@ -36,15 +36,21 @@ var MenuList = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Floating Button" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
 		return (
-            <View.Page title="Tabs">
-							<View.PageContent>
+			<View.PageContent>
                 <Content.ContentBlockTitle>Tabs</Content.ContentBlockTitle>
                 <MenuList />
             </View.PageContent>
-      		 </View.Page>
 		);
 	}
 });

@@ -39,20 +39,26 @@ function notificationCallback() {
     });
 }
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Notifications" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
 		return (
-			<View.Page title="Notifications">
-				<View.PageContent>
-           <Content.ContentBlock>
-           	<p>Framework7 comes with simple Notifications component that allows you to show some useful messages to user.</p>
-		        <p><Button onTap={notificationSimple}>Default notification</Button></p>
-		        <p><Button onTap={notificationFull}>Full-layout notification</Button></p>
-		        <p><Button onTap={notificationCustom}>With custom image</Button></p>
-		        <p><Button onTap={notificationCallback}>With callback on close</Button></p>
-           </Content.ContentBlock>
-				</View.PageContent>
-       </View.Page>
+    		<View.PageContent>
+               <Content.ContentBlock>
+               	<p>Framework7 comes with simple Notifications component that allows you to show some useful messages to user.</p>
+    		        <p><Button onTap={notificationSimple}>Default notification</Button></p>
+    		        <p><Button onTap={notificationFull}>Full-layout notification</Button></p>
+    		        <p><Button onTap={notificationCustom}>With custom image</Button></p>
+    		        <p><Button onTap={notificationCallback}>With callback on close</Button></p>
+               </Content.ContentBlock>
+    		</View.PageContent>
 		);
 	}
 });

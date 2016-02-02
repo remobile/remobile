@@ -11,9 +11,7 @@ var ButtonsRow = UI.Button.ButtonsRow;
 module.exports.navbar = React.createClass({
     render() {
         return (
-            <View.Navbar title="Button" >
-                <View.NavbarButton right>确定</View.NavbarButton>
-            </View.Navbar>
+            <View.Navbar title="Button" />
         )
     }
 });

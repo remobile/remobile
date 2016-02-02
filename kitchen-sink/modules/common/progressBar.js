@@ -46,8 +46,15 @@ function showProgressModal() {
     app.showCover(<ProgressModal />, {type:'modal'});
  }
 
+ module.exports.navbar = React.createClass({
+     render() {
+         return (
+             <View.Navbar title="Progress Bar" />
+         )
+     }
+ });
 
-module.exports = React.createClass({
+module.exports.page = React.createClass({
 	getInitialState() {
 		return {
 			buttonIndex:0,
@@ -60,36 +67,33 @@ module.exports = React.createClass({
 	render() {
 		var index = this.state.buttonIndex;
 		return (
-			<View.Page title="Progress Bar">
-				<View.PageContent>
-					<Content.ContentBlock>
-		        <p>When progress bar is determinate it indicates how long an operation will take when the percentage complete is detectable.</p>
-		      </Content.ContentBlock>
-		      
-					<Content.ContentBlockTitle>Inline determinate progress bar</Content.ContentBlockTitle>
-					<Content.ContentBlock>
-						<Content.ContentBlockInner>
-							<p>
-								<ProgressBar color="blue" value={this.state.progrees1}/>
-							</p>
-							<ButtonsRow>
-		              <Button onTap={this.buttonClick.bind(null, 0, 10)} active={index===0}>10%</Button>
-		              <Button onTap={this.buttonClick.bind(null, 1, 30)} active={index===1}>30%</Button>
-		              <Button onTap={this.buttonClick.bind(null, 2, 50)} active={index===2}>50%</Button>
-		          		<Button onTap={this.buttonClick.bind(null, 3, 100)} active={index===3}>100%</Button>
-		          </ButtonsRow>
-	          </Content.ContentBlockInner>
-          </Content.ContentBlock>
-          
-          <Content.ContentBlockTitle>Inline determinate load & hide</Content.ContentBlockTitle>
-					<Content.ContentBlock>
-						<Content.ContentBlockInner>
-		          <Button onTap={showProgressModal}>Start Loading</Button>
-	          </Content.ContentBlockInner>
-          </Content.ContentBlock>
-          
-				</View.PageContent>
-       </View.Page>
+		<View.PageContent>
+			<Content.ContentBlock>
+				<p>When progress bar is determinate it indicates how long an operation will take when the percentage complete is detectable.</p>
+			</Content.ContentBlock>
+
+			<Content.ContentBlockTitle>Inline determinate progress bar</Content.ContentBlockTitle>
+			<Content.ContentBlock>
+				<Content.ContentBlockInner>
+					<p>
+						<ProgressBar color="blue" value={this.state.progrees1}/>
+					</p>
+					<ButtonsRow>
+				      	<Button onTap={this.buttonClick.bind(null, 0, 10)} active={index===0}>10%</Button>
+				      	<Button onTap={this.buttonClick.bind(null, 1, 30)} active={index===1}>30%</Button>
+				      	<Button onTap={this.buttonClick.bind(null, 2, 50)} active={index===2}>50%</Button>
+				  		<Button onTap={this.buttonClick.bind(null, 3, 100)} active={index===3}>100%</Button>
+				  	</ButtonsRow>
+				</Content.ContentBlockInner>
+			</Content.ContentBlock>
+
+			<Content.ContentBlockTitle>Inline determinate load & hide</Content.ContentBlockTitle>
+			<Content.ContentBlock>
+				<Content.ContentBlockInner>
+			  		<Button onTap={showProgressModal}>Start Loading</Button>
+				</Content.ContentBlockInner>
+			</Content.ContentBlock>
+		</View.PageContent>
 		);
 	}
 });

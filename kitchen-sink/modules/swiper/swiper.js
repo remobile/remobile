@@ -45,17 +45,23 @@ var List1 = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Swiper" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
 		return (
-			<View.Page  title="Swiper">
-         <View.PageContent>
-                <Content.ContentBlock>
-                	<p>Framework7 comes with powerful and most modern touch slider ever - <a href="http://idangero.us/sliders/swiper">Swiper Slider</a> with super flexible configuration and lot, lot of features. Just check the following demos:</p>
-                </Content.ContentBlock>
-                <List1 />
-          </View.PageContent>
-      </View.Page>
+			<View.PageContent>
+			    <Content.ContentBlock>
+			    	<p>Framework7 comes with powerful and most modern touch slider ever - <a href="http://idangero.us/sliders/swiper">Swiper Slider</a> with super flexible configuration and lot, lot of features. Just check the following demos:</p>
+			    </Content.ContentBlock>
+			    <List1 />
+			</View.PageContent>
 		);
 	}
 });

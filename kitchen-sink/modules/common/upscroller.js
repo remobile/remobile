@@ -291,30 +291,36 @@ var List6 = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Up Scroller" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
 		return (
-			<View.Page title="List" initUpScroller>
-				<View.PageContent>
-              <Content.ContentBlock>
+			<View.PageContent initUpScroller>
+                <Content.ContentBlock>
                   <p>Framework7 allows you to be flexible with list views (table views). You can make them as navigation menus, you can use there icons, inputs, and any elements inside of the list, and even make them nested:</p>
-              </Content.ContentBlock>
-              <Content.ContentBlockTitle>Data list, with icons</Content.ContentBlockTitle>
-              <List1 />
-              <Content.ContentBlockTitle>Links</Content.ContentBlockTitle>
-              <List2 />
-              <Content.ContentBlockTitle>Links, no icons</Content.ContentBlockTitle>
-              <List3 />
-              <Content.ContentBlockTitle>Grouped with sticky titles</Content.ContentBlockTitle>
-              <List4 />
-              <Content.ContentBlockTitle>Mixed and nested</Content.ContentBlockTitle>
-              <List5 />
-              <Content.ContentBlockTitle>Mixed, inset</Content.ContentBlockTitle>
-              <List6 />
-              <Content.ContentBlockTitle>Here comes some useful information about list above</Content.ContentBlockTitle>
-              <List7 />
+                </Content.ContentBlock>
+                <Content.ContentBlockTitle>Data list, with icons</Content.ContentBlockTitle>
+                <List1 />
+                <Content.ContentBlockTitle>Links</Content.ContentBlockTitle>
+                <List2 />
+                <Content.ContentBlockTitle>Links, no icons</Content.ContentBlockTitle>
+                <List3 />
+                <Content.ContentBlockTitle>Grouped with sticky titles</Content.ContentBlockTitle>
+                <List4 />
+                <Content.ContentBlockTitle>Mixed and nested</Content.ContentBlockTitle>
+                <List5 />
+                <Content.ContentBlockTitle>Mixed, inset</Content.ContentBlockTitle>
+                <List6 />
+                <Content.ContentBlockTitle>Here comes some useful information about list above</Content.ContentBlockTitle>
+                <List7 />
           </View.PageContent>
-       </View.Page>
 		);
 	}
 });

@@ -77,22 +77,28 @@ function showRightPanelFromLeft() {
 		}, 500);
 }
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Side Panels" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
 		return (
-            <View.Page title="Side Panels">
-                <View.PageContent>
-                    <Content.ContentBlock>
-                        <p>Framework7 comes with 2 panels (on left and on right), both are optional. They have two different layouts/effects - <b>cover</b> above the content (like left panel here) and <b>reveal</b> (like right panel). You can put absolutely anything inside: data lists, forms, custom content, and even other isolated app view (like in right panel now) with its own dynamic navbar. Checkout panels:</p>
-                    </Content.ContentBlock>
-                    <Content.ContentBlock>
-                        <Grid.Row>
-                            <Grid.Col per={50}><Button onTap={showLeftPanel}>Left Panel</Button></Grid.Col>
-                            <Grid.Col per={50}><Button onTap={showRightPanel}>Right Panel</Button></Grid.Col>
-                        </Grid.Row>
-                    </Content.ContentBlock>
-                </View.PageContent>
-            </View.Page>
+            <View.PageContent>
+                <Content.ContentBlock>
+                    <p>Framework7 comes with 2 panels (on left and on right), both are optional. They have two different layouts/effects - <b>cover</b> above the content (like left panel here) and <b>reveal</b> (like right panel). You can put absolutely anything inside: data lists, forms, custom content, and even other isolated app view (like in right panel now) with its own dynamic navbar. Checkout panels:</p>
+                </Content.ContentBlock>
+                <Content.ContentBlock>
+                    <Grid.Row>
+                        <Grid.Col per={50}><Button onTap={showLeftPanel}>Left Panel</Button></Grid.Col>
+                        <Grid.Col per={50}><Button onTap={showRightPanel}>Right Panel</Button></Grid.Col>
+                    </Grid.Row>
+                </Content.ContentBlock>
+            </View.PageContent>
 		);
 	}
 });

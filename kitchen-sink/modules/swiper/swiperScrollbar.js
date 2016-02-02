@@ -3,19 +3,26 @@ var UI = require('UI');
 var Content = UI.Content;
 var View = UI.View;
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Swiper Scrollbar" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	componentDidMount() {
 		var params = {
 			scrollbar: ".swiper-scrollbar"
 		};
-		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);			
-  },
-  componentWillUnmount() {
+		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);
+	},
+	componentWillUnmount() {
 		this.props.slider.destroy();
 	},
 	render() {
 		return (
-			<View.Page  title="Button">
          <View.PageContent>
              <div className="swiper-container ks-demo-slider" ref="swiper">
 			        <div className="swiper-scrollbar"></div>
@@ -33,7 +40,6 @@ module.exports = React.createClass({
 			        </div>
 			      </div>
           </View.PageContent>
-      </View.Page>
 		);
 	}
 });

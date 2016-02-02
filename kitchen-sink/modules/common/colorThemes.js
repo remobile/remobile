@@ -32,29 +32,35 @@ var ColorCell = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Color Themes" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
 		return (
-			<View.Page title="Color Themes">
-				<View.PageContent>
-           	<Content.ContentBlock><p>Framework7 comes with default 10 iOS color themes set and three layout color themes (default, dark and pure white):</p></Content.ContentBlock>
-            <Content.ContentBlockTitle>Choose Layout Theme</Content.ContentBlockTitle>
-            <Content.ContentBlock>
-                <Grid.Row>
-                    {["default", "dark", "white"].map((color)=>{ return <LayoutCell key={color} color={color}/>})}
-                </Grid.Row>
-                <Content.ContentBlockTitle>Choose Color Theme</Content.ContentBlockTitle>
-                <Grid.Row>
-                  {["white", "black", "blue", "orange", "red"].map((color)=>{ return <ColorCell key={color} color={color}/>})}
-                </Grid.Row>
-                </Content.ContentBlock>
-                <Content.ContentBlock>
-                <Grid.Row>
-                  {["pink", "green", "lightblue", "yellow", "gray"].map((color)=>{ return <ColorCell key={color} color={color}/>})}
-                </Grid.Row>
-            </Content.ContentBlock>
-				</View.PageContent>
-       </View.Page>
+			<View.PageContent>
+           		<Content.ContentBlock><p>Framework7 comes with default 10 iOS color themes set and three layout color themes (default, dark and pure white):</p></Content.ContentBlock>
+	            <Content.ContentBlockTitle>Choose Layout Theme</Content.ContentBlockTitle>
+	            <Content.ContentBlock>
+	                <Grid.Row>
+	                    {["default", "dark", "white"].map((color)=>{ return <LayoutCell key={color} color={color}/>})}
+	                </Grid.Row>
+	                <Content.ContentBlockTitle>Choose Color Theme</Content.ContentBlockTitle>
+	                <Grid.Row>
+	                  {["white", "black", "blue", "orange", "red"].map((color)=>{ return <ColorCell key={color} color={color}/>})}
+	                </Grid.Row>
+	                </Content.ContentBlock>
+	                <Content.ContentBlock>
+	                <Grid.Row>
+	                  {["pink", "green", "lightblue", "yellow", "gray"].map((color)=>{ return <ColorCell key={color} color={color}/>})}
+	                </Grid.Row>
+	            </Content.ContentBlock>
+			</View.PageContent>
 		);
 	}
 });

@@ -6,8 +6,15 @@ var Content = UI.Content;
 var List = UI.List;
 var Badge = UI.Badge.Badge;
 
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Calendar" />
+        )
+    }
+});
 
-module.exports = React.createClass({
+module.exports.page = React.createClass({
 	componentDidMount() {
     // Default
     var calendarDefault = app.calendar({
@@ -64,59 +71,90 @@ module.exports = React.createClass({
 	},
 	render() {
 		return (
-			<View.Page title="Calendar">
-				<View.PageContent>
-					<Content.ContentBlock>
-		        <p>Calendar is a touch optimized component that provides an easy way to handle dates.</p>
-        		<p>Calendar could be used as inline component or as overlay. Overlay Calendar will be automatically converted to Popover on tablets (iPad).</p>
-		      </Content.ContentBlock>
-
-					<Content.ContentBlockTitle>Default setup</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								 <List.ItemInput><input type="text" placeholder="Your birth date" readonly="readonly"  id="ks-calendar-default"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-
-					
-					<Content.ContentBlockTitle>Custom date format</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Select multiple dates" readonly="readonly" id="ks-calendar-date-format"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					
-					<Content.ContentBlockTitle>Multiple Values</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Select multiple dates" readonly="readonly"  id="ks-calendar-multiple"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-
-          <Content.ContentBlockTitle>Range Picker<Badge color="green">NEW</Badge></Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="elect date range" readonly="readonly" id="ks-calendar-range"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-
-					<Content.ContentBlockTitle>Inline with custom toolbar</Content.ContentBlockTitle>
-						<Content.ContentBlock>
-							<Content.ContentBlockInner style={{padding:'0', marginRight:'-15px', width:'auto'}}>
-									<div id="ks-calendar-inline-container"></div>
-							</Content.ContentBlockInner>
-						</Content.ContentBlock>
-				</View.PageContent>
-       </View.Page>
+			<View.PageContent>
+				<Content.ContentBlock>
+					<p>
+						Calendar is a touch optimized component that provides an easy way to handle dates.
+					</p>
+					<p>
+						Calendar could be used as inline component or as overlay. Overlay Calendar will be automatically converted to Popover on tablets (iPad).
+					</p>
+				</Content.ContentBlock>
+				<Content.ContentBlockTitle>
+					Default setup
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Your birth date"
+									readonly="readonly"
+									id="ks-calendar-default"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Custom date format
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Select multiple dates"
+									readonly="readonly"
+									id="ks-calendar-date-format"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Multiple Values
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Select multiple dates"
+									readonly="readonly"
+									id="ks-calendar-multiple"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Range Picker
+					<Badge color="green">NEW</Badge>
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="elect date range"
+									readonly="readonly"
+									id="ks-calendar-range"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Inline with custom toolbar
+				</Content.ContentBlockTitle>
+				<Content.ContentBlock>
+					<Content.ContentBlockInner style={{padding:'0', marginRight:'-15px', width:'auto'}}>
+						<div id="ks-calendar-inline-container">
+						</div>
+					</Content.ContentBlockInner>
+				</Content.ContentBlock>
+			</View.PageContent>
 		);
 	}
 });

@@ -8,7 +8,15 @@ function getImage(i) {
 	return {backgroundImage: 'url(img/app/photo/'+i+'.jpg)'}
 }
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Swiper Parallax" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	componentDidMount() {
 		var params = {
 			pagination: ".swiper-pagination",
@@ -17,14 +25,13 @@ module.exports = React.createClass({
 			prevButton: ".swiper-button-prev",
 			speed: 600
 		};
-		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);			
-  },
-  componentWillUnmount() {
+		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);
+	},
+	componentWillUnmount() {
 		this.props.slider.destroy();
 	},
 	render() {
 		return (
-			<View.Page  title="Swiper Parallax">
          <View.PageContent>
              <div className="swiper-container ks-parallax-slider" ref="swiper">
 			        <div data-swiper-parallax="-23%" style={getImage(1)} className="swiper-parallax-bg"></div>
@@ -56,7 +63,6 @@ module.exports = React.createClass({
 			        </div>
 			       </div>
           </View.PageContent>
-      </View.Page>
 		);
 	}
 });

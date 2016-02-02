@@ -75,7 +75,15 @@ var CustomItem = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Accordion" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
     getInitialState() {
         return {
             list:[1,2,3]
@@ -83,7 +91,6 @@ module.exports = React.createClass({
     },
 	render() {
         return (
-            <View.Page title="Accordion">
             <View.PageContent>
             		<Content.ContentBlockTitle>List View Accordion</Content.ContentBlockTitle>
                 <List.List>
@@ -102,7 +109,6 @@ module.exports = React.createClass({
                 		{this.state.list.map((item)=>{ return <CustomItem value={item}/>})}
                 </Content.ContentBlock>
             </View.PageContent>
-            </View.Page>
         );
     }
 });

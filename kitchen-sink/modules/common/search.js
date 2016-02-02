@@ -65,9 +65,15 @@ var ListItem = React.createClass({
     }
 });
 
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Search" />
+        )
+    }
+});
 
-
-module.exports = React.createClass({
+module.exports.page = React.createClass({
     componentDidMount() {
         var container = $(this.refs.searchbar.getDOMNode());
         var params = {
@@ -80,7 +86,7 @@ module.exports = React.createClass({
     },
     render() {
         return (
-            <View.Page title="Search">
+            <div>
                 <UI.Search.Search ref="searchbar"/>
                 <UI.Search.SearchOverlay />
                 <View.PageContent>
@@ -88,7 +94,7 @@ module.exports = React.createClass({
                         {persons.map((person, i)=>{return <ListItem key={i}>{person}</ListItem>})}
                     </UI.Search.SearchList>
                 </View.PageContent>
-            </View.Page>
+            </div>
         );
     }
 });

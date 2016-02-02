@@ -43,8 +43,16 @@ var Tab3 = React.createClass({
 	}
 });
 
-module.exports = React.createClass({
-		getInitialState() {
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Static Tabs" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
+	getInitialState() {
         return {
             tab: 0
         }
@@ -58,17 +66,15 @@ module.exports = React.createClass({
 	render() {
 		var tabs = (
 			<ButtonsRow>
-			  <Button active={this.state.tab===0} onTap={this.switchTab.bind(this, 0)}>Tab 1</Button>
-			  <Button active={this.state.tab===1} onTap={this.switchTab.bind(this, 1)}>Tab 2</Button>
-			  <Button active={this.state.tab===2} onTap={this.switchTab.bind(this, 2)}>Tab 3</Button>
+				<Button active={this.state.tab===0} onTap={this.switchTab.bind(this, 0)}>Tab 1</Button>
+				<Button active={this.state.tab===1} onTap={this.switchTab.bind(this, 1)}>Tab 2</Button>
+				<Button active={this.state.tab===2} onTap={this.switchTab.bind(this, 2)}>Tab 3</Button>
 			</ButtonsRow>
 		);
 		return (
-			<View.Page title={tabs}>
-				<View.PageContent>
-	        {React.createElement(this.props.tabs[this.state.tab])}
-				</View.PageContent>
-       </View.Page>
+			<View.PageContent>
+        		{React.createElement(this.props.tabs[this.state.tab])}
+			</View.PageContent>
 		);
 	}
 });

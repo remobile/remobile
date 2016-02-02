@@ -17,18 +17,24 @@ function showCenterToastWithOnlyText() {
     app.toast("fangyunjiang");
 }
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Toast" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
         return (
-            <View.Page title="Toast">
             <View.PageContent>
                 <Content.ContentBlock>
-                    <p>Toast is a component for show a toast msg, you also can use phonegap's native toast</p>
+                    <p>Toast is a component for show a toast msg, you also can use phonegap{'\''}s native toast</p>
                 </Content.ContentBlock>
                 <p><Button onTap={showCenterToastWithIconText}>Center Toast With Icon And Text</Button></p>
                 <p><Button onTap={showCenterToastWithOnlyText}>Center Toast Only Text</Button></p>
             </View.PageContent>
-            </View.Page>
         );
     }
 });

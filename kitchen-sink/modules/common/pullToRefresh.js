@@ -23,7 +23,15 @@ var ListItem = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Pull To Refresh" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
     getInitialState() {
         return {
             list:[5,4,3,2,1]
@@ -40,14 +48,12 @@ module.exports = React.createClass({
     },
 	render() {
         return (
-            <View.Page title="Pull To Refresh">
             <View.PageContent class="pull-to-refresh-content">
                 <UI.Refresh.PullToRefresh onRefresh={this.onRefresh}/>
                 <List.List block>
                     {this.state.list.map((item)=>{ return <ListItem value={item}/>})}
                 </List.List>
             </View.PageContent>
-            </View.Page>
         );
     }
 });

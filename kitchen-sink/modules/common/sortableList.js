@@ -22,7 +22,17 @@ var ListItem = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Sortable List">
+                <View.NavbarButton right iconOnly onTap={this.handleClick}>{text}</View.NavbarButton>
+            </View.Navbar>
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	getInitialState() {
 		return {
 			open: false
@@ -35,16 +45,14 @@ module.exports = React.createClass({
 	render() {
 		var text = this.state.open?"Done":"Edit";
 		return (
-			<View.Page title="Sortable List" right={<View.NavbarButton right iconOnly onTap={this.handleClick}>{text}</View.NavbarButton>}>
-				<View.PageContent>
-            <Content.ContentBlock>
-            	<p>Just click "Edit" button on navigation bar to enable sorting</p>
-            </Content.ContentBlock>
-            <List.List block sortable>
-                {[1,2,3,4,5].map((item)=>{ return <ListItem value={item}/>})}
-            </List.List>
-        </View.PageContent>
-       </View.Page>
+			<View.PageContent>
+                <Content.ContentBlock>
+                	<p>Just click "Edit" button on navigation bar to enable sorting</p>
+                </Content.ContentBlock>
+                <List.List block sortable>
+                    {[1,2,3,4,5].map((item)=>{ return <ListItem value={item}/>})}
+                </List.List>
+            </View.PageContent>
 		);
 	}
 });

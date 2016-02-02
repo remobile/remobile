@@ -3,21 +3,28 @@ var UI = require('UI');
 var Content = UI.Content;
 var View = UI.View;
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Swiper Vertical" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	componentDidMount() {
 		var params = {
 			direction: 'vertical',
 			pagination: ".swiper-pagination",
 			paginationHide: true
 		};
-		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);			
-  },
-  componentWillUnmount() {
+		this.props.slider = app.swiper(this.refs.swiper.getDOMNode(), params);
+	},
+	componentWillUnmount() {
 		this.props.slider.destroy();
 	},
 	render() {
 		return (
-			<View.Page  title="Swiper Vertical">
          <View.PageContent>
              <div className="swiper-container ks-demo-slider" ref="swiper">
 			        <div className="swiper-pagination"></div>
@@ -35,7 +42,6 @@ module.exports = React.createClass({
 			        </div>
 			      </div>
           </View.PageContent>
-      </View.Page>
 		);
 	}
 });

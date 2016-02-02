@@ -5,7 +5,15 @@ var View = UI.View;
 var Content = UI.Content;
 var List = UI.List;
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Dropdown Autocomplete" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	componentDidMount() {
 		// Fruits data demo array
     var fruits = ('Apple Apricot Avocado Banana Melon Orange Peach Pear Pineapple').split(' ');
@@ -124,7 +132,7 @@ module.exports = React.createClass({
             });
         }
     });
-    
+
     // Simple Standalone
     var autocompleteStandaloneSimple = app.autocomplete({
         openIn: 'page', //open in page
@@ -153,80 +161,123 @@ module.exports = React.createClass({
 	},
 	render() {
 		return (
-			<View.Page title="Dropdown Autocomplete">
-				<View.PageContent>
-					<Content.ContentBlock>
-		        <p>Dropdown autocomplete is good to use as a quick and simple solution to provide more options in addition to free-type value.</p>
-		      </Content.ContentBlock>
-		      
-					<Content.ContentBlockTitle>Simple Dropdown Autocomplete</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemTitle label>Fruit</List.ItemTitle>
-								<List.ItemInput><input type="text" placeholder="Fruit" id="autocomplete-dropdown"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Dropdown With Input Expand</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemTitle label>Fruit</List.ItemTitle>
-								<List.ItemInput><input type="text" placeholder="Fruit" id="autocomplete-dropdown-expand"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Dropdown With All Values</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemTitle label>Fruit</List.ItemTitle>
-								<List.ItemInput><input type="text" placeholder="Fruit" id="autocomplete-dropdown-all"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Dropdown With Placeholder</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemTitle label>Fruit</List.ItemTitle>
-								<List.ItemInput><input type="text" placeholder="Fruit" id="autocomplete-dropdown-placeholder"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Dropdown With Ajax-Data</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemTitle label>Language</List.ItemTitle>
-								<List.ItemInput><input type="text" placeholder="Language" id="autocomplete-dropdown-ajax"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Standalone Autocomplete</Content.ContentBlockTitle>
-					<Content.ContentBlock>
-		         <p>Standalone autocomplete provides better mobile UX by opening it in a new page or popup. Good to use when you need to get strict values without allowing free-type values.</p>
-      		</Content.ContentBlock>
-      		
-					<Content.ContentBlockTitle>Simple Standalone Autocomplete</Content.ContentBlockTitle>
-					<div className="list-block">
-	        <ul>
-	          <li><a href="#" id="autocomplete-standalone" className="item-link item-content autocomplete-opener">
-	              <input type="hidden"/>
-	              <div className="item-inner">
-	                <div className="item-title">Favorite Fruite</div>
-	                <div className="item-after"></div>
-	              </div></a></li>
-	        </ul>
-	      </div>
-				</View.PageContent>
-       </View.Page>
+			<View.PageContent>
+				<Content.ContentBlock>
+					<p>
+						Dropdown autocomplete is good to use as a quick and simple solution to provide more options in addition to free-type value.
+					</p>
+				</Content.ContentBlock>
+				<Content.ContentBlockTitle>
+					Simple Dropdown Autocomplete
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemTitle label>Fruit</List.ItemTitle>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Fruit"
+									id="autocomplete-dropdown"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Dropdown With Input Expand
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemTitle label>Fruit</List.ItemTitle>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Fruit"
+									id="autocomplete-dropdown-expand"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Dropdown With All Values
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemTitle label>Fruit</List.ItemTitle>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Fruit"
+									id="autocomplete-dropdown-all"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Dropdown With Placeholder
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemTitle label>Fruit</List.ItemTitle>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Fruit"
+									id="autocomplete-dropdown-placeholder"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Dropdown With Ajax-Data
+				</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemTitle label>Language</List.ItemTitle>
+							<List.ItemInput>
+								<input
+									type="text"
+									placeholder="Language"
+									id="autocomplete-dropdown-ajax"/>
+							</List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<Content.ContentBlockTitle>
+					Standalone Autocomplete
+				</Content.ContentBlockTitle>
+				<Content.ContentBlock>
+					<p>
+						Standalone autocomplete provides better mobile UX by opening it in a new page or popup. Good to use when you need to get strict values without allowing free-type values.
+					</p>
+				</Content.ContentBlock>
+				<Content.ContentBlockTitle>
+					Simple Standalone Autocomplete
+				</Content.ContentBlockTitle>
+				<div className="list-block">
+					<ul>
+						<li>
+							<a
+								href="#"
+								id="autocomplete-standalone"
+								className="item-link item-content autocomplete-opener">
+								<input type="hidden"/>
+								<div className="item-inner">
+									<div className="item-title">
+										Favorite Fruite
+									</div>
+									<div className="item-after">
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</View.PageContent>
 		);
 	}
 });

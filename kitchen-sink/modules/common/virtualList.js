@@ -21,8 +21,15 @@ var ListItem = React.createClass({
     }
 });
 
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Virtal List" />
+        )
+    }
+});
 
-module.exports = React.createClass({
+module.exports.page = React.createClass({
     componentDidMount() {
         var items = [];
         for (var i = 0; i < 10000; i++) {

@@ -79,22 +79,28 @@ function showRightPanelFromLeft() {
 		}, 500);
 }
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="3D Panels" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	render() {
 		return (
-            <View.Page title="3D Panels">
-                <View.PageContent>
-                    <Content.ContentBlock>
-                        <p>This 3D Panels plugin convert your "reveal"-effect panels to great looking 3D panels which are also available as a swipe-panels (try left one).</p>
-                    </Content.ContentBlock>
-                    <Content.ContentBlock>
-                        <Grid.Row>
-                            <Grid.Col per={50}><Button onTap={showLeftPanel}>Left Panel</Button></Grid.Col>
-                            <Grid.Col per={50}><Button onTap={showRightPanel}>Right Panel</Button></Grid.Col>
-                        </Grid.Row>
-                    </Content.ContentBlock>
-                </View.PageContent>
-            </View.Page>
+            <View.PageContent>
+                <Content.ContentBlock>
+                    <p>This 3D Panels plugin convert your "reveal"-effect panels to great looking 3D panels which are also available as a swipe-panels (try left one).</p>
+                </Content.ContentBlock>
+                <Content.ContentBlock>
+                    <Grid.Row>
+                        <Grid.Col per={50}><Button onTap={showLeftPanel}>Left Panel</Button></Grid.Col>
+                        <Grid.Col per={50}><Button onTap={showRightPanel}>Right Panel</Button></Grid.Col>
+                    </Grid.Row>
+                </Content.ContentBlock>
+            </View.PageContent>
 		);
 	}
 });

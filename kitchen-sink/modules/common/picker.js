@@ -5,7 +5,15 @@ var View = UI.View;
 var Content = UI.Content;
 var List = UI.List;
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Picker" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
 	componentDidMount() {
 		var today = new Date();
 
@@ -173,60 +181,58 @@ module.exports = React.createClass({
 	},
 	render() {
 		return (
-			<View.Page title="Picker">
-				<View.PageContent>
-					<Content.ContentBlock>
-		        <p>Picker is a powerful component that allows you to create custom overlay pickers which looks like iOS native picker.</p>
-		        <p>Picker could be used as inline component or as overlay. Overlay Picker will be automatically converted to Popover on tablets (iPad).</p>
-		      </Content.ContentBlock>
-		      
-					<Content.ContentBlockTitle>Picker with single value</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Your iOS device" readonly="readonly" id="ks-picker-device"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>2 values and 3d-rotate effect</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" id="ks-picker-describe"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Dependent values</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Your car" readonly="readonly" id="ks-picker-dependent"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Custom toolbar</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-								<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" id="ks-picker-custom-toolbar"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					
-					<Content.ContentBlockTitle>Inline Picker / Date-time</Content.ContentBlockTitle>
-					<List.List>
-						<List.ItemContent>
-							<List.ItemInner>
-									<List.ItemInput><input type="text" placeholder="Date Time" readonly="readonly" id="ks-picker-date"/></List.ItemInput>
-							</List.ItemInner>
-						</List.ItemContent>
-					</List.List>
-					<div id="ks-picker-date-container"></div>
-				</View.PageContent>
-       </View.Page>
+			<View.PageContent>
+				<Content.ContentBlock>
+			        <p>Picker is a powerful component that allows you to create custom overlay pickers which looks like iOS native picker.</p>
+			        <p>Picker could be used as inline component or as overlay. Overlay Picker will be automatically converted to Popover on tablets (iPad).</p>
+				</Content.ContentBlock>
+
+				<Content.ContentBlockTitle>Picker with single value</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput><input type="text" placeholder="Your iOS device" readonly="readonly" id="ks-picker-device"/></List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+
+				<Content.ContentBlockTitle>2 values and 3d-rotate effect</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" id="ks-picker-describe"/></List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+
+				<Content.ContentBlockTitle>Dependent values</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput><input type="text" placeholder="Your car" readonly="readonly" id="ks-picker-dependent"/></List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+
+				<Content.ContentBlockTitle>Custom toolbar</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+							<List.ItemInput><input type="text" placeholder="Describe yourself" readonly="readonly" id="ks-picker-custom-toolbar"/></List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+
+				<Content.ContentBlockTitle>Inline Picker / Date-time</Content.ContentBlockTitle>
+				<List.List>
+					<List.ItemContent>
+						<List.ItemInner>
+								<List.ItemInput><input type="text" placeholder="Date Time" readonly="readonly" id="ks-picker-date"/></List.ItemInput>
+						</List.ItemInner>
+					</List.ItemContent>
+				</List.List>
+				<div id="ks-picker-date-container"></div>
+			</View.PageContent>
 		);
 	}
 });

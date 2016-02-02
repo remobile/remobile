@@ -23,7 +23,15 @@ var ListItem = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Infinite Scroll" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
     getInitialState() {
         return {
             list:((n)=>{var arr=[];for(var i=1;i<=n;i++){arr.push(i)}return arr})(20)
@@ -39,14 +47,12 @@ module.exports = React.createClass({
     },
 	render() {
         return (
-            <View.Page title="Infinite Scroll">
-                <View.PageContent class="infinite-scroll" data={{distance:10}}>
-                    <UI.Refresh.InfiniteScroll onInfinite={this.onInfinite}/>
-                    <List.List block>
-                        {this.state.list.map((item)=>{ return <ListItem value={item}/>})}
-                    </List.List>
-                </View.PageContent>
-            </View.Page>
+            <View.PageContent class="infinite-scroll" data={{distance:10}}>
+                <UI.Refresh.InfiniteScroll onInfinite={this.onInfinite}/>
+                <List.List block>
+                    {this.state.list.map((item)=>{ return <ListItem value={item}/>})}
+                </List.List>
+            </View.PageContent>
         );
     }
 });

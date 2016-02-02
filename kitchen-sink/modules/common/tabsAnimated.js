@@ -54,7 +54,15 @@ var Tab3 = React.createClass({
 	}
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Animated Tabs" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
     switchTab(tab, e) {
         app.showTab('#'+TAB_ID_PREFIX+tab, e.target);
         e.preventDefault();

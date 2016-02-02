@@ -86,7 +86,7 @@ var List3 = React.createClass({
     		var checkedList = this.state.checkedList;
         return (
             <List.List block media>
-            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"},
             		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
             		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
             		<List.ItemContent key={i} checkbox value={i} name="checkbox2" checked={checkedList.indexOf(i)!==-1} onChange={this.handleChange}>
@@ -115,7 +115,7 @@ var List4 = React.createClass({
     render() {
         return (
             <List.List block media>
-            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"}, 
+            	{[{name:"Yellow Submarine", price:"$15", title:"Beatles"},
             		{name:"Don't Stop Me Now", price:"$22", title:"Queen"},
             		{name:"Billie Jean", price:"$16", title:"Michael Jackson"}].map((item, i)=>{return (
             		<List.ItemContent key={i} radio value={i} name="radio1" checked={i===2} onChange={this.handleChange}>
@@ -137,21 +137,27 @@ var List4 = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
     render() {
         return (
-            <View.Page title="CheckBox">
-                <View.PageContent>
-                    <Content.ContentBlockTitle>Checkbox group</Content.ContentBlockTitle>
-                    <List1 />
-                    <Content.ContentBlockTitle>Radio buttons group</Content.ContentBlockTitle>
-                    <List2 />
-                    <Content.ContentBlockTitle>With Media Lists</Content.ContentBlockTitle>
-                    <List3 />
-                    <Content.ContentBlockTitle>What is your favourite song?</Content.ContentBlockTitle>
-                    <List4 />
-                </View.PageContent>
-            </View.Page>
+            <View.Navbar title="Radio CheckBox" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
+    render() {
+        return (
+            <View.PageContent>
+                <Content.ContentBlockTitle>Checkbox group</Content.ContentBlockTitle>
+                <List1 />
+                <Content.ContentBlockTitle>Radio buttons group</Content.ContentBlockTitle>
+                <List2 />
+                <Content.ContentBlockTitle>With Media Lists</Content.ContentBlockTitle>
+                <List3 />
+                <Content.ContentBlockTitle>What is your favourite song?</Content.ContentBlockTitle>
+                <List4 />
+            </View.PageContent>
         );
     }
 });

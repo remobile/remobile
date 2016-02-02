@@ -164,24 +164,29 @@ var FormList4 = React.createClass({
     }
 });
 
-module.exports = React.createClass({
-	render() {
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Form" />
+        )
+    }
+});
 
+module.exports.page = React.createClass({
+	render() {
 		return (
-			<View.Page title="Form">
-				<View.PageContent>
-        			<Content.ContentBlockTitle>Full Layout</Content.ContentBlockTitle>
-					<FormList />
-					<Content.ContentBlockTitle>Icons And Inputs</Content.ContentBlockTitle>
-					<FormList1 />
-					<Content.ContentBlockTitle>Just Inputs</Content.ContentBlockTitle>
-					<FormList2 />
-					<Content.ContentBlockTitle>Inset, Just Inputs</Content.ContentBlockTitle>
-					<FormList3 />
-					<Content.ContentBlockTitle>Floating Label</Content.ContentBlockTitle>
-					<FormList4 />
-				</View.PageContent>
-       </View.Page>
+			<View.PageContent>
+    			<Content.ContentBlockTitle>Full Layout</Content.ContentBlockTitle>
+				<FormList />
+				<Content.ContentBlockTitle>Icons And Inputs</Content.ContentBlockTitle>
+				<FormList1 />
+				<Content.ContentBlockTitle>Just Inputs</Content.ContentBlockTitle>
+				<FormList2 />
+				<Content.ContentBlockTitle>Inset, Just Inputs</Content.ContentBlockTitle>
+				<FormList3 />
+				<Content.ContentBlockTitle>Floating Label</Content.ContentBlockTitle>
+				<FormList4 />
+			</View.PageContent>
 		);
 	}
 });

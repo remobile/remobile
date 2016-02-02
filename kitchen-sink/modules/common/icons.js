@@ -619,7 +619,15 @@ var IconText = React.createClass({
     }
 });
 
-module.exports = React.createClass({
+module.exports.navbar = React.createClass({
+    render() {
+        return (
+            <View.Navbar title="Button" />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
     componentDidMount() {
         var container = $(this.refs.searchbar.getDOMNode());
         var params = {
