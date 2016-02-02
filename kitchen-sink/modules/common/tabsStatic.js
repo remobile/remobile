@@ -43,34 +43,47 @@ var Tab3 = React.createClass({
 	}
 });
 
+var curPage = null;
 module.exports.navbar = React.createClass({
-    render() {
-        return (
-            <View.Navbar title="Static Tabs" />
-        )
-    }
-});
-
-module.exports.page = React.createClass({
 	getInitialState() {
         return {
             tab: 0
         }
     },
-    getDefaultProps() {
-        return {tabs:[Tab1, Tab2, Tab3]}
-    },
     switchTab(tab) {
-        this.setState({tab: tab})
+        this.setState({tab: tab});
+		curPage && curPage.setState({tab: tab});
     },
-	render() {
+    render() {
 		var tabs = (
 			<ButtonsRow>
-				<Button active={this.state.tab===0} onTap={this.switchTab.bind(this, 0)}>Tab 1</Button>
-				<Button active={this.state.tab===1} onTap={this.switchTab.bind(this, 1)}>Tab 2</Button>
-				<Button active={this.state.tab===2} onTap={this.switchTab.bind(this, 2)}>Tab 3</Button>
+			  <Button active={this.state.tab===0} onTap={this.switchTab.bind(this, 0)}>Tab 1</Button>
+			  <Button active={this.state.tab===1} onTap={this.switchTab.bind(this, 1)}>Tab 2</Button>
+			  <Button active={this.state.tab===2} onTap={this.switchTab.bind(this, 2)}>Tab 3</Button>
 			</ButtonsRow>
 		);
+        return (
+            <View.Navbar title={tabs} />
+        )
+    }
+});
+
+module.exports.page = React.createClass({
+	getDefaultProps() {
+		return {tabs:[Tab1, Tab2, Tab3]}
+	},
+	getInitialState() {
+        return {
+            tab: 0
+        }
+    },
+	componentWillMount() {
+		curPage = this;
+	},
+	componentWillUnmount() {
+		curPage = null;
+	},
+	render() {
 		return (
 			<View.PageContent>
         		{React.createElement(this.props.tabs[this.state.tab])}

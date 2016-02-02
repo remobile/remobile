@@ -1,15 +1,16 @@
 module.exports = function (app) {
-    app.initUpScroller = function (container, text) {
+    app.initUpScroller = function (pageContainer, text) {
+        pageContainer = $(pageContainer);
         text = text||'Go Top';
         var button = $('<div class="upscroller">↑ ' + text + '</div>');
-        container.prepend(button);
+        pageContainer.prepend(button);
 
         button.click(function(event) {
             event.stopPropagation();
             event.preventDefault();
-            container.scrollTop(0, Math.round(container.scrollTop()/4));
+            pageContainer.scrollTop(0, Math.round(pageContainer.scrollTop()/4));
         });
-        container.scroll(function(event){
+        pageContainer.scroll(function(event){
             var e = $(event.target).scrollTop();
             if(e > 300) {
                 button.addClass('show');

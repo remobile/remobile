@@ -14,12 +14,6 @@ module.exports = React.createClass({
 			app.initPageMaterialInputs(pageContainer);
 			app.initPageMaterialTabbar(pageContainer);
 		}
-		if (props.initPageSwiper) {
-			app.initPageSwiper(pageContainer);
-		}
-		if (props.initUpScroller) {
-			app.initUpScroller(pageContainer);
-		}
 	},
     componentWillUnmount() {
         var props = this.props;
