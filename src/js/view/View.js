@@ -81,11 +81,11 @@ module.exports = React.createClass({
     },
     render() {
         var newView = this.props.newView, oldView = this.props.oldView||{};
-        var newnavbar = newView.navbar?<newView.navbar params={newView.params} saved={newView.saved}/>:null,
-            newtoolbar = newView.toolbar?<newView.toolbar params={newView.params} saved={newView.saved}/>:null,
-            newpage = <newView.page params={newView.params} saved={newView.saved}/>;
-        var oldnavbar = oldView.navbar?<oldView.navbar params={oldView.params} saved={oldView.saved}/>:null,
-            oldpage = oldView.page?<oldView.page params={oldView.params} saved={oldView.saved}/>:null;
+        var newnavbar = newView.navbar?<newView.navbar params={newView.params||{}} saved={newView.saved||{}}/>:null,
+            newtoolbar = newView.toolbar?<newView.toolbar params={newView.params||{}} saved={newView.saved||{}}/>:null,
+            newpage = <newView.page params={newView.params||{}} saved={newView.saved||{}}/>;
+        var oldnavbar = oldView.navbar?<oldView.navbar params={oldView.params||{}} saved={oldView.saved||{}}/>:null,
+            oldpage = oldView.page?<oldView.page params={oldView.params||{}} saved={oldView.saved||{}}/>:null;
 
         var co = {
             'pages': true,

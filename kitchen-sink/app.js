@@ -6,7 +6,7 @@ var welcome = require('./modules/home/welcome');
 var LifeCycle = require('@remobile/react-lifecycle');
 
 var App = React.createClass({
-    mixins: [/*LifeCycle('app'),*/ Mixins.App(views)],
+    mixins: [/*LifeCycle('app')*/, Mixins.App(views)],
 
     getInitialState() {
         return {
