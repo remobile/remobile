@@ -1,7 +1,6 @@
 module.exports = function (app) {
     app.initUpScroller = function (container, text) {
         text = text||'Go Top';
-        container = $(container).find(".page-content");
         var button = $('<div class="upscroller">↑ ' + text + '</div>');
         container.prepend(button);
 

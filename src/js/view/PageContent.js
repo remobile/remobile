@@ -2,6 +2,33 @@ var React = require('react');
 var cn = require('classnames');
 
 module.exports = React.createClass({
+    componentDidMount() {
+		var props = this.props;
+		var pageContainer = $(this.getDOMNode());
+
+		if (props.initPageScrollToolbars) {
+			app.initPageScrollToolbars(pageContainer);
+		}
+		if (app.params.material) {
+			app.initPageMaterialPreloader(pageContainer);
+			app.initPageMaterialInputs(pageContainer);
+			app.initPageMaterialTabbar(pageContainer);
+		}
+		if (props.initPageSwiper) {
+			app.initPageSwiper(pageContainer);
+		}
+		if (props.initUpScroller) {
+			app.initUpScroller(pageContainer);
+		}
+	},
+    componentWillUnmount() {
+        var props = this.props;
+		var pageContainer = $(this.getDOMNode());
+
+		if (props.initPageScrollToolbars) {
+			app.destroyScrollToolbars(pageContainer);
+		}
+	},
     render() {
         var obj = {
             "messages-content": this.props.message,
