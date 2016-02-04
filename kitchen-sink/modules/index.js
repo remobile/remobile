@@ -59,12 +59,15 @@ module.exports = {
 	'swiperLoop': require('./swiper/swiperLoop'),
 	'swiper3dCube': require('./swiper/swiper3dCube'),
 	'swiper3dCoverflow': require('./swiper/swiper3dCoverflow'),
+	'swiper3dFlip': require('./swiper/swiper3dFlip'),
 	'swiperFade': require('./swiper/swiperFade'),
 	'swiperScrollbar': require('./swiper/swiperScrollbar'),
 	'swiperGallery': require('./swiper/swiperGallery'),
 	'swiperCustom': require('./swiper/swiperCustom'),
 	'swiperParallax': require('./swiper/swiperParallax'),
 	'swiperLazy': require('./swiper/swiperLazy'),
+	'swiperProgressPagination': require('./swiper/swiperProgressPagination'),
+	'swiperFractionPagination': require('./swiper/swiperFractionPagination'),
 	//icons
 	'icons': require('./common/icons')
 };

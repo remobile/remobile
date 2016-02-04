@@ -34,12 +34,15 @@ var List1 = React.createClass({
                 <ListItem page="swiperLoop">Infinite Loop Mode</ListItem>
                 <ListItem page="swiper3dCube">3D Cube Effect</ListItem>
                 <ListItem page="swiper3dCoverflow">3D Coverflow Effect</ListItem>
+                <ListItem page="swiper3dFlip">3D Flip Effect</ListItem>
                 <ListItem page="swiperFade">Fade Effect</ListItem>
                 <ListItem page="swiperScrollbar">With Scrollbar</ListItem>
                 <ListItem page="swiperGallery">Two Way Control Gallery</ListItem>
                 <ListItem page="swiperCustom">Custom Controls</ListItem>
                 <ListItem page="swiperParallax">Parallax</ListItem>
                 <ListItem page="swiperLazy">Lazy Loading</ListItem>
+                <ListItem page="swiperProgressPagination">Progress Pagination</ListItem>
+                <ListItem page="swiperFractionPagination">Fraction Pagination</ListItem>
             </List.List>
         );
     }
