@@ -6,7 +6,8 @@ module.exports = React.createClass({
         var obj = {
             "toolbar": true,
             "tabbar": this.props.tabbar,
-            "tabbar-labels": this.props.labels
+            "tabbar-labels": this.props.labels,
+            "toolbar-bottom": app.params.material,
         };
         this.props.class&&(obj[this.props.class]=true);
         var className = cn(obj);

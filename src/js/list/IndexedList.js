@@ -9,7 +9,7 @@ module.exports = React.createClass({
     },
     componentDidMount() {
         app.initIndexedList({
-            container: $(this.refs.list.getDOMNode()),
+            container: this.getDOMNode(),
             callback: (letter)=>{this.setState({activeAlpha:letter})},
             letters: this.props.letters
         });
@@ -21,7 +21,6 @@ module.exports = React.createClass({
         return (
             <ul
                 className="list-index"
-                ref="list"
                 style={this.props.style}>
                 {this.props.letters.map((letter)=>{
                     var obj = {};

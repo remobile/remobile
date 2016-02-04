@@ -163,8 +163,10 @@ app.showViewExitAnimate = function (param) {
 
     function afterAnimation() {
         newPage.removeClass('page-from-left-to-center page-on-left').addClass('page-on-center');
-        newNavbarInner.removeClass('navbar-on-left navbar-from-left-to-center').addClass('navbar-on-center');
-        oldNavbarInner.removeClass('navbar-on-center navbar-from-center-to-right').addClass('navbar-on-left');
+        if (dynamicNavbar) {
+	        newNavbarInner.removeClass('navbar-on-left navbar-from-left-to-center').addClass('navbar-on-center');
+	        oldNavbarInner.removeClass('navbar-on-center navbar-from-center-to-right').addClass('navbar-on-left');
+	      }
         callback();
     }
 

@@ -4,23 +4,23 @@ module.exports = function(app) {
 =============================================================*/
 app.initPageScrollToolbars = function (pageContainer) {
     pageContainer = $(pageContainer);
-    var scrollContent = pageContainer.find('.page-content');
+    var scrollContent = pageContainer.hasClass('page-content') ? pageContainer : pageContainer.find('.page-content');
     if (scrollContent.length === 0) return;
     var hideNavbar = (app.params.hideNavbarOnPageScroll || scrollContent.hasClass('hide-navbar-on-scroll') || scrollContent.hasClass('hide-bars-on-scroll')) && !(scrollContent.hasClass('keep-navbar-on-scroll') || scrollContent.hasClass('keep-bars-on-scroll'));
     var hideToolbar = (app.params.hideToolbarOnPageScroll || scrollContent.hasClass('hide-toolbar-on-scroll') || scrollContent.hasClass('hide-bars-on-scroll')) && !(scrollContent.hasClass('keep-toolbar-on-scroll') || scrollContent.hasClass('keep-bars-on-scroll'));
     var hideTabbar = (app.params.hideTabbarOnPageScroll || scrollContent.hasClass('hide-tabbar-on-scroll')) && !(scrollContent.hasClass('keep-tabbar-on-scroll'));
 
     if (!(hideNavbar || hideToolbar || hideTabbar)) return;
+    
+    var viewContainer = scrollContent.parents('.' + app.params.viewClass);
+    if (viewContainer.length === 0) return;
 
-    // var viewContainer = scrollContent.parents('.' + app.params.viewClass);
-    // if (viewContainer.length === 0) return;
-
-    var navbar = pageContainer.find('.navbar'),
-        toolbar = pageContainer.find('.toolbar'),
+    var navbar = viewContainer.find('.navbar'), 
+        toolbar = viewContainer.find('.toolbar'), 
         tabbar;
     if (hideTabbar) {
-        tabbar = pageContainer.find('.tabbar');
-        // if (tabbar.length === 0) tabbar = viewContainer.parents('.' + app.params.viewsClass).find('.tabbar');
+        tabbar = viewContainer.find('.tabbar');
+        if (tabbar.length === 0) tabbar = viewContainer.parents('.' + app.params.viewsClass).find('.tabbar');
     }
 
     var hasNavbar = navbar.length > 0,
@@ -110,7 +110,7 @@ app.initPageScrollToolbars = function (pageContainer) {
 };
 app.destroyScrollToolbars = function (pageContainer) {
     pageContainer = $(pageContainer);
-    var scrollContent = pageContainer.find('.page-content');
+    var scrollContent = pageContainer.hasClass('page-content') ? pageContainer : pageContainer.find('.page-content');
     if (scrollContent.length === 0) return;
     var handler = scrollContent[0].f7ScrollToolbarsHandler;
     if (!handler) return;

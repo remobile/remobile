@@ -569,11 +569,8 @@ app.openModal = function (modal) {
 
     // Init Pages and Navbars in modal
     if (modal.find('.' + app.params.viewClass).length > 0) {
-        modal.find('.page').each(function () {
-            app.initPageWithCallback(this);
-        });
         modal.find('.navbar').each(function () {
-            app.initNavbarWithCallback(this);
+            app.sizeNavbars($(this).parents('.view'))
         });
     }
 

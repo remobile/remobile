@@ -1,27 +1,21 @@
 module.exports = function(app) {
 	app.initIndexedList = function(params) {
 		var isTouched, lastLetter, lastPreviewLetter, groupPostion = {}, box;
-		var eventsTarget = params.container;
+		var eventsTarget = $(params.container);
 
-		var pageContainer = $('.page');
-		var pageContent = $('.page').find('.page-content');
-		var searchBar = $(pageContainer).find('.searchbar').length > 0;
-		var serachBarOffset = searchBar*app.params.material?56:44;
-		var fixedNavbar = pageContent.parents('.navbar-fixed').length > 0 || pageContent.parents('.navbar-through').length > 0;
-		var fixedNavbarOffset = fixedNavbar*app.params.material?48:44;
-		var fixedToolbar =  pageContent.parents('.toolbar-through').length > 0 || pageContent.parents('.tabbar-labels-through').length > 0;
-		var toolBarOffset = fixedToolbar*app.params.material?72:44;
+		var pageContainer = eventsTarget.parent('.page');
+		var pageContent = pageContainer.find('.page-content');
 
-		var height = eventsTarget.height();
-		if (fixedNavbar||searchBar){
-			eventsTarget.css('padding-top',  (fixedNavbarOffset+serachBarOffset)+'px');
-			height -= fixedNavbarOffset+serachBarOffset;
+		var paddingTop = parseInt(pageContent.css('padding-top'));
+		var paddingBottom = parseInt(pageContainer.parents('.page-content').css('padding-bottom'));
+		var height = $('.views').height()-paddingTop-paddingBottom;
+
+		var lineHeight = height/params.letters.length/12;
+
+		eventsTarget.css({'height':height+'px', 'line-height':lineHeight+'em'});
+		if (paddingTop){
+			eventsTarget.css('margin-top', paddingTop+'px');
 		}
-		if (fixedToolbar) {
-			height -= toolBarOffset;
-		}
-		eventsTarget.css({'height':height+'px'});
-		pageContent.css({'width': 'calc(100% - '+eventsTarget.width()+'px)'});
 
 		function showThumbnail(letter) {
 			$('.indexed-list-letter-container').off('click').off('transitionEnd').remove();
@@ -43,7 +37,7 @@ module.exports = function(app) {
 		function hideThumbnail() {
 			if (box) {
 				box.removeClass('fadein').transitionEnd(function () {
-				  box.remove();
+				  box && box.remove();
 				  box = null;
 				});
 			}
@@ -52,7 +46,7 @@ module.exports = function(app) {
 		function callback(letter) {
 			var scrollToEl = pageContent.find('.list-group ul li[data-index-letter="' + letter + '"]');
 			if (!scrollToEl.length) return;
-			var scrollTop = scrollToEl.offset().top + pageContent.scrollTop() - fixedNavbarOffset - serachBarOffset;
+			var scrollTop = scrollToEl.offset().top + pageContent.scrollTop() - paddingTop;
 			pageContent.scrollTop(scrollTop);
 		}
 
@@ -109,7 +103,7 @@ module.exports = function(app) {
 				if (!groupPostion[letter].length) {
 					return;
 				}
-				var top = groupPostion[letter].offset().top-fixedNavbarOffset-serachBarOffset-2;
+				var top = groupPostion[letter].offset().top-paddingTop-2;
 				if (top >= 0) {
 					break;
 				}

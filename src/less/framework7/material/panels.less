@@ -15,6 +15,7 @@
     .transition(@panelsDuration);
 }
 .panel {
+    z-index: 1000;
     display: none;
     background: #fff;
     box-sizing: border-box;
@@ -50,7 +51,7 @@ body.with-panel-left-cover, body.with-panel-right-cover {
     .panel {
         box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
     }
-    .page {
+    .views {
         .translate3d(0);
     }
     .panel-overlay {
@@ -59,7 +60,7 @@ body.with-panel-left-cover, body.with-panel-right-cover {
     }
 }
 body.with-panel-left-reveal, body.with-panel-right-reveal {
-    .page {
+    .views {
         box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
         .transition(@panelsDuration);
         -webkit-transition-property: -webkit-transform, box-shadow;
@@ -73,7 +74,7 @@ body.with-panel-left-reveal, body.with-panel-right-reveal {
     }
 }
 body.with-panel-left-reveal {
-    .page {
+    .views {
         .translate3d(@panelWidth);
     }
     .panel-overlay {
@@ -86,7 +87,7 @@ body.with-panel-left-cover {
     }
 }
 body.with-panel-right-reveal {
-    .page {
+    .views {
         .translate3d(-@panelWidth);
     }
     .panel-overlay {
@@ -102,7 +103,7 @@ body.panel-closing {
     .panel-overlay {
         display: block;
     }
-    .page {
+    .views {
         .transition(@panelsDuration);
         -webkit-transition-property: -webkit-transform, box-shadow;
         -moz-transition-property: -moz-transform, box-shadow;

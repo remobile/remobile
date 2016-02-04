@@ -77,16 +77,21 @@ module.exports = React.createClass({
 	renderPopup() {
 		return (
 			<div className="popup">
-				<Page
-					goBack={false}
-					title={this.props.title||' '}
-					right={
-						<NavbarButton right popup>Done</NavbarButton>
-					}>
-					<PageContent>
-						{this.props.children}
-					</PageContent>
-				</Page>
+				<div className="view navbar-fixed">
+					<div className="pages">
+						<div className="page">
+							<div className="navbar">
+								<div className="navbar-inner">
+									<div className="center">{this.props.params.title||' '}</div>
+									<NavbarButton right popup>Done</NavbarButton>
+								</div>
+							</div>
+							<div className="page-content">
+								{this.props.children}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	},

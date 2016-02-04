@@ -3,26 +3,13 @@ var cn = require('classnames');
 
 module.exports = React.createClass({
     componentDidMount() {
-		var props = this.props;
-		var pageContainer = $(this.getDOMNode());
-
-		if (props.initPageScrollToolbars) {
-			app.initPageScrollToolbars(pageContainer);
-		}
-		if (app.params.material) {
-			app.initPageMaterialPreloader(pageContainer);
-			app.initPageMaterialInputs(pageContainer);
-			app.initPageMaterialTabbar(pageContainer);
-		}
-	},
-    componentWillUnmount() {
-        var props = this.props;
-		var pageContainer = $(this.getDOMNode());
-
-		if (props.initPageScrollToolbars) {
-			app.destroyScrollToolbars(pageContainer);
-		}
-	},
+        var pageContainer = $(this.getDOMNode());
+        if (app.params.material) {
+            app.initPageMaterialPreloader(pageContainer);
+            app.initPageMaterialInputs(pageContainer);
+            app.initPageMaterialTabbar(pageContainer);
+        }
+    },
     render() {
         var obj = {
             "messages-content": this.props.message,
