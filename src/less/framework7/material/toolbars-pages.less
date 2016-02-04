@@ -7,23 +7,6 @@
 .subnavbar ~ .page-content {
     padding-top: @toolbarSize;
 }
-.navbar-through, .navbar-fixed {
-    .page-content {
-        padding-top: @navbarSize;
-    }
-    .with-subnavbar .page-content, .page-content.with-subnavbar, .subnavbar ~ .page-content {
-        padding-top: @toolbarSize+@navbarSize;
-    }
-    .page .subnavbar, &.page .subnavbar {
-        top: @navbarSize;
-    }
-}
-
-.toolbar-through, .toolbar-fixed, .tabbar-through, .tabbar-fixed {
-    .page-content {
-        padding-bottom: @toolbarSize;
-    }
-}
 .toolbar-fixed, .tabbar-fixed {
     .page-content {
         padding-top: @toolbarSize;

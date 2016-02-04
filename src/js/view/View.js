@@ -135,7 +135,7 @@ module.exports = React.createClass({
 	        var co = {
 	            'pages': true,
 	            'navbar-through': !!newnavbar,
-	            'toolbar-through': !!newtoolbar,
+	            'tabbar-labels-fixed': !!newtoolbar,
 	        };
 	        return (
 	            <div className='view'>
