@@ -17,7 +17,7 @@ module.exports.navbar = React.createClass({
 
 module.exports.page = React.createClass({
 	componentDidMount() {
-		this.props.sliderTop = swiper(this.refs.swiperTop.getDOMNode(), {
+		this.props.sliderTop = app.swiper(this.refs.swiperTop.getDOMNode(), {
 				nextButton: '.swiper-button-next',
 		    prevButton: '.swiper-button-prev',
 		    spaceBetween: 10

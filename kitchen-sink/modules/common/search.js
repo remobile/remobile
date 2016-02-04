@@ -86,7 +86,7 @@ module.exports.page = React.createClass({
     },
     render() {
         return (
-            <div>
+            <View.Page>
                 <UI.Search.Search ref="searchbar"/>
                 <UI.Search.SearchOverlay />
                 <View.PageContent>
@@ -94,7 +94,7 @@ module.exports.page = React.createClass({
                         {persons.map((person, i)=>{return <ListItem key={i}>{person}</ListItem>})}
                     </UI.Search.SearchList>
                 </View.PageContent>
-            </div>
+            </View.Page>
         );
     }
 });

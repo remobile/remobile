@@ -10,6 +10,14 @@ var Button = UI.Button;
 var Form = UI.Form;
 
 module.exports.navbar = React.createClass({
+    getInitialState() {
+        return {
+            link: 1
+        }
+    },
+    switchLink(link) {
+        this.setState({link:link});
+    },
     render() {
         return (
             <View.Navbar title="SubNavbar Hide On Scroll">
@@ -30,31 +38,26 @@ module.exports.toolbar = React.createClass({
     render() {
         return (
             <View.Toolbar tabbar labels>
-                <View.ToolbarButton active={true}
-                    icon={["icon-camera", "icon-back"]}>
+                <View.LabelTabBarButton
+                    icon="icon-camera"
+                    active={true}>
                     Edit
-                </View.ToolbarButton>
-                <View.ToolbarButton
-                    icon={["icon-camera", "icon-back"]}>
-                    Edit
-                </View.ToolbarButton>
+                </View.LabelTabBarButton>
             </View.Toolbar>
         )
     }
 });
 
 module.exports.page = React.createClass({
-    getInitialState() {
-        return {
-            link: 1
-        }
+    componentDidMount() {
+        app.initPageScrollToolbars(this.getDOMNode());
     },
-    switchLink(link) {
-        this.setState({link:link});
+    componentWillUnmount() {
+        app.destroyScrollToolbars(this.getDOMNode());
     },
     render() {
         return (
-            <View.PageContent subnavbar scrollHideBar initPageScrollToolbars>
+            <View.PageContent subnavbar scrollHideBar>
                 <Content.ContentBlock>
                    <p>Sub Navbar is useful when you need to put any additional elements into Navbar, like Tab Links or Search Bar. It also remains visible when Navbar hidden.</p>
                 </Content.ContentBlock>

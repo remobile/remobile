@@ -20,16 +20,23 @@ module.exports.toolbar = React.createClass({
     render() {
         return (
             <View.Toolbar tabbar labels>
-                <View.ToolbarButton active={true}
-                    icon={["icon-camera", "icon-back"]}>
-                   Edit
-                </View.ToolbarButton>
+                <View.LabelTabBarButton
+                    icon="icon-camera"
+                    active={true}>
+                    Edit
+                </View.LabelTabBarButton>
             </View.Toolbar>
         )
     }
 });
 
 module.exports.page = React.createClass({
+		componentDidMount() {
+				app.initPageScrollToolbars(this.getDOMNode());
+		},
+		componentWillUnmount() {
+				app.destroyScrollToolbars(this.getDOMNode());
+		},
     render() {
         return (
             <View.PageContent scrollHideBar>

@@ -74,21 +74,41 @@ var ContactList = React.createClass({
     }
 });
 
+
+var IndexedList =  React.createClass({
+    getInitialState() {
+        return {letters:['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'].sort((a, b)=>{return a.localeCompare(b)})};
+    },
+    render() {
+        return (
+            <List.IndexedList letters={this.state.letters}/>
+        );
+    }
+});
+
 module.exports = React.createClass({
 	componentDidMount() {
-		// var container = $('.page .searchbar');
-		// var searchlist = $(this.getDOMNode());
-		// var params = {
-		// 	searchList: searchlist.find('.searchbar-found')
-		// };
-		// this.searchbar = app.searchbar(container, params);
+		 var searchbar = $('.page .searchbar');
+		 var container = $(this.getDOMNode());
+		 var params = {
+		 	searchList: container.find('.searchbar-found')
+		 };
+		 this.searchbar = app.searchbar(searchbar, params);
+		 container.find('.page-content').css("padding-bottom", container.parents('.page-content').css('padding-bottom'));
 	},
 	componentWillUnmount() {
-		// this.searchbar.destroy();
+		 this.searchbar.destroy();
 	},
 	render() {
 		return (
-			<ContactList users={users}/>
+			<View.Page>
+				<UI.Search.Search ref="searchbar"/>
+				<UI.Search.SearchOverlay />
+				<View.PageContent>
+					<ContactList users={users}/>
+				</View.PageContent>
+				<IndexedList />
+			</View.Page>
 		);
 	}
 });
