@@ -295,72 +295,24 @@ function App (views) {
     		}
     		return title;
     	},
-        renderView() {
-            var props = {};
-            props.noAnimate = this.state.noAnimate;
-            props.newView = views[this.state.newView.id];
-            props.newView.params = this.state.newView.params;
-            props.newView.saved = this.state.newView.saved;
-            if (this.state.oldView) {
-                props.oldView = views[this.state.oldView.id];
-                if (props.oldView) {
-                    props.oldView.params = this.state.oldView.params;
-                    props.oldView.saved = this.state.oldView.saved;
-                }
-            }
+        renderView(mainPageId, mainPageParams, maxPagesCount) {
+            maxPagesCount = maxPagesCount||5;
+            var ViewContent = app.params.material ? View.View.materialView : View.View.iosView;
             return (
                 <div style={{position:"absolute", width:"100%", height:"100%"}}>
                     <div className="views">
-                        <View.View {...props} />
+                        <ViewContent num={maxPagesCount} mainPage={views[mainPageId]} mainPageParams={mainPageParams}>
+                        </ViewContent>
                     </div>
                     <View.Cover />
                 </div>
             );
         },
-        showView(id, params, saved, norecord) {
-            var oldView = this.state.newView;
-            params = params||{};
-            params.from = oldView && oldView.id;
-            if (!norecord) {
-                var saved = saved||{};
-                saved = assign(saved, {scrollTop: $('.page-content').scrollTop()});
-                this.history.push({
-                    id: oldView.id,
-                    saved: saved,
-                    lastTitle:this.data.lastTitle,
-                 });
-                 this.data.lastLastTitle = this.data.lastTitle;
-                 this.data.lastTitle = this.data.currentTitle;
-            }
-            this.setState({
-                oldView: oldView,
-                newView: {id:id, params:params, saved:{}},
-                noAnimate: false
-            });
+        showView(id, params) {
+            app.view.showPage(views[id], params);
         },
-        goBack(step, params) {
-            if (!step) {
-                step = 1;
-            }
-            var obj;
-            for (var i=0; i<step; i++) {
-                var t = this.history.pop();
-                t && (obj = t);
-            }
-            if (obj) {
-                var preObj = this.history[this.history.length-1]||{};
-                params = params||{};
-                params.from = this.state.newView.id;
-                this.data.lastTitle = obj.lastTitle;
-                this.data.lastLastTitle = preObj.lastTitle;
-                app.view.goBack(()=>{
-                    this.setState({
-                        oldView: {id:preObj.id, params: {}, saved:preObj.saved},
-                        newView: {id:obj.id, params: params,saved:obj.saved},
-                        noAnimate: true
-                    });
-                });
-            }
+        goBack() {
+            app.view.goBack();
         },
     };
 }

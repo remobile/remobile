@@ -7,7 +7,6 @@ module.exports = React.createClass({
         if (app.params.material) {
             app.initPageMaterialPreloader(pageContainer);
             app.initPageMaterialInputs(pageContainer);
-            app.initPageMaterialTabbar(pageContainer);
         }
     },
     render() {

@@ -19,8 +19,8 @@ var toolbar = React.createClass({
     render() {
         return (
             <View.Toolbar>
-                <Button link>Dummy Link</Button>
-                <Button link>Menu</Button>
+                <Button link>Dummy Link6</Button>
+                <Button link>Menu6</Button>
             </View.Toolbar>
         )
     }
@@ -35,9 +35,7 @@ var page = React.createClass({
 			<View.PageContent>
                 <Content.ContentBlockTitle>Page 6</Content.ContentBlockTitle>
               <Content.ContentBlock>
-                  <p>come from: {this.props.params.from}</p>
                   <p>params: {this.props.params.text}</p>
-                  <p>saved: {this.props.saved.text}</p>
               </Content.ContentBlock>
 
               <Content.ContentBlock>

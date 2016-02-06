@@ -15,20 +15,11 @@ var navbar = React.createClass({
     }
 });
 
-var toolbar = React.createClass({
-    render() {
-        return (
-            <View.Toolbar>
-                <Button link>Dummy Link</Button>
-                <Button link>Menu</Button>
-            </View.Toolbar>
-        )
-    }
-});
+var toolbar = null;
 
 var page = React.createClass({
     gotoNextPage() {
-        app.showView('page3', {text:'Are you page 3'}, {text:'I am page 2'});
+        app.showView('page3', {text:'Are you page 3'});
     },
     goBack() {
         app.goBack(1, {text:'I am back 2'});
@@ -38,9 +29,7 @@ var page = React.createClass({
 			<View.PageContent>
                 <Content.ContentBlockTitle>Page 2</Content.ContentBlockTitle>
               <Content.ContentBlock>
-                  <p>come from: {this.props.params.from}</p>
                   <p>params: {this.props.params.text}</p>
-                  <p>saved: {this.props.saved.text}</p>
               </Content.ContentBlock>
 
               <Content.ContentBlock>

@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-var {View, Mixins} =require('UI');
+var UI =require('UI');
+var {View, Mixins} = UI;
 var views = require('./modules');
 var welcome = require('./modules/home/welcome');
 var LifeCycle = require('@remobile/react-lifecycle');
@@ -16,13 +17,8 @@ var App = React.createClass({
         this.userHeadCss = $.createStyleSheet();
         [1,2,3,4,5,6,7,8,9].map((i)=>{$.upsertStyleSheet(app.userHeadCss, '.user_head_'+i, 'background-image:url('+getHead(i)+')')});
     },
-    getInitialState() {
-        return {
-            newView:{id:'main'}
-        }
-    },
     render() {
-        return this.renderView();
+        return this.renderView('main', {}, 10);
     }
 });
 

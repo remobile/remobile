@@ -163,6 +163,7 @@ app.showViewExitAnimate = function (param) {
 
     function afterAnimation() {
         newPage.removeClass('page-from-left-to-center page-on-left').addClass('page-on-center');
+        oldPage.removeClass('page-from-center-to-right page-on-center').addClass('page-on-right');
         if (dynamicNavbar) {
 	        newNavbarInner.removeClass('navbar-on-left navbar-from-left-to-center').addClass('navbar-on-center');
 	        oldNavbarInner.removeClass('navbar-on-center navbar-from-center-to-right').addClass('navbar-on-left');

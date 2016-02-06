@@ -4,6 +4,7 @@ var UI = require('UI');
 var View = UI.View;
 var Content = UI.Content;
 var Button = UI.Button.Button;
+//var LifeCycle = require('@remobile/react-lifecycle');
 
 var navbar = React.createClass({
     render() {
@@ -19,16 +20,17 @@ var toolbar = React.createClass({
     render() {
         return (
             <View.Toolbar>
-                <Button link>Dummy Link</Button>
-                <Button link>Menu</Button>
+                <Button link>Dummy Link3</Button>
+                <Button link>Menu3</Button>
             </View.Toolbar>
         )
     }
 });
 
 var page = React.createClass({
+    // mixins: [LifeCycle('page3', 2)],
     gotoNextPage() {
-        app.showView('page4', {text:'Are you page 4'}, {text:'I am page 3'});
+        app.showView('page4', {text:'Are you page 4'});
     },
     goBack() {
         app.goBack(1, {text:'I am back 3'});
@@ -38,9 +40,7 @@ var page = React.createClass({
 			<View.PageContent>
                 <Content.ContentBlockTitle>Page 3</Content.ContentBlockTitle>
               <Content.ContentBlock>
-                  <p>come from: {this.props.params.from}</p>
                   <p>params: {this.props.params.text}</p>
-                  <p>saved: {this.props.saved.text}</p>
               </Content.ContentBlock>
 
               <Content.ContentBlock>

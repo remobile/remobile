@@ -19,8 +19,8 @@ var toolbar = React.createClass({
     render() {
         return (
             <View.Toolbar>
-                <Button link>Dummy Link</Button>
-                <Button link>Menu</Button>
+                <Button link>Dummy Link4</Button>
+                <Button link>Menu4</Button>
             </View.Toolbar>
         )
     }
@@ -28,7 +28,7 @@ var toolbar = React.createClass({
 
 var page = React.createClass({
     gotoNextPage() {
-        app.showView('page5', {text:'Are you page 5'}, {text:'I am page 4'});
+        app.showView('page5', {text:'Are you page 5'});
     },
     goBack() {
         app.goBack(1, {text:'I am back 4'});
@@ -38,9 +38,7 @@ var page = React.createClass({
 			<View.PageContent>
                 <Content.ContentBlockTitle>Page 4</Content.ContentBlockTitle>
               <Content.ContentBlock>
-                  <p>come from: {this.props.params.from}</p>
                   <p>params: {this.props.params.text}</p>
-                  <p>saved: {this.props.saved.text}</p>
               </Content.ContentBlock>
 
               <Content.ContentBlock>

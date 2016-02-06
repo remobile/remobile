@@ -33,7 +33,7 @@ var ListItem = React.createClass({
         if (page === 'photo') {
             showPhoto();
         } else if (page === 'page1') {
-            app.showView(page, {text:'Are you page 1'}, {text:'I am developer'});
+            app.showView(page, {text:'Are you page 1'});
         } else {
             app.showView(page);
         }
